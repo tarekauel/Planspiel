@@ -39,7 +39,7 @@ public class ConnectionListener extends Thread {
 		}
 	}
 
-	Socket warteAufAnmeldung(ServerSocket serverSocket) { // blockiert, bis sich
+	private Socket warteAufAnmeldung(ServerSocket serverSocket) { // blockiert, bis sich
 															// ein Client
 															// angemeldet hat
 		Socket socket = null;
