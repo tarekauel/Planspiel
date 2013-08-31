@@ -26,10 +26,14 @@ public class ConnectionTest {
 		String ip = "127.0.0.1";
 		int port = 11111;
 		server = new Server(port);
-		client1 = new Client(ip, port);
-		client2 = new Client(ip, port);
-		client3 = new Client(ip, port);
-		client4 = new Client(ip, port);
+		client1 = new Client();
+		client1.connect(ip, port);
+		client2 = new Client();
+		client2.connect(ip, port);
+		client3 = new Client();
+		client3.connect(ip, port);
+		client4 = new Client();
+		client4.connect(ip, port);
 	}
 
 	@After
