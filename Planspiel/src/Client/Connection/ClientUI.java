@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.text.MaskFormatter;
 
-public class ClientUI implements Runnable {
+public class ClientUI implements IClientUI {
 
 	private JFrame frame;
 	private JPanel panel1;
@@ -41,6 +41,7 @@ public class ClientUI implements Runnable {
 		frame.setVisible(true);
 	}
 
+	@Override
 	public void hide() {
 		frame.setVisible(false);
 	}

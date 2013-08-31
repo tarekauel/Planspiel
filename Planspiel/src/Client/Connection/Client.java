@@ -10,7 +10,7 @@ import Message.IMessage;
 public class Client implements IClient{
 	private Socket clientSocket;
 	
-	private final ClientUI ui;
+	private final IClientUI ui;
 	
 	public static void main(String[] args) {
 		new Client();
@@ -25,7 +25,7 @@ public class Client implements IClient{
 	public void connect(String ip, int port) {
 		Socket socket = null;
 		try {
-			socket = new Socket(ip, port);
+			socket = new Socket(ip, port);		
 			ui.hide();
 		} catch (UnknownHostException e) {
 			System.out.println("Kein Server gefunden!");
