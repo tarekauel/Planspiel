@@ -32,14 +32,14 @@ public class ConnectionListener extends Thread {
 		while (true) {
 
 			ServerConnection serverConnection = new ServerConnection(
-					warteAufAnmeldung(serverSocket), count, server);
+					waitForClient(serverSocket), count, server);
 			serverConnection.start();
 			connections.add(serverConnection);
 			count++;
 		}
 	}
 
-	private Socket warteAufAnmeldung(ServerSocket serverSocket) { // blockiert, bis sich
+	private Socket waitForClient(ServerSocket serverSocket) { // blockiert, bis sich
 															// ein Client
 															// angemeldet hat
 		Socket socket = null;
