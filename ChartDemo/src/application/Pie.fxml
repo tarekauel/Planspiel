@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="442.0" prefWidth="725.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <!-- TODO Add Nodes -->
+  <children>
+    <Pane layoutX="0.0" layoutY="0.0" prefHeight="442.0" prefWidth="725.0">
+      <children>
+        <PieChart id="PieChart" fx:id="pie" layoutX="0.0" layoutY="0.0" legendSide="LEFT" prefHeight="435.0" prefWidth="725.0" title="Marktanteile" />
+      </children>
+    </Pane>
+  </children>
+</AnchorPane>

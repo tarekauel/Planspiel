@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.chart.StackedBarChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="562.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.Controller">
+  <!-- TODO Add Nodes -->
+  <children>
+    <TabPane layoutX="0.0" layoutY="0.0" prefHeight="562.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="Pie">
+          <content>
+            <PieChart fx:id="pieChart" legendSide="LEFT" title="Marktanteile" />
+          </content>
+        </Tab>
+        <Tab text="Line">
+          <content>
+            <LineChart fx:id="lineChart">
+              <xAxis>
+                <CategoryAxis fx:id="xAxisLine" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="yAxisLine" side="LEFT" />
+              </yAxis>
+            </LineChart>
+          </content>
+        </Tab>
+        <Tab text="Bar">
+          <content>
+                <StackedBarChart fx:id="barChart" alternativeColumnFillVisible="true" layoutX="2.0" layoutY="0.0">
+                  <xAxis>
+                    <CategoryAxis fx:id="xAxisBar" side="BOTTOM" />
+                  </xAxis>
+                  <yAxis>
+                    <NumberAxis fx:id="yAxisBar" side="LEFT" />
+                  </yAxis>
+                </StackedBarChart>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+  </children>
+</AnchorPane>
