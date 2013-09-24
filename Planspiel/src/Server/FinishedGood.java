@@ -2,7 +2,7 @@ package Server;
 
 public class FinishedGood extends Product {
 	/**
-	 * Semantischer Konstruktor: Liefert ein neues FinishedGood zurück, falls
+	 * Fachlicher Konstruktor: Liefert ein neues FinishedGood zurück, falls
 	 * die Eingaben valide waren. Sonst null.
 	 * 
 	 * @param quality

@@ -8,7 +8,7 @@ package Server;
 public class Resource extends Product {
 
 	/**
-	 * Semantischer Konstruktor: Liefert eine neue Resorce zurück, falls die
+	 * Fachlicher Konstruktor: Liefert eine neue Resorce zurück, falls die
 	 * Eingaben valide waren. Sonst null.
 	 * 
 	 * @param quality

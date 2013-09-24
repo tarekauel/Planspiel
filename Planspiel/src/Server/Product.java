@@ -64,7 +64,7 @@ public abstract class Product {
 	 * @param costs
 	 * @return
 	 */
-	private Boolean setCosts(int costs) {
+	private Boolean setCosts(int costs) { //Brachen wir diese Methode???
 		if (checkCostsAreValid(costs)) {
 			this.costs = costs;
 			return true;
