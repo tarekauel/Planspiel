@@ -17,9 +17,9 @@ public class SupplierOffer {
 	 * @param resorce
 	 * @return
 	 */
-	public SupplierOffer create(Resource resorce) {
+	public static SupplierOffer create(Resource resource) {
 		if (resource != null) {
-			return new SupplierOffer(resorce);
+			return new SupplierOffer(resource);
 		}
 		return null;
 	}

@@ -50,13 +50,16 @@ public class Request {
 
 	/**
 	 * Fügt ein Angebot zur gestellten Anfrage hinzu. Es können max. 3 Angebote
-	 * hinzgefügt werden.
+	 * hinzgefügt werden. Das Angebot mss vom gleichen Rohstofftyp sein.
 	 * 
 	 * @param supplierOffer
 	 * @return
 	 */
 	public Boolean addSupplierOffer(SupplierOffer supplierOffer) {
-		if (supplierOffers.size() < 3) {
+		String nameOfSupplierProdct = supplierOffer.getResorce().getName();
+		String nameOfResourceProdct = resorceReqested.getName();
+		if (supplierOffers.size() < 3
+				&& nameOfResourceProdct.equals(nameOfSupplierProdct)) {
 			supplierOffers.add(supplierOffer);
 			return true;
 		}
