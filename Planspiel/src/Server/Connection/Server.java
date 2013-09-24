@@ -6,7 +6,7 @@ import Server.Player;
 
 /**
  * 
- * @author D059270 Der Server stellt die Kommunikation zwischen Client uns
+ * @author D059270 Der Server stellt die Kommunikation zwischen Client und
  *         Server her.
  */
 public class Server {
