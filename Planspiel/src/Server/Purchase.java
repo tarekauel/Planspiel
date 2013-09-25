@@ -1,3 +1,4 @@
+package Server;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class Purchase {
 		
 	}
 	
-	public void acceptSupplierOffer(SupplierOffer suplierOffer, int quantity) throws Exception{
+	public void acceptSupplierOffer(SupplierOffer supplierOffer, int quantity) throws Exception{
 		if(supplierOffer == null){
 			throw new NullPointerException("supplierOffer is null! Class Purchase Method acceptSupplierOffer");
 		}

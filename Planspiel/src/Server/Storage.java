@@ -1,3 +1,4 @@
+package Server;
 import java.util.ArrayList;
 
 
@@ -11,8 +12,8 @@ public class Storage {
 		boolean found = false; 
 		for(int i=0; i<size; i++){
 			storageElement = listOfStorageElements.get(i);
-			if(storageElement.product == product){
-				storageElement.quantity = storageElement.quantity + quantity; //falls Element gefunden wird Anzahl erhöht
+			if(storageElement.getProduct() == product){
+				storageElement.increaseQuantity(quantity); //falls Element gefunden wird Anzahl erhöht
 				found = true;
 			}
 		}//for

@@ -1,10 +1,11 @@
+package Server;
 
 public class StorageElement {
 	
 	private int quantity;
 	private Product product;
 	
-	private StorageElement(int quantity, Product product){
+	public StorageElement(int quantity, Product product){
 		//prüfungen??
 		this.product = product;
 		this.quantity = quantity;
