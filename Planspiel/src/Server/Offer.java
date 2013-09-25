@@ -1,6 +1,14 @@
 package Server;
 import java.io.IOException;
 
+/**
+ * Ein Offer Objekt wird erstellt, wenn der Spieler Fertigprodukte verkaufen moechte.
+ * Dabei muss er die Menge, den Preis und das zu verkaufende Produkt angeben.
+ * Es wird dabei auch überprüft, ob das Produkt existiert bzw ob es in der gewuenschten
+ * Menge verkauft werden kann.
+ * @author Felix
+ *
+ */
 
 public class Offer implements Comparable<Offer>{
 	
@@ -10,6 +18,16 @@ public class Offer implements Comparable<Offer>{
 	private int round;
 	private StorageElement storageElement;
 	private Distribution distribution;
+	
+	/**
+	 * Konstruktor fuer ein Offer Objekt
+	 * @param quantityToSell
+	 * @param priceToSell
+	 * @param round
+	 * @param quantitySold
+	 * @param storageElement
+	 * @throws IOException
+	 */
 	
 	public Offer(int quantityToSell, int priceToSell,int round, int quantitySold, StorageElement storageElement) throws IOException{
 		if(quantityToSell<=0 || priceToSell<0){
@@ -38,6 +56,10 @@ public class Offer implements Comparable<Offer>{
 	public int getQuantitySold(){
 		return quantitySold;
 	}//getQuantitySold
+	
+	public int getRound(){
+		return round;
+	}
 	
 	public StorageElement getStorageElement(){
 		return storageElement;

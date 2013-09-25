@@ -7,7 +7,7 @@ import java.util.Collections;
 public class Distribution extends Department{
 	
 	private ArrayList<Offer> listOfOffers = new ArrayList<Offer>();
-	private ArrayList<Offer> listOfLatestOffers = new ArrayList<Offer>();
+	
 	
 	public void createOffer(int quality, int quantityToSell, int price ){
 		
@@ -23,7 +23,6 @@ public class Distribution extends Department{
 		try{
 			Offer offer = new Offer(quantityToSell,price,round,sold,storageElement);
 			listOfOffers.add(offer);
-			listOfLatestOffers.add(offer);
 		}catch(IOException e){
 			e.getMessage();					     //korrekt??			
 		}
@@ -38,6 +37,12 @@ public class Distribution extends Department{
 	}//getListOfOffers
 	
 	public ArrayList<Offer> getSortedListOfLatestOffers(){
+		ArrayList<Offer> listOfLatestOffers= new ArrayList<Offer>();
+		for(Offer elem : listOfOffers){
+			if(elem.getRound() == gameEngine.getRound()){
+				listOfLatestOffers.add(elem);
+			}
+		}
 		Collections.sort(listOfLatestOffers);
 		return listOfLatestOffers;
 	}
