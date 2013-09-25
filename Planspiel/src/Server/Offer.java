@@ -12,7 +12,9 @@ public class Offer implements Comparable<Offer>{
 	private Distribution distribution;
 	
 	public Offer(int quantityToSell, int priceToSell,int round, int quantitySold, StorageElement storageElement) throws IOException{
-		
+		if(quantityToSell<=0 || priceToSell<0){
+			throw new IOException("quantityToSell oder priceToSell ist negativ. Class Offer Method Constructor");
+		}
 		this.quantityToSell = quantityToSell; //muss vorher geprüft werden ob sie negativ ist?!
 		this.priceToSell = priceToSell; // ebenso
 		this.round = round;

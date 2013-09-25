@@ -1,12 +1,16 @@
 package Server;
 
+import java.io.IOException;
+
 public class StorageElement {
 	
 	private int quantity;
 	private Product product;
 	
-	public StorageElement(int quantity, Product product){
-		//prüfungen??
+	public StorageElement(int quantity, Product product) throws Exception{
+		if(product == null || checkQuantityHigherZero(quantity)){
+			throw new IOException("product is null or quantity is lower zero. Class StorageElement Method Constructor");
+		}
 		this.product = product;
 		this.quantity = quantity;
 	}
@@ -37,9 +41,11 @@ public class StorageElement {
 	}
 	
 	public boolean increaseQuantity(int quantity){
-		//pruefe ob quantity positiv?! wann wird false geliefert?
-		this.quantity = this.quantity + quantity;
-		return true;
+		if(quantity>0){
+			this.quantity = this.quantity + quantity;
+			return true;
+		}
+		return false;
 	}
 	
 	public Product getProduct(){
