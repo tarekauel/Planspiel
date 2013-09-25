@@ -2,7 +2,7 @@ package Server;
 import java.io.IOException;
 
 
-public class Offer {
+public class Offer implements Comparable<Offer>{
 	
 	private int quantityToSell;
 	private int priceToSell;
@@ -61,6 +61,33 @@ public class Offer {
 			return true;
 		}
 	}//increaseQuantitySold
+	
+	@Override
+	public int compareTo(Offer offer) {
+		StorageElement storageElementThis = this.getStorageElement();
+		Product productThis = storageElementThis.getProduct();
+		int qualityThis = product.getQuality();
+		int priceToSellThis = this.getPrice();
+		
+		StorageElement storageElement = offer.getStorageElement();
+		Product product = storageElement.getProduct();
+		int quality = product.getQuality();
+		int priceToSell = offer.getPrice();
+		
+		int costPerformanceRatioThis = qualityThis / priceToSellThis;
+		int costPerformanceRatio = quality / priceToSell;
+		
+		if(costPerformanceRatioThis > costPerformanceRatio){
+			return 1;
+		}
+		if(costPerformanceRatioThis == costPerformanceRatio){
+			return 0;
+		}
+		if(costPerformanceRatioThis < costPerformanceRatio){
+			return -1;
+		}
+		
+	}//compareTo
 	
 
 }
