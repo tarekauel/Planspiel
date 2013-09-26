@@ -13,10 +13,9 @@ import java.util.Random;
  *         kann und wie groﬂ die Auslastung ist
  */
 public class Machinery {
-	int level;
-	Production production; // H‰lt die Produktions abteilung
-	int producedInRound;
-	int[] capacityArray = { 500, // lvl 1
+	private int level; //Maschinen ausbaustufe 
+	private Production production; // H‰lt die Produktions abteilung
+	private int[] capacityArray = { 500, // lvl 1
 			1000, // lvl 2
 			2000, // lvl 3
 			4000, // lvl 4
@@ -128,7 +127,7 @@ public class Machinery {
 	public int percentageOfUsage() {
 		// Hole die zu produzierenden Mengen aus den Produktionsauftr‰gen
 		int produced = production.getProducedQuantity();
-		// Hole aus dem internen die Kapazit‰t der Maschine
+		// Hole aus dem internen Bereich die Kapazit‰t der Maschine
 		int maxProduce = capacityArray[level];
 
 		double result = produced / maxProduce;
@@ -136,6 +135,18 @@ public class Machinery {
 		result = result * 100;
 
 		return (int) result;
+	}
+	
+	/**
+	 *  Berechnet sich aus Ausbaustufe zum Quadrat mal 150Ä
+	 * 
+	 * @return gibt die Fixkosten an
+	 */
+	public int getCosts(){
+		
+		
+		return (level * level) * 15000;
+				
 	}
 
 }
