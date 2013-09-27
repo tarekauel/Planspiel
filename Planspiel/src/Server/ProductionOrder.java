@@ -13,10 +13,10 @@ public class ProductionOrder {
 	// Anzahl der insgesamt erzeugten Produktionen
 	private static int counter = 1;
 	// ID des auftrags (Spieler unabhängige ID!)
-	private int id;
+	private int id = 0;
 	// Speichert die verwendeten Ressourcen
-	private Resource wafer;
-	private Resource cases;
+	private Resource wafer = null;
+	private Resource cases = null;
 
 	// Gibt die Gewichtung als ganzzahlige Prozentzahl an
 	private int impactWafer = 80;
@@ -28,11 +28,11 @@ public class ProductionOrder {
 	// maximaler Qualitätszuwachs durch FE+Motivation+Land:
 	private int maxAddition = 20;
 	// Speichert hinterher das erzugte Panel:
-	private FinishedGood panel;
+	private FinishedGood panel = null;
 	// Herzustellende Menge laut Auftrag
-	private int quantityToProduce;
+	private int quantityToProduce = 0;
 	// tatsächlich hergestellte Menge:
-	private int quantityProduced;
+	private int quantityProduced = 0;
 
 	/**
 	 * Erzeugt neue Production order
@@ -89,12 +89,24 @@ public class ProductionOrder {
 	}
 
 	/**
-	 * Gibt die Produzierte Menge an (die wird in produce gesetzt)
+	 * Gibt die Produzierte Menge an
 	 * 
 	 * @return int produzierte Menge
 	 */
 	public int getProduced() {
 		return quantityProduced;
+	}
+
+	/**
+	 * Erhöht die Produzierte Menge um 1
+	 * 
+	 * @return int produzierte Menge
+	 */
+	public void increaseProduced() {
+		if (quantityProduced < quantityToProduce) {
+			quantityProduced++;
+
+		}
 	}
 
 	/**
@@ -119,19 +131,19 @@ public class ProductionOrder {
 	/**
 	 * Wird jede Runde aufgerufen und fertigt den Produktionsauftrag
 	 * 
-	 * @param m
-	 *            Maschine, auf der produziert wird
 	 * @param s
 	 *            Storage, in den die Fertigprodukte gebucht werden.
 	 * @param Zuschlag
 	 *            Der Zuschlagssatz aus Motivation, Land und Forschung
 	 * 
 	 */
-	public void produce(Machinery m, Storage s, int Zuschlag) {
+	public void produce(int Zuschlag, Storage s) {
+		quantityProduced++;
+
 		// Prüfe ob bereits produziert wurde:
 		if (panel != null) {
-			// panel bereits gesetzt, also exisitert das Produkt schon im
-			// Storage
+			// panel bereits gesetzt, also muss das nicht mehr berechnet werden.
+			store(s);
 			return;
 		}
 		// Es wird in doubles gerechnet:
@@ -151,20 +163,14 @@ public class ProductionOrder {
 				+ cases.getCosts() * quantityToProduce;
 		// TODO: maschinenkosten einrechnen
 
-		// Berechne die tatsächliche produzierte Menge (Ausschuss bereits
-		// abgezogen)
-		quantityProduced = m.produce(quantityToProduce);
-
-		// Zieh die Storage elemente aus dem Storage ab:
-		// hierbei wird quantityToProduce genutzt, da der ausschuss ja trotzdem
-		// hinterher im lager fehlt
-		s.unstore(wafer, waferPerPanel * quantityToProduce);
-		s.unstore(cases, quantityToProduce);
-		// Alle daten sind jetzt aus dem Storage. neues Panel erzeugen
+		// neues Panel erzeugen
 		panel = FinishedGood.create(newQuality, costs);
-		// speicher das panel in storage:
-		s.store(panel, quantityProduced);
 
+		store(s);
+	}
+
+	private void store(Storage s) {
+		s.store(this.panel, 1);
 	}
 
 }

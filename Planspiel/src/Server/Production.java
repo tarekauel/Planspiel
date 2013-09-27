@@ -9,9 +9,17 @@ public class Production extends Department {
 	ArrayList<ProductionOrder> listOfOpenProductionOrders;
 	// Referenz auf die Maschine (auf der wir ja produzieren müssen)
 	Machinery machine;
+	
+	//Liste der Auslastungen für diesen Spieler
+	ArrayList<TPercentOfUsage> listOfAllPercentOfUsage
+
+	// Parameter für die Anzahl der Wafer pro Panel:
+	private int waferPerPanel = 54; // 72 max, 36 min ~54 durchschnitt
 
 	/**
-	 * Regulärer Konstruktor der Produktion, erzeugt zeitgleich eine neue Maschine
+	 * Regulärer Konstruktor der Produktion, erzeugt zeitgleich eine neue
+	 * Maschine
+	 * 
 	 * @param c
 	 *            Referenz des Unternehmens
 	 * @param fix
@@ -40,13 +48,15 @@ public class Production extends Department {
 		// Hier ist nichts mehr zu tun
 
 	}
+
 	/**
-	 *
+	 * 
 	 * @return gibt die Maschine der Produktion zurück
 	 */
-	public Machinery getMachine(){
+	public Machinery getMachine() {
 		return this.machine;
 	}
+
 	/**
 	 * Erzeuge einen neuen Produktionsauftrag und pflege ihn in die Listen ein.
 	 * 
@@ -69,21 +79,74 @@ public class Production extends Department {
 
 	/**
 	 * produziert alle offenen Produktionsaufträge und leert die Liste der
-	 * offenen Aufträge
+	 * offenen Aufträge am Ende. Das Abbuchen der Rohstoffe erfolgt in der
+	 * Produktion, das gutschreiben der Panels im Auftrag
+	 * 
 	 */
 	public void produce() {
+		// Gibt die Maximale Anzahl der Werkstücke an
+		int max = this.machine.getMaxCapacity();
+		// Zählt mit, wieviele Werkstücke auf der Maschine lagen
+		int triedToProduce = 0;
 
-		// Arbeite die Offenen aufträge ab
-		while (listOfOpenProductionOrders.size() != 0) {
-			// Stoße beim ersten element der Liste die Produktion an.....
-			listOfOpenProductionOrders.get(0).produce(machine,
-					this.getCompany().getStorage(),
-					this.getCompany().getReporting().getCurrentMotivation());
-			// ... und lösch das Objekt aus dieser Liste (Es existiert noch in
-			// der Liste aller aufträge)
-			listOfOpenProductionOrders.remove(0);
+		// Es muss sicher gestellt werden, dass nicht mehr Werkstücke auf der
+		// Maschine lagen, als diese kann.
 
+		// Schleife über alle Production Orders
+		for (int i = 0; i < listOfOpenProductionOrders.size(); i++) {
+			// Darf überhaupt noch jemand produzieren?
+			if (triedToProduce >= max) {
+				// scheinbar nicht
+				break;
+			}
+
+			// Schleife über jede einzelne Position des Auftrages (Werkstück)
+			for (int j = 0; j < listOfOpenProductionOrders.get(i)
+					.getRequested(); j++) {
+				// Darf überhaupt noch jemand produzieren?
+				if (triedToProduce >= max) {
+					// scheinbar nicht
+					break;
+				}
+
+				// Abbuchen der Ressourcen:
+				// Zieh die Storage elemente aus dem Storage ab:
+				// nutze dafür das lager des spielers:
+				// Wafer abbuchen (direkt in der Anzahl waferPerPanel)
+				this.getCompany()
+						.getStorage()
+						.unstore(listOfOpenProductionOrders.get(i).getWafer(),
+								waferPerPanel);
+				// Gehäuse abbuchen
+				this.getCompany()
+						.getStorage()
+						.unstore(listOfOpenProductionOrders.get(i).getCase(), 1);
+
+				// "Werkstück auf Maschine legen":
+				triedToProduce++;
+				// Gucken, ob wir tatsächlich produzieren:
+				if (machine.isJunk()) {
+					// Das Teil ist also Ausschuss
+					continue;
+				} else {
+					// Produziere das fertige Panel
+					// TODO: remove 100 , fester Wert für Motivation etc.
+					listOfOpenProductionOrders.get(i).produce(100,
+							this.getCompany().getStorage());
+				}
+			}
 		}
+
+		// summe aller aufträge
+		int sum = 0;
+		// hole Summe aller ProductionOrders dieser Runde
+		for (ProductionOrder o : listOfOpenProductionOrders) {
+			sum += o.getRequested();
+		}
+		listOfAllPercentOfUsage.add(new TPercentOfUsage( sum / this.machine.getMaxCapacity(),gameEngine.getRound());
+		// Initialisiere die offenen Aufträge, damit keine Aufträge in die
+		// nächste Runde rutschen
+		listOfOpenProductionOrders.clear();
 	}
 
 	/**
@@ -103,5 +166,11 @@ public class Production extends Department {
 	public ArrayList<ProductionOrder> getListOfOpenProductionOrders() {
 		return listOfOpenProductionOrders;
 	}
-
+	/**
+	 * 
+	 * @return gibt die Liste aller Auslastungen für diesen Spieler wieder
+	 */
+	public ArrayList<TPercentOfUsage> getListOfAllPercentOfUsage() {
+		return listOfAllPercentOfUsage;
+	}
 }

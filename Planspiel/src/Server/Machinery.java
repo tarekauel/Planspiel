@@ -38,38 +38,20 @@ public class Machinery {
 		level = 1;
 		
 	}
+
 /**
+ * Gibt an, ob eine Produktion erfolgreich war oder nicht.
+ * Regelt den Ausschuss
  * 
- * @param quantity zu produzierende Menge
- * @return tatsächlich produzierte Menge
+ * @return boolean, true, falls produziert wird, false, falls nicht
  */
-	public int produce(int quantity) {
-		// diese variable wird nachher returned
-		int produce = 0;
-		//Berechne den Ausschuss(hole den prozentualen Anteil an Müll)
-		
-		produce = (int)(quantity * (percentJunk()/100));
-				
-		return produce;
-	}
-/**
- * Gibt einen Prozentsatz an Ausschuss an
- * 
- * @return Zahl zwischen 0 und 12
- */
-	private int percentJunk() {
-		// Zufallsgenerator holen
+	public boolean isJunk() {
+		//Zufallszahlgenerator initialisieren
 		Random r = new Random();
-		// zufallszahl:
-		int zz;
-		//maximaler prozentualer Ausschuss
-		int max;
-		//Maximaler Ausschuss in % sind zwischen 2 und 12 
-		max = (12-level);
-		//Zufallszahl zwischen 0 und max:
-		zz = r.nextInt(max);
-		//Gib die Zahl zurück
-		return zz;
+		//Chance auf Produktion: 84% + level.. also mindestens 85%
+		return (r.nextInt(100)<(84+level))?true: false;
+		
+	
 	}
 
 	/**
