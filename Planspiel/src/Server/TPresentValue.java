@@ -51,13 +51,12 @@ public class TPresentValue {
 	}
 	
 	/**
-	 * prüft ob die Motivation zwischen 0 und 1000 liegt
-	 * (ehemals 0,0 und 999,9)
-	 * @param motivation gibt die temporäre Motivation an
-	 * @return true, falls die Motivation valide
+	 * prüft ob die Present Value positiv ist
+	 * @param presentValue gibt die temporäre Motivation an
+	 * @return true, falls die presentValue valide ist
 	 */
-	private boolean checkPresentValueValid(int motivation){
-		if(motivation > 0 && motivation < 1000){
+	private boolean checkPresentValueValid(int presentValue){
+		if(presentValue > 0){
 			return true;
 		}
 		return false;
