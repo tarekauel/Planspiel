@@ -90,7 +90,7 @@ public class Offer implements Comparable<Offer>{
 	public int compareTo(Offer offer) {
 		StorageElement storageElementThis = this.getStorageElement();
 		Product productThis = storageElementThis.getProduct();
-		int qualityThis = product.getQuality();
+		int qualityThis = productThis.getQuality();
 		int priceToSellThis = this.getPrice();
 		
 		StorageElement storageElement = offer.getStorageElement();
@@ -103,11 +103,10 @@ public class Offer implements Comparable<Offer>{
 		
 		if(costPerformanceRatioThis > costPerformanceRatio){
 			return 1;
-		}
-		if(costPerformanceRatioThis == costPerformanceRatio){
+		}else if(costPerformanceRatioThis == costPerformanceRatio){
 			return 0;
-		}
-		if(costPerformanceRatioThis < costPerformanceRatio){
+		}else{
+		//(costPerformanceRatioThis < costPerformanceRatio)
 			return -1;
 		}
 		
