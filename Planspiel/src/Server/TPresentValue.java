@@ -17,7 +17,7 @@ public class TPresentValue {
 	 * @param PresentValue aktueller Barwert
 	 * @throws Exception 
 	 */
-	public TPresentValue(int round, int presentValue) throws Exception {
+	public TPresentValue( int presentValue,int round) throws Exception {
 		
 		if (checkPresentValueValid(presentValue) == false){
 			//Motivaions check failed
