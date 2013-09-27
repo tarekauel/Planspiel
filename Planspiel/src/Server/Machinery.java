@@ -14,7 +14,6 @@ import java.util.Random;
  */
 public class Machinery {
 	private int level; //Maschinen ausbaustufe 
-	private Production production; // Hält die Produktions abteilung
 	private int[] capacityArray = { 500, // lvl 1
 			1000, // lvl 2
 			2000, // lvl 3
@@ -34,11 +33,10 @@ public class Machinery {
 	 *            enthält Referenz auf die Produktionsabteilung wird benötigt um
 	 *            die Belastung zu berechnen
 	 */
-	public Machinery(Production p) {
+	public Machinery() {
 
 		level = 1;
-		this.production = p;
-
+		
 	}
 /**
  * 
@@ -120,33 +118,19 @@ public class Machinery {
 	}
 
 	/**
-	 * Berechnet aus der produzierten Stückzahl die Auslastung
-	 * 
-	 * @return gibt die Auslastung in Prozent an, als integer
-	 */
-	public int percentageOfUsage() {
-		// Hole die zu produzierenden Mengen aus den Produktionsaufträgen
-		int produced = production.getProducedQuantity();
-		// Hole aus dem internen Bereich die Kapazität der Maschine
-		int maxProduce = capacityArray[level];
-
-		double result = produced / maxProduce;
-
-		result = result * 100;
-
-		return (int) result;
-	}
-	
-	/**
 	 *  Berechnet sich aus Ausbaustufe zum Quadrat mal 150€
 	 * 
 	 * @return gibt die Fixkosten an
 	 */
 	public int getCosts(){
-		
-		
-		return (level * level) * 15000;
-				
+		return (level * level) * 15000;	
+	}
+	/**
+	 * Gibt Kosten für Hilfsstoffe an. je höher das Maschinen level, je niedriger die Kosten.
+	 * @return Stückkosten auf der Maschine
+	 */
+	public int getPieceCosts(){
+		return 150 * (11 - level);
 	}
 
 }

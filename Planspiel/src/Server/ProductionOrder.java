@@ -17,15 +17,15 @@ public class ProductionOrder {
 	// Speichert die verwendeten Ressourcen
 	private Resource wafer;
 	private Resource cases;
-	
-	//Gibt die Gewichtung als ganzzahlige Prozentzahl an
+
+	// Gibt die Gewichtung als ganzzahlige Prozentzahl an
 	private int impactWafer = 80;
 	private int impactCases = 20;
-	
-	//Parameter für die Anzahl der Wafer pro Panel:
-	private int waferPerPanel = 54 ; //72 max, 36 min ~54 durchschnitt
-	
-	//maximaler Qualitätszuwachs durch FE+Motivation+Land:
+
+	// Parameter für die Anzahl der Wafer pro Panel:
+	private int waferPerPanel = 54; // 72 max, 36 min ~54 durchschnitt
+
+	// maximaler Qualitätszuwachs durch FE+Motivation+Land:
 	private int maxAddition = 20;
 	// Speichert hinterher das erzugte Panel:
 	private FinishedGood panel;
@@ -64,6 +64,31 @@ public class ProductionOrder {
 	}
 
 	/**
+	 * 
+	 * @return gibt den verwendeten Wafer wieder
+	 */
+	public Resource getWafer() {
+		return this.wafer;
+	}
+
+	/**
+	 * 
+	 * @return gibt das verwendete Gehäuse zurück
+	 */
+	public Resource getCase() {
+		return this.cases;
+	}
+
+	/**
+	 * 
+	 * @return gibt das Fertige Erzeugnis zurück
+	 */
+	public FinishedGood getPanel() {
+		return this.panel;
+
+	}
+
+	/**
 	 * Gibt die Produzierte Menge an (die wird in produce gesetzt)
 	 * 
 	 * @return int produzierte Menge
@@ -81,11 +106,13 @@ public class ProductionOrder {
 		return quantityToProduce;
 
 	}
+
 	/**
 	 * Returns the global ID
+	 * 
 	 * @return
 	 */
-	public int getID(){
+	public int getID() {
 		return this.id;
 	}
 
@@ -94,42 +121,50 @@ public class ProductionOrder {
 	 * 
 	 * @param m
 	 *            Maschine, auf der produziert wird
+	 * @param s
+	 *            Storage, in den die Fertigprodukte gebucht werden.
 	 * @param Zuschlag
-	 * 			  Der Zuschlagssatz aus Motivation, Land und Forschung
+	 *            Der Zuschlagssatz aus Motivation, Land und Forschung
+	 * 
 	 */
-	public void produce(Machinery m,Storage s, int Zuschlag){
-		//Prüfe ob bereits produziert wurde:
-		if (panel != null){
-			//panel bereits gesetzt, also exisitert das Produkt schon im Storage
+	public void produce(Machinery m, Storage s, int Zuschlag) {
+		// Prüfe ob bereits produziert wurde:
+		if (panel != null) {
+			// panel bereits gesetzt, also exisitert das Produkt schon im
+			// Storage
 			return;
 		}
-		//Es wird in doubles gerechnet:
-		double additionalFactor = Zuschlag/100;
-		//durchschnittsqualität der Produkte mit Gewichtung:
-		double midQuality = (wafer.getQuality()*impactWafer+cases.getQuality()*impactCases) / 100 ;
-		//neue Qualität (nicht mehr als double)
+		// Es wird in doubles gerechnet:
+		double additionalFactor = Zuschlag / 100;
+		// durchschnittsqualität der Produkte mit Gewichtung:
+		double midQuality = (wafer.getQuality() * impactWafer + cases
+				.getQuality() * impactCases) / 100;
+		// neue Qualität (nicht mehr als double)
 		int newQuality = (int) (midQuality * additionalFactor) * 10;
-		
-		//Prüfe ob die neue Qualität durch den Zuschlag zu sehr verändert wurde
-		newQuality = (newQuality-midQuality > maxAddition )? (int)(midQuality + maxAddition): newQuality;
-		
-		//Berechne herstellkosten:
-		int costs = wafer.getCosts()*quantityToProduce * waferPerPanel + cases.getCosts()*quantityToProduce;
-		//TODO: maschinenkosten einrechnen
-		//Zieh die Storage elemente aus dem Storage ab:
-		//hierbei wird quantityToProduce genutzt, da der ausschuss ja trotzdem hinterher im lager fehlt
-		s.unstore(wafer, waferPerPanel*quantityToProduce);
+
+		// Prüfe ob die neue Qualität durch den Zuschlag zu sehr verändert wurde
+		newQuality = (newQuality - midQuality > maxAddition) ? (int) (midQuality + maxAddition)
+				: newQuality;
+
+		// Berechne herstellkosten:
+		int costs = wafer.getCosts() * quantityToProduce * waferPerPanel
+				+ cases.getCosts() * quantityToProduce;
+		// TODO: maschinenkosten einrechnen
+
+		// Berechne die tatsächliche produzierte Menge (Ausschuss bereits
+		// abgezogen)
+		quantityProduced = m.produce(quantityToProduce);
+
+		// Zieh die Storage elemente aus dem Storage ab:
+		// hierbei wird quantityToProduce genutzt, da der ausschuss ja trotzdem
+		// hinterher im lager fehlt
+		s.unstore(wafer, waferPerPanel * quantityToProduce);
 		s.unstore(cases, quantityToProduce);
-		//Alle daten sind jetzt aus dem Storage. neues Panel erzeugen
-		panel= FinishedGood.create(newQuality, costs);
-		//speicher das panel in storage:
+		// Alle daten sind jetzt aus dem Storage. neues Panel erzeugen
+		panel = FinishedGood.create(newQuality, costs);
+		// speicher das panel in storage:
 		s.store(panel, quantityProduced);
-			
-		//Ausschuss abziehen
-		quantityProduced = m.produce(quantityToProduce) ;
-		
-		
-		
+
 	}
 
 }
