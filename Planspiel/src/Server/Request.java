@@ -56,7 +56,7 @@ public class Request {
 	 * @return
 	 */
 	public Boolean addSupplierOffer(SupplierOffer supplierOffer) {
-		String nameOfSupplierProdct = supplierOffer.getResorce().getName();
+		String nameOfSupplierProdct = supplierOffer.getResource().getName();
 		String nameOfResourceProdct = resorceReqested.getName();
 		if (supplierOffers.size() < 3
 				&& nameOfResourceProdct.equals(nameOfSupplierProdct)) {
