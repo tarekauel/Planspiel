@@ -16,7 +16,7 @@ public abstract class Department {
 	/**
 	 * 
 	 */
-	public Department(Company c, String n, int f) {
+	public Department(Company c, String n, int f)throws Exception {
 		if (checkName(n)!=true){
 			throw new Exception("Ungültiger Abteilungsname:"+n);
 		}
@@ -75,11 +75,8 @@ public abstract class Department {
 			case "Marktforschung":
 
 				return true;
-				break;
-
 			default:
 				return false;
-				break;
 		}
 	}
 /**
