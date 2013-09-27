@@ -9,9 +9,9 @@ public class Production extends Department {
 	ArrayList<ProductionOrder> listOfOpenProductionOrders;
 	// Referenz auf die Maschine (auf der wir ja produzieren müssen)
 	Machinery machine;
-	
-	//Liste der Auslastungen für diesen Spieler
-	ArrayList<TPercentOfUsage> listOfAllPercentOfUsage
+
+	// Liste der Auslastungen für diesen Spieler
+	ArrayList<TPercentOfUsage> listOfAllPercentOfUsage;
 
 	// Parameter für die Anzahl der Wafer pro Panel:
 	private int waferPerPanel = 54; // 72 max, 36 min ~54 durchschnitt
@@ -33,7 +33,8 @@ public class Production extends Department {
 	}
 
 	/**
-	 * damit niemand eine Falsche Abteilung erzeugen kann (name falsch)
+	 * privater Konstruktor damit niemand eine Falsche Abteilung erzeugen kann
+	 * (name falsch)
 	 * 
 	 * @param c
 	 *            Referenz des Unternehmens
@@ -143,7 +144,14 @@ public class Production extends Department {
 		for (ProductionOrder o : listOfOpenProductionOrders) {
 			sum += o.getRequested();
 		}
-		listOfAllPercentOfUsage.add(new TPercentOfUsage( sum / this.machine.getMaxCapacity(),gameEngine.getRound());
+		try {
+			listOfAllPercentOfUsage.add(new TPercentOfUsage(sum
+					/ this.machine.getMaxCapacity(), GameEngine.getGameEngine()
+					.getRound()));
+		} catch (Exception e) {
+			// Fehler bei der Erstellung einer Auslastung
+			// TODO: Fehlerhandling?!
+		}
 		// Initialisiere die offenen Aufträge, damit keine Aufträge in die
 		// nächste Runde rutschen
 		listOfOpenProductionOrders.clear();
@@ -166,6 +174,7 @@ public class Production extends Department {
 	public ArrayList<ProductionOrder> getListOfOpenProductionOrders() {
 		return listOfOpenProductionOrders;
 	}
+
 	/**
 	 * 
 	 * @return gibt die Liste aller Auslastungen für diesen Spieler wieder
