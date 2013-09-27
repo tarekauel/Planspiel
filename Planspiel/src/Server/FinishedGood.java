@@ -1,5 +1,9 @@
 package Server;
-
+/**
+ *  Die Klasse stellt ein fertig produziertes Produkt dar (Panel).
+ * @author D059270
+ *
+ */
 public class FinishedGood extends Product {
 	/**
 	 * Fachlicher Konstruktor: Liefert ein neues FinishedGood zurück, falls
