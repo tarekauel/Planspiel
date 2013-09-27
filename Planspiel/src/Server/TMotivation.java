@@ -17,7 +17,7 @@ public class TMotivation {
 	 * @param motivation aktuelle Motivation
 	 * @throws Exception 
 	 */
-	public TMotivation(int round, int motivation) throws Exception {
+	public TMotivation( int motivation,int round) throws Exception {
 		
 		if (checkMotivationValid(motivation) == false){
 			//Motivaions check failed
@@ -51,13 +51,13 @@ public class TMotivation {
 	}
 	
 	/**
-	 * prüft ob die Motivation zwischen 0 und 1000 liegt
+	 * prüft ob die Motivation zwischen 0 und 9999 liegt
 	 * (ehemals 0,0 und 999,9)
 	 * @param motivation gibt die temporäre Motivation an
 	 * @return true, falls die Motivation valide
 	 */
 	private boolean checkMotivationValid(int motivation){
-		if(motivation > 0 && motivation < 1000){
+		if(motivation > 0 && motivation < 9999){
 			return true;
 		}
 		return false;
