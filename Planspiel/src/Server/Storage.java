@@ -18,8 +18,14 @@ public class Storage {
 			}
 		}//for
 		if(found==false){
+			try{
 			storageElement = new StorageElement(quantity,product);
+			
 			listOfStorageElements.add(storageElement);
+			}catch(Exception e){
+				//Problem beim erstellen, keine Behandlung
+				//TODO: Was passiert hier?!
+			}
 		}
 	}//store
 	
@@ -35,7 +41,7 @@ public class Storage {
 		for(int i=0; i<size; i++){
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
-			sum = sum + product.getStorageCostsPerRound();
+			sum = sum + product.getStorageCostsPerRond();
 		}
 		return sum;
 	}//getStorageCostsSum
@@ -64,7 +70,7 @@ public class Storage {
 		for(int i=0; i<size; i++){
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
-			if(product.quality == quality){
+			if(product.getQuality() == quality){
 				return storageElement;
 			}//if
 		}//for
