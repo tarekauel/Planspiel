@@ -15,6 +15,10 @@ public abstract class Department {
 
 	/**
 	 * 
+	 * @param c Referenz auf das Unternehmen
+	 * @param n Name der Abteilung
+	 * @param f Cent Zahl der fixKosten
+	 * @throws Exception
 	 */
 	public Department(Company c, String n, int f)throws Exception {
 		if (checkName(n)!=true){

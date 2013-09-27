@@ -8,7 +8,7 @@ public class StorageElement {
 	private Product product;
 	
 	public StorageElement(int quantity, Product product) throws Exception{
-		if(product == null || checkQuantityHigherZero(quantity)){
+		if(product == null || !(checkQuantityHigherZero(quantity))){
 			throw new IOException("product is null or quantity is lower zero. Class StorageElement Method Constructor");
 		}
 		this.product = product;
@@ -17,7 +17,7 @@ public class StorageElement {
 	
 	
 	private boolean checkQuantityHigherZero(int quantity){
-		boolean result = (quantity>=0)? true:false;
+		boolean result = (quantity>0)? true:false;
 		return result;
 	} 
 	
