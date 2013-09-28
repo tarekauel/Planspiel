@@ -23,8 +23,24 @@ public class Company {
 
         this.location = new Location();
         this.bankAccount = new BankAccount(0); //TODO: Startwert des Vermögens setzen
+        initDepartments();
 
 	}
+
+    //TODO: Sinnvolle Fixkosten pro Abteilung setzen
+    //Frage: WO sollen Fixkosten gesetzt werden? In den Abteilungen selbst wäre betriebswirtschaftlich sinnvoller!
+    private void initDepartments(){
+        try {
+            this.purchase = new Purchase(this, 1000000);
+            this.production = new Production(this, 1000000);
+            this.storage = new Storage(this, 1000000);
+            this.distribution = new Distribution(this, 1000000);
+            this.humanResources = new HumanResources(this, 1000000);
+            this.marketResearch = new MarketResearch(this, 1000000);
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 	
 	public Purchase getPurchase(){
         return this.purchase;
