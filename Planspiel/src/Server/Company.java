@@ -38,7 +38,7 @@ public class Company {
             this.humanResources = new HumanResources(this, 1000000);
             this.marketResearch = new MarketResearch(this, 1000000);
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 	
