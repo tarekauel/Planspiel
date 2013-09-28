@@ -18,6 +18,9 @@ public class BenefitBooking {
     private int costsSum;                                           //Kosten insgesamt für das gebuchte Benefit
     private static ArrayList<BenefitBooking> bookedBenefits;        //Alle derzeit gebuchten Benefits
 
+    public BenefitBooking() {
+    }
+
     private BenefitBooking(Benefit benefit, int duration) {
 
         this.benefit = benefit;
