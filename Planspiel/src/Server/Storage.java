@@ -2,7 +2,11 @@ package Server;
 import java.util.ArrayList;
 
 
-public class Storage {
+public class Storage extends Department {
+
+    public Storage(Company c, int fix) throws Exception {
+        super(c,"Lager",fix);
+    }
 	
 	private ArrayList<StorageElement> listOfStorageElements = new ArrayList<StorageElement>();
 	
@@ -13,7 +17,7 @@ public class Storage {
 		for(int i=0; i<size; i++){
 			storageElement = listOfStorageElements.get(i);
 			if(storageElement.getProduct() == product){
-				storageElement.increaseQuantity(quantity); //falls Element gefunden wird Anzahl erhöht
+				storageElement.increaseQuantity(quantity); //falls Element gefunden wird Anzahl erhï¿½ht
 				found = true;
 			}
 		}//for
