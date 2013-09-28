@@ -105,14 +105,14 @@ public class Machinery {
 	 * @return gibt die Fixkosten an
 	 */
 	public int getCosts(){
-		return (level * level) * 15000;	
+		return (level * level) * 250000;	
 	}
 	/**
 	 * Gibt Kosten für Hilfsstoffe an. je höher das Maschinen level, je niedriger die Kosten.
 	 * @return Stückkosten auf der Maschine
 	 */
 	public int getPieceCosts(){
-		return 150 * (11 - level);
+		return 1500 * (11 - level);
 	}
 
 }
