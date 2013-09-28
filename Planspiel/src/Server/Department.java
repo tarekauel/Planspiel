@@ -1,6 +1,3 @@
-/**
- * 
- */
 package Server;
 
 /**
@@ -22,10 +19,10 @@ public abstract class Department {
 	 */
 	public Department(Company c, String n, int f)throws Exception {
 		if (checkName(n)!=true){
-			throw new Exception("Ungültiger Abteilungsname:"+n);
+			throw new Exception("Ungï¿½ltiger Abteilungsname:"+n);
 		}
 		if (checkFixCosts(f)!=true){
-			throw new Exception("Ungültige Fixkosten:"+f);
+			throw new Exception("Ungï¿½ltige Fixkosten:"+f);
 		}
 		if (c == null){
 			throw new Exception("Null-Referenz Unternehmen");
@@ -85,7 +82,7 @@ public abstract class Department {
 	}
 /**
  * 
- * @param f zu prüfende fix Kosten
+ * @param f zu prï¿½fende fix Kosten
  * @return true, falls fix Kosten einen positvien Wert haben
  */
 	private boolean checkFixCosts(int f){
