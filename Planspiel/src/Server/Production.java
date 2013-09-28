@@ -27,9 +27,12 @@ public class Production extends Department {
 	 * @throws Exception
 	 *             falls Abteilung nicht erstellt werden konnte
 	 */
-	public Production(Company c, int fix) throws Exception {
-		super(c, "Produktion", fix);
+	public Production(Company c) throws Exception {
+		super(c, "Produktion", 0);
 		machine = new Machinery();
+	}
+	public int getFixCosts(){
+		return super.getFixCosts()+this.machine.getCosts();
 	}
 
 	/**
