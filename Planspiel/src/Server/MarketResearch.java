@@ -7,5 +7,10 @@ package Server;
  * Time: 18:11
  */
 
-public class MarketResearch {
+public class MarketResearch extends Department {
+
+    public MarketResearch(Company c, int fix) throws Exception {
+        super(c, "Marktforschung", fix);
+    }
+
 }
