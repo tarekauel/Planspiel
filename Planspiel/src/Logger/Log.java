@@ -30,7 +30,14 @@ public class Log {
 		for(int i=1; i<param.length; i++) {
 			msg += String.valueOf(param[i]) + ", ";
 		}
+		msg = msg.substring(0, msg.length()-2);
+		log.log(Level.INFO, msg);
+	}
+	
+	public static void newObj(Object param) {
+		String className = Thread.currentThread().getStackTrace()[2].getClassName();
 		
+		String msg = "Class: " + className + " Param: " + String.valueOf(param);
 		log.log(Level.INFO, msg);
 	}
 	
