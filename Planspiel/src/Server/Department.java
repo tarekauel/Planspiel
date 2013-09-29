@@ -78,7 +78,6 @@ public abstract class Department {
 			case "Verkauf":
 			case "Lager":
 			case "Resporting":
-			case "Forschung&Entwicklung":
 			case "Produktion":
 			case "Personal":
 			case "Marktforschung":
