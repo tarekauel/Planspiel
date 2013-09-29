@@ -9,7 +9,7 @@ import Logger.Log;
 
 public class BankAccount {
 
-	private int bankBalance;
+	private int	bankBalance;
 
 	public BankAccount(int bankBalance) {
 		Log.newObj(bankBalance);
@@ -39,8 +39,9 @@ public class BankAccount {
 		setBankBalance(newBankBalance);
 
 	}
-@Override
-	public String toString(){
+
+	@Override
+	public String toString() {
 		return "Guthaben:" + this.bankBalance;
 	}
 }
