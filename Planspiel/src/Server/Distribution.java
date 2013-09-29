@@ -40,7 +40,7 @@ public class Distribution extends Department {
 	 */
 	private Distribution(Company c, String n, int f) throws Exception {
 		super(c, n, f);
-		// TODO Auto-generated constructor stub
+		CustomerMarket.getMarket().addDistribution(this);
 	}
 
 	public void createOffer(int quality, int quantityToSell, int price) {

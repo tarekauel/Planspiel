@@ -621,7 +621,7 @@ public class CustomerMarket {
 		price = (int) price * 1 + (getGaussianNumber(-20, 20, 0, 10) / 100);
 
 		// Preis zur Qualität loggen
-		logAcceptedPrices.put(requestedQuality, (String) (((logAcceptedPrices.get(requestedQuality) == null) ? price
+		logAcceptedPrices.put(requestedQuality, (String) (((logAcceptedPrices.get(requestedQuality) == null) ? price+""
 				: logAcceptedPrices.get(requestedQuality) + ";" + price)));
 
 		return price;

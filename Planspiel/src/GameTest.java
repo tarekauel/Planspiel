@@ -43,7 +43,7 @@ public class GameTest {
 		
 		pro.produce();
 		
-		d.createOffer(s.getAllFinishedGoods().get(0).getQuality(), quantityToSell, price);
+		d.createOffer(s.getAllFinishedGoods().get(0).getQuality(), s.getAllStorageElements().get(2).getQuantity(), 100);
 		
 		CustomerMarket.getMarket().handleAllOffers();
 		
