@@ -8,9 +8,6 @@ import Logger.Log;
  *         Gehäuse sein.
  */
 public class Resource extends Product {
-
-	// Logger für Spielinformationen
-	private Log log = Log.getLogger();
 	
 	/**
 	 * Erstellt eine Resource (also Wafer oder Gehäuse). 
@@ -25,7 +22,7 @@ public class Resource extends Product {
 			throw new IllegalArgumentException("Name der Resource ist ungültig. Muss Wafer oder Gehäuse sein!");
 		}
 		
-		log.newObj(new String[] { "Resource", quality+"", name, costs+"" } );
+		Log.newObj(new String[] { quality+"", name, costs+"" } );
 	}
 
 	/**
@@ -36,6 +33,7 @@ public class Resource extends Product {
 	 * @return
 	 */
 	private static Boolean checkNameIsValid(String name) {
+		Log.method();
 		if (name.equals("Wafer") || name.equals("Gehäuse")) {
 			return true;
 		}

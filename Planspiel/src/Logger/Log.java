@@ -5,45 +5,39 @@ import java.util.logging.Logger;
 
 public class Log {
 	
-	private static Log logRef = null;
+	private static Logger log = Logger.getLogger("Planspiel");
 	
-	private Logger log;
-	
-	public static Log getLogger() {
-		if( logRef == null) {
-			logRef = new Log();
-		}
-		return logRef;
+	public static void warning(String msg) {
+		log.log(Level.INFO, msg);
 	}
 	
-	public Log() {
-		log = Logger.getLogger("Planspiel");		
+	public static void verbose(String msg) {
+		log.log(Level.INFO, msg);
 	}
 	
-	public void warning(String msg) {
-		log.log(Level.WARNING, msg);
+	public static void info(String msg) {
+		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
+		String className = Thread.currentThread().getStackTrace()[2].getClassName();
+		
+		log.log(Level.INFO, "Class: " + className + " Method: " + method + " " + msg);
 	}
 	
-	public void verbose(String msg) {
-		log.log(Level.FINE, msg);
-	}
-	
-	public void info(String msg) {
-		log.log(Level.FINER, msg);
-	}
-	
-	public void newObj(String[] param) {
-		String msg = "Class: " + param[0] + " Param: ";
+	public static void newObj(Object[] param) {
+		String className = Thread.currentThread().getStackTrace()[2].getClassName();
+		
+		String msg = "Class: " + className + " Param: ";
 		
 		for(int i=1; i<param.length; i++) {
-			msg += param[i] + ", ";
+			msg += String.valueOf(param[i]) + ", ";
 		}
 		
 		log.log(Level.INFO, msg);
 	}
 	
-	
-	
-	
+	public static void method() {
+		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
+		String className = Thread.currentThread().getStackTrace()[2].getClassName();
+		Log.verbose("Class: " + className + " Method: " + method);
+	}
 
 }
