@@ -14,8 +14,8 @@ public class StorageElementTest {
 	public static void setUpBeforeClass() throws Exception {
 		// Rohstoffe initialisieren
 		panel = FinishedGood.create(5, 40000);
-		wafer = Resource.create(60, 300, "Wafer");
-		cases = Resource.create(40, 4500, "Gehäuse");
+		wafer = new Resource(60, "Wafer", 300);
+		cases = new Resource(40,  "Gehäuse", 4500);
 
 	}
 

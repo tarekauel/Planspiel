@@ -14,28 +14,15 @@ public class Request {
 	private ArrayList<SupplierOffer> supplierOffers = new ArrayList<SupplierOffer>();
 
 	/**
-	 * Fachlicher Konstruktor: Prüft ob die Resource ungleich null ist und
-	 * liefert nur dann den Request zurück. Sonst null.
+	 * Konstruktor zum erstellen einer Anfrage an den Beschaffungsmarkt
 	 * 
-	 * @param resorce
-	 * @return
+	 * @param resource die Resource, die nachgefagt werden soll
 	 */
-	public static Request create(Resource resorce) {
-		if (resorce != null) {
-			Request request = new Request(resorce);
-			return request;
-		}
-		return null;
-
-	}
-
-	/**
-	 * Privater Konstruktor: Setzt das Attribut resorceRequested.
-	 * 
-	 * @param resorce
-	 */
-	private Request(Resource resource) {
+	public Request(Resource resource) {
 		this.resourceReqested = resource;
+		if( resource == null ) {
+			throw new IllegalArgumentException( "Resource darf nicht null sein!");
+		}
 	}
 
 	/**
@@ -56,14 +43,19 @@ public class Request {
 	 * @return
 	 */
 	public Boolean addSupplierOffer(SupplierOffer supplierOffer) {
+		if (supplierOffer == null) {
+			throw new IllegalArgumentException("SupplierOffer darf nicht null sein!");
+		}
 		String nameOfSupplierProdct = supplierOffer.getResource().getName();
 		String nameOfResourceProdct = resourceReqested.getName();
 		if (supplierOffers.size() < 3
 				&& nameOfResourceProdct.equals(nameOfSupplierProdct)) {
 			supplierOffers.add(supplierOffer);
 			return true;
+		} else {
+			throw new IllegalArgumentException("Einem Request können nur 3 SupplierOffer zugewiesen werden!");
 		}
-		return false;
+		
 	}
 
 	/**

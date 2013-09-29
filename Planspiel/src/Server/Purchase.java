@@ -71,7 +71,7 @@ public class Purchase extends Department {
 			throw new NullPointerException("Resource is null! Class Purchase Method createRequest");
 		}
 
-		Request request = Request.create(resource);
+		Request request = new Request(resource);
 		// Request request = Request.create(resource);
 		listOfRequests.add(request);
 		listOfLatesRequests.add(request);
