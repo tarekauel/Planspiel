@@ -20,6 +20,7 @@ public class HumanResources extends Department {
         setWagePerRound(new TWage(100,GameEngine.getGameEngine().getRound()));                //TODO: Anpassen & in ini-File auslagern
         this.wagesSum = calcWagesSum();
         this.benefitBooking = new BenefitBooking();
+        
     }
 
     private int calcWagesSum(){
