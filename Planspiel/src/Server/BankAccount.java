@@ -38,5 +38,8 @@ public class BankAccount {
 		setBankBalance(newBankBalance);
 
 	}
-
+@Override
+	public String toString(){
+		return "Guthaben:" + this.bankBalance;
+	}
 }
