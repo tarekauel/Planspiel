@@ -3,6 +3,9 @@
  */
 package Server;
 
+import Logger.Log;
+import Constant.Constant;
+
 /**
  * Klasse für den Produktionsauftrag
  * 
@@ -18,27 +21,18 @@ public class ProductionOrder {
 	private Resource wafer = null;
 	private Resource cases = null;
 
-	// Gibt die Gewichtung als ganzzahlige Prozentzahl an
-	private int impactWafer = 80;
-	private int impactCases = 20;
-
-	// Parameter für die Anzahl der Wafer pro Panel:
-	private int waferPerPanel = 54; // 72 max, 36 min ~54 durchschnitt
-
-	// maximaler Qualitätszuwachs durch FE+Motivation+Land:
-	private int maxAddition = 20;
 	// Speichert hinterher das erzugte Panel:
 	private FinishedGood panel = null;
 	// Herzustellende Menge laut Auftrag
 	private int quantityToProduce = 0;
 	// tatsächlich hergestellte Menge:
 	private int quantityProduced = 0;
-	
+
 	// Paramerter für die Anzahl der Stunden pro Panel
-	private int					workingHoursPerPanel		= 5;
-	
+	private int workingHoursPerPanel = 5;
+
 	// Kosten pro Order
-		private int costsPerOrder = 1000;
+	private int costsPerOrder = 1000;
 
 	/**
 	 * Erzeugt neue Production order
@@ -49,14 +43,16 @@ public class ProductionOrder {
 	 *            Resource für das case
 	 * @param quantity
 	 */
+
 	public ProductionOrder(Resource wafer, Resource cases, int quantity) {
+		Log.newObj(new Object[] { wafer, cases, quantity });
 		this.id = counter;
 		// TODO: sicherheitsabfragen
 		this.wafer = wafer;
 		this.cases = cases;
 		this.quantityToProduce = quantity;
 		counter++;
-
+		Log.methodExit();
 	}
 
 	/**
@@ -65,6 +61,7 @@ public class ProductionOrder {
 	 * @return int Ausschuss
 	 */
 	public int getWaste() {
+		Log.get(quantityToProduce - quantityProduced);
 		return quantityToProduce - quantityProduced;
 
 	}
@@ -74,6 +71,7 @@ public class ProductionOrder {
 	 * @return gibt den verwendeten Wafer wieder
 	 */
 	public Resource getWafer() {
+		Log.get(wafer);
 		return this.wafer;
 	}
 
@@ -82,6 +80,7 @@ public class ProductionOrder {
 	 * @return gibt das verwendete Gehäuse zurück
 	 */
 	public Resource getCase() {
+		Log.get(cases);
 		return this.cases;
 	}
 
@@ -90,6 +89,7 @@ public class ProductionOrder {
 	 * @return gibt das Fertige Erzeugnis zurück
 	 */
 	public FinishedGood getPanel() {
+		Log.get(panel);
 		return this.panel;
 
 	}
@@ -100,6 +100,7 @@ public class ProductionOrder {
 	 * @return int produzierte Menge
 	 */
 	public int getProduced() {
+		Log.get(quantityProduced);
 		return quantityProduced;
 	}
 
@@ -111,6 +112,7 @@ public class ProductionOrder {
 	public void increaseProduced() {
 		if (quantityProduced < quantityToProduce) {
 			quantityProduced++;
+			Log.set(quantityProduced);
 
 		}
 	}
@@ -131,6 +133,7 @@ public class ProductionOrder {
 	 * @return
 	 */
 	public int getID() {
+		Log.get(id);
 		return this.id;
 	}
 
@@ -143,7 +146,8 @@ public class ProductionOrder {
 	 *            Der Zuschlagssatz aus Motivation, Land und Forschung
 	 * 
 	 */
-	public void produce(int Zuschlag, Storage s, Machinery m)throws Exception {
+	public void produce(int Zuschlag, Storage s, Machinery m) throws Exception {
+		Log.method(new Object[] { Zuschlag, s, m });
 		quantityProduced++;
 
 		// Prüfe ob bereits produziert wurde:
@@ -151,31 +155,40 @@ public class ProductionOrder {
 			// panel bereits gesetzt, also muss das nicht mehr berechnet werden.
 			return;
 		}
-		
+
 		// Es wird in doubles gerechnet:
 		double additionalFactor = Zuschlag / 100;
 		// durchschnittsqualität der Produkte mit Gewichtung:
-		double midQuality = (wafer.getQuality() * impactWafer + cases
-				.getQuality() * impactCases) / 100;
+		double midQuality = (wafer.getQuality()
+				* Constant.PRODUCTION_IMPACT_WAFER + cases.getQuality()
+				* Constant.PRODUCTION_IMPACT_CASE) / 100;
 		// neue Qualität (nicht mehr als double)
 		int newQuality = (int) (midQuality * additionalFactor) * 10;
 
 		// Prüfe ob die neue Qualität durch den Zuschlag zu sehr verändert wurde
-		newQuality = (newQuality - midQuality > maxAddition) ? (int) (midQuality + maxAddition)
+		newQuality = (newQuality - midQuality > Constant.PRODUCTION_MAX_QUALITY_ADDITION) ? (int) (midQuality + Constant.PRODUCTION_MAX_QUALITY_ADDITION)
 				: newQuality;
 
 		// Berechne herstellkosten:
-		int costs = wafer.getCosts() * waferPerPanel
+		int costs = wafer.getCosts() * Constant.PRODUCTION_WAFERS_PER_PANEL
 				+ cases.getCosts() + m.getPieceCosts();
 
 		// neues Panel erzeugen
 		panel = FinishedGood.create(newQuality, costs);
+		Log.methodExit();
 	}
 
-	public void storeProduction (Storage s) throws Exception {
+	public void storeProduction(Storage s) throws Exception {
+		Log.method(s);
 		// Kosten pro Stück neu berechnen (Ausschuss berücksichtigen)
-		this.panel = FinishedGood.create(panel.getQuality(), (int) (((double) panel.getCosts() * quantityToProduce + costsPerOrder+ workingHoursPerPanel * quantityToProduce * s.getCompany().getHumanResources().getWagesPerHour().getAmount()) / quantityProduced));
+		this.panel = FinishedGood.create(panel.getQuality(),
+				(int) (((double) panel.getCosts() * quantityToProduce
+						+ costsPerOrder + workingHoursPerPanel
+						* quantityToProduce
+						* s.getCompany().getHumanResources().getWagesPerHour()
+								.getAmount()) / quantityProduced));
 		s.store(this.panel, quantityProduced);
+		Log.methodExit();
 	}
 
 }

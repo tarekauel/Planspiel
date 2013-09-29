@@ -1,7 +1,5 @@
 package Server;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
-
 import Logger.Log;
 
 /**

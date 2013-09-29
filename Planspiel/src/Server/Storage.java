@@ -48,7 +48,7 @@ public class Storage extends Department {
 		for(int i=0; i<size; i++){
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
-			sum = sum + product.getStorageCostsPerRond();
+			sum = sum + product.getStorageCostsPerRound();
 		}
 		return sum;
 	}//getStorageCostsSum
