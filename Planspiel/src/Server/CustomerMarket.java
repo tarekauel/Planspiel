@@ -355,11 +355,13 @@ public class CustomerMarket {
 			sumPriceA += info[1];
 		}
 
-		// Durchschnittspreis berechnen
-		aMarketAvgPriceLastRound = sumPriceA / boughtOffersAMarket.size();
+		// Durchschnittspreis berechnen, wenn Angebote gekauft wurden
+		if (boughtOffersAMarket.size() > 0) {
+			aMarketAvgPriceLastRound = sumPriceA / boughtOffersAMarket.size();
 
-		// Durchschnittsqualität berechnen
-		aMarketAvgQualityLastRound = sumQualityA / boughtOffersAMarket.size();
+			// Durchschnittsqualität berechnen, wenn Angebote gekauft wurden
+			aMarketAvgQualityLastRound = sumQualityA / boughtOffersAMarket.size();
+		}
 
 		// Berechnung des Durchschnittspreises der gekauften Artikel im C-Markt
 		int sumPriceC = 0;
@@ -369,11 +371,13 @@ public class CustomerMarket {
 			sumPriceC += info[1];
 		}
 
-		// Durchschnittspreis berechnen
-		cMarketAvgPriceLastRound = sumPriceC / boughtOffersCMarket.size();
+		if (boughtOffersCMarket.size() > 0) {
+			// Durchschnittspreis berechnen, wenn Angebote gekauft wurden
+			cMarketAvgPriceLastRound = sumPriceC / boughtOffersCMarket.size();
 
-		// Durchschnittsqualität berechnen
-		cMarketAvgQualityLastRound = sumQualityC / boughtOffersCMarket.size();
+			// Durchschnittsqualität berechnen, wenn Angebote gekauft wurden
+			cMarketAvgQualityLastRound = sumQualityC / boughtOffersCMarket.size();
+		}
 
 		// Den Preismittelpunkt neu berechnen
 		marketMiddlePriceLastRound = aMarketAvgPriceLastRound + cMarketAvgPriceLastRound

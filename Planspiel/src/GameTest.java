@@ -29,8 +29,8 @@ public class GameTest {
 		Storage s = c.getStorage();
 		Distribution d = c.getDistribution();
 		
-		p.createRequest( new Resource(50, "Wafer", 0));
-		p.createRequest( new Resource(50, "Gehäuse", 0));
+		p.createRequest( new Resource(20, "Wafer", 0));
+		p.createRequest( new Resource(20, "Gehäuse", 0));
 		
 		SupplierMarket.getMarket().handleRequest();
 		
