@@ -1,5 +1,7 @@
 package Server;
 
+import Logger.Log;
+
 /**
  * @author Lars
  * Abstrakte Klasse der Abteilung
@@ -18,6 +20,8 @@ public abstract class Department {
 	 * @throws Exception
 	 */
 	public Department(Company c, String n, int f)throws Exception {
+		Log.newObj(new Object[]{c,n,f});
+		
 		if (checkName(n)!=true){
 			throw new Exception("Ungï¿½ltiger Abteilungsname:"+n);
 		}
@@ -37,6 +41,7 @@ public abstract class Department {
 	 * @return Referenz auf das Unternehmen
 	 */
 	public Company getCompany(){
+		Log.get(company);
 		return this.company;
 	}
 	/**
@@ -44,6 +49,7 @@ public abstract class Department {
 	 * @return integer Zahl der Fix Koste (Cent Betrag)
 	 */
 	public int getFixCosts(){
+		Log.get(fixCosts);
 		return this.fixCosts;
 	}
 	/**
@@ -51,7 +57,7 @@ public abstract class Department {
 	 * @return String des Abteilungsnamen
 	 */
 	public String getName(){
-		
+		Log.get(name);
 		return this.name;
 	}
 	/**
@@ -62,6 +68,7 @@ public abstract class Department {
 	
 	public void prepareForNewRound(int round){
 		//Gibt allen leuten die Möglichkeit dinge zu initialiesieren
+		Log.method(round);
 	}
 	
 	/**
@@ -94,5 +101,9 @@ public abstract class Department {
  */
 	private boolean checkFixCosts(int f){
 		return (f>0);
+	}
+	@Override
+	public String toString(){
+		return name;
 	}
 }
