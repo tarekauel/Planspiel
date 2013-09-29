@@ -38,15 +38,7 @@ public class Company {
 	}
 
 	public void initRound(int round) {
-		Log.method(round);
 		
-		purchase.prepareForNewRound(round);
-		production.prepareForNewRound(round);
-		storage.prepareForNewRound(round);
-		distribution.prepareForNewRound(round);
-		humanResources.prepareForNewRound(round);
-		marketResearch.prepareForNewRound(round);
-		Log.methodExit();
 		
 	}
 
