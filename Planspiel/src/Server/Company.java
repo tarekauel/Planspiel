@@ -34,6 +34,9 @@ public class Company {
 		this.distribution = new Distribution(this, 1000000);
 		this.humanResources = new HumanResources(this, 1000000);
 		this.marketResearch = new MarketResearch(this, 1000000);
+		
+		GameEngine.getGameEngine().addCompany(this);
+		
 
 	}
 
