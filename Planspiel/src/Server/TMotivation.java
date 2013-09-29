@@ -21,11 +21,11 @@ public class TMotivation {
 		
 		if (checkMotivationValid(motivation) == false){
 			//Motivaions check failed
-			throw new Exception("Motivation invalid");
+			throw new IllegalArgumentException("Motivation invalid");
 		}
 		if (checkRoundValid(round)==false){
 			//Runden check failed
-			throw new Exception("Round invalid");
+			throw new IllegalArgumentException("Round invalid");
 		}
 		this.round = round;
 		this.motivation = motivation;

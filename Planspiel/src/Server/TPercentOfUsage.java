@@ -26,10 +26,10 @@ public class TPercentOfUsage {
 	 */
 	public TPercentOfUsage(int percentOfUsage, int round) throws Exception {
 		if (!checkRound(round)) {
-			throw new Exception("Runde ungültig");
+			throw new IllegalArgumentException("Runde ungültig");
 		}
 		if (!checkPercentOfUsage(percentOfUsage)) {
-			throw new Exception("Prozentzahl ungültig");
+			throw new IllegalArgumentException("Prozentzahl ungültig");
 		}
 		this.percentOfUsage = percentOfUsage;
 		this.round = round;

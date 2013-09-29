@@ -21,11 +21,11 @@ public class TPresentValue {
 		
 		if (checkPresentValueValid(presentValue) == false){
 			//Motivaions check failed
-			throw new Exception("Present value invalid");
+			throw new IllegalArgumentException("Present value invalid");
 		}
 		if (checkRoundValid(round)==false){
 			//Runden check failed
-			throw new Exception("Round invalid");
+			throw new IllegalArgumentException("Round invalid");
 		}
 		this.round = round;
 		this.presentValue = presentValue;
