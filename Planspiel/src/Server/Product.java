@@ -87,13 +87,13 @@ public abstract class Product {
 	}
 
 	/**
-	 * Prüft ob die Kosten positiv sind. *
+	 * Prüft ob die Kosten >= 0 sind
 	 * 
 	 * @param costs
 	 * @return
 	 */
 	private static Boolean checkCostsAreValid(int costs) {
-		if (costs > 0) {
+		if (costs >= 0) {
 			return true;
 		}
 		return false;

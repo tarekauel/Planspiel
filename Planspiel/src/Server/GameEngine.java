@@ -12,7 +12,7 @@ public class GameEngine {
 	private static GameEngine engine;
 	
 	// Rundennummer
-	private int round = 0;
+	private int round = 1;
 
 	public GameEngine() {
 		engine = this;

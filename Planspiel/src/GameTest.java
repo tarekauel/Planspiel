@@ -17,6 +17,7 @@ public class GameTest {
 		Purchase p = c.getPurchase();
 		p.createRequest( new Resource(50, "Wafer", 0));
 		
+		SupplierMarket.getMarket().handleRequest();
 		
 	}
 }

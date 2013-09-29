@@ -18,10 +18,10 @@ public class Purchase extends Department {
 	private ArrayList<Request>	listOfRequests	= new ArrayList<Request>();
 	
 	// Liste aller Request dieser Runde
-	private ArrayList<Request> listOfLatesRequests = null;
+	private ArrayList<Request> listOfLatesRequests = new ArrayList<Request>();
 	
 	// Liste aller akzeptierten SupplierOffers dieser Runde ( für den Markt )
-	private ArrayList<SupplierOffer> listOfLatestSupplierOffers = null;
+	private ArrayList<SupplierOffer> listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
 	
 	
 	/**
@@ -36,6 +36,7 @@ public class Purchase extends Department {
 	 */
 	public Purchase(Company c, int fix) throws Exception {
 		super(c, "Einkauf", fix);
+		SupplierMarket.getMarket().addPurchase(this);
 	}
 
 	/**
