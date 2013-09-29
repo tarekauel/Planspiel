@@ -2,6 +2,7 @@ package Server;
 
 import java.util.ArrayList;
 
+import Logger.Log;
 import Message.GameDataMessage;
 
 
@@ -21,7 +22,9 @@ public class GameEngine {
 	private int round = 1;
 
 	public GameEngine() {
+		Log.method();
 		engine = this;
+		Log.methodExit();
 	}
 
 	/**
@@ -34,6 +37,7 @@ public class GameEngine {
 		if (engine == null) {
 			engine = new GameEngine();
 		}
+		Log.get(engine);
 		return engine;
 	}
 
@@ -41,6 +45,7 @@ public class GameEngine {
 	 * @return aktuelle Runde
 	 */
 	public int getRound() {
+		Log.get(round);
 		return round;
 	}
 	
@@ -49,11 +54,13 @@ public class GameEngine {
 	 * @param gameDataList Übergebene Eingabedaten der Spieler
 	 */
 	public void startNextRound(ArrayList<GameDataMessage> gameDataList) {
+		Log.method();
 		round++;
 		
 		for( DepartmentRoundSensitive d:listSensitiveDepartments) {
 			d.prepareForNewRound(round);
 		}
+		Log.methodExit();
 	}
 	
 	/**
@@ -61,7 +68,9 @@ public class GameEngine {
 	 * @param d Abteilung, die der Aufrufliste hinzugefügt werden soll
 	 */
 	public void addSensitiveDepartment( DepartmentRoundSensitive d ) {
+		Log.method(d);
 		listSensitiveDepartments.add( d );
+		Log.methodExit();
 	}
 	
 	/**
@@ -69,7 +78,14 @@ public class GameEngine {
 	 * @param c Company, die hinzugefügt werden soll
 	 */
 	public void addCompany( Company c) {
+		Log.method(c);
 		listOfCompanys.add(c);
+		Log.methodExit();
+		
+	}
+	@Override
+	public String toString(){
+		return "Gameengine Runde: " + this.round;
 	}
 	
 	

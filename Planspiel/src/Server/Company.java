@@ -1,5 +1,6 @@
 package Server;
 
+import Constant.Constant;
 import Logger.Log;
 
 /**
@@ -21,19 +22,19 @@ public class Company {
 	public Company(Location l) throws Exception {
 		Log.newObj(l);
 		// erzeuge Bankkonto mit 1 Mio Kapital
-		bankAccount = new BankAccount(100000000);
+		bankAccount = new BankAccount(Constant.COMPANY_START_CAPITAL);
 		// setze Location
 		this.location = l;
 		// 'Kaufe die Location'
 		bankAccount.decreaseBalance(l.getPurchasePrice());
 
 		// Erzuege alle Abteilungen
-		this.purchase = new Purchase(this, 1000000);
-		this.production = new Production(this, 1000000);
-		this.storage = new Storage(this, 1000000);
-		this.distribution = new Distribution(this, 1000000);
-		this.humanResources = new HumanResources(this, 1000000);
-		this.marketResearch = new MarketResearch(this, 1000000);
+		this.purchase = new Purchase(this, Constant.FIXCOST_PURCHASE);
+		this.production = new Production(this, Constant.FIXCOST_PRODUCTION);
+		this.storage = new Storage(this, Constant.FIXCOST_STORAGE);
+		this.distribution = new Distribution(this, Constant.FIXCOST_DISTRIBUTION);
+		this.humanResources = new HumanResources(this, Constant.FIXCOST_HUMAN_RESOURCES);
+		this.marketResearch = new MarketResearch(this, Constant.FIXCOST_MARKET_RESEARCH);
 		
 		//Anmelden an der Gamengine
 		GameEngine.getGameEngine().addCompany(this);

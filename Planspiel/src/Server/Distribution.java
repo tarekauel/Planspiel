@@ -25,10 +25,10 @@ public class Distribution extends DepartmentRoundSensitive {
 	 *             falls Abteilung nicht erstellt werden konnte
 	 */
 	public Distribution(Company c, int fix)throws Exception{
-		
 		super(c,"Verkauf",fix);
-		Log.newObj(new Object[] {c,fix});
+		Log.method();
 		CustomerMarket.getMarket().addDistribution(this);
+		Log.methodExit();
 	}
 	
 	/**
