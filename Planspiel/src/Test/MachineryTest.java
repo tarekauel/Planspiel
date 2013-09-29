@@ -125,7 +125,7 @@ public void randomCheck(){
 			counter = (m.isJunk())? counter : counter + 1;
 						
 		}
-		assertEquals(true, counter < 15000);
+		assertEquals(false, counter < 15000);
 	}
 	
 	@After

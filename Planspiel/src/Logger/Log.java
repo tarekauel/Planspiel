@@ -1,11 +1,21 @@
 package Logger;
 
+import java.io.IOException;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Log {
 	
 	private static Logger log = Logger.getLogger("Planspiel");
+	 
+	static {
+		try {
+			log.addHandler( new FileHandler( "log.txt"));
+		} catch (SecurityException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void warning(String msg) {
 		log.log(Level.INFO, msg);
