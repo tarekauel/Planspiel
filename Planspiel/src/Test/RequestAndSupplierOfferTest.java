@@ -60,18 +60,9 @@ public class RequestAndSupplierOfferTest {
 	
 	@Test ( expected = java.lang.IllegalArgumentException.class )
 	public void addMoreThanThreeOffers() throws Exception {
-		
-		Resource wafer = new Resource(80,  "Wafer", 20);
-		Request request = new Request( wafer);
+		Request request = new Request( new Resource(80,  "Wafer", 20) );
 
-		Resource supGehause = new Resource(78, "Gehäuse", 30);
-		SupplierOffer offer = new SupplierOffer(supGehause);
-		Boolean added = request.addSupplierOffer(offer);
-
-		assertEquals(false, added);
-
-		Resource supWafer = new Resource(78,  "Wafer", 30);
-		offer = new SupplierOffer(supWafer);
+		SupplierOffer offer = new SupplierOffer( new Resource(78,  "Wafer", 30) );
 
 		request.addSupplierOffer(offer);
 		request.addSupplierOffer(offer);
