@@ -1,8 +1,11 @@
 package Server;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+
+import tarekMuell.Company;
 
 /**
  * Der CustomerMarket existiert für alle Spieler gemeinsam. Er arbeitet die
@@ -15,94 +18,93 @@ import java.util.Random;
 public class CustomerMarket {
 
 	// Singleton Instanz
-	private static CustomerMarket		market							= null;								// TODO
+	private static CustomerMarket		market					= null;							// TODO
 
 	// --------------------------------------- A-Markt
 	// --------------------------------------------------------------
 	// aktueller Nachfragepeak im A-Markt
 	// Standardwert: Q 7,5;
-	private int							aMarketPeak						= 75;
+	private int							aMarketPeak;
 
 	// aktuelle Nachfragemenge im A-Markt
 	// Standardwert: 100 ME;
-	private int							aMarketQuantity					= 100;								// TODO
+	private int							aMarketQuantity;											// TODO
 
 	// Standardabweichung zur Berechnung im A-Markt
-	private static final double			aMarketVariance					= 10;								// TODO
+	private final double				aMarketVariance;											// TODO
 
 	// Faktor zum Wachstum vom A-Markt
 	// Für X bediente Kunden kommt einer hinzug
-	private static final double			aMarketIncreaseFactor			= 30;								// TODO
+	private final double				aMarketIncreaseFactor;										// TODO
 
 	// Faktor zur Abnahme vom A-Markt
 	// Für X nicht bediente Kunden geht einer
-	private static final double			aMarketDecreaseFactor			= 2;								// TODO
+	private final double				aMarketDecreaseFactor;										// TODO
 
 	// --------------------------------------- C-Markt
 	// --------------------------------------------------------------
 	// aktueller Nachfragepeak im C-Markt
 	// Standardwert: Q 2,5
-	private int							cMarketPeak						= 25;
+	private int							cMarketPeak;
 
 	// aktuelle Nachfragemenge im C-Markt
 	// Standardwert: 200 ME;
-	private int							cMarketQuantity					= 200;								// TODO
+	private int							cMarketQuantity;											// TODO
 
 	// Standardabweichung zur Berechnung im C-Markt
-	private static final double			cMarketVariance					= 7.5;								// TODO
+	private final double				cMarketVariance;											// TODO
 
 	// Faktor zum Wachstum vom C-Markt
 	// Für X bediente Kunden kommt einer hinzug
-	private static final double			cMarketIncreaseFactor			= 20;								// TODO
+	private final double				cMarketIncreaseFactor;										// TODO
 
 	// Faktor zur Abnahme vom C-Markt
 	// Für X nicht bediente Kunden geht einer
-	private static final double			cMarketDecreaseFactor			= 1;								// TODO
+	private final double				cMarketDecreaseFactor;										// TODO
 
 	// --------------------------------------- Preisberechnung
 	// --------------------------------------------------------------
 	// Durchschnittlicher Preis der gekauften Artikel in der letzten Runde im
 	// A-Markt
-	private int							aMarketAvgPriceLastRound		= 70000;							// TODO
+	private int							aMarketAvgPriceLastRound;									// TODO
 
 	// Durchschnittliche Qualität der gekauften Artikel in der letzten Runde im
 	// A-Markt
-	private int							aMarketAvgQualityLastRound		= 75;								// TODO
+	private int							aMarketAvgQualityLastRound;								// TODO
 
 	// Durchschnittlicher Preis der gekauften Artikel in der letzten Runde im
 	// C-Markt
-	private int							cMarketAvgPriceLastRound		= 50000;							// TODO
+	private int							cMarketAvgPriceLastRound;									// TODO
 
 	// Durchschnittliche Qualität der gekauften Artikel in der letzten Runde im
 	// C-Markt
-	private int							cMarketAvgQualityLastRound		= 25;								// TODO
+	private int							cMarketAvgQualityLastRound;								// TODO
 
 	// Mittelpunkt zwischen den Durchschnittsqualitäten der letzten Runde
-	private int							marketMiddleQualityLastRound	= (75 + 25) / 2;					// TODO
+	private int							marketMiddleQualityLastRound;								// TODO
 
 	// Mittelpunkt zwischen den Durchschnittspreisen der letzten Runde (um 50
 	// der Lücke angehoben)
-	private int							marketMiddlePriceLastRound		= (7000 + 50000) / 2 + (int) 0.5
-																				* (7000 - 50000);			// TODO
+	private int							marketMiddlePriceLastRound;								// TODO
 
 	// --------------------------------------- Verbindung zu
 	// Abteilungen------------------------------------------------------
 	// Liste aller Verkaufsabteilung
-	private ArrayList<Distribution>		listOfDistributions				= new ArrayList<Distribution>();	// TODO
+	private ArrayList<Distribution>		listOfDistributions		= new ArrayList<Distribution>();	// TODO
 
 	// Liste aller Angebote, die für diese Runde gemacht worden sind
-	private ArrayList<Offer>			listOfAllOffers					= null;
+	private ArrayList<Offer>			listOfAllOffers			= null;
 
 	// ------------------------------------------ Market Shares
-	private HashMap<Company, Integer>	listOfSales						= new HashMap<Company, Integer>();	// TODO
+	private HashMap<Company, Integer>	listOfSales				= new HashMap<Company, Integer>();	// TODO
 
 	// --------------------------------------- Logging zur Überprüfung
 	// --------------------------------------------------------------
 	// HashMap zum Speichern der Nachgefragten Qualitäten
-	private HashMap<Integer, Integer>	logRequestedQualities			= new HashMap<Integer, Integer>();	// TODO
+	private HashMap<Integer, Integer>	logRequestedQualities	= new HashMap<Integer, Integer>();	// TODO
 
 	// HashMap zum Speichern der Akzeptierten Preise
-	private HashMap<Integer, String>	logAcceptedPrices				= new HashMap<Integer, String>();	// TODO
+	private HashMap<Integer, String>	logAcceptedPrices		= new HashMap<Integer, String>();	// TODO
 
 	/**
 	 * Liefert die Instanz auf den Markt zurück. (Singleton)
@@ -112,19 +114,67 @@ public class CustomerMarket {
 	// TODO
 	public static CustomerMarket getMarket() {
 
+		// Pruefe, ob der Markt bereits erstellt worden ist und geben es zurück
+		// oder erstelle es neu
+		return market = ((market == null) ? new CustomerMarket() : market);
+	}
+
+	/**
+	 * Liefert die Instanz auf den Markt zurück. (Singleton). Setzt ggf.
+	 * Start-Variablen
+	 * 
+	 * @return
+	 */
+	public static CustomerMarket getMarket(int aMarketPeak, int aMarketQuantity, double aMarketVariance,
+			double aMarketIncreaseFactor, double aMarketDecreaseFactor, int cMarketPeak, int cMarketQuantity,
+			double cMarketVariance, double cMarketIncreaseFactor, double cMarketDecreaseFactor,
+			int aMarketAvgPriceLastRound, int aMarketAvgQualityLastRound, int cMarketAvgPriceLastRound,
+			int cMarketAvgQualityLastRound) {
+
 		// Pruefe, ob der Markt bereits erstellt worden ist
 		if (market == null) {
 			// Markt neu erstellen
-			market = new CustomerMarket();
+			market = new CustomerMarket(aMarketPeak, aMarketQuantity, aMarketVariance, aMarketIncreaseFactor,
+					aMarketDecreaseFactor, cMarketPeak, cMarketQuantity, cMarketVariance, cMarketIncreaseFactor,
+					cMarketDecreaseFactor, aMarketAvgPriceLastRound, aMarketAvgQualityLastRound,
+					cMarketAvgPriceLastRound, cMarketAvgQualityLastRound);
 		}
 		return market;
+	}
+
+	/**
+	 * Privater Konstruktor zum Start ohne Parameter
+	 */
+	private CustomerMarket() {
+		this(75, 100, 10, 30, 2, 25, 200, 7.5, 20, 1, 70000, 75, 50000, 25);
 	}
 
 	/**
 	 * Private Konstruktor zur Umsetzung von Singleton
 	 */
 	// TODO
-	private CustomerMarket() {
+	private CustomerMarket(int aMarketPeak, int aMarketQuantity, double aMarketVariance, double aMarketIncreaseFactor,
+			double aMarketDecreaseFactor, int cMarketPeak, int cMarketQuantity, double cMarketVariance,
+			double cMarketIncreaseFactor, double cMarketDecreaseFactor, int aMarketAvgPriceLastRound,
+			int aMarketAvgQualityLastRound, int cMarketAvgPriceLastRound, int cMarketAvgQualityLastRound) {
+		// Initialisierungsvariablen setzen
+		this.aMarketPeak = aMarketPeak;
+		this.aMarketQuantity = aMarketQuantity;
+		this.aMarketVariance = aMarketVariance;
+		this.aMarketIncreaseFactor = aMarketIncreaseFactor;
+		this.aMarketDecreaseFactor = aMarketDecreaseFactor;
+		this.cMarketPeak = cMarketPeak;
+		this.cMarketQuantity = cMarketQuantity;
+		this.cMarketVariance = cMarketVariance;
+		this.cMarketIncreaseFactor = cMarketIncreaseFactor;
+		this.cMarketDecreaseFactor = cMarketDecreaseFactor;
+		this.aMarketAvgPriceLastRound = aMarketAvgPriceLastRound;
+		this.aMarketAvgQualityLastRound = aMarketAvgQualityLastRound;
+		this.cMarketAvgPriceLastRound = cMarketAvgPriceLastRound;
+		this.cMarketAvgQualityLastRound = cMarketAvgQualityLastRound;
+		this.marketMiddleQualityLastRound = (aMarketAvgQualityLastRound + cMarketAvgQualityLastRound) / 2;
+		this.marketMiddlePriceLastRound = (aMarketAvgPriceLastRound + cMarketAvgPriceLastRound) / 2 + (int) 0.5
+				* (aMarketAvgPriceLastRound - cMarketAvgPriceLastRound) / 2;
 
 	}
 
@@ -139,9 +189,12 @@ public class CustomerMarket {
 	 */
 	public boolean addDistribution(Distribution d) {
 
+		if (d == null) {
+			throw new NullPointerException("Distribution darf nicht null sein!");
+		}
+
 		// Pruefe, ob die Abteilung bereits in der List steht
 		// -1: Abteilung ist neu
-
 		if (listOfDistributions.indexOf(d) == -1) { // TODO: indexOf geht auf
 													// equals (muss ggf. noch
 													// implementiert werden)
@@ -192,14 +245,14 @@ public class CustomerMarket {
 		for (int i = 0; i < aMarketQuantity; i++) {
 			// Nachgefragte Qualität für diesen Kunden nach der Normalverteilung
 			// berechnen
-			int requestedQuality = getGuassianNumber(50, 100, aMarketPeak, aMarketVariance);
+			int requestedQuality = getGaussianNumber(50, 100, aMarketPeak, aMarketVariance);
 
 			// Nachgefragte Qualität zu Loggingzwecken speichern
 			logRequestedQualities.put(requestedQuality, ((logRequestedQualities.get(logRequestedQualities) == null) ? 0
 					: logRequestedQualities.get(logRequestedQualities) + 1));
 
 			// Referenz auf das gekaufte Angebot
-			Offer boughtOffer = simulateCusomter(listOfAllOffers, requestedQuality);
+			Offer boughtOffer = simulateCustomer(listOfAllOffers, requestedQuality);
 
 			if (boughtOffer != null) {
 				// Ein treffendes Angebot wurde ausgewählt
@@ -227,14 +280,14 @@ public class CustomerMarket {
 		for (int i = 0; i < cMarketQuantity; i++) {
 			// Nachgefragte Qualität für diesen Kunden nach der Normalverteilung
 			// berechnen
-			int requestedQuality = getGuassianNumber(0, 50, cMarketPeak, cMarketVariance);
+			int requestedQuality = getGaussianNumber(0, 50, cMarketPeak, cMarketVariance);
 
 			// Nachgefragte Qualität zu Loggingzwecken speichern
 			logRequestedQualities.put(requestedQuality, ((logRequestedQualities.get(logRequestedQualities) == null) ? 0
 					: logRequestedQualities.get(logRequestedQualities) + 1));
 
 			// Referenz auf das gekaufte Angebot
-			Offer boughtOffer = simulateCusomter(listOfAllOffers, requestedQuality);
+			Offer boughtOffer = simulateCustomer(listOfAllOffers, requestedQuality);
 
 			if (boughtOffer != null) {
 				// Ein treffendes Angebot wurde ausgewählt
@@ -504,7 +557,7 @@ public class CustomerMarket {
 	 * @return Normalverteilte Integerzahl
 	 */
 	// TODO
-	private int getGuassianNumber(int min, int max, int average, double variance) {
+	private int getGaussianNumber(int min, int max, int average, double variance) {
 		int number = min - 1;
 
 		// Random object
@@ -565,7 +618,7 @@ public class CustomerMarket {
 		}
 
 		// Den Preis um +/- 20 Prozent (normalverteilt) verändern
-		price = (int) price * 1 + (getGuassianNumber(-20, 20, 0, 10) / 100);
+		price = (int) price * 1 + (getGaussianNumber(-20, 20, 0, 10) / 100);
 
 		// Preis zur Qualität loggen
 		logAcceptedPrices.put(requestedQuality, (String) (((logAcceptedPrices.get(requestedQuality) == null) ? price
@@ -590,7 +643,37 @@ public class CustomerMarket {
 	 * @return c-Markt Peak
 	 */
 	// TODO
-	public int getcMarketPeak() {
+	public int getCMarketPeak() {
 		return cMarketPeak;
+	}
+
+	/**
+	 * Liefert eine Liste aller Marktanteile zurück
+	 * 
+	 * @return Liste der Marktanteile
+	 */
+	public ArrayList<TMarketShare> getMarketShares() {
+
+		// Leere Liste mit Marktanteilen erstellen
+		ArrayList<TMarketShare> listOfMarketShares = new ArrayList<TMarketShare>();
+
+		// Array mit allen Company-Referenzen erstellen
+		Company[] companyList = listOfSales.keySet().toArray(new Company[0]);
+
+		int sumSales = 0;
+		for (Company c : companyList) {
+			// Sales der Firma zur Summe kummulieren
+			sumSales += listOfSales.get(c);
+		}
+
+		// Für jede Firma nun ein MarketShare Object erstellen
+		for (Company c : companyList) {
+			// Marktanteil der Firma berechnen
+			// Zur Liste hinzufügen
+			listOfMarketShares.add(new TMarketShare(c, listOfSales.get(c) / sumSales));
+		}
+
+		// Liste zurückgeben
+		return listOfMarketShares;
 	}
 }
