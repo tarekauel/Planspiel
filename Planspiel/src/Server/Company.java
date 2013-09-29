@@ -35,6 +35,7 @@ public class Company {
 		this.humanResources = new HumanResources(this, 1000000);
 		this.marketResearch = new MarketResearch(this, 1000000);
 		
+		//Anmelden an der Gamengine
 		GameEngine.getGameEngine().addCompany(this);
 		
 
