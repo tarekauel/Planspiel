@@ -13,7 +13,21 @@ public class Constant {
 	public static final int FIXCOST_HUMAN_RESOURCES = 1000000 ; // 10 000 00
 	public static final int FIXCOST_MARKET_RESEARCH = 1000000 ; // 10 000 00
 	
-	//
+	//Section Machinery:
+	public static final int[] MACHINERY_CAPACITY = { 500, // lvl 1
+			1000, // lvl 2
+			2000, // lvl 3
+			4000, // lvl 4
+			7000, // lvl 5
+			10000, // lvl 6
+			14000, // lvl 7
+			19000, // lvl 8
+			25000, // lvl 9
+			35000 // lvl 10
+	};
+	public static final int MACHINERY_JUNK_INIT = 84 ; //15 00
+	public static final int MACHINERY_FIX_COST = 250000 ;//2 500 00
+	public static final int MACHINERY_PIECE_COST_BASIC = 1500 ; //15 00
 	
 	
 

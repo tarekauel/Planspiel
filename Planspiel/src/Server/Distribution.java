@@ -26,7 +26,7 @@ public class Distribution extends DepartmentRoundSensitive {
 	 */
 	public Distribution(Company c, int fix)throws Exception{
 		super(c,"Verkauf",fix);
-		Log.method();
+		Log.method(new Object[]{c,fix});
 		CustomerMarket.getMarket().addDistribution(this);
 		Log.methodExit();
 	}
