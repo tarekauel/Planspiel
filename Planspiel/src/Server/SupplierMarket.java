@@ -1,6 +1,7 @@
 package Server;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 /**
  * Der Beschaffungsmarkt ist für alle Spieler gleich und eins. Die Preise für
@@ -16,13 +17,16 @@ public class SupplierMarket {
 
 	// -------------------- Verbindung zu anderen Abteilungen
 	private ArrayList<Purchase>			listOfPurchase	= new ArrayList<Purchase>();
+	
+	// ------------- Liste aller Angebote
+	private ArrayList<Request> listOfRequest = null;
 
 	// -------------------- Preislisten
 	// Preisliste der Wafer
-	private ArrayList<TResourcePrice>	waferPricelist	= null;							;
+	private TreeSet<TResourcePrice>	waferPricelist	= null;							;
 
 	// Preisliste der Gehäuse
-	private ArrayList<TResourcePrice>	casePricelist	= null;
+	private TreeSet<TResourcePrice>	casePricelist	= null;
 	
 	// ------------------ Verkaufsinformationen
 
@@ -43,7 +47,8 @@ public class SupplierMarket {
 	 */
 	// TODO
 	private SupplierMarket() {
-		waferPricelist = new ArrayList<TResourcePrice>();
+		waferPricelist = new TreeSet<TResourcePrice>();
+		casePricelist = new TreeSet<TResourcePrice>();
 
 		// Startwerte der Waferpreisliste
 		for (int i = 1; i <= 100; i++) {
@@ -54,7 +59,6 @@ public class SupplierMarket {
 		for (int i = 1; i <= 100; i++) {
 			casePricelist.add(new TResourcePrice(i, i * 1000));
 		}
-
 	}
 
 	/**
@@ -86,13 +90,51 @@ public class SupplierMarket {
 			return false;
 		}
 	}
+	
+	public void handleRequest() throws Exception{
+		
+		listOfRequest = new ArrayList<Request>();
+		
+		for(Purchase p:listOfPurchase) {
+			for(Request r:p.getListOfLatesRequest()) {
+				listOfRequest.add(r);
+			}
+		}
+		
+		for(Request r:listOfRequest) {
+			int reqQuality = r.getRequestedResource().getQuality();
+			String reqName =  r.getRequestedResource().getName();
+			//TODO: Später durch Zufallslogik ersetzen. Daran denken, dass nicht Quality von -1 abegefragt wird.
+			if( reqName.equals("Gehäuse")) {
+				r.addSupplierOffer(new SupplierOffer(new Resource( --reqQuality, reqName, casePricelist.ceiling(new TResourcePrice(reqQuality, 1)).getPrice())));
+				r.addSupplierOffer(new SupplierOffer(new Resource( ++reqQuality, reqName, casePricelist.ceiling(new TResourcePrice(reqQuality, 1)).getPrice())));
+				r.addSupplierOffer(new SupplierOffer(new Resource( ++reqQuality, reqName, casePricelist.ceiling(new TResourcePrice(reqQuality, 1)).getPrice())));
+			} else {
+				r.addSupplierOffer(new SupplierOffer(new Resource( --reqQuality, reqName, waferPricelist.ceiling(new TResourcePrice(reqQuality, 1)).getPrice())));
+				r.addSupplierOffer(new SupplierOffer(new Resource( ++reqQuality, reqName, waferPricelist.ceiling(new TResourcePrice(reqQuality, 1)).getPrice())));
+				r.addSupplierOffer(new SupplierOffer(new Resource( ++reqQuality, reqName, waferPricelist.ceiling(new TResourcePrice(reqQuality, 1)).getPrice())));				
+			}
+			
+		}
+	}
+	
+	public void recalculatePrices() {
+		ArrayList<SupplierOffer> acceptedSupplierOffer = new ArrayList<SupplierOffer>();
+		for( Purchase p:listOfPurchase) {
+			for(SupplierOffer s:p.getListOfAcceptedSupplierOffer() ) {
+				acceptedSupplierOffer.add(s);
+			}
+		}
+		
+		// TODO: recalculate price lists
+	}
 
 	/**
 	 * Liefert die Preisliste der Wafer zurück
 	 * 
 	 * @return
 	 */
-	public ArrayList<TResourcePrice> getWaferPricelist() {
+	public TreeSet<TResourcePrice> getWaferPricelist() {
 		return waferPricelist;
 	}
 
@@ -101,7 +143,7 @@ public class SupplierMarket {
 	 * 
 	 * @return
 	 */
-	public ArrayList<TResourcePrice> getCasePricelist() {
+	public TreeSet<TResourcePrice> getCasePricelist() {
 		return casePricelist;
 	}
 }

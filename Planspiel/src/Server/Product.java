@@ -16,8 +16,8 @@ public abstract class Product {
 	private int storageCostsPerRond;
 
 	/**
-	 * Erstellt ein neues Produkt, wenn die Qualität und die Kosten
-	 * valide sind. Ansosnten wird eine Exception geworfen.
+	 * Erstellt ein neues Produkt, wenn die Qualität (Interval ]0;100] und die Kosten (>0)
+	 * valide sind. Ansonsten wird eine Exception geworfen.
 	 * 
 	 * @param quality
 	 * @param name

@@ -13,12 +13,27 @@ import java.util.ArrayList;
  */
 
 public class Purchase extends Department {
-/**
- * Name wird vom Konstruktor gesetzt.
- * @param c Company, Unternehmensreferenz
- * @param fix FixKosten
- * @throws Exception falls keine Korrekte erstellung
- */
+	
+	// Liste alle Requests, die jemals gestellt worden sind
+	private ArrayList<Request>	listOfRequests	= new ArrayList<Request>();
+	
+	// Liste aller Request dieser Runde
+	private ArrayList<Request> listOfLatesRequests = null;
+	
+	// Liste aller akzeptierten SupplierOffers dieser Runde ( für den Markt )
+	private ArrayList<SupplierOffer> listOfLatestSupplierOffers = null;
+	
+	
+	/**
+	 * Name wird vom Konstruktor gesetzt.
+	 * 
+	 * @param c
+	 *            Company, Unternehmensreferenz
+	 * @param fix
+	 *            FixKosten
+	 * @throws Exception
+	 *             falls keine Korrekte erstellung
+	 */
 	public Purchase(Company c, int fix) throws Exception {
 		super(c, "Einkauf", fix);
 	}
@@ -26,17 +41,19 @@ public class Purchase extends Department {
 	/**
 	 * privater Konstruktor, dass niemand einen falschen Abteilungsnamen eingibt
 	 * 
-	 * @param c Company = Unternehmen
-	 * @param n Name = Abteilungsname
-	 * @param f fixCosts = Fix Kosten der Abteilung
-	 * @throws Exception falls die Abteilung nicht korrekt erstellt werden konnte
+	 * @param c
+	 *            Company = Unternehmen
+	 * @param n
+	 *            Name = Abteilungsname
+	 * @param f
+	 *            fixCosts = Fix Kosten der Abteilung
+	 * @throws Exception
+	 *             falls die Abteilung nicht korrekt erstellt werden konnte
 	 */
 	private Purchase(Company c, String n, int f) throws Exception {
 		super(c, n, f);
 		// TODO Auto-generated constructor stub
 	}
-
-	private ArrayList<Request> listOfRequests = new ArrayList<Request>();
 
 	/**
 	 * erstellt eine neue Anfrage an den Beschaffungsmarkt
@@ -51,13 +68,13 @@ public class Purchase extends Department {
 	public void createRequest(Resource resource) throws Exception {
 
 		if (resource == null) {
-			throw new NullPointerException(
-					"Resource is null! Class Purchase Method createRequest");
+			throw new NullPointerException("Resource is null! Class Purchase Method createRequest");
 		}
 
 		Request request = Request.create(resource);
 		// Request request = Request.create(resource);
 		listOfRequests.add(request);
+		listOfLatesRequests.add(request);
 
 	}
 
@@ -72,16 +89,13 @@ public class Purchase extends Department {
 	 *             : falls SupplierOffer null ist oder die Anzahl kleiner null.s
 	 */
 
-	public void acceptSupplierOffer(SupplierOffer supplierOffer, int quantity)
-			throws Exception {
+	public void acceptSupplierOffer(SupplierOffer supplierOffer, int quantity) throws Exception {
 		if (supplierOffer == null) {
-			throw new NullPointerException(
-					"supplierOffer is null! Class Purchase Method acceptSupplierOffer");
+			throw new NullPointerException("supplierOffer is null! Class Purchase Method acceptSupplierOffer");
 		}
 
 		if (quantity <= 0) {
-			throw new IOException(
-					"Quantity is 0 or lower! Class Purchase Method acceptSupplierOffer");
+			throw new IOException("Quantity is 0 or lower! Class Purchase Method acceptSupplierOffer");
 		}
 
 		Resource resource = supplierOffer.getResource();
@@ -92,10 +106,33 @@ public class Purchase extends Department {
 
 		Storage storage = this.getCompany().getStorage();
 		storage.store(resource, quantity);
+		supplierOffer.setOrderedQuantity(quantity);
+		listOfLatestSupplierOffers.add( supplierOffer );
 	}
 
+	
 	public ArrayList<Request> getListOfRequest() {
 		return listOfRequests;
-	}// getListOfRequest
+	}
+	
+	/**
+	 * Liefert eine Liste der neuen Request dieser Runde zurück
+	 * @return Liste der Request
+	 */
+	public ArrayList<Request> getListOfLatesRequest() {
+		return listOfLatesRequests;
+	}
+	
+	public ArrayList<SupplierOffer> getListOfAcceptedSupplierOffer() {
+		return getListOfAcceptedSupplierOffer();
+	}
+	
+	@Override
+	public void prepareForNewRound( int round ) {
+		listOfLatesRequests = new ArrayList<Request>();
+		listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
+	}
+	
+	
 
 }

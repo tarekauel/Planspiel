@@ -6,7 +6,7 @@ package Server;
  * @author Tarek
  * 
  */
-public class TResourcePrice {
+public class TResourcePrice implements Comparable<TResourcePrice> {
 
 	// Qualität der Resource
 	private int quality;
@@ -76,6 +76,15 @@ public class TResourcePrice {
 	 */
 	public int getPrice() {
 		return price;
+	}
+
+	@Override
+	public int compareTo(TResourcePrice o) {
+		if( getQuality() == o.getQuality() )
+			return 0;
+		if ( getQuality() < o.getQuality()) 
+			return -1;
+		return 1;
 	}
 
 }

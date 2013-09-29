@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Request {
 
-	private Resource resorceReqested;
+	private Resource resourceReqested;
 	private ArrayList<SupplierOffer> supplierOffers = new ArrayList<SupplierOffer>();
 
 	/**
@@ -34,8 +34,8 @@ public class Request {
 	 * 
 	 * @param resorce
 	 */
-	private Request(Resource resorce) {
-		this.resorceReqested = resorce;
+	private Request(Resource resource) {
+		this.resourceReqested = resource;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class Request {
 	 * 
 	 * @return
 	 */
-	public SupplierOffer[] getSpplierOffers() {
+	public SupplierOffer[] getSupplierOffers() {
 		return supplierOffers.toArray(new SupplierOffer[supplierOffers.size()]);
 	}
 
@@ -57,7 +57,7 @@ public class Request {
 	 */
 	public Boolean addSupplierOffer(SupplierOffer supplierOffer) {
 		String nameOfSupplierProdct = supplierOffer.getResource().getName();
-		String nameOfResourceProdct = resorceReqested.getName();
+		String nameOfResourceProdct = resourceReqested.getName();
 		if (supplierOffers.size() < 3
 				&& nameOfResourceProdct.equals(nameOfSupplierProdct)) {
 			supplierOffers.add(supplierOffer);
@@ -72,7 +72,7 @@ public class Request {
 	 * @return
 	 */
 	public Resource getRequestedResource() {
-		return resorceReqested;
+		return resourceReqested;
 	}
 
 }
