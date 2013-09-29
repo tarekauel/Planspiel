@@ -6,6 +6,12 @@ import java.util.Collections;
 
 public class Distribution extends Department {
 	
+	// Liste aller jemals erstellten Offers
+	private ArrayList<Offer> listOfOffers = new ArrayList<Offer>();
+	
+	// Liste aller Offers dieser Runde
+	private ArrayList<Offer> listOfLatesOffers = new ArrayList<Offer>();
+	
 	/**
 	 * Regulärer Konstruktor der Distribution, 
 	 * 
@@ -36,8 +42,6 @@ public class Distribution extends Department {
 		super(c, n, f);
 		// TODO Auto-generated constructor stub
 	}
-
-	private ArrayList<Offer> listOfOffers = new ArrayList<Offer>();
 
 	public void createOffer(int quality, int quantityToSell, int price) {
 
@@ -78,5 +82,13 @@ public class Distribution extends Department {
 		}
 		Collections.sort(listOfLatestOffers);
 		return listOfLatestOffers;
+	}
+	
+	/**
+	 * Liefert eine Liste der aktuellen Offer zurück
+	 * @return Liste der aktuellen Offer
+	 */
+	public ArrayList<Offer> getListOfLatestOffers() {
+		return listOfLatesOffers;
 	}
 }

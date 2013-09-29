@@ -115,4 +115,12 @@ public class Storage extends Department {
 		return resources;
 		
 	}//getAllResources
+	
+	/**
+	 * Liefert eine Liste aller Storage-Elemente zurück
+	 * @return Liste aller Storage Elemente
+	 */
+	public ArrayList<StorageElement> getAllStorageElements() {
+		return listOfStorageElements;
+	}
 }

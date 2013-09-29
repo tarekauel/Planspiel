@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 import Server.Company;
+import Server.CustomerMarket;
+import Server.Distribution;
 import Server.GameEngine;
 import Server.Location;
 import Server.Production;
@@ -25,6 +27,7 @@ public class GameTest {
 		Purchase p = c.getPurchase();
 		Production pro = c.getProduction();
 		Storage s = c.getStorage();
+		Distribution d = c.getDistribution();
 		
 		p.createRequest( new Resource(50, "Wafer", 0));
 		p.createRequest( new Resource(50, "Gehäuse", 0));
@@ -40,8 +43,11 @@ public class GameTest {
 		
 		pro.produce();
 		
-		int i =1;
+		d.createOffer(s.getAllFinishedGoods().get(0).getQuality(), quantityToSell, price);
 		
+		CustomerMarket.getMarket().handleAllOffers();
+		
+		int i =1;		
 		
 	}
 }

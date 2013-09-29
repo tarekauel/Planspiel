@@ -582,7 +582,7 @@ public class CustomerMarket {
 		// Alle Abteilungen ansprechen
 		for (Distribution d : listOfDistributions) {
 			// Aus jeder Abteilung die Angebotsliste holen
-			for (Offer o : d.getListOfOffers()) {
+			for (Offer o : d.getListOfLatestOffers()) {
 				// Angebote der Gesamtliste hinzufügen
 				list.add(o);
 			}
