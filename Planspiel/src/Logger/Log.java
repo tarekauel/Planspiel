@@ -52,5 +52,9 @@ public class Log {
 		String className = Thread.currentThread().getStackTrace()[2].getClassName();
 		Log.verbose("Class: " + className + " Method: " + method + " GET: "  + String.valueOf(param));
 	}
-
+	public static void set(Object param) {
+		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
+		String className = Thread.currentThread().getStackTrace()[2].getClassName();
+		Log.verbose("Class: " + className + " Method: " + method + " SET: "  + String.valueOf(param));
+	}
 }
