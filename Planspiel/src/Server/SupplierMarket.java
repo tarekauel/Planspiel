@@ -52,12 +52,12 @@ public class SupplierMarket {
 
 		// Startwerte der Waferpreisliste
 		for (int i = 1; i <= 100; i++) {
-			waferPricelist.add(new TResourcePrice(i, i * 125));
+			waferPricelist.add(new TResourcePrice(i, 300 + i * 2));
 		}
 
 		// Startwerte der Gehäusepreisliste
 		for (int i = 1; i <= 100; i++) {
-			casePricelist.add(new TResourcePrice(i, i * 1000));
+			casePricelist.add(new TResourcePrice(i, 4000 + i * 10));
 		}
 	}
 

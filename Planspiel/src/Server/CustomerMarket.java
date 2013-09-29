@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
+import Logger.Log;
+
 /**
  * Der CustomerMarket existiert für alle Spieler gemeinsam. Er arbeitet die
  * Angebote der Spieler ab und entscheidet für jeden Käufer welches Angebot er
@@ -545,6 +547,9 @@ public class CustomerMarket {
 
 			// Verkaufte Anzahl um eins erhöhen
 			chosenOffer.setQuantitySold(chosenOffer.getQuantitySold() + 1);
+			
+			// Verkaufspreis auf das Konto buchen
+			chosenOffer.getDistribution().getCompany().getBankAccount().increaseBalance(chosenOffer.getPrice());
 
 			return chosenOffer;
 		}
@@ -673,11 +678,14 @@ public class CustomerMarket {
 			sumSales += listOfSales.get(c);
 		}
 
+		Log.info("Summe aller Sales: " + sumSales);
 		// Für jede Firma nun ein MarketShare Object erstellen
 		for (Company c : companyList) {
 			// Marktanteil der Firma berechnen
 			// Zur Liste hinzufügen
-			listOfMarketShares.add(new TMarketShare(c, listOfSales.get(c) / sumSales));
+			int salesCompany = listOfSales.get(c);
+			Log.info("Sales der Firma " + c + ": " + salesCompany);
+			listOfMarketShares.add(new TMarketShare(c, (int) (salesCompany * 10000.0 / sumSales)));
 		}
 
 		// Liste zurückgeben

@@ -3,7 +3,7 @@ package Server;
 
 
 /**
- * Dieser Typ gibt den Marktanteil einer Firma wieder
+ * Dieser Typ gibt den Marktanteil (in 100% ( d.h. ein Monopol sind 10000 !)) einer Firma an
  * 
  * @author Tarek
  * 
@@ -57,7 +57,7 @@ public class TMarketShare {
 	 * @return true: gültig false: ungültig
 	 */
 	private boolean checkMarketShare(int marketShare) {
-		// Marktanteil mit dem Interval [0;100]
-		return (marketShare >= 0 && marketShare <= 100);
+		// Marktanteil mit dem Interval [0;10000]
+		return (marketShare >= 0 && marketShare <= 10000);
 	}
 }

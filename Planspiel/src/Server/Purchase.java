@@ -13,17 +13,16 @@ import java.util.ArrayList;
  */
 
 public class Purchase extends Department {
-	
+
 	// Liste alle Requests, die jemals gestellt worden sind
-	private ArrayList<Request>	listOfRequests	= new ArrayList<Request>();
-	
+	private ArrayList<Request>			listOfRequests				= new ArrayList<Request>();
+
 	// Liste aller Request dieser Runde
-	private ArrayList<Request> listOfLatesRequests = new ArrayList<Request>();
-	
+	private ArrayList<Request>			listOfLatesRequests			= new ArrayList<Request>();
+
 	// Liste aller akzeptierten SupplierOffers dieser Runde ( für den Markt )
-	private ArrayList<SupplierOffer> listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
-	
-	
+	private ArrayList<SupplierOffer>	listOfLatestSupplierOffers	= new ArrayList<SupplierOffer>();
+
 	/**
 	 * Name wird vom Konstruktor gesetzt.
 	 * 
@@ -106,34 +105,36 @@ public class Purchase extends Department {
 		}
 
 		Storage storage = this.getCompany().getStorage();
-		storage.store(resource, quantity); //TODO remove money from bank
-		supplierOffer.setOrderedQuantity(quantity);
-		listOfLatestSupplierOffers.add( supplierOffer );
+		
+		// Bucht den Betrag vom Konto ab. Nur wenn der Betrag abgebucht werden kann, wird das Lager erhöht!
+		if (getCompany().getBankAccount().decreaseBalance(quantity * supplierOffer.getResource().getCosts())) {
+			storage.store(resource, quantity);
+			supplierOffer.setOrderedQuantity(quantity);
+			listOfLatestSupplierOffers.add(supplierOffer);
+		}
 	}
 
-	
 	public ArrayList<Request> getListOfRequest() {
 		return listOfRequests;
 	}
-	
+
 	/**
 	 * Liefert eine Liste der neuen Request dieser Runde zurück
+	 * 
 	 * @return Liste der Request
 	 */
 	public ArrayList<Request> getListOfLatesRequest() {
 		return listOfLatesRequests;
 	}
-	
+
 	public ArrayList<SupplierOffer> getListOfAcceptedSupplierOffer() {
 		return getListOfAcceptedSupplierOffer();
 	}
-	
+
 	@Override
-	public void prepareForNewRound( int round ) {
+	public void prepareForNewRound(int round) {
 		listOfLatesRequests = new ArrayList<Request>();
 		listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
 	}
-	
-	
 
 }
