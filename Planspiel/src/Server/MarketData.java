@@ -2,6 +2,8 @@ package Server;
 
 import java.util.ArrayList;
 
+import Logger.Log;
+
 /**
  * Diese Klasse enthält alle Statistischen Marktdaten
  * @author Tarek
@@ -31,17 +33,20 @@ public class MarketData {
 	 * @return Referenz auf MarketData
 	 */
 	public static MarketData getMarketData() {
-		
+		data = ((data == null) ? new MarketData() : data);
+		Log.get(data);
 		// Gibt das MarketData Objekt zurück und erstellt es gegebenenfalls.
-		return data = ((data == null) ? new MarketData() : data);
+		return data  ;
 	}
 	
 	/**
 	 * Private Konstruktor zur Umsetzung des Singleton-Musters
 	 */
 	private MarketData() {
+		Log.method();
 		supplierMarket = SupplierMarket.getMarket();
 		customerMarket = CustomerMarket.getMarket();
+		Log.methodExit();
 	}
 	
 	/**
@@ -49,6 +54,7 @@ public class MarketData {
 	 * @return Peak
 	 */
 	public int requestedQualitAMarketNextRound() {
+		Log.get(customerMarket.getAMarketPeak());
 		return customerMarket.getAMarketPeak();
 	}
 	
@@ -57,6 +63,7 @@ public class MarketData {
 	 * @return Peak
 	 */
 	public int requestedQualitCMarketNextRound() {
+		Log.get(customerMarket.getCMarketPeak());
 		return customerMarket.getCMarketPeak();
 	}
 	
