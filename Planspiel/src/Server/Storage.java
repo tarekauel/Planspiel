@@ -38,7 +38,7 @@ public class Storage extends Department {
 	
 	public void updateStorageElements(){
 		
-	}//updateStorageElements was macht diese Funktion?!
+	}// TODO updateStorageElements was macht diese Funktion?! die kosten updaten?!?!?!?!
 	
 	public int getStorageCostsSum(){
 		StorageElement storageElement = null;

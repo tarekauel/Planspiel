@@ -33,6 +33,12 @@ public class ProductionOrder {
 	private int quantityToProduce = 0;
 	// tatsächlich hergestellte Menge:
 	private int quantityProduced = 0;
+	
+	// Paramerter für die Anzahl der Stunden pro Panel
+	private int					workingHoursPerPanel		= 5;
+	
+	// Kosten pro Order
+		private int costsPerOrder = 1000;
 
 	/**
 	 * Erzeugt neue Production order
@@ -168,7 +174,7 @@ public class ProductionOrder {
 
 	public void storeProduction (Storage s) throws Exception {
 		// Kosten pro Stück neu berechnen (Ausschuss berücksichtigen)
-		this.panel = FinishedGood.create(panel.getQuality(), (int) ((double) panel.getCosts() * quantityToProduce / quantityProduced));
+		this.panel = FinishedGood.create(panel.getQuality(), (int) (((double) panel.getCosts() * quantityToProduce + costsPerOrder+ workingHoursPerPanel * quantityToProduce * s.getCompany().getHumanResources().getWagesPerHour().getAmount()) / quantityProduced));
 		s.store(this.panel, quantityProduced);
 	}
 

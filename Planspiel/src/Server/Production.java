@@ -11,10 +11,16 @@ public class Production extends DepartmentRoundSensitive {
 	Machinery					machine;
 
 	// Liste der Auslastungen fï¿½r diesen Spieler
-	ArrayList<TPercentOfUsage>	listOfAllPercentOfUsage = new ArrayList<TPercentOfUsage>();
+	ArrayList<TPercentOfUsage>	listOfAllPercentOfUsage		= new ArrayList<TPercentOfUsage>();
 
 	// Parameter fï¿½r die Anzahl der Wafer pro Panel:
 	private int					waferPerPanel				= 54;
+
+	// Paramerter für die Anzahl der Stunden pro Panel
+	private int					workingHoursPerPanel		= 5;
+	
+	// Kosten pro Order
+	private int costsPerOrder = 1000;
 
 	/**
 	 * Regulï¿½rer Konstruktor der Produktion, erzeugt zeitgleich eine neue
@@ -83,7 +89,7 @@ public class Production extends DepartmentRoundSensitive {
 	public boolean createProductionOrder(Resource wafer, Resource cases, int quantity) {
 
 		// Prüfen, ob genug Geld für die Order (Orderkosten) auf dem Konto ist
-		if (getCompany().getBankAccount().decreaseBalance(1000)) {
+		if (getCompany().getBankAccount().decreaseBalance( costsPerOrder )) {
 
 			// erzeuge den Auftrag:
 			ProductionOrder po = new ProductionOrder(wafer, cases, quantity);
@@ -112,32 +118,42 @@ public class Production extends DepartmentRoundSensitive {
 		// Maschine lagen, als diese kann.
 
 		// Schleife ï¿½ber alle Production Orders
-		for (int i = 0; i < listOfOpenProductionOrders.size(); i++) {
+
+		for (ProductionOrder p : listOfOpenProductionOrders) {
+			boolean innerBreak = false;
 			// Darf ï¿½berhaupt noch jemand produzieren?
 			if (triedToProduce >= max) {
 				// scheinbar nicht
 				break;
 			}
-				
+
 			// Schleife ï¿½ber jede einzelne Position des Auftrages
 			// (Werkstï¿½ck)
-			for (int j = 0; j < listOfOpenProductionOrders.get(i).getRequested(); j++) {
+			for (int j = 0; j < p.getRequested(); j++) {
 				// Darf ï¿½berhaupt noch jemand produzieren?
 				if (triedToProduce >= max) {
 					// scheinbar nicht
 					break;
 				}
 
+				// Zieht den Lohn für die Produktion vom Konto ab
+				if (!getCompany().getBankAccount().decreaseBalance(
+						workingHoursPerPanel * getCompany().getHumanResources().getWagesPerHour().getAmount())) {
+					innerBreak = true;
+					break;					
+				}
+
 				// Abbuchen der Ressourcen:
 				// Zieh die Storage elemente aus dem Storage ab:
 				// nutze dafï¿½r das lager des spielers:
 				// Wafer abbuchen (direkt in der Anzahl waferPerPanel)
-				this.getCompany().getStorage().unstore(listOfOpenProductionOrders.get(i).getWafer(), waferPerPanel);
+				this.getCompany().getStorage().unstore(p.getWafer(), waferPerPanel);
 				// Gehï¿½use abbuchen
-				this.getCompany().getStorage().unstore(listOfOpenProductionOrders.get(i).getCase(), 1);
+				this.getCompany().getStorage().unstore(p.getCase(), 1);
 
 				// "Werkstï¿½ck auf Maschine legen":
 				triedToProduce++;
+
 				// Gucken, ob wir tatsï¿½chlich produzieren:
 				if (machine.isJunk()) {
 					// Das Teil ist also Ausschuss
@@ -145,12 +161,17 @@ public class Production extends DepartmentRoundSensitive {
 				} else {
 					// Produziere das fertige Panel
 					// TODO: remove 100 , fester Wert fï¿½r Motivation etc.
-					listOfOpenProductionOrders.get(i).produce(100, this.getCompany().getStorage(), this.machine);
+					p.produce(100, this.getCompany().getStorage(), this.machine);
 				}
 			}
-			
+
 			// Lager die Produktion ein und berechnet die Kosten neu
-			listOfOpenProductionOrders.get(i).storeProduction( this.getCompany().getStorage() );
+			p.storeProduction(this.getCompany().getStorage());
+
+			// Wird true, wenn auf dem Konto kein Geld mehr für Produktion ist
+			if (innerBreak)
+				break;
+
 		}
 
 		// summe aller auftrï¿½ge

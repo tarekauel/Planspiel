@@ -19,7 +19,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 	public HumanResources(Company c, int fix) throws Exception {
 		super(c, "Personal", fix);
 		setCountEmployees(100); // TODO: Anpassen & in ini-File auslagern
-		setWagePerRound(new TWage(100, GameEngine.getGameEngine().getRound())); // TODO:
+		setWagePerRound(new TWage(900, GameEngine.getGameEngine().getRound())); // TODO:
 																				// Anpassen
 																				// &
 																				// in

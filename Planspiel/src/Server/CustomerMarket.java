@@ -537,7 +537,7 @@ public class CustomerMarket {
 			Offer chosenOffer = possibleOffers.get(chosenOfferNum);
 
 			// Im Lager um eins veringern
-			if (!chosenOffer.getStorageElement().reduceQuantity(1)) {
+			if (!chosenOffer.getDistribution().getCompany().getStorage().unstore(chosenOffer.getStorageElement().getProduct(), 1)) {
 				// TODO: Aus irgendeinem Grund ist das Offer im Lager nicht
 				// gedeckt. In diesem Fall ist der Kunde enttäuscht, dass nicht
 				// geliefert wird und sucht auch kein anderes Angbote mehr.
