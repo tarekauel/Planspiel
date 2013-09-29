@@ -6,7 +6,12 @@ public class StorageElement {
 	
 	private int quantity;
 	private Product product;
-	
+	/**
+	 * Erzeugt ein neues StorageElement
+	 * @param quantity Anzahl der produkte die das Element enthält
+	 * @param product Zu verstauendes
+	 * @throws Exception
+	 */
 	public StorageElement(int quantity, Product product) throws Exception{
 		if(product == null || !(checkQuantityHigherZero(quantity))){
 			throw new IOException("product is null or quantity is lower zero. Class StorageElement Method Constructor");
@@ -35,6 +40,7 @@ public class StorageElement {
 		boolean enoughInStore = checkEnoughInStorage(quantity);
 		if(enoughInStore){
 			this.quantity = this.quantity - quantity;
+			
 			return true;
 		}
 		else return false;
