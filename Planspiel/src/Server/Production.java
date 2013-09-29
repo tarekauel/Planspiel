@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Production extends Department {
 	// Liste aller jemals erstellten Produktions auftr�ge
-	ArrayList<ProductionOrder> listOfAllProductionOrders;
+	ArrayList<ProductionOrder> listOfAllProductionOrders = new ArrayList<ProductionOrder>();
 	// Liste aller offenen (noch nicht produzierten) Auftr�gen
-	ArrayList<ProductionOrder> listOfOpenProductionOrders;
+	ArrayList<ProductionOrder> listOfOpenProductionOrders = new ArrayList<ProductionOrder>();
 	// Referenz auf die Maschine (auf der wir ja produzieren m�ssen)
 	Machinery machine;
 
@@ -184,5 +184,10 @@ public class Production extends Department {
 	 */
 	public ArrayList<TPercentOfUsage> getListOfAllPercentOfUsage() {
 		return listOfAllPercentOfUsage;
+	}
+	
+	@Override
+	public void prepareForNewRound( int round ) {
+		listOfOpenProductionOrders = new ArrayList<ProductionOrder>();
 	}
 }
