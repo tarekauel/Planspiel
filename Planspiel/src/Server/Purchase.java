@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * 
  */
 
-public class Purchase extends Department {
+public class Purchase extends DepartmentRoundSensitive {
 
 	// Liste alle Requests, die jemals gestellt worden sind
 	private ArrayList<Request>			listOfRequests				= new ArrayList<Request>();

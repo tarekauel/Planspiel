@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import Logger.Log;
 
-public class Distribution extends Department {
+public class Distribution extends DepartmentRoundSensitive {
 	
 	// Liste aller jemals erstellten Offers
 	private ArrayList<Offer> listOfOffers = new ArrayList<Offer>();

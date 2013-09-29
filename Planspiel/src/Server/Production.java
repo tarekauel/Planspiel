@@ -2,7 +2,7 @@ package Server;
 
 import java.util.ArrayList;
 
-public class Production extends Department {
+public class Production extends DepartmentRoundSensitive {
 	// Liste aller jemals erstellten Produktions auftr�ge
 	ArrayList<ProductionOrder> listOfAllProductionOrders = new ArrayList<ProductionOrder>();
 	// Liste aller offenen (noch nicht produzierten) Auftr�gen

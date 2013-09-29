@@ -11,6 +11,12 @@ public class GameEngine {
 	// Singleton referenz
 	private static GameEngine engine;
 	
+	// Liste der Abteilungen, die zu Beginn jeder Runde für Initialisierungszwecke aufgerufen werden müssen
+	private ArrayList<DepartmentRoundSensitive> listSensitiveDepartments = new ArrayList<DepartmentRoundSensitive>();
+	
+	// Liste aller Unternehmen, die am Spiel teilnehmen
+	private ArrayList<Company> listOfCompanys = new ArrayList<Company>(); 
+	
 	// Rundennummer
 	private int round = 1;
 
@@ -44,5 +50,27 @@ public class GameEngine {
 	 */
 	public void startNextRound(ArrayList<GameDataMessage> gameDataList) {
 		round++;
+		
+		for( DepartmentRoundSensitive d:listSensitiveDepartments) {
+			d.prepareForNewRound(round);
+		}
 	}
+	
+	/**
+	 * Für eine Abteilung hinzu, die zu Beginn der Runde einen Initialisierungsaufruf braucht
+	 * @param d Abteilung, die der Aufrufliste hinzugefügt werden soll
+	 */
+	public void addSensitiveDepartment( DepartmentRoundSensitive d ) {
+		listSensitiveDepartments.add( d );
+	}
+	
+	/**
+	 * Fügt ein Unternehmen dem Spiel hinzu 
+	 * @param c Company, die hinzugefügt werden soll
+	 */
+	public void addCompany( Company c) {
+		listOfCompanys.add(c);
+	}
+	
+	
 }

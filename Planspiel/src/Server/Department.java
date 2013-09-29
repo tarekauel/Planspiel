@@ -61,17 +61,6 @@ public abstract class Department {
 		return this.name;
 	}
 	/**
-	 * Gibt den Abteilungen die Möglichkeit Initialisierungen durchzuführen
-	 * Wird zu Beginn der Runde über die Company gestartet
-	 * @param round Wird mit gegeben, um gegebenfalls Dinge zu prüfen
-	 */
-	
-	public void prepareForNewRound(int round){
-		//Gibt allen leuten die Möglichkeit dinge zu initialiesieren
-		Log.method(round);
-	}
-	
-	/**
 	 * 
 	 * @param n
 	 *            Name der Abteilung
