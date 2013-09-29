@@ -2,6 +2,8 @@ package Server;
 
 import java.util.ArrayList;
 
+import Logger.Log;
+
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 17:16
  */
@@ -19,11 +21,12 @@ public class Location {
 	 * Locations
 	 */
 	public static void initLocations() {
+		Log.method();
 		new Location(120,"Deutschland",60000000,9164);
 		new Location(110,"USA",40000000,8054);
 		new Location(90,"China",20000000,6175);
 		new Location(80,"Indien",5000000,3092);
-		
+		Log.methodExit();
 	}
 
 	/**
@@ -39,6 +42,7 @@ public class Location {
 	 *            WageLevel / Lohn niveau
 	 */
 	private Location(int a, String c, int p, int w) {
+		Log.newObj(new Object[]{c,p,w});
 		this.advantage = a;
 		this.country = c;
 		this.purchasePrice = p;
@@ -49,6 +53,7 @@ public class Location {
 	}
 
 	public static ArrayList<Location> getListOfLocations() {
+		Log.get(listOfLocations);
 		return listOfLocations;
 	}
 	/**
@@ -57,11 +62,15 @@ public class Location {
 	 * @return null, falls der Name nicht gefunden wurde
 	 */
 	public static Location getLocationByCountry(String c){
+		
+		
 		//Suche in der internen Liste:
+		
 		for(Location o:listOfLocations){
 			//Vergleiche (ignoriere Groß/Kleinschreibung)
 			if(o.getCountry().toLowerCase().equals(c.toLowerCase())){
 				//Strings stimmen überein, also zurückgeben
+				Log.get(o);
 				return o;
 			}
 		}
@@ -69,19 +78,30 @@ public class Location {
 	}
 
 	public int getAdvantage() {
+		Log.get(advantage);
 		return this.advantage;
 	}
 
 	public String getCountry() {
+		Log.get(country);
 		return this.country;
 	}
 
 	public int getPurchasePrice() {
+		Log.get(purchasePrice);
 		return this.purchasePrice;
 	}
 
 	public int getWageLevel() {
+		Log.get(wageLevel) ;
 		return this.wageLevel;
+	}
+	
+	
+	@Override
+	public String toString(){
+		
+		return this.country;
 	}
 
 }
