@@ -41,7 +41,7 @@ public class TypeTest {
 
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void TPercentOfUsageValid() throws Exception {
 
 		 new TPercentOfUsage(50, 2);
@@ -78,7 +78,7 @@ public class TypeTest {
 
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void TPresentValueValid() throws Exception {
 
 		 new TPresentValue(5000, 2);
@@ -140,7 +140,7 @@ public class TypeTest {
 
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void TResourcePriceValid() throws Exception {
 		 new TResourcePrice(50, 200);
 
@@ -200,7 +200,7 @@ public class TypeTest {
 
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void TMotivationValid() throws Exception {
 		 new TMotivation(100, 2);
 
