@@ -1,5 +1,7 @@
 package Server;
 
+import Logger.Log;
+
 /**
  * 
  * @author D059270 Resorce erbt von Prodct und kann nur ein Wafer oder ein
@@ -7,6 +9,9 @@ package Server;
  */
 public class Resource extends Product {
 
+	// Logger für Spielinformationen
+	private Log log = Log.getLogger();
+	
 	/**
 	 * Erstellt eine Resource (also Wafer oder Gehäuse). 
 	 * @param quality Qualität der Resource
@@ -19,6 +24,8 @@ public class Resource extends Product {
 		if(!checkNameIsValid(name)) {
 			throw new IllegalArgumentException("Name der Resource ist ungültig. Muss Wafer oder Gehäuse sein!");
 		}
+		
+		log.newObj(new String[] { "Resource", quality+"", name, costs+"" } );
 	}
 
 	/**

@@ -17,22 +17,28 @@ public class Log {
 	}
 	
 	public Log() {
-		log = Logger.getGlobal();		
+		log = Logger.getLogger("Planspiel");		
 	}
 	
-	public void logWarning(String msg) {
+	public void warning(String msg) {
 		log.log(Level.WARNING, msg);
 	}
 	
-	public void logVerbose(String msg) {
+	public void verbose(String msg) {
 		log.log(Level.FINE, msg);
 	}
 	
-	public void logInfo(String msg) {
+	public void info(String msg) {
 		log.log(Level.FINER, msg);
 	}
 	
-	public void logNewObj(String msg) {
+	public void newObj(String[] param) {
+		String msg = "Class: " + param[0] + " Param: ";
+		
+		for(int i=1; i<param.length; i++) {
+			msg += param[i] + ", ";
+		}
+		
 		log.log(Level.INFO, msg);
 	}
 	
