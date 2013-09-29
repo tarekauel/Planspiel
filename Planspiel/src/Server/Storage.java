@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 public class Storage extends Department {
 
-    public Storage(Company c, int fix) throws Exception {
-        super(c,"Lager",fix);
-    }
-	
 	private ArrayList<StorageElement> listOfStorageElements = new ArrayList<StorageElement>();
 	
-	public void store(Product product, int quantity){
+	public Storage(Company c, int fix) throws Exception {
+        super(c,"Lager",fix);
+        
+    }
+	
+	
+	
+	public void store(Product product, int quantity)throws Exception{
 		int size = listOfStorageElements.size();
 		StorageElement storageElement = null;
 		boolean found = false; 
@@ -21,15 +24,13 @@ public class Storage extends Department {
 				found = true;
 			}
 		}//for
+		
 		if(found==false){
-			try{
+			//Exceptions lassen Programm stoppen
 			storageElement = new StorageElement(quantity,product);
 			
 			listOfStorageElements.add(storageElement);
-			}catch(Exception e){
-				//Problem beim erstellen, keine Behandlung
-				//TODO: Was passiert hier?!
-			}
+			
 		}
 	}//store
 	
@@ -61,6 +62,13 @@ public class Storage extends Department {
 			productTmp = storageElement.getProduct();
 			if(productTmp == product){
 				success = storageElement.reduceQuantity(quantity); 
+				//falls das storageelement jetzt leer ist, lösche dir Referenz
+				if (storageElement.getQuantity()==0){
+					listOfStorageElements.remove(storageElement);
+					
+				}
+				//beenden der schleife
+				break;
 			}
 		}//for sucht passendes StrEl anhand von Prod aendert dann die Anzahl
 		return success; //success macht keine angabe ob reduceQuantity()fehlschlug oder
