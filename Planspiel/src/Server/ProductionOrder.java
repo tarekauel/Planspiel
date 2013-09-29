@@ -137,7 +137,7 @@ public class ProductionOrder {
 	 *            Der Zuschlagssatz aus Motivation, Land und Forschung
 	 * 
 	 */
-	public void produce(int Zuschlag, Storage s) {
+	public void produce(int Zuschlag, Storage s)throws Exception {
 		quantityProduced++;
 
 		// Prüfe ob bereits produziert wurde:
@@ -169,7 +169,7 @@ public class ProductionOrder {
 		store(s);
 	}
 
-	private void store(Storage s) {
+	private void store(Storage s)throws Exception {
 		s.store(this.panel, 1);
 	}
 

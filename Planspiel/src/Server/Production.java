@@ -87,7 +87,7 @@ public class Production extends Department {
 	 * Produktion, das gutschreiben der Panels im Auftrag
 	 * 
 	 */
-	public void produce() {
+	public void produce() throws Exception{
 		// Gibt die Maximale Anzahl der Werkst�cke an
 		int max = this.machine.getMaxCapacity();
 		// Z�hlt mit, wieviele Werkst�cke auf der Maschine lagen
