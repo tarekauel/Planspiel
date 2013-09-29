@@ -1,6 +1,6 @@
 package Server;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 17:16
@@ -12,7 +12,7 @@ public class Location {
 	private String country;
 	private int purchasePrice;
 	private int wageLevel;
-	private static ArrayList<Location> listOfLocations;
+	private static ArrayList<Location> listOfLocations = new ArrayList<Location>();
 
 	/**
 	 * muss vor Spielstart aufgerufen werden. Erzeugt die verschiedenen
