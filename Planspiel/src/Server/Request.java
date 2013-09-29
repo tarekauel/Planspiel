@@ -42,7 +42,7 @@ public class Request {
 	 * @param supplierOffer
 	 * @return
 	 */
-	public Boolean addSupplierOffer(SupplierOffer supplierOffer) {
+	public boolean addSupplierOffer(SupplierOffer supplierOffer) {
 		if (supplierOffer == null) {
 			throw new IllegalArgumentException("SupplierOffer darf nicht null sein!");
 		}
