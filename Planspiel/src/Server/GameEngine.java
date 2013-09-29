@@ -1,33 +1,48 @@
 package Server;
 
+import java.util.ArrayList;
+
+import Message.GameDataMessage;
+
+
 public class GameEngine {
-	// singleton konzept
-	private static GameEngine ge;
+	
+	
+	// Singleton referenz
+	private static GameEngine engine;
+	
+	// Rundennummer
+	private int round = 0;
 
 	public GameEngine() {
-		// TODO Auto-generated constructor stub
-		ge = this;
+		engine = this;
 	}
 
 	/**
-	 * erzeugt gegebenenfalls neue Instanz der GameEngine
+	 * Liefert die Instanz auf die Gameengine zurück, erstellt sie ggf
 	 * 
-	 * @return GameEngine (singleton konzept, alle kriegen dieselbe)
+	 * @return GameEngine Instanz auf die Gameengine
 	 * 
 	 */
 	public static GameEngine getGameEngine() {
-		if (ge == null) {
-			ge = new GameEngine();
+		if (engine == null) {
+			engine = new GameEngine();
 		}
-		return ge;
+		return engine;
 	}
 
 	/**
-	 * 
-	 * @return gibt die aktuelle Runde zurück
+	 * @return aktuelle Runde
 	 */
 	public int getRound() {
-		return 1;
-
+		return round;
+	}
+	
+	/**
+	 * Startet die nächste Runde
+	 * @param gameDataList Übergebene Eingabedaten der Spieler
+	 */
+	public void startNextRound(ArrayList<GameDataMessage> gameDataList) {
+		round++;
 	}
 }
