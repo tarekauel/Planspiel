@@ -11,7 +11,7 @@ import java.util.Random;
  * auswählt
  * 
  * @author Tarek
- * 
+ * TODO Maximale Peak-Verschiebung
  */
 public class CustomerMarket {
 
