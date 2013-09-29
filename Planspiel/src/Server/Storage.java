@@ -21,11 +21,13 @@ public class Storage extends Department {
 			storageElement = listOfStorageElements.get(i);
 			if(storageElement.getProduct() == product){
 				storageElement.increaseQuantity(quantity); //falls Element gefunden wird Anzahl erhï¿½ht
+				// TODO Kosten müssen neu berechnet werden
 				found = true;
+				break;
 			}
-		}//for
+		}
 		
-		if(found==false){
+		if(!found){
 			//Exceptions lassen Programm stoppen
 			storageElement = new StorageElement(quantity,product);
 			

@@ -44,10 +44,10 @@ public class GameTest {
 		SupplierMarket.getMarket().handleRequest();
 
 		ArrayList<Request> listReq = p.getListOfLatesRequest();
-		p.acceptSupplierOffer(listReq.get(0).getSupplierOffers()[0], 54 * 100); // 1000
+		p.acceptSupplierOffer(listReq.get(0).getSupplierOffers()[0], 54 * 101); // 1000
 																				// Wafer
 																				// kaufen
-		p.acceptSupplierOffer(listReq.get(1).getSupplierOffers()[0], 100); // 1000
+		p.acceptSupplierOffer(listReq.get(1).getSupplierOffers()[0], 101); // 1000
 																			// Gehäuse
 																			// kaufen
 
@@ -71,7 +71,7 @@ public class GameTest {
 
 		pro2.produce();
 
-		d2.createOffer(s2.getAllFinishedGoods().get(0).getQuality(), s2.getAllStorageElements().get(2).getQuantity(), 100);
+		d2.createOffer(s2.getAllFinishedGoods().get(0).getQuality(), s2.getAllStorageElements().get(0).getQuantity(), 100);
 
 		CustomerMarket.getMarket().handleAllOffers();
 

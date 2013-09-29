@@ -137,15 +137,15 @@ public class ProductionOrder {
 	 *            Der Zuschlagssatz aus Motivation, Land und Forschung
 	 * 
 	 */
-	public void produce(int Zuschlag, Storage s)throws Exception {
+	public void produce(int Zuschlag, Storage s, Machinery m)throws Exception {
 		quantityProduced++;
 
 		// Prüfe ob bereits produziert wurde:
 		if (panel != null) {
 			// panel bereits gesetzt, also muss das nicht mehr berechnet werden.
-			store(s);
 			return;
 		}
+		
 		// Es wird in doubles gerechnet:
 		double additionalFactor = Zuschlag / 100;
 		// durchschnittsqualität der Produkte mit Gewichtung:
@@ -159,18 +159,17 @@ public class ProductionOrder {
 				: newQuality;
 
 		// Berechne herstellkosten:
-		int costs = wafer.getCosts() * quantityToProduce * waferPerPanel
-				+ cases.getCosts() * quantityToProduce;
-		// TODO: maschinenkosten einrechnen
+		int costs = wafer.getCosts() * waferPerPanel
+				+ cases.getCosts() + m.getPieceCosts();
 
 		// neues Panel erzeugen
 		panel = FinishedGood.create(newQuality, costs);
-
-		store(s);
 	}
 
-	private void store(Storage s)throws Exception {
-		s.store(this.panel, 1);
+	public void storeProduction (Storage s) throws Exception {
+		// Kosten pro Stück neu berechnen (Ausschuss berücksichtigen)
+		this.panel = FinishedGood.create(panel.getQuality(), (int) ((double) panel.getCosts() * quantityToProduce / quantityProduced));
+		s.store(this.panel, quantityProduced);
 	}
 
 }

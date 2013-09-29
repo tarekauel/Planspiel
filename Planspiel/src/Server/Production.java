@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 public class Production extends DepartmentRoundSensitive {
 	// Liste aller jemals erstellten Produktions auftrï¿½ge
-	ArrayList<ProductionOrder> listOfAllProductionOrders = new ArrayList<ProductionOrder>();
+	ArrayList<ProductionOrder>	listOfAllProductionOrders	= new ArrayList<ProductionOrder>();
 	// Liste aller offenen (noch nicht produzierten) Auftrï¿½gen
-	ArrayList<ProductionOrder> listOfOpenProductionOrders = new ArrayList<ProductionOrder>();
+	ArrayList<ProductionOrder>	listOfOpenProductionOrders	= new ArrayList<ProductionOrder>();
 	// Referenz auf die Maschine (auf der wir ja produzieren mï¿½ssen)
-	Machinery machine;
+	Machinery					machine;
 
 	// Liste der Auslastungen fï¿½r diesen Spieler
-	ArrayList<TPercentOfUsage> listOfAllPercentOfUsage;
+	ArrayList<TPercentOfUsage>	listOfAllPercentOfUsage = new ArrayList<TPercentOfUsage>();
 
 	// Parameter fï¿½r die Anzahl der Wafer pro Panel:
-	private int waferPerPanel = 54; // 72 max, 36 min ~54 durchschnitt
+	private int					waferPerPanel				= 54;
 
 	/**
 	 * Regulï¿½rer Konstruktor der Produktion, erzeugt zeitgleich eine neue
@@ -30,9 +30,6 @@ public class Production extends DepartmentRoundSensitive {
 	public Production(Company c, int fix) throws Exception {
 		super(c, "Produktion", fix);
 		machine = new Machinery();
-	}
-	public int getFixCosts(){
-		return super.getFixCosts()+this.machine.getCosts();
 	}
 
 	/**
@@ -54,6 +51,15 @@ public class Production extends DepartmentRoundSensitive {
 	}
 
 	/**
+	 * Liefer die Fixkosten
+	 * 
+	 * @return gibt die Fixkosten zurück
+	 */
+	public int getFixCosts() {
+		return super.getFixCosts() + this.machine.getCosts();
+	}
+
+	/**
 	 * 
 	 * @return gibt die Maschine der Produktion zurï¿½ck
 	 */
@@ -70,15 +76,24 @@ public class Production extends DepartmentRoundSensitive {
 	 *            Das Gehï¿½use mit dem die Produktion gestartet wird
 	 * @param quantity
 	 *            Die Anzahl der gewï¿½nschten Produktion
+	 * @return true: Produktionsorder konnte angelegt werden
+	 *         false: Produktionsorder konnte nicht angelegt werden (nicht
+	 *         genügen Bargeld)
 	 */
-	public void createProductionOrder(Resource wafer, Resource cases,
-			int quantity) {
-		// erzeuge den Auftrag:
-		ProductionOrder po = new ProductionOrder(wafer, cases, quantity);
-		// nimm ihn in die Liste ALLER Auftrï¿½ge auf
-		listOfAllProductionOrders.add(po);
-		// nimm ihn in die Liste der noch nicht bearbeiteten Auftrï¿½ge auf
-		listOfOpenProductionOrders.add(po);
+	public boolean createProductionOrder(Resource wafer, Resource cases, int quantity) {
+
+		// Prüfen, ob genug Geld für die Order (Orderkosten) auf dem Konto ist
+		if (getCompany().getBankAccount().decreaseBalance(1000)) {
+
+			// erzeuge den Auftrag:
+			ProductionOrder po = new ProductionOrder(wafer, cases, quantity);
+			// nimm ihn in die Liste ALLER Auftrï¿½ge auf
+			listOfAllProductionOrders.add(po);
+			// nimm ihn in die Liste der noch nicht bearbeiteten Auftrï¿½ge auf
+			listOfOpenProductionOrders.add(po);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -87,7 +102,7 @@ public class Production extends DepartmentRoundSensitive {
 	 * Produktion, das gutschreiben der Panels im Auftrag
 	 * 
 	 */
-	public void produce() throws Exception{
+	public void produce() throws Exception {
 		// Gibt die Maximale Anzahl der Werkstï¿½cke an
 		int max = this.machine.getMaxCapacity();
 		// Zï¿½hlt mit, wieviele Werkstï¿½cke auf der Maschine lagen
@@ -103,10 +118,10 @@ public class Production extends DepartmentRoundSensitive {
 				// scheinbar nicht
 				break;
 			}
-
-			// Schleife ï¿½ber jede einzelne Position des Auftrages (Werkstï¿½ck)
-			for (int j = 0; j < listOfOpenProductionOrders.get(i)
-					.getRequested(); j++) {
+				
+			// Schleife ï¿½ber jede einzelne Position des Auftrages
+			// (Werkstï¿½ck)
+			for (int j = 0; j < listOfOpenProductionOrders.get(i).getRequested(); j++) {
 				// Darf ï¿½berhaupt noch jemand produzieren?
 				if (triedToProduce >= max) {
 					// scheinbar nicht
@@ -117,14 +132,9 @@ public class Production extends DepartmentRoundSensitive {
 				// Zieh die Storage elemente aus dem Storage ab:
 				// nutze dafï¿½r das lager des spielers:
 				// Wafer abbuchen (direkt in der Anzahl waferPerPanel)
-				this.getCompany()
-						.getStorage()
-						.unstore(listOfOpenProductionOrders.get(i).getWafer(),
-								waferPerPanel);
+				this.getCompany().getStorage().unstore(listOfOpenProductionOrders.get(i).getWafer(), waferPerPanel);
 				// Gehï¿½use abbuchen
-				this.getCompany()
-						.getStorage()
-						.unstore(listOfOpenProductionOrders.get(i).getCase(), 1);
+				this.getCompany().getStorage().unstore(listOfOpenProductionOrders.get(i).getCase(), 1);
 
 				// "Werkstï¿½ck auf Maschine legen":
 				triedToProduce++;
@@ -135,10 +145,12 @@ public class Production extends DepartmentRoundSensitive {
 				} else {
 					// Produziere das fertige Panel
 					// TODO: remove 100 , fester Wert fï¿½r Motivation etc.
-					listOfOpenProductionOrders.get(i).produce(100,
-							this.getCompany().getStorage());
+					listOfOpenProductionOrders.get(i).produce(100, this.getCompany().getStorage(), this.machine);
 				}
 			}
+			
+			// Lager die Produktion ein und berechnet die Kosten neu
+			listOfOpenProductionOrders.get(i).storeProduction( this.getCompany().getStorage() );
 		}
 
 		// summe aller auftrï¿½ge
@@ -147,17 +159,9 @@ public class Production extends DepartmentRoundSensitive {
 		for (ProductionOrder o : listOfOpenProductionOrders) {
 			sum += o.getRequested();
 		}
-		try {
-			listOfAllPercentOfUsage.add(new TPercentOfUsage(sum
-					/ this.machine.getMaxCapacity(), GameEngine.getGameEngine()
-					.getRound()));
-		} catch (Exception e) {
-			// Fehler bei der Erstellung einer Auslastung
-			// TODO: Fehlerhandling?!
-		}
-		// Initialisiere die offenen Auftrï¿½ge, damit keine Auftrï¿½ge in die
-		// nï¿½chste Runde rutschen
-		listOfOpenProductionOrders.clear();
+
+		listOfAllPercentOfUsage.add(new TPercentOfUsage(sum / this.machine.getMaxCapacity(), GameEngine.getGameEngine()
+				.getRound()));
 	}
 
 	/**
@@ -171,7 +175,8 @@ public class Production extends DepartmentRoundSensitive {
 
 	/**
 	 * 
-	 * @return gibt die Liste aller offenen Auftrï¿½ge zurï¿½ck, also die, die diese
+	 * @return gibt die Liste aller offenen Auftrï¿½ge zurï¿½ck, also die, die
+	 *         diese
 	 *         Runde angelegt wurden
 	 */
 	public ArrayList<ProductionOrder> getListOfOpenProductionOrders() {
@@ -185,9 +190,9 @@ public class Production extends DepartmentRoundSensitive {
 	public ArrayList<TPercentOfUsage> getListOfAllPercentOfUsage() {
 		return listOfAllPercentOfUsage;
 	}
-	
+
 	@Override
-	public void prepareForNewRound( int round ) {
+	public void prepareForNewRound(int round) {
 		listOfOpenProductionOrders = new ArrayList<ProductionOrder>();
 	}
 }

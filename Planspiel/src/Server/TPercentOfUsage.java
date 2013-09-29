@@ -59,7 +59,7 @@ public class TPercentOfUsage {
 	 * @return true, falls die Runde größer 0 ist.
 	 */
 	private boolean checkRound(int round) {
-		return (round > 0);
+		return (round >= 0);
 	}
 
 	/**
@@ -69,6 +69,6 @@ public class TPercentOfUsage {
 	 * @return gibt an, ob die Zahl größer als 0 ist
 	 */
 	private boolean checkPercentOfUsage(int p) {
-		return (p > 0);
+		return (p >= 0);
 	}
 }
