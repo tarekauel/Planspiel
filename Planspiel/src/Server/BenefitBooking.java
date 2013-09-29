@@ -2,113 +2,107 @@ package Server;
 
 import java.util.ArrayList;
 
+import Logger.Log;
+
 /**
- * Created by:
- * User: Lars Trey
- * Date: 28.09.13
- * Time: 19:07
+ * Created by: User: Lars Trey Date: 28.09.13 Time: 19:07
  */
 
 public class BenefitBooking {
 
-    private Benefit benefit;
-    private int duration;                                           //Dauer an gebuchten Runden
-    private int startInRound;                                       //Runde in der das Benefit beginnt
-    private int remainingRounds;                                    //Verbleibende Runden | Muss jede Runde neu berechnet werden
-    private int costsSum;                                           //Kosten insgesamt für das gebuchte Benefit
-    private static ArrayList<BenefitBooking> bookedBenefits;        //Alle derzeit gebuchten Benefits
+	private Benefit benefit;
+	private int duration; // Dauer an gebuchten Runden
+	private int startInRound; // Runde in der das Benefit beginnt
+	private int costsSum; // Kosten insgesamt für das gebuchte Benefit
+	private static ArrayList<BenefitBooking> bookedBenefits; // Alle derzeit
+																// gebuchten
+																// Benefits
 
-    public BenefitBooking() {
-    }
+	public BenefitBooking() {
+	}
 
-    private BenefitBooking(Benefit benefit, int duration) {
+	private BenefitBooking(Benefit benefit, int duration) {
+		Log.newObj(new Object[] { benefit, duration });
+		this.benefit = benefit;
+		this.duration = duration;
+		this.startInRound = GameEngine.getGameEngine().getRound() + 1;
+		this.costsSum = calcCostsSum();
 
-        this.benefit = benefit;
-        this.duration = duration;
-        this.startInRound = GameEngine.getGameEngine().getRound()+1;
-        this.remainingRounds = duration;
-        this.costsSum = calcCostsSum();
+	}
 
-    }
+	public static void bookBenefit(Benefit benefit, int duration)
+			throws Exception {
+		Log.method();
+		boolean benefitAlreadyBooked = false;
 
-    public static void bookBenefit(Benefit benefit, int duration) throws Exception {
+		for (BenefitBooking bB : bookedBenefits) {
 
-        boolean benefitAlreadyBooked = false;
+			if (bB.getBenefit().getName().equals(benefit.getName())) {
+				benefitAlreadyBooked = true;
+			}
 
-        for(BenefitBooking bB : bookedBenefits){
+		}
 
-            if (bB.getBenefit().getName().equals(benefit.getName())){
-                benefitAlreadyBooked = true;
-            }
+		if (benefitAlreadyBooked == false) {
 
-        }
+			bookedBenefits.add(new BenefitBooking(benefit, duration));
 
-        if (benefitAlreadyBooked == false){
+		} else if (benefitAlreadyBooked == true) {
+	
+			throw new Exception("Benefit bereits gebucht.");
 
-            bookedBenefits.add(new BenefitBooking(benefit, duration));
+		}
+		Log.methodExit();
+	}
 
-        } else if (benefitAlreadyBooked == true){
+	public static int calcCostsSum() {
 
-            throw new Exception("Benefit bereits gebucht.");
+		int costssum = 0;
 
-        }
+		for (BenefitBooking bB : bookedBenefits) {
 
-    }
+			costssum += bB.getBenefit().getCostsPerRound() * bB.getDuration();
 
-    public static void calculateRemainingRounds(){
+		}
+		Log.get(costssum);
+		return costssum;
 
-        for(BenefitBooking bB : bookedBenefits){
+	}
 
-            if (GameEngine.getGameEngine().getRound() == bB.getStartInRound()){
+	public static ArrayList<BenefitBooking> getBookedBenefits() {
+		Log.get(bookedBenefits);
+		return bookedBenefits;
+	}
 
-                bB.remainingRounds = bB.duration-1;
+	public Benefit getBenefit() {
+		Log.get(benefit);
+		return benefit;
+	}
 
-            } else if (GameEngine.getGameEngine().getRound() > bB.getStartInRound()){
+	public int getDuration() {
+		Log.get(duration);
+		return duration;
+	}
 
-                bB.remainingRounds = ( ( GameEngine.getGameEngine().getRound() - bB.getStartInRound() ) - ( bB.duration-1 ) ) * (-1);
+	public int getStartInRound() {
+		Log.get(startInRound);
+		return startInRound;
+	}
 
-            }
+	public int getRemainingRounds() {
+		Log.get((duration
+				- (GameEngine.getGameEngine().getRound() - startInRound) < 0) ? 0
+				: (duration - (GameEngine.getGameEngine().getRound() - startInRound)));
 
-        }
+		return (duration
+				- (GameEngine.getGameEngine().getRound() - startInRound) < 0) ? 0
+				: (duration - (GameEngine.getGameEngine().getRound() - startInRound));
 
-    }
+	}
 
-    public static int calcCostsSum(){
-
-        int costssum = 0;
-
-        for(BenefitBooking bB : bookedBenefits){
-
-            costssum += bB.getBenefit().getCostsPerRound() * bB.getDuration();
-
-        }
-
-        return costssum;
-
-    }
-
-    public static ArrayList<BenefitBooking> getBookedBenefits(){
-        return bookedBenefits;
-    }
-
-    public Benefit getBenefit() {
-        return benefit;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public int getStartInRound() {
-        return startInRound;
-    }
-
-    public int getRemainingRounds() {
-        return remainingRounds;
-    }
-
-    public int getCostsSum() {
-        return costsSum;
-    }
+	public int getCostsSum() {
+		Log.get(costsSum);
+		return costsSum;
+	}
 
 }
