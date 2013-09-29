@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import Logger.Log;
+
 public class Distribution extends Department {
 	
 	// Liste aller jemals erstellten Offers
@@ -23,7 +25,9 @@ public class Distribution extends Department {
 	 *             falls Abteilung nicht erstellt werden konnte
 	 */
 	public Distribution(Company c, int fix)throws Exception{
+		
 		super(c,"Verkauf",fix);
+		Log.newObj(new Object[] {c,fix});
 		CustomerMarket.getMarket().addDistribution(this);
 	}
 	
@@ -41,10 +45,11 @@ public class Distribution extends Department {
 	 */
 	private Distribution(Company c, String n, int f) throws Exception {
 		super(c, n, f);		
+		Log.newObj(new Object[]{c,n,f});
 	}
 
 	public void createOffer(int quality, int quantityToSell, int price) {
-
+		Log.method(new Object[]{quality,quantityToSell,price});
 		Storage storage = this.getCompany().getStorage();
 		StorageElement storageElement = storage
 				.getFinishedGoodByQuality(quality);
@@ -67,10 +72,11 @@ public class Distribution extends Department {
 		} catch (IOException e) {
 			e.getMessage(); // korrekt?? 
 		}
-
+		Log.methodExit();
 	}// createOffer
 
 	public ArrayList<Offer> getListOfOffers() {
+		Log.get(listOfOffers);
 		return listOfOffers;
 	}// getListOfOffers
 
@@ -82,6 +88,9 @@ public class Distribution extends Department {
 			}
 		}
 		Collections.sort(listOfLatestOffers);
+		
+		Log.get(listOfLatestOffers);
+		
 		return listOfLatestOffers;
 	}
 	
@@ -90,11 +99,13 @@ public class Distribution extends Department {
 	 * @return Liste der aktuellen Offer
 	 */
 	public ArrayList<Offer> getListOfLatestOffers() {
+		Log.get(listOfLatesOffers);
 		return listOfLatesOffers;
 	}
 	
 	@Override
 	public void prepareForNewRound( int round ) {
+		Log.method(round);
 		listOfLatesOffers = new ArrayList<Offer>();
 	}
 }
