@@ -104,5 +104,10 @@ public class BenefitBooking {
 		Log.get(costsSum);
 		return costsSum;
 	}
+	
+	@Override
+	public String toString(){
+		return this.benefit.toString() + " dauert noch " + this.getRemainingRounds();
+	}
 
 }
