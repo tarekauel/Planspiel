@@ -1,6 +1,6 @@
 package Server;
 
-import tarekMuell.Company;
+
 
 /**
  * Dieser Typ gibt den Marktanteil einer Firma wieder

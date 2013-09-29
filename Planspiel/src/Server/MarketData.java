@@ -1,5 +1,7 @@
 package Server;
 
+import java.util.ArrayList;
+
 /**
  * Diese Klasse enthält alle Statistischen Marktdaten
  * @author Tarek
@@ -58,7 +60,7 @@ public class MarketData {
 		return customerMarket.getCMarketPeak();
 	}
 	
-	public TWage addWage(TWage wage) {
+	public void addWage(TWage wage) {
 		
 	}
 	

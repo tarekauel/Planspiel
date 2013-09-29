@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import tarekMuell.Company;
+
 
 /**
  * Der CustomerMarket existiert für alle Spieler gemeinsam. Er arbeitet die
