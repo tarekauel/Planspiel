@@ -12,7 +12,7 @@ public class Location {
 	private String country;
 	private int purchasePrice;
 	private int wageLevel;
-	private ArrayList<Location> listOfLocations;
+	private static ArrayList<Location> listOfLocations;
 
 	/**
 	 * muss vor Spielstart aufgerufen werden. Erzeugt die verschiedenen
@@ -38,7 +38,7 @@ public class Location {
 	 * @param w
 	 *            WageLevel / Lohn niveau
 	 */
-	public Location(int a, String c, int p, int w) {
+	private Location(int a, String c, int p, int w) {
 		this.advantage = a;
 		this.country = c;
 		this.purchasePrice = p;
@@ -48,7 +48,7 @@ public class Location {
 		
 	}
 
-	public ArrayList<Location> getListOfLocations() {
+	public static ArrayList<Location> getListOfLocations() {
 		return listOfLocations;
 	}
 	/**
@@ -56,7 +56,7 @@ public class Location {
 	 * @param c Country: das zu suchende Land
 	 * @return null, falls der Name nicht gefunden wurde
 	 */
-	public Location getLocationByCountry(String c){
+	public static Location getLocationByCountry(String c){
 		//Suche in der internen Liste:
 		for(Location o:listOfLocations){
 			//Vergleiche (ignoriere Groﬂ/Kleinschreibung)
