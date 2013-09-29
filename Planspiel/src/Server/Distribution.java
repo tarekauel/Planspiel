@@ -24,6 +24,7 @@ public class Distribution extends Department {
 	 */
 	public Distribution(Company c, int fix)throws Exception{
 		super(c,"Verkauf",fix);
+		CustomerMarket.getMarket().addDistribution(this);
 	}
 	
 	/**
@@ -39,8 +40,7 @@ public class Distribution extends Department {
 	 * @throws Exception
 	 */
 	private Distribution(Company c, String n, int f) throws Exception {
-		super(c, n, f);
-		CustomerMarket.getMarket().addDistribution(this);
+		super(c, n, f);		
 	}
 
 	public void createOffer(int quality, int quantityToSell, int price) {
@@ -61,10 +61,11 @@ public class Distribution extends Department {
 						// immer 0.
 		try {
 			Offer offer = new Offer(quantityToSell, price, round, sold,
-					storageElement);
+					storageElement, this);
 			listOfOffers.add(offer);
+			listOfLatesOffers.add(offer);
 		} catch (IOException e) {
-			e.getMessage(); // korrekt??
+			e.getMessage(); // korrekt?? 
 		}
 
 	}// createOffer
@@ -90,5 +91,10 @@ public class Distribution extends Department {
 	 */
 	public ArrayList<Offer> getListOfLatestOffers() {
 		return listOfLatesOffers;
+	}
+	
+	@Override
+	public void prepareForNewRound( int round ) {
+		listOfLatesOffers = new ArrayList<Offer>();
 	}
 }

@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-
-
 /**
  * Der CustomerMarket existiert für alle Spieler gemeinsam. Er arbeitet die
  * Angebote der Spieler ab und entscheidet für jeden Käufer welches Angebot er
@@ -416,13 +414,15 @@ public class CustomerMarket {
 			sumQualityA += info[0] * info[1];
 			sumCountA += info[1];
 		}
+		// Peak nur verschieben, wenn es Verkäufe gab
+		if (sumCountA > 0) {
+			// Durchschnittswert der aktuellen Angebote
+			int newPeakAMarket = sumQualityA / sumCountA;
 
-		// Durchschnittswert der aktuellen Angebote
-		int newPeakAMarket = sumQualityA / sumCountA;
+			// Peak im A-Markt um 50% in die Richtung der Angebote verschieben
+			aMarketPeak += (int) (newPeakAMarket - aMarketPeak) * 0.5;
 
-		// Peak im A-Markt um 50% in die Richtung der Angebote verschieben
-		aMarketPeak += (int) (newPeakAMarket - aMarketPeak) * 0.5;
-
+		}
 		// Summe der Angeboten Qualitäten im C-Markt
 		sumQualityC = 0;
 
@@ -434,12 +434,15 @@ public class CustomerMarket {
 			sumCountC += info[1];
 		}
 
-		// Durchschnittswert der aktuellen Angebote
-		int newPeakCMarket = sumQualityC / sumCountC;
+		// Peak nur verschieben, wenn es Verkäufe gab
+		if (sumCountC > 0) {
 
-		// Peak im C-Markt um 50% in die Richtung der Angebote verschieben
-		cMarketPeak += (int) (newPeakCMarket - cMarketPeak) * 0.5;
+			// Durchschnittswert der aktuellen Angebote
+			int newPeakCMarket = sumQualityC / sumCountC;
 
+			// Peak im C-Markt um 50% in die Richtung der Angebote verschieben
+			cMarketPeak += (int) (newPeakCMarket - cMarketPeak) * 0.5;
+		}
 	}
 
 	/**
@@ -522,7 +525,7 @@ public class CustomerMarket {
 		} else {
 			// Eine Angebotsnummer auswählen (durch faire Zufallszahlen mit
 			// abschneiden)
-			int chosenOfferNum = (int) Math.floor(Math.random() * (possibleOffers.size() + 1));
+			int chosenOfferNum = (int) Math.floor(Math.random() * (possibleOffers.size()));
 
 			// Das ausgewählte Angebot
 			Offer chosenOffer = possibleOffers.get(chosenOfferNum);
@@ -621,8 +624,8 @@ public class CustomerMarket {
 		price = (int) price * 1 + (getGaussianNumber(-20, 20, 0, 10) / 100);
 
 		// Preis zur Qualität loggen
-		logAcceptedPrices.put(requestedQuality, (String) (((logAcceptedPrices.get(requestedQuality) == null) ? price+""
-				: logAcceptedPrices.get(requestedQuality) + ";" + price)));
+		logAcceptedPrices.put(requestedQuality, (String) (((logAcceptedPrices.get(requestedQuality) == null) ? price
+				+ "" : logAcceptedPrices.get(requestedQuality) + ";" + price)));
 
 		return price;
 	}

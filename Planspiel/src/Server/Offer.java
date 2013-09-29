@@ -29,7 +29,7 @@ public class Offer implements Comparable<Offer>{
 	 * @throws IOException
 	 */
 	
-	public Offer(int quantityToSell, int priceToSell,int round, int quantitySold, StorageElement storageElement) throws IOException{
+	public Offer(int quantityToSell, int priceToSell,int round, int quantitySold, StorageElement storageElement, Distribution d) throws IOException{
 		if(quantityToSell<=0 || priceToSell<0){
 			throw new IOException("quantityToSell oder priceToSell ist negativ. Class Offer Method Constructor");
 		}
@@ -37,6 +37,7 @@ public class Offer implements Comparable<Offer>{
 		this.priceToSell = priceToSell; // ebenso
 		this.round = round;
 		this.quantitySold = quantitySold;
+		this.distribution = d;
 		
 		if(storageElement == null){
 			throw new IOException("StorageElement is null (Class Offer, Method: Constructor)");
