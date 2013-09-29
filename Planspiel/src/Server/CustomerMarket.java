@@ -259,7 +259,7 @@ public class CustomerMarket {
 				servedCustomersAMarket++;
 
 				// Infos zu Preis und Qualität
-				int[] infoArray = { boughtOffer.getStorageElement().getProduct.getQuality(), boughtOffer.getPrice() };
+				int[] infoArray = { boughtOffer.getStorageElement().getProduct().getQuality(), boughtOffer.getPrice() };
 				boughtOffersAMarket.add(infoArray);
 
 				// CompanyString des Anbieters
@@ -294,7 +294,7 @@ public class CustomerMarket {
 				servedCustomersCMarket++;
 
 				// Infos zu Preis und Qualität
-				int[] infoArray = { boughtOffer.getStorageElement().getProduct.getQuality(), boughtOffer.getPrice() };
+				int[] infoArray = { boughtOffer.getStorageElement().getProduct().getQuality(), boughtOffer.getPrice() };
 				boughtOffersCMarket.add(infoArray);
 
 				// CompanyString des Anbieters
@@ -475,10 +475,10 @@ public class CustomerMarket {
 
 			// Qualität des Angebots auslesen
 			// Double um nicht in Integer zu rechnen!
-			double offerQuality = o.getStorageElement().getProduct.getQuality();
+			double offerQuality = o.getStorageElement().getProduct().getQuality();
 
 			// Pruefe ob noch das Angebot noch verfügbar ist
-			if (o.getQuantityToSell <= o.getQuantitySold()) {
+			if (o.getQuantityToSell() <= o.getQuantitySold()) {
 				// Angebot nicht mehr verfügbar
 				continue;
 			}
@@ -528,7 +528,7 @@ public class CustomerMarket {
 			Offer chosenOffer = possibleOffers.get(chosenOfferNum);
 
 			// Im Lager um eins veringern
-			if (!chosenOffer.getStorageElement.reduceQuantity(1)) {
+			if (!chosenOffer.getStorageElement().reduceQuantity(1)) {
 				// TODO: Aus irgendeinem Grund ist das Offer im Lager nicht
 				// gedeckt. In diesem Fall ist der Kunde enttäuscht, dass nicht
 				// geliefert wird und sucht auch kein anderes Angbote mehr.

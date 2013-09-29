@@ -4,7 +4,7 @@ import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 /**
  * 
- * @author D059270 Die Klasse Product stellt die Superklasse der Prodkttypen
+ * @author D059270 Die Klasse Product stellt die Superklasse der Produkttypen
  *         Ressorce und FinishedGood dar. Name, Kosten und Qalität werden von
  *         Product geführt.
  */
@@ -16,7 +16,7 @@ public abstract class Product {
 	private int storageCostsPerRond;
 
 	/**
-	 * Erstellt ein neues Produkt, wenn die Qalität und die Kosten
+	 * Erstellt ein neues Produkt, wenn die Qualität und die Kosten
 	 * valide sind. Ansosnten wird eine Exception geworfen.
 	 * 
 	 * @param quality

@@ -1,6 +1,14 @@
 package Server;
 import java.io.IOException;
 
+/**
+ * Ein Offer Objekt wird erstellt, wenn der Spieler Fertigprodukte verkaufen moechte.
+ * Dabei muss er die Menge, den Preis und das zu verkaufende Produkt angeben.
+ * Es wird dabei auch überprüft, ob das Produkt existiert bzw ob es in der gewuenschten
+ * Menge verkauft werden kann.
+ * @author Felix
+ *
+ */
 
 public class Offer implements Comparable<Offer>{
 	
@@ -11,8 +19,20 @@ public class Offer implements Comparable<Offer>{
 	private StorageElement storageElement;
 	private Distribution distribution;
 	
+	/**
+	 * Konstruktor fuer ein Offer Objekt
+	 * @param quantityToSell
+	 * @param priceToSell
+	 * @param round
+	 * @param quantitySold
+	 * @param storageElement
+	 * @throws IOException
+	 */
+	
 	public Offer(int quantityToSell, int priceToSell,int round, int quantitySold, StorageElement storageElement) throws IOException{
-		
+		if(quantityToSell<=0 || priceToSell<0){
+			throw new IOException("quantityToSell oder priceToSell ist negativ. Class Offer Method Constructor");
+		}
 		this.quantityToSell = quantityToSell; //muss vorher geprüft werden ob sie negativ ist?!
 		this.priceToSell = priceToSell; // ebenso
 		this.round = round;
@@ -36,6 +56,10 @@ public class Offer implements Comparable<Offer>{
 	public int getQuantitySold(){
 		return quantitySold;
 	}//getQuantitySold
+	
+	public int getRound(){
+		return round;
+	}
 	
 	public StorageElement getStorageElement(){
 		return storageElement;
@@ -66,7 +90,7 @@ public class Offer implements Comparable<Offer>{
 	public int compareTo(Offer offer) {
 		StorageElement storageElementThis = this.getStorageElement();
 		Product productThis = storageElementThis.getProduct();
-		int qualityThis = product.getQuality();
+		int qualityThis = productThis.getQuality();
 		int priceToSellThis = this.getPrice();
 		
 		StorageElement storageElement = offer.getStorageElement();
@@ -79,11 +103,10 @@ public class Offer implements Comparable<Offer>{
 		
 		if(costPerformanceRatioThis > costPerformanceRatio){
 			return 1;
-		}
-		if(costPerformanceRatioThis == costPerformanceRatio){
+		}else if(costPerformanceRatioThis == costPerformanceRatio){
 			return 0;
-		}
-		if(costPerformanceRatioThis < costPerformanceRatio){
+		}else{
+		//(costPerformanceRatioThis < costPerformanceRatio)
 			return -1;
 		}
 		

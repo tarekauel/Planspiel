@@ -52,7 +52,7 @@ public class SupplierOffer {
 		return false;
 	}
 
-	public Resource getResorce() {
+	public Resource getResource() {
 		return resource;
 	}
 

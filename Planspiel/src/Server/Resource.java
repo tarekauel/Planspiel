@@ -21,8 +21,8 @@ public class Resource extends Product {
 			return null; // Kein valider Name
 		}
 		try {
-			Resource resorce = new Resource(quality, name, costs);
-			return resorce;
+			Resource resource = new Resource(quality, name, costs);
+			return resource;
 		} catch (Exception e) {
 			return null; // Kosten oder Qualität ist nicht valide.
 		}
