@@ -106,7 +106,7 @@ public class Purchase extends Department {
 		}
 
 		Storage storage = this.getCompany().getStorage();
-		storage.store(resource, quantity);
+		storage.store(resource, quantity); //TODO remove money from bank
 		supplierOffer.setOrderedQuantity(quantity);
 		listOfLatestSupplierOffers.add( supplierOffer );
 	}
