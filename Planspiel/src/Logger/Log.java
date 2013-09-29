@@ -47,6 +47,27 @@ public class Log {
 		Log.verbose("Class: " + className + " Method: " + method);
 	}
 	
+	public static void method(Object[] param) {
+		String className = Thread.currentThread().getStackTrace()[2].getClassName();
+		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
+		String msg = "Class: " + className + " Method: " + method +  " Param: ";
+		
+		for(int i=1; i<param.length; i++) {
+			msg += String.valueOf(param[i]) + ", ";
+		}
+		msg = msg.substring(0, msg.length()-2);
+		log.log(Level.INFO, msg);
+	}
+	
+	public static void method(Object param) {
+		String className = Thread.currentThread().getStackTrace()[2].getClassName();
+		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
+		String msg = "Class: " + className + " Method: " + method +  " Param: " + param;
+		log.log(Level.INFO, msg);
+	}
+	
+	
+	
 	public static void get(Object param) {
 		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
 		String className = Thread.currentThread().getStackTrace()[2].getClassName();
