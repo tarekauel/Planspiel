@@ -4,6 +4,7 @@ import Logger.Log;
 
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 17:24
+ * TODO: checkmethoden!
  */
 
 public class BankAccount {
