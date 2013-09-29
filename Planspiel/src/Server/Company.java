@@ -33,7 +33,18 @@ public class Company {
 		this.marketResearch = new MarketResearch(this, 1000000);
 
 	}
-
+	
+	public void initRound(int round){
+		purchase.prepareForNewRound(round);
+		production.prepareForNewRound(round);
+		storage.prepareForNewRound(round);
+		distribution.prepareForNewRound(round);
+		humanResources.prepareForNewRound(round);
+		marketResearch.prepareForNewRound(round);
+		
+	}
+	
+	
 	public Location getLocation() {
 		return this.location;
 	}
