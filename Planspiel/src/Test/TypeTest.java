@@ -3,6 +3,7 @@ package Test;
 import static org.junit.Assert.*;
 
 import org.junit.*;
+
 import Server.*;
 
 /**
@@ -14,348 +15,195 @@ public class TypeTest {
 	/********************************************************
 	 * TPercentOfUsage Tests starten
 	 */
-	@Test
-	public void TPercentOfUsageInvalidPercentAndRound() {
-		TPercentOfUsage test = null;
-		try {
-			test = new TPercentOfUsage(-500, -2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
-	}
-
-	@Test
-	public void TPercentOfUsageInvalidRound() {
-
-		TPercentOfUsage test = null;
-		try {
-			test = new TPercentOfUsage(500, -2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPercentOfUsageInvalidPercentAndRound() throws Exception {
+		new TPercentOfUsage(-500, -2);
 
 	}
 
-	@Test
-	public void TPercentOfUsageRound0() {
-		TPercentOfUsage test = null;
-		try {
-			test = new TPercentOfUsage(500, 0);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPercentOfUsageInvalidRound() throws Exception {
 
-		}
-		assertEquals(true, test == null);
+		 new TPercentOfUsage(500, -2);
 
 	}
 
-	@Test
-	public void TPercentOfUsageInvalidPercent() {
-		TPercentOfUsage test = null;
-		try {
-			test = new TPercentOfUsage(-500, 2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPercentOfUsageRound0() throws Exception {
+		 new TPercentOfUsage(500, 0);
 
 	}
 
-	@Test
-	public void TPercentOfUsageValid() {
-		TPercentOfUsage test = null;
-		try {
-			test = new TPercentOfUsage(50, 2);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPercentOfUsageInvalidPercent() throws Exception {
 
-		}
-		assertEquals(true, test != null);
+		 new TPercentOfUsage(-500, 2);
+
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPercentOfUsageValid() throws Exception {
+
+		 new TPercentOfUsage(50, 2);
 
 	}
 
 	/********************************************************
 	 * TPresentValue Tests starten
 	 */
-	@Test
-	public void TPresentValueInvalidPresentValueAndRound() {
-		TPresentValue test = null;
-		try {
-			test = new TPresentValue(-5000, -2);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPresentValueInvalidPresentValueAndRound() throws Exception {
 
-		}
-		assertEquals(true, test == null);
+		 new TPresentValue(-5000, -2);
 	}
 
-	@Test
-	public void TPresentValueInvalidRound() {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPresentValueInvalidRound() throws Exception {
 
-		TPresentValue test = null;
-		try {
-			test = new TPresentValue(5000, -2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+		 new TPresentValue(5000, -2);
 
 	}
 
-	@Test
-	public void TPresentValueRound0() {
-		TPresentValue test = null;
-		try {
-			test = new TPresentValue(5000, 0);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPresentValueRound0() throws Exception {
 
-		}
-		assertEquals(true, test == null);
+		 new TPresentValue(5000, 0);
 
 	}
 
-	@Test
-	public void TPresentValueInvalidValue() {
-		TPresentValue test = null;
-		try {
-			test = new TPresentValue(-500, 2);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPresentValueInvalidValue() throws Exception {
 
-		}
-		assertEquals(true, test == null);
+		 new TPresentValue(-500, 2);
 
 	}
 
-	@Test
-	public void TPresentValueValid() {
-		TPresentValue test = null;
-		try {
-			test = new TPresentValue(5000, 2);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TPresentValueValid() throws Exception {
 
-		}
-		assertEquals(true, test != null);
+		 new TPresentValue(5000, 2);
 
 	}
 
 	/*********************************************************
 	 * TResourcePrice Tests starten
 	 */
-	@Test
-	public void TResourcePriceInvalidLowQualityAndPrice() {
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(-50, -200);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidLowQualityAndPrice() throws Exception {
 
-		}
-		assertEquals(true, test == null);
-	}
-
-	@Test
-	public void TResourcePriceInvalidHighQualityAndPrice() {
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(101, -200);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
-	}
-
-	@Test
-	public void TResourcePriceInvalidPrice() {
-
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(50, -20);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+		 new TResourcePrice(-50, -200);
 
 	}
 
-	@Test
-	public void TResourcePricePrice0() {
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(50, 0);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidHighQualityAndPrice() throws Exception {
 
-		}
-		assertEquals(true, test == null);
+		 new TResourcePrice(101, -200);
 
 	}
 
-	@Test
-	public void TResourcePriceQuality0() {
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(0, 1500);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidPrice() throws Exception {
 
-		}
-		assertEquals(true, test == null);
+
+		 new TResourcePrice(50, -20);
 
 	}
 
-	@Test
-	public void TResourcePriceQuality0AndPrice0() {
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(0, 0);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePricePrice0() throws Exception {
+		 new TResourcePrice(50, 0);
 
 	}
 
-	@Test
-	public void TResourcePriceInvalidLowQuality() {
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(-50, 2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceQuality0() throws Exception {
+		 new TResourcePrice(0, 1500);
 
 	}
 
-	@Test
-	public void TResourcePriceInvalidHighQuality() {
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(101, 2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceQuality0AndPrice0() throws Exception {
+		 new TResourcePrice(0, 0);
 
 	}
 
-	@Test
-	public void TResourcePriceValid() {
-		TResourcePrice test = null;
-		try {
-			test = new TResourcePrice(50, 200);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidLowQuality() throws Exception {
+		 new TResourcePrice(-50, 2);
 
-		}
-		assertEquals(true, test != null);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidHighQuality() throws Exception {
+		 new TResourcePrice(101, 2);
+
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceValid() throws Exception {
+		 new TResourcePrice(50, 200);
 
 	}
 
 	/*********************************************************
 	 * TMotivation Tests starten
 	 */
-	@Test
-	public void TMotivationInvalidLowMotivationAndRound() {
-		TMotivation test = null;
-		try {
-			test = new TMotivation(-50, -200);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationInvalidLowMotivationAndRound() throws Exception {
 
-		}
-		assertEquals(true, test == null);
-	}
-
-	
-	@Test
-	public void TMotivationInvalidHighMotivationAndRound() {
-		TMotivation test = null;
-		try {
-			test = new TMotivation(101, -200);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
-	}
-
-	@Test
-	public void TMotivationInvalidRound() {
-
-		TMotivation test = null;
-		try {
-			test = new TMotivation(50, -20);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+		 new TMotivation(-50, -200);
 
 	}
 
-	@Test
-	public void TMotivationRound0() {
-		TMotivation test = null;
-		try {
-			test = new TMotivation(50, 0);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationInvalidHighMotivationAndRound() throws Exception {
 
-		}
-		assertEquals(true, test == null);
+		 new TMotivation(101, -200);
 
 	}
 
-	@Test
-	public void TMotivationMotivation0() {
-		TMotivation test = null;
-		try {
-			test = new TMotivation(0, 2);
-		} catch (Exception e) {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationInvalidRound() throws Exception {
 
-		}
-		assertEquals(true, test == null);
+		 new TMotivation(50, -20);
 
 	}
 
-	@Test
-	public void TMotivationMotivation0AndRound0() {
-		TMotivation test = null;
-		try {
-			test = new TMotivation(0, 0);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationRound0() throws Exception {
+		 new TMotivation(50, 0);
 
 	}
 
-	@Test
-	public void TMotivationInvalidLowMotivation() {
-		TMotivation test = null;
-		try {
-			test = new TMotivation(-50, 2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationMotivation0() throws Exception {
+		 new TMotivation(0, 2);
 
 	}
 
-	@Test
-	public void TMotivationInvalidHighMotivation() {
-		TMotivation test = null;
-		try {
-			test = new TMotivation(10000, 2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test == null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationMotivation0AndRound0() throws Exception {
+		 new TMotivation(0, 0);
 
 	}
 
-	@Test
-	public void TMotivationValid() {
-		TMotivation test = null;
-		try {
-			test = new TMotivation(100, 2);
-		} catch (Exception e) {
-
-		}
-		assertEquals(true, test != null);
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationInvalidLowMotivation() throws Exception {
+		 new TMotivation(-50, 2);
 
 	}
-	
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationInvalidHighMotivation() throws Exception {
+		 new TMotivation(10000, 2);
+
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TMotivationValid() throws Exception {
+		 new TMotivation(100, 2);
+
+	}
+
 }
