@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class Constant {
-	//Pfad zur Datei mit den Werten
-	public static String PATH = "forTest.ini";
+	public static String PATH = "game.ini";
 	
 	// Section BankAccount:
 	public static final long BANK_MAX_CREDIT = Long
@@ -74,7 +73,7 @@ public class Constant {
 	public static final boolean LOG_VERBOSE = Boolean
 			.getBoolean(c("LOG_VERBOSE"));
 	public static final boolean LOG_WARNING = Boolean.getBoolean(c("LOG_WARNING"));
-
+	
 	/**
 	 * Gibt ein int Array zurück
 	 * 
