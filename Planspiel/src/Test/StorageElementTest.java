@@ -17,22 +17,22 @@ public class StorageElementTest {
 		// Rohstoffe initialisieren
 		panel = FinishedGood.create(5, 40000);
 		wafer = new Resource(60, "Wafer", 300);
-		cases = new Resource(40,  "Gehäuse", 4500);
-		
-			// Logger deaktivieren
-			
-			Constant.LOG_GET = true;
-			Constant.LOG_INFO = true;
-			Constant.LOG_METHOD_NO_PARAM = true;
-			Constant.LOG_METHOD_1_PARAM = true;
-			Constant.LOG_METHOD_N_PARAM = true;
-			Constant.LOG_METHOD_EXIT = true;
-			Constant.LOG_NEWOBJ_1_PARAM = true;
-			Constant.LOG_NEWOBJ_N_PARAM = true;
-			Constant.LOG_SET = true;
-			Constant.LOG_VERBOSE = true;
-			Constant.LOG_WARNING = true;
-		
+		cases = new Resource(40, "Gehäuse", 4500);
+
+		// Logger deaktivieren
+
+		Constant.LOG_GET = false;
+		Constant.LOG_INFO = false;
+		Constant.LOG_METHOD_NO_PARAM = false;
+		Constant.LOG_METHOD_1_PARAM = false;
+		Constant.LOG_METHOD_N_PARAM = false;
+		Constant.LOG_METHOD_EXIT = false;
+		Constant.LOG_NEWOBJ_1_PARAM = false;
+		Constant.LOG_NEWOBJ_N_PARAM = false;
+		Constant.LOG_SET = false;
+		Constant.LOG_VERBOSE = false;
+		Constant.LOG_WARNING = false;
+
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class StorageElementTest {
 		assertEquals(50, se.getQuantity());
 
 	}
-	
+
 	@Test
 	public void decreaseValidElementCompletely() {
 		// create the store element
@@ -98,6 +98,7 @@ public class StorageElementTest {
 		assertEquals(0, se.getQuantity());
 
 	}
+
 	@Test
 	public void decreaseValidElement() {
 		// create the store element
@@ -113,6 +114,7 @@ public class StorageElementTest {
 		assertEquals(450, se.getQuantity());
 
 	}
+
 	@Test
 	public void createInValidStorageElement() throws Exception {
 		// StorageElemente erstellen
