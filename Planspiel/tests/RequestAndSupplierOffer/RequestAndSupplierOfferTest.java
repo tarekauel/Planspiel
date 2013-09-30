@@ -1,4 +1,4 @@
-package Test;
+package RequestAndSupplierOffer;
 
 import static org.junit.Assert.assertEquals;
 

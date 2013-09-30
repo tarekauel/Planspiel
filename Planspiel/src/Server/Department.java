@@ -17,19 +17,19 @@ public abstract class Department {
 	 * @param c Referenz auf das Unternehmen
 	 * @param n Name der Abteilung
 	 * @param f Cent Zahl der fixKosten
-	 * @throws Exception
+	 * @throws IllegalArgumentException
 	 */
 	public Department(Company c, String n, int f)throws Exception {
 		Log.newObj(new Object[]{c,n,f});
 		
 		if (checkName(n)!=true){
-			throw new Exception("Ung�ltiger Abteilungsname:"+n);
+			throw new IllegalArgumentException("Ung�ltiger Abteilungsname:"+n);
 		}
 		if (checkFixCosts(f)!=true){
-			throw new Exception("Ung�ltige Fixkosten:"+f);
+			throw new IllegalArgumentException("Ung�ltige Fixkosten:"+f);
 		}
 		if (c == null){
-			throw new Exception("Null-Referenz Unternehmen");
+			throw new IllegalArgumentException("Null-Referenz Unternehmen");
 		}
 		this.fixCosts = f;
 		this.company = c;

@@ -1,4 +1,4 @@
-package Test;
+package StorageElementTest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,7 +10,7 @@ import Constant.Constant;
 import Server.Resource;
 import Server.StorageElement;
 
-public class StorageElementTest {
+public class TestContstructor {
 
 	private static Resource wafer;
 

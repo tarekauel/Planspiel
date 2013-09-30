@@ -1,4 +1,4 @@
-package Test;
+package ProductTest;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,7 @@ import Constant.Constant;
 import Server.FinishedGood;
 import Server.Resource;
 
-public class ProductTest {
+public class TestConstructor {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

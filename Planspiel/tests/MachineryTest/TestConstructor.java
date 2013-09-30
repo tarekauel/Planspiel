@@ -1,4 +1,4 @@
-package Test;
+package MachineryTest;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import org.junit.*;
 import Constant.Constant;
 import Server.*;
 
-public class MachineryTest {
+public class TestConstructor {
 
 	Machinery m;
 
