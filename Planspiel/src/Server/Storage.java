@@ -1,6 +1,8 @@
 package Server;
 import java.util.ArrayList;
 
+import Logger.Log;
+
 
 public class Storage extends Department {
 
@@ -14,6 +16,7 @@ public class Storage extends Department {
 	
 	
 	public void store(Product product, int quantity)throws Exception{
+		Log.method(new Object[]{product,quantity});
 		int size = listOfStorageElements.size();
 		StorageElement storageElement = null;
 		boolean found = false; 
@@ -34,6 +37,7 @@ public class Storage extends Department {
 			listOfStorageElements.add(storageElement);
 			
 		}
+		Log.methodExit();
 	}//store
 	
 	public void updateStorageElements(){
@@ -41,6 +45,7 @@ public class Storage extends Department {
 	}// TODO updateStorageElements was macht diese Funktion?! die kosten updaten?!?!?!?!
 	
 	public int getStorageCostsSum(){
+		
 		StorageElement storageElement = null;
 		Product product = null;
 		int sum = 0;
@@ -50,10 +55,12 @@ public class Storage extends Department {
 			product = storageElement.getProduct();
 			sum = sum + product.getStorageCostsPerRound();
 		}
+		Log.get(sum);
 		return sum;
 	}//getStorageCostsSum
 	
 	public boolean unstore(Product product, int quantity){
+		Log.method(new Object[]{product,quantity});
 		//muss hier die angegebene Quantity//Product wieder geprueft werden??
 		StorageElement storageElement = null;
 		Product productTmp = null;
@@ -73,6 +80,7 @@ public class Storage extends Department {
 				break;
 			}
 		}//for sucht passendes StrEl anhand von Prod aendert dann die Anzahl
+		Log.get(success);
 		return success; //success macht keine angabe ob reduceQuantity()fehlschlug oder
 						//kein StorageElement/product in der ArrayList gefunden wurde
 	}//unstore
@@ -85,9 +93,11 @@ public class Storage extends Department {
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
 			if(product.getQuality() == quality){
+				Log.get(storageElement);
 				return storageElement;
 			}//if
 		}//for
+		Log.get(null);
 		return null;
 	}//getFinishedGoodByQuality
 	
@@ -105,6 +115,7 @@ public class Storage extends Department {
 				finishedGoods.add(finishedGood);
 			}
 		}//for
+		Log.get(finishedGoods);
 		return finishedGoods;
 	}//getAllFinishedGoods
 	
@@ -122,6 +133,7 @@ public class Storage extends Department {
 				resources.add(resource);
 			}
 		}//for
+		Log.get(resources);
 		return resources;
 		
 	}//getAllResources
@@ -131,6 +143,7 @@ public class Storage extends Department {
 	 * @return Liste aller Storage Elemente
 	 */
 	public ArrayList<StorageElement> getAllStorageElements() {
+		Log.get(listOfStorageElements);
 		return listOfStorageElements;
 	}
 }
