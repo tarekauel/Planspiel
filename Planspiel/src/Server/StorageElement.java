@@ -1,7 +1,5 @@
 package Server;
 
-import java.io.IOException;
-
 import Logger.Log;
 
 public class StorageElement {
@@ -44,7 +42,7 @@ public class StorageElement {
 	public boolean reduceQuantity(int quantity){
 		Log.method(quantity);
 		boolean enoughInStore = checkEnoughInStorage(quantity);
-		if(enoughInStore){
+		if(enoughInStore&&quantity>0){
 			this.quantity = this.quantity - quantity;
 			Log.get(true);
 			return true;

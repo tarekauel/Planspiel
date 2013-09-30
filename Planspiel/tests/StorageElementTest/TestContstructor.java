@@ -2,25 +2,20 @@ package StorageElementTest;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Constant.Constant;
-
 import Server.Resource;
 import Server.StorageElement;
 
 public class TestContstructor {
 
-	private static Resource wafer;
-
+	private Resource wafer;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		// Rohstoffe initialisieren
-		
-		wafer = new Resource(60, "Wafer", 300);
-		
 
 		// Logger deaktivieren
 
@@ -38,13 +33,17 @@ public class TestContstructor {
 
 	}
 
+	@Before
+	public void init() throws Exception {
+		wafer = new Resource(60, "Wafer", 300);
+	}
+	
+
 	@Test
 	public void StorageElementValid() throws Exception {
 
 		StorageElement se = new StorageElement(5, wafer);
 
-		
-		
 		assertEquals(true, se != null);
 
 	}
@@ -114,6 +113,7 @@ public class TestContstructor {
 		new StorageElement(0, wafer);
 
 	}
+
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void StorageElementWithNullReference() throws Exception {
 		// StorageElemente erstellen
@@ -121,6 +121,7 @@ public class TestContstructor {
 		new StorageElement(1, null);
 
 	}
+
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void StorageElementWithNullReferenceAndQuantity0() throws Exception {
 		// StorageElemente erstellen
