@@ -37,7 +37,30 @@ public class Constant {
 	public static final int PRODUCTION_IMPACT_CASE = 20;
 	public static final int PRODUCTION_MAX_QUALITY_ADDITION = 20;
 	
-	//Technical Constats
+	// Section Technical Constats
 	public static final int TCP_PORT=11111;
 	public static final int UDP_PORT=11111;
+	
+	// Section Logger
+	public static boolean LOG_GET = true;
+	public static boolean LOG_INFO = true;
+	public static boolean LOG_METHOD_NO_PARAM = true;
+	public static boolean LOG_METHOD_1_PARAM = true;
+	public static boolean LOG_METHOD_N_PARAM = true;
+	public static boolean LOG_METHOD_EXIT = true;
+	public static boolean LOG_NEWOBJ_1_PARAM = true;
+	public static boolean LOG_NEWOBJ_N_PARAM = true;
+	public static boolean LOG_SET = true;
+	public static boolean LOG_VERBOSE = true;
+	public static boolean LOG_WARNING = true;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
