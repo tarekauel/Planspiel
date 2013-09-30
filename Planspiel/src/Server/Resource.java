@@ -18,11 +18,12 @@ public class Resource extends Product {
 	 */
 	public Resource(int quality, String name, int costs) throws Exception {		
 		super(quality, name, costs);
+		Log.newObj(new Object[]{quality,name,costs});
 		if(!checkNameIsValid(name)) {
 			throw new IllegalArgumentException("Name der Resource ist ungültig. Muss Wafer oder Gehäuse sein!");
 		}
 		
-		Log.newObj(new String[] { quality+"", name, costs+"" } );
+		Log.methodExit();
 	}
 
 	/**
@@ -33,10 +34,10 @@ public class Resource extends Product {
 	 * @return
 	 */
 	private static Boolean checkNameIsValid(String name) {
-		Log.method();
 		if (name.equals("Wafer") || name.equals("Gehäuse")) {
 			return true;
 		}
+		
 		return false;
 	}
 
