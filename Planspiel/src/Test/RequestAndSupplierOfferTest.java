@@ -1,12 +1,11 @@
 package Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Constant.Constant;
-import Server.FinishedGood;
 import Server.Request;
 import Server.Resource;
 import Server.SupplierOffer;

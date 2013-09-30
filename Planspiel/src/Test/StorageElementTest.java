@@ -114,4 +114,18 @@ public class StorageElementTest {
 		new StorageElement(0, wafer);
 
 	}
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void StorageElementWithNullReference() throws Exception {
+		// StorageElemente erstellen
+
+		new StorageElement(1, null);
+
+	}
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void StorageElementWithNullReferenceAndQuantity0() throws Exception {
+		// StorageElemente erstellen
+
+		new StorageElement(0, null);
+
+	}
 }
