@@ -12,12 +12,12 @@ public class StorageElement {
 	 * Erzeugt ein neues StorageElement
 	 * @param quantity Anzahl der produkte die das Element enthält
 	 * @param product Zu verstauendes
-	 * @throws Exception
+	 * @throws IllegalArgumentException
 	 */
 	public StorageElement(int quantity, Product product) throws Exception{
 		Log.newObj(new Object[]{quantity,product});
 		if(product == null || !(checkQuantityHigherZero(quantity))){
-			throw new IOException("product is null or quantity is lower zero. Class StorageElement Method Constructor");
+			throw new IllegalArgumentException("product is null or quantity is lower zero. Class StorageElement Method Constructor");
 		}
 		this.product = product;
 		this.quantity = quantity;

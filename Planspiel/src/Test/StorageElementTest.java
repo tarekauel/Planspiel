@@ -1,23 +1,26 @@
 package Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import Constant.Constant;
-import Server.*;
+
+import Server.Resource;
+import Server.StorageElement;
 
 public class StorageElementTest {
-	private static FinishedGood panel;
+
 	private static Resource wafer;
-	private static Resource cases;
+
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// Rohstoffe initialisieren
-		panel = FinishedGood.create(5, 40000);
+		
 		wafer = new Resource(60, "Wafer", 300);
-		cases = new Resource(40, "Gehäuse", 4500);
+		
 
 		// Logger deaktivieren
 
@@ -36,63 +39,48 @@ public class StorageElementTest {
 	}
 
 	@Test
-	public void createValidStorageElement() throws Exception {
-		// StorageElemente erstellen
-		// Wafer erstellen
-		StorageElement se = new StorageElement(5, wafer);
-		assertEquals(true, se != null);
-		// Case erstellen
-		se = new StorageElement(2, cases);
-		assertEquals(true, se != null);
+	public void StorageElementValid() throws Exception {
 
-		// Panel erstellen
-		se = new StorageElement(50, panel);
+		StorageElement se = new StorageElement(5, wafer);
+
+		
+		
 		assertEquals(true, se != null);
 
 	}
 
 	@Test
-	public void increaseValidElement() {
+	public void StorageElementIncrease() throws Exception {
 		// create the store element
 		StorageElement se = null;
-		try {
-			se = new StorageElement(50, wafer);
-		} catch (Exception e) {
-		}
-		assertEquals(true, se != null);
-		// put something more on the store element
-		se.increaseQuantity(500);
+
+		se = new StorageElement(50, wafer);
+
+		assertEquals(true, se.increaseQuantity(500));
 
 		assertEquals(550, se.getQuantity());
 
 	}
 
 	@Test
-	public void decreaseValidElementTooMuch() {
+	public void StorageElementDecreaseTooMuch() throws Exception {
 		// create the store element
 		StorageElement se = null;
-		try {
-			se = new StorageElement(50, wafer);
-		} catch (Exception e) {
-		}
-		assertEquals(true, se != null);
-		// take more from the store element then is in
-		se.reduceQuantity(500);
+		se = new StorageElement(50, wafer);
 
+		assertEquals(false, se.reduceQuantity(500));
+		// Darf nicht abgebucht haben
 		assertEquals(50, se.getQuantity());
 
 	}
 
 	@Test
-	public void decreaseValidElementCompletely() {
+	public void StorageElementDecreaseValidElementCompletely() throws Exception {
 		// create the store element
 		StorageElement se = null;
-		try {
-			se = new StorageElement(500, wafer);
-		} catch (Exception e) {
-		}
-		assertEquals(true, se != null);
-		// get exactly the whole store element
+
+		se = new StorageElement(500, wafer);
+
 		se.reduceQuantity(500);
 
 		assertEquals(0, se.getQuantity());
@@ -100,46 +88,30 @@ public class StorageElementTest {
 	}
 
 	@Test
-	public void decreaseValidElement() {
+	public void StorageElementDecreaseValidElement() throws Exception {
 		// create the store element
 		StorageElement se = null;
-		try {
-			se = new StorageElement(500, wafer);
-		} catch (Exception e) {
-		}
-		assertEquals(true, se != null);
-		// get exactly the whole store element
+
+		se = new StorageElement(500, wafer);
+
 		se.reduceQuantity(50);
 
 		assertEquals(450, se.getQuantity());
 
 	}
 
-	@Test
-	public void createInValidStorageElement() throws Exception {
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void StorageElementWithInvalidQuantity() throws Exception {
 		// StorageElemente erstellen
-		// Wafer erstellen
-		StorageElement se = null;
-		try {
-			se = new StorageElement(-5, wafer);
-		} catch (Exception e) {
-		}
-		assertEquals(true, se == null);
-		// Case erstellen
-		se = null;
-		try {
-			se = new StorageElement(2, null);
-		} catch (Exception e) {
-		}
-		assertEquals(true, se == null);
+		new StorageElement(-5, wafer);
 
-		// Panel erstellen
-		se = null;
-		try {
-			se = new StorageElement(0, panel);
-		} catch (Exception e) {
-		}
-		assertEquals(true, se == null);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void StorageElementWithQuantity0() throws Exception {
+		// StorageElemente erstellen
+
+		new StorageElement(0, wafer);
 
 	}
 }
