@@ -12,5 +12,6 @@ TO-DO List
 -- StorageCostsUpdate
 -- Bei store die Kosten neu berechnen
 ---- Bei Product ein setPrice!
--- Logger überall einbinden
+Done --(Logger überall einbinden) 
 -- Logger auf SysOut mit HTML-Ausgabe
+-- Maschinenausbaukosten einbauen
