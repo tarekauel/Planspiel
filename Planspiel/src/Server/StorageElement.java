@@ -2,6 +2,8 @@ package Server;
 
 import java.io.IOException;
 
+import Logger.Log;
+
 public class StorageElement {
 	
 	private int quantity;
@@ -13,11 +15,13 @@ public class StorageElement {
 	 * @throws Exception
 	 */
 	public StorageElement(int quantity, Product product) throws Exception{
+		Log.newObj(new Object[]{quantity,product});
 		if(product == null || !(checkQuantityHigherZero(quantity))){
 			throw new IOException("product is null or quantity is lower zero. Class StorageElement Method Constructor");
 		}
 		this.product = product;
 		this.quantity = quantity;
+		Log.methodExit();
 	}
 	
 	
@@ -37,24 +41,30 @@ public class StorageElement {
 	}
 	
 	public boolean reduceQuantity(int quantity){
+		Log.method(quantity);
 		boolean enoughInStore = checkEnoughInStorage(quantity);
 		if(enoughInStore){
 			this.quantity = this.quantity - quantity;
-			
+			Log.get(true);
 			return true;
 		}
-		else return false;
+		Log.get(false);
+		return false;
 	}
 	
 	public boolean increaseQuantity(int quantity){
+		Log.method(quantity);
 		if(quantity>0){
 			this.quantity = this.quantity + quantity;
+			Log.get(true);
 			return true;
 		}
+		Log.get(false);
 		return false;
 	}
 	
 	public Product getProduct(){
+		Log.get(product);
 		return product;
 	}
 
