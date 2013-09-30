@@ -36,4 +36,8 @@ public class Constant {
 	public static final int PRODUCTION_IMPACT_WAFER = 80;
 	public static final int PRODUCTION_IMPACT_CASE = 20;
 	public static final int PRODUCTION_MAX_QUALITY_ADDITION = 20;
+	
+	//Technical Constats
+	public static final int TCP_PORT=11111;
+	public static final int UDP_PORT=11111;
 }

@@ -3,6 +3,7 @@ package Server.Connection;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import Constant.Constant;
 import Message.GameDataMessage;
 import Server.Player;
 
@@ -15,8 +16,8 @@ public class Server {
 	private static Server server;
 	private ArrayList<Player> playerList = new ArrayList<Player>();
 	private ConnectionListener connectionListener = null;
-	private int receivedGameMessages=0;
-	private int maxPlayer=0;
+	private int receivedGameMessages = 0;
+	private int maxPlayer = 0;
 
 	/**
 	 * 
@@ -29,12 +30,17 @@ public class Server {
 
 	/**
 	 * Returned den Server. Somit ist ein Sigleton sichergestellt.
+	 * 
 	 * @return
 	 */
-	public static Server getServer(){
+	public static Server getServer() {
+		if (server == null) {
+			server = new Server(Constant.TCP_PORT);
+		}
+
 		return server;
 	}
-	
+
 	/**
 	 * 
 	 * @param port
@@ -54,16 +60,19 @@ public class Server {
 	}
 
 	public synchronized void notifyGameData() {
-		if (receivedGameMessages>=maxPlayer) {
-			receivedGameMessages=0;
-			//TODO:Starte Spiel
+		if (receivedGameMessages >= maxPlayer) {
+			receivedGameMessages = 0;
+			// TODO:Starte Spiel
 		}
 		receivedGameMessages++;
 	}
-	public void sendResultsToClients(ArrayList<GameDataMessage>){
-		//TODO: Send Results
-		
+
+	public void sendResultsToClients(
+			ArrayList<GameDataMessage> messagesToClients) {
+		// TODO: Send Results
+
 	}
+
 	public synchronized void addPlayer(Player player) {
 		playerList.add(player);
 	}

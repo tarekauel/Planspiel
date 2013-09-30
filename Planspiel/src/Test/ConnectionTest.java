@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Client.Connection.Client;
+import Constant.Constant;
 import Message.IMessage;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
@@ -24,8 +25,8 @@ public class ConnectionTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		String ip = "127.0.0.1";
-		int port = 11111;
-		server = new Server(port);
+		int port = Constant.TCP_PORT;
+		server = Server.getServer();
 		client1 = new Client();
 		client1.connect(ip, port);
 		client2 = new Client();

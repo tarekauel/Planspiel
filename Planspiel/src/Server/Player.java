@@ -16,7 +16,9 @@ public class Player {
 
 	private String name = "";
 	private String password = "";
-	private ServerSocket serverConnection;
+	private String ip = "";
+	private Socket clientSocket;
+	private int port;
 
 	/**
 	 * Legt einen neuen Spieler mit den Parametern:
@@ -27,9 +29,12 @@ public class Player {
 	 *            an.
 	 */
 	public Player(String name, String password, Socket clientSocket) {
-		Log.newObj(new Object[]{name,password,clientSocket});
-		setName(name);
-		setPassword(password);
+		Log.newObj(new Object[] { name, password, clientSocket, ip, port });
+		this.name = name;
+		this.password = password;
+		this.clientSocket = clientSocket;
+		this.ip = clientSocket.getInetAddress().toString();
+		this.port = clientSocket.getPort();
 		setClientSocket(clientSocket);
 		Log.methodExit();
 	}
@@ -49,19 +54,27 @@ public class Player {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		//TODO: SINN?
-		this.password = password;
-	}
-
 	public String getName() {
 		Log.get(name);
 		return name;
 	}
 
-	public void setName(String name) {
-		//TODO: SINN?
-		this.name = name;
+	public String getIp() {
+		Log.get(ip);
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public int getPort() {
+		Log.get(port);
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 }

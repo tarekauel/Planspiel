@@ -157,9 +157,10 @@ public class ServerConnection extends Thread {
 		}
 
 	}
-/**
- * Schlieﬂt die Verbindung mit dem Client
- */
+
+	/**
+	 * Schlieﬂt die Verbindung mit dem Client
+	 */
 	public void close() {
 		try {
 			clientSocket.close();
