@@ -37,6 +37,7 @@ public class StorageElement {
 	}
 	
 	public int getQuantity(){
+		Log.get(quantity);
 		return quantity;
 	}
 	
