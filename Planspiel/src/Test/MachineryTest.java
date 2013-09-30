@@ -3,6 +3,8 @@ package Test;
 import static org.junit.Assert.*;
 
 import org.junit.*;
+
+import Constant.Constant;
 import Server.*;
 
 public class MachineryTest {
@@ -11,7 +13,19 @@ public class MachineryTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-
+		// Logger deaktivieren
+		
+		Constant.LOG_GET = true;
+		Constant.LOG_INFO = true;
+		Constant.LOG_METHOD_NO_PARAM = true;
+		Constant.LOG_METHOD_1_PARAM = true;
+		Constant.LOG_METHOD_N_PARAM = true;
+		Constant.LOG_METHOD_EXIT = true;
+		Constant.LOG_NEWOBJ_1_PARAM = true;
+		Constant.LOG_NEWOBJ_N_PARAM = true;
+		Constant.LOG_SET = true;
+		Constant.LOG_VERBOSE = true;
+		Constant.LOG_WARNING = true;
 	}
 
 	@Before

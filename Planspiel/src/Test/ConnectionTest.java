@@ -35,6 +35,23 @@ public class ConnectionTest {
 		client3.connect(ip, port);
 		client4 = new Client();
 		client4.connect(ip, port);
+		
+		
+			// Logger deaktivieren
+			
+			Constant.LOG_GET = true;
+			Constant.LOG_INFO = true;
+			Constant.LOG_METHOD_NO_PARAM = true;
+			Constant.LOG_METHOD_1_PARAM = true;
+			Constant.LOG_METHOD_N_PARAM = true;
+			Constant.LOG_METHOD_EXIT = true;
+			Constant.LOG_NEWOBJ_1_PARAM = true;
+			Constant.LOG_NEWOBJ_N_PARAM = true;
+			Constant.LOG_SET = true;
+			Constant.LOG_VERBOSE = true;
+			Constant.LOG_WARNING = true;
+		
+		
 	}
 
 	@After
