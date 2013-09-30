@@ -1,0 +1,45 @@
+package Test;
+
+import org.junit.Test;
+
+import Server.TWage;
+
+public class TWageTest {
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TWageInvalidAmount() throws Exception {
+	
+		new TWage(-500, 2);
+	
+	}
+
+	/********************************************************
+	 * TWage Tests starten
+	 */
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TWageInvalidAmountAndRound() throws Exception {
+		new TWage(-500, -2);
+	
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TWageInvalidRound() throws Exception {
+	
+		new TWage(500, -2);
+	
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TWageRound0() throws Exception {
+		new TWage(500, 0);
+	
+	}
+
+	@Test
+	public void TWageValid() throws Exception {
+	
+		new TWage(50, 2);
+	
+	}
+
+}

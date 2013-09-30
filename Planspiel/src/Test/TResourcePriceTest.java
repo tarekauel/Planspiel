@@ -1,0 +1,69 @@
+package Test;
+
+import org.junit.Test;
+
+import Server.TResourcePrice;
+
+public class TResourcePriceTest {
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidHighQuality() throws Exception {
+		new TResourcePrice(101, 2);
+	
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidHighQualityAndPrice() throws Exception {
+	
+		new TResourcePrice(101, -200);
+	
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidLowQuality() throws Exception {
+		new TResourcePrice(-50, 2);
+	
+	}
+
+	/*********************************************************
+	 * TResourcePrice Tests starten
+	 */
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidLowQualityAndPrice() throws Exception {
+	
+		new TResourcePrice(-50, -200);
+	
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceInvalidPrice() throws Exception {
+	
+		new TResourcePrice(50, -20);
+	
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePricePrice0() throws Exception {
+		new TResourcePrice(50, 0);
+	
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceQuality0() throws Exception {
+		new TResourcePrice(0, 1500);
+	
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void TResourcePriceQuality0AndPrice0() throws Exception {
+		new TResourcePrice(0, 0);
+	
+	}
+
+	@Test
+	public void TResourcePriceValid() throws Exception {
+		new TResourcePrice(50, 200);
+	
+	}
+
+}
