@@ -3,6 +3,8 @@ package Server;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Logger.Log;
+
 /**
  * Die Purchase-Klasse stellt die Einkaufsabteilung des Unternehmens dar. Sie
  * kann an den beschaffungsmarkt neue Anfragen stellen und die Antworten
@@ -15,13 +17,13 @@ import java.util.ArrayList;
 public class Purchase extends DepartmentRoundSensitive {
 
 	// Liste alle Requests, die jemals gestellt worden sind
-	private ArrayList<Request>			listOfRequests				= new ArrayList<Request>();
+	private ArrayList<Request> listOfRequests = new ArrayList<Request>();
 
 	// Liste aller Request dieser Runde
-	private ArrayList<Request>			listOfLatesRequests			= new ArrayList<Request>();
+	private ArrayList<Request> listOfLatestRequests = new ArrayList<Request>();
 
 	// Liste aller akzeptierten SupplierOffers dieser Runde ( für den Markt )
-	private ArrayList<SupplierOffer>	listOfLatestSupplierOffers	= new ArrayList<SupplierOffer>();
+	private ArrayList<SupplierOffer> listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
 
 	/**
 	 * Name wird vom Konstruktor gesetzt.
@@ -35,6 +37,7 @@ public class Purchase extends DepartmentRoundSensitive {
 	 */
 	public Purchase(Company c, int fix) throws Exception {
 		super(c, "Einkauf", fix);
+		Log.newObj(new Object[] { c, fix });
 		SupplierMarket.getMarket().addPurchase(this);
 	}
 
@@ -66,16 +69,17 @@ public class Purchase extends DepartmentRoundSensitive {
 	 */
 
 	public void createRequest(Resource resource) throws Exception {
-
+		Log.method(resource);
 		if (resource == null) {
-			throw new NullPointerException("Resource is null! Class Purchase Method createRequest");
+			throw new NullPointerException(
+					"Resource is null! Class Purchase Method createRequest");
 		}
 
 		Request request = new Request(resource);
 		// Request request = Request.create(resource);
 		listOfRequests.add(request);
-		listOfLatesRequests.add(request);
-
+		listOfLatestRequests.add(request);
+		Log.methodExit();
 	}
 
 	/**
@@ -89,13 +93,17 @@ public class Purchase extends DepartmentRoundSensitive {
 	 *             : falls SupplierOffer null ist oder die Anzahl kleiner null.s
 	 */
 
-	public void acceptSupplierOffer(SupplierOffer supplierOffer, int quantity) throws Exception {
+	public void acceptSupplierOffer(SupplierOffer supplierOffer, int quantity)
+			throws Exception {
+		Log.method(new Object[]{supplierOffer,quantity});
 		if (supplierOffer == null) {
-			throw new NullPointerException("supplierOffer is null! Class Purchase Method acceptSupplierOffer");
+			throw new NullPointerException(
+					"supplierOffer is null! Class Purchase Method acceptSupplierOffer");
 		}
 
 		if (quantity <= 0) {
-			throw new IOException("Quantity is 0 or lower! Class Purchase Method acceptSupplierOffer");
+			throw new IOException(
+					"Quantity is 0 or lower! Class Purchase Method acceptSupplierOffer");
 		}
 
 		Resource resource = supplierOffer.getResource();
@@ -105,16 +113,20 @@ public class Purchase extends DepartmentRoundSensitive {
 		}
 
 		Storage storage = this.getCompany().getStorage();
-		
-		// Bucht den Betrag vom Konto ab. Nur wenn der Betrag abgebucht werden kann, wird das Lager erhöht!
-		if (getCompany().getBankAccount().decreaseBalance(quantity * supplierOffer.getResource().getCosts())) {
+
+		// Bucht den Betrag vom Konto ab. Nur wenn der Betrag abgebucht werden
+		// kann, wird das Lager erhöht!
+		if (getCompany().getBankAccount().decreaseBalance(
+				quantity * supplierOffer.getResource().getCosts())) {
 			storage.store(resource, quantity);
 			supplierOffer.setOrderedQuantity(quantity);
 			listOfLatestSupplierOffers.add(supplierOffer);
 		}
+		Log.methodExit();
 	}
 
 	public ArrayList<Request> getListOfRequest() {
+		Log.get(listOfRequests);
 		return listOfRequests;
 	}
 
@@ -124,7 +136,8 @@ public class Purchase extends DepartmentRoundSensitive {
 	 * @return Liste der Request
 	 */
 	public ArrayList<Request> getListOfLatesRequest() {
-		return listOfLatesRequests;
+		Log.get(listOfLatestRequests);
+		return listOfLatestRequests;
 	}
 
 	public ArrayList<SupplierOffer> getListOfAcceptedSupplierOffer() {
@@ -133,8 +146,10 @@ public class Purchase extends DepartmentRoundSensitive {
 
 	@Override
 	public void prepareForNewRound(int round) {
-		listOfLatesRequests = new ArrayList<Request>();
+		Log.method(round);
+		listOfLatestRequests = new ArrayList<Request>();
 		listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
+		Log.methodExit();
 	}
 
 }
