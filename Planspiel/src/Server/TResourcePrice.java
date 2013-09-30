@@ -1,5 +1,7 @@
 package Server;
 
+import Logger.Log;
+
 /**
  * Typklasse für einen Resourcespreis
  * 
@@ -23,6 +25,7 @@ public class TResourcePrice implements Comparable<TResourcePrice> {
 	 *            Preis, der der Qualität zugeordnet ist ( > 0 )
 	 */
 	public TResourcePrice(int quality, int price) {
+		Log.newObj(new Object[]{quality, price});
 		if (!checkQuality(quality)) {
 			throw new IllegalArgumentException(
 					"Die angegebene Qualität ist ungültig '" + quality + "'");
@@ -36,6 +39,8 @@ public class TResourcePrice implements Comparable<TResourcePrice> {
 		this.quality = quality;
 
 		this.price = price;
+		
+		Log.methodExit();
 	}
 
 	/**
@@ -66,6 +71,7 @@ public class TResourcePrice implements Comparable<TResourcePrice> {
 	 * @return quality
 	 */
 	public int getQuality() {
+		Log.get(quality);
 		return quality;
 	}
 
@@ -75,6 +81,7 @@ public class TResourcePrice implements Comparable<TResourcePrice> {
 	 * @return price
 	 */
 	public int getPrice() {
+		Log.get(price);
 		return price;
 	}
 

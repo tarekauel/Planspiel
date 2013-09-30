@@ -1,9 +1,10 @@
 package Server;
 
-
+import Logger.Log;
 
 /**
- * Dieser Typ gibt den Marktanteil (in 100% ( d.h. ein Monopol sind 10000 !)) einer Firma an
+ * Dieser Typ gibt den Marktanteil (in 100% ( d.h. ein Monopol sind 10000 !))
+ * einer Firma an
  * 
  * @author Tarek
  * 
@@ -11,8 +12,8 @@ package Server;
 // TODO: ist jetz ein Typ :D
 public class TMarketShare {
 
-	private Company	c;
-	private int		marketShare;
+	private Company c;
+	private int marketShare;
 
 	/**
 	 * Konstruktor für Marketshare
@@ -23,14 +24,18 @@ public class TMarketShare {
 	 *            der Marktanteil in ganze Prozent
 	 */
 	public TMarketShare(Company c, int marketShare) {
+		Log.newObj(new Object[] { c, marketShare });
 		if (!checkMarketShare(marketShare)) {
-			throw new IllegalArgumentException("Marktanteil ist ungültig: '" + marketShare + "'");
+			throw new IllegalArgumentException("Marktanteil ist ungültig: '"
+					+ marketShare + "'");
 		}
 		if (c == null) {
-			throw new IllegalArgumentException("Company-Referenz darf nicht auf NULL zeigen!");
+			throw new IllegalArgumentException(
+					"Company-Referenz darf nicht auf NULL zeigen!");
 		}
 		this.c = c;
 		this.marketShare = marketShare;
+		Log.methodExit();
 	}
 
 	/**
@@ -38,6 +43,7 @@ public class TMarketShare {
 	 * @return liefert die Firma des Marktanteils zurück
 	 */
 	public Company getCompany() {
+		Log.get(c);
 		return c;
 	}
 
@@ -46,6 +52,7 @@ public class TMarketShare {
 	 * @return liefert den Marktanteil der Firma in ganzen Prozent zurück
 	 */
 	public int getMarketShare() {
+		Log.get(marketShare);
 		return marketShare;
 	}
 
