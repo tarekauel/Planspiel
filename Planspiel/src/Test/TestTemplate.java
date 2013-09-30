@@ -1,18 +1,18 @@
 package Test;
 
-import static org.junit.Assert.*;
-
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import Constant.Constant;
-import Server.*;
 
 public class TestTemplate {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// Logger deaktivieren
-		
+
 		Constant.LOG_GET = false;
 		Constant.LOG_INFO = false;
 		Constant.LOG_METHOD_NO_PARAM = false;
@@ -27,17 +27,16 @@ public class TestTemplate {
 	}
 
 	@Before
-	public void createMachinery() {
+	public void initializeTests() {
 	}
 
 	@Test
-	public void initializeTest() {
+	public void makeTests() {
 	}
 
-		
 	@After
-	public void resetMachine() {
-		
+	public void resetTests() {
+
 	}
 
 }
