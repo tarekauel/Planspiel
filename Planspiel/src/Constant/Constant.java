@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 public class Constant {
 	//Pfad zur Datei mit den Werten
-	private static final String PATH = "constants.ini";
+	public static String PATH = "forTest.ini";
 	
 	// Section BankAccount:
 	public static final long BANK_MAX_CREDIT = Long
@@ -56,24 +56,24 @@ public class Constant {
 	public static final int UDP_PORT = Integer.parseInt(c("UDP_PORT"));
 
 	// Section Logger
-	public static boolean LOG_GET = Boolean.getBoolean(c("LOG_GET"));
-	public static boolean LOG_INFO = Boolean.getBoolean(c("LOG_INFO"));
-	public static boolean LOG_METHOD_NO_PARAM = Boolean
+	public static final boolean LOG_GET = Boolean.getBoolean(c("LOG_GET"));
+	public static final boolean LOG_INFO = Boolean.getBoolean(c("LOG_INFO"));
+	public static final boolean LOG_METHOD_NO_PARAM = Boolean
 			.getBoolean(c("LOG_METHOD_NO_PARAM"));
-	public static boolean LOG_METHOD_1_PARAM = Boolean
+	public static final boolean LOG_METHOD_1_PARAM = Boolean
 			.getBoolean(c("LOG_METHOD_1_PARAM"));
-	public static boolean LOG_METHOD_N_PARAM = Boolean
+	public static final boolean LOG_METHOD_N_PARAM = Boolean
 			.getBoolean(c("LOG_METHOD_N_PARAM"));
-	public static boolean LOG_METHOD_EXIT = Boolean
+	public static final boolean LOG_METHOD_EXIT = Boolean
 			.getBoolean(c("LOG_METHOD_EXIT"));
-	public static boolean LOG_NEWOBJ_1_PARAM = Boolean
+	public static final boolean LOG_NEWOBJ_1_PARAM = Boolean
 			.getBoolean(c("LOG_NEWOBJ_1_PARAM"));
-	public static boolean LOG_NEWOBJ_N_PARAM = Boolean
+	public static final boolean LOG_NEWOBJ_N_PARAM = Boolean
 			.getBoolean(c("LOG_NEWOBJ_N_PARAM"));
-	public static boolean LOG_SET = Boolean.getBoolean(c("LOG_SET"));
+	public static final boolean LOG_SET = Boolean.getBoolean(c("LOG_SET"));
 	public static final boolean LOG_VERBOSE = Boolean
 			.getBoolean(c("LOG_VERBOSE"));
-	public static boolean LOG_WARNING = Boolean.getBoolean(c("LOG_WARNING"));
+	public static final boolean LOG_WARNING = Boolean.getBoolean(c("LOG_WARNING"));
 
 	/**
 	 * Gibt ein int Array zurück
@@ -118,7 +118,7 @@ public class Constant {
 	 */
 	private static String c(String s) {
 		try {
-			BufferedReader r = new BufferedReader(new FileReader("PATH"));
+			BufferedReader r = new BufferedReader(new FileReader(PATH));
 			String tmp = null;
 			while ((tmp = r.readLine()) != null) {
 				if (tmp.startsWith(s)) {

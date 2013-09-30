@@ -37,19 +37,8 @@ public class ConnectionTest {
 		client4.connect(ip, port);
 		
 		
-			// Logger deaktivieren
-			
-			Constant.LOG_GET = false;
-			Constant.LOG_INFO = false;
-			Constant.LOG_METHOD_NO_PARAM = false;
-			Constant.LOG_METHOD_1_PARAM = false;
-			Constant.LOG_METHOD_N_PARAM = false;
-			Constant.LOG_METHOD_EXIT = false;
-			Constant.LOG_NEWOBJ_1_PARAM = false;
-			Constant.LOG_NEWOBJ_N_PARAM = false;
-			Constant.LOG_SET = false;
-			Constant.LOG_VERBOSE = false;
-			Constant.LOG_WARNING = false;
+		// Logger deaktivieren
+				Constant.PATH="forTest.ini";
 		
 		
 	}
