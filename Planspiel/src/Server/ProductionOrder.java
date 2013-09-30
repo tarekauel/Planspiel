@@ -123,6 +123,8 @@ public class ProductionOrder {
 	 * @return int Anzahl aus dem Konstruktor
 	 */
 	public int getRequested() {
+		Log.get(quantityToProduce);
+		
 		return quantityToProduce;
 
 	}
