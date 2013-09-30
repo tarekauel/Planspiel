@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import Server.TMotivation;
 
-public class TypeTest {
+public class TMotivationTest {
 	/*********************************************************
 	 * TMotivation Tests starten
 	 */
