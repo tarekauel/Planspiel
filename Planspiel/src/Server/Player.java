@@ -1,5 +1,6 @@
 package Server;
 
+import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
@@ -13,7 +14,7 @@ public class Player {
 
 	private String name = "";
 	private String password = "";
-	private Socket clientSocket;
+	private ServerSocket serverConnection;
 
 	/**
 	 * Legt einen neuen Spieler mit den Parametern:
