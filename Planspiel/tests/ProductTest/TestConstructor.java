@@ -46,7 +46,7 @@ public class TestConstructor {
 
 	@Test (expected = IllegalArgumentException.class )
 	public void createNonValidRessource()  throws Exception{
-		Resource wafer = new Resource(7, "Panel", 20);
+		new Resource(7, "Panel", 20);
 
 	}
 
