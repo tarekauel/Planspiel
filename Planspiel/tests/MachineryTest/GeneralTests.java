@@ -7,7 +7,7 @@ import org.junit.*;
 import Constant.Constant;
 import Server.*;
 
-public class TestConstructor {
+public class GeneralTests {
 
 	Machinery m;
 
