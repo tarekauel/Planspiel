@@ -30,11 +30,15 @@ Company c;
 		Constant.LOG_SET = false;
 		Constant.LOG_VERBOSE = false;
 		Constant.LOG_WARNING = false;
+		
+		
+		
+		Location.initLocations();
 	}
 
 	@Before
 	public void initializeTests() throws Exception {
-		Location.initLocations();
+		
 		
 		c = new Company(Location.getLocationByCountry("USA"));
 	}
