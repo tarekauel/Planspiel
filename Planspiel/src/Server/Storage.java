@@ -2,30 +2,43 @@ package Server;
 import java.util.ArrayList;
 
 
-public class Storage {
-	
+public class Storage extends Department {
+
 	private ArrayList<StorageElement> listOfStorageElements = new ArrayList<StorageElement>();
 	
-	public void store(Product product, int quantity){
+	public Storage(Company c, int fix) throws Exception {
+        super(c,"Lager",fix);
+        
+    }
+	
+	
+	
+	public void store(Product product, int quantity)throws Exception{
 		int size = listOfStorageElements.size();
 		StorageElement storageElement = null;
 		boolean found = false; 
 		for(int i=0; i<size; i++){
 			storageElement = listOfStorageElements.get(i);
 			if(storageElement.getProduct() == product){
-				storageElement.increaseQuantity(quantity); //falls Element gefunden wird Anzahl erhöht
+				storageElement.increaseQuantity(quantity); //falls Element gefunden wird Anzahl erhï¿½ht
+				// TODO Kosten müssen neu berechnet werden
 				found = true;
+				break;
 			}
-		}//for
-		if(found==false){
+		}
+		
+		if(!found){
+			//Exceptions lassen Programm stoppen
 			storageElement = new StorageElement(quantity,product);
+			
 			listOfStorageElements.add(storageElement);
+			
 		}
 	}//store
 	
 	public void updateStorageElements(){
 		
-	}//updateStorageElements was macht diese Funktion?!
+	}// TODO updateStorageElements was macht diese Funktion?! die kosten updaten?!?!?!?!
 	
 	public int getStorageCostsSum(){
 		StorageElement storageElement = null;
@@ -51,6 +64,13 @@ public class Storage {
 			productTmp = storageElement.getProduct();
 			if(productTmp == product){
 				success = storageElement.reduceQuantity(quantity); 
+				//falls das storageelement jetzt leer ist, lösche dir Referenz
+				if (storageElement.getQuantity()==0){
+					listOfStorageElements.remove(storageElement);
+					
+				}
+				//beenden der schleife
+				break;
 			}
 		}//for sucht passendes StrEl anhand von Prod aendert dann die Anzahl
 		return success; //success macht keine angabe ob reduceQuantity()fehlschlug oder
@@ -64,7 +84,7 @@ public class Storage {
 		for(int i=0; i<size; i++){
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
-			if(product.quality == quality){
+			if(product.getQuality() == quality){
 				return storageElement;
 			}//if
 		}//for
@@ -105,4 +125,12 @@ public class Storage {
 		return resources;
 		
 	}//getAllResources
+	
+	/**
+	 * Liefert eine Liste aller Storage-Elemente zurück
+	 * @return Liste aller Storage Elemente
+	 */
+	public ArrayList<StorageElement> getAllStorageElements() {
+		return listOfStorageElements;
+	}
 }

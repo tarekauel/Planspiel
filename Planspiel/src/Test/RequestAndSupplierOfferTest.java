@@ -17,65 +17,59 @@ public class RequestAndSupplierOfferTest {
 	}
 
 	@Test
-	public void createValidRequest() {
-		Resource wafer = Resource.create(8, 20, "Wafer");
-		Request request = Request.create(wafer);
+	public void createValidRequest()  throws Exception{
+		Resource wafer = new Resource(8, "Wafer", 20);
+		Request request = new Request(wafer);
 
 		assertEquals(true, request != null);
 
 	}
 
-	@Test
+	@Test (expected = java.lang.IllegalArgumentException.class)
 	public void createNonValidRequest() {
-
-		Request request = Request.create(null);
-		assertEquals(true, request == null);
-
+		new Request (null);
 	}
 
 	@Test
-	public void addValidSpplierOfferToReqest() {
-		Resource wafer = Resource.create(80, 20, "Wafer");
-		Request request = Request.create(wafer);
+	public void addValidSupplierOfferToReqest() throws Exception {
+		Resource wafer = new Resource (80,"Wafer", 20 );
+		Request request = new Request(wafer);
 
-		Resource supWafer = Resource.create(78, 30, "Wafer");
-		SupplierOffer offer = SupplierOffer.create(supWafer);
+		Resource supWafer = new Resource(78, "Wafer", 30);
+		SupplierOffer offer = new SupplierOffer (supWafer);
 		request.addSupplierOffer(offer);
 
-		supWafer = Resource.create(81, 40, "Wafer");
-		offer = SupplierOffer.create(supWafer);
+		supWafer = new Resource (81,  "Wafer", 40);
+		offer = new SupplierOffer(supWafer);
 		request.addSupplierOffer(offer);
 
-		assertEquals(true, request.getSpplierOffers()[0] != null);
-		assertEquals(true, request.getSpplierOffers()[1] != null);
+		assertEquals(true, request.getSupplierOffers()[0] != null);
+		assertEquals(true, request.getSupplierOffers()[1] != null);
 	}
 
-	@Test
-	public void addNonValidSpplierOfferToReqest() {
-		Resource wafer = Resource.create(80, 20, "Wafer");
-		Request request = Request.create(wafer);
+	@Test ( expected = java.lang.IllegalArgumentException.class )
+	public void addNonValidSupplierOfferToReqest() throws Exception {
+		
+		Resource wafer = new Resource(80,  "Wafer", 20);
+		Request request = new Request( wafer);
 
-		Resource supGehause = Resource.create(78, 30, "Gehäuse");
-		SupplierOffer offer = SupplierOffer.create(supGehause);
-		Boolean added = request.addSupplierOffer(offer);
+		request.addSupplierOffer(null);
 
-		assertEquals(false, added);
-
-		Resource supWafer = Resource.create(78, 30, "Wafer");
-		offer = SupplierOffer.create(supWafer);
-
-		added = request.addSupplierOffer(offer);
-		assertEquals(true, added);
-
-		added = request.addSupplierOffer(offer);
-		assertEquals(true, added);
-
-		added = request.addSupplierOffer(offer);
-		assertEquals(true, added);
-
-		added = request.addSupplierOffer(offer);
-		assertEquals(false, added);
-
+		
 	}
+	
+	@Test ( expected = java.lang.IllegalArgumentException.class )
+	public void addMoreThanThreeOffers() throws Exception {
+		Request request = new Request( new Resource(80,  "Wafer", 20) );
+
+		SupplierOffer offer = new SupplierOffer( new Resource(78,  "Wafer", 30) );
+
+		request.addSupplierOffer(offer);
+		request.addSupplierOffer(offer);
+		request.addSupplierOffer(offer);
+		request.addSupplierOffer(offer);
+		
+	}
+
 
 }

@@ -11,25 +11,13 @@ public class SupplierOffer {
 	private Resource resource;
 
 	/**
-	 * Fachlicher Konstruktor: Liefert eine SupplierOffer zurück wenn die
-	 * Resource ungleich null ist.
-	 * 
-	 * @param resorce
-	 * @return
+	 * Erstellt ein SupllierOffer (Angebot vom Beschaffungsmarkt an den Spieler)
+	 * @param resource Produkt, dass Angeboten wird
+	 * @throws IllegalArgumentException Resource darf nicht null sein
 	 */
-	public static SupplierOffer create(Resource resource) {
-		if (resource != null) {
-			return new SupplierOffer(resource);
-		}
-		return null;
-	}
-
-	/**
-	 * Privater Konstrktor: Setzt das Resource Attribut
-	 * 
-	 * @param resource
-	 */
-	private SupplierOffer(Resource resource) {
+	public SupplierOffer(Resource resource) throws IllegalArgumentException {		
+		if( resource == null)
+			throw new IllegalArgumentException("Resource darf nicht null sein!");
 		this.resource = resource;
 	}
 

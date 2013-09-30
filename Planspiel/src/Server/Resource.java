@@ -1,46 +1,28 @@
 package Server;
 
+import Logger.Log;
+
 /**
  * 
  * @author D059270 Resorce erbt von Prodct und kann nur ein Wafer oder ein
  *         Gehäuse sein.
  */
 public class Resource extends Product {
-
+	
 	/**
-	 * Fachlicher Konstruktor: Liefert eine neue Resorce zurück, falls die
-	 * Eingaben valide waren. Sonst null.
-	 * 
-	 * @param quality
-	 * @param costs
-	 * @param name
-	 * @return
+	 * Erstellt eine Resource (also Wafer oder Gehäuse). 
+	 * @param quality Qualität der Resource
+	 * @param name Name (Typ): Wafer || GEhäuse
+	 * @param costs Kosten der Resource pro Stück in Cent
+	 * @throws Exception wird geworfen, wenn ein Parameter ungültig ist.
 	 */
-	public static Resource create(int quality, int costs, String name) {
-		if (!checkNameIsValid(name)) {
-			return null; // Kein valider Name
-		}
-		try {
-			Resource resource = new Resource(quality, name, costs);
-			return resource;
-		} catch (Exception e) {
-			return null; // Kosten oder Qualität ist nicht valide.
-		}
-
-	}
-
-	/**
-	 * privater Konstruktor, der den Oberklassenteilkonstruktor von Product
-	 * aufruft.
-	 * 
-	 * @param quality
-	 * @param name
-	 * @param costs
-	 * @throws Exception
-	 */
-	private Resource(int quality, String name, int costs) throws Exception {
+	public Resource(int quality, String name, int costs) throws Exception {		
 		super(quality, name, costs);
-
+		if(!checkNameIsValid(name)) {
+			throw new IllegalArgumentException("Name der Resource ist ungültig. Muss Wafer oder Gehäuse sein!");
+		}
+		
+		Log.newObj(new String[] { quality+"", name, costs+"" } );
 	}
 
 	/**
@@ -51,6 +33,7 @@ public class Resource extends Product {
 	 * @return
 	 */
 	private static Boolean checkNameIsValid(String name) {
+		Log.method();
 		if (name.equals("Wafer") || name.equals("Gehäuse")) {
 			return true;
 		}

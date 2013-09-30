@@ -10,32 +10,19 @@ import java.util.ArrayList;
  */
 public class Request {
 
-	private Resource resorceReqested;
+	private Resource resourceReqested;
 	private ArrayList<SupplierOffer> supplierOffers = new ArrayList<SupplierOffer>();
 
 	/**
-	 * Fachlicher Konstruktor: Prüft ob die Resource ungleich null ist und
-	 * liefert nur dann den Request zurück. Sonst null.
+	 * Konstruktor zum erstellen einer Anfrage an den Beschaffungsmarkt
 	 * 
-	 * @param resorce
-	 * @return
+	 * @param resource die Resource, die nachgefagt werden soll
 	 */
-	public static Request create(Resource resorce) {
-		if (resorce != null) {
-			Request request = new Request(resorce);
-			return request;
+	public Request(Resource resource) {
+		this.resourceReqested = resource;
+		if( resource == null ) {
+			throw new IllegalArgumentException( "Resource darf nicht null sein!");
 		}
-		return null;
-
-	}
-
-	/**
-	 * Privater Konstruktor: Setzt das Attribut resorceRequested.
-	 * 
-	 * @param resorce
-	 */
-	private Request(Resource resorce) {
-		this.resorceReqested = resorce;
 	}
 
 	/**
@@ -44,7 +31,7 @@ public class Request {
 	 * 
 	 * @return
 	 */
-	public SupplierOffer[] getSpplierOffers() {
+	public SupplierOffer[] getSupplierOffers() {
 		return supplierOffers.toArray(new SupplierOffer[supplierOffers.size()]);
 	}
 
@@ -55,15 +42,20 @@ public class Request {
 	 * @param supplierOffer
 	 * @return
 	 */
-	public Boolean addSupplierOffer(SupplierOffer supplierOffer) {
-		String nameOfSupplierProdct = supplierOffer.getResorce().getName();
-		String nameOfResourceProdct = resorceReqested.getName();
+	public boolean addSupplierOffer(SupplierOffer supplierOffer) {
+		if (supplierOffer == null) {
+			throw new IllegalArgumentException("SupplierOffer darf nicht null sein!");
+		}
+		String nameOfSupplierProdct = supplierOffer.getResource().getName();
+		String nameOfResourceProdct = resourceReqested.getName();
 		if (supplierOffers.size() < 3
 				&& nameOfResourceProdct.equals(nameOfSupplierProdct)) {
 			supplierOffers.add(supplierOffer);
 			return true;
+		} else {
+			throw new IllegalArgumentException("Einem Request können nur 3 SupplierOffer zugewiesen werden!");
 		}
-		return false;
+		
 	}
 
 	/**
@@ -72,7 +64,7 @@ public class Request {
 	 * @return
 	 */
 	public Resource getRequestedResource() {
-		return resorceReqested;
+		return resourceReqested;
 	}
 
 }

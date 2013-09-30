@@ -1,0 +1,16 @@
+TO-DO List
+-- Rundenlogik 
+-- SupplierMarket
+-- Test
+-- Reporting
+-- Eingabe Feedback mit zu hohen Werten (Überprüfen)
+-- Bank Account Dispokredit
+-- Sieg / Niederlage
+-- Fixkostenabrechnung
+-- KOMMENTARE IHR *?!*+!*!#
+-- Datei mit Konstanten
+-- StorageCostsUpdate
+-- Bei store die Kosten neu berechnen
+---- Bei Product ein setPrice!
+-- Logger überall einbinden
+-- Logger auf SysOut mit HTML-Ausgabe

@@ -1,4 +1,7 @@
 package Server;
+
+import Logger.Log;
+
 /**
  *  Die Klasse stellt ein fertig produziertes Produkt dar (Panel).
  * @author D059270
@@ -15,13 +18,17 @@ public class FinishedGood extends Product {
 	 * @return
 	 */
 	public static FinishedGood create(int quality, int costs) {
+		Log.method(new Object[]{quality,costs});
 		String name = "Panel";
 		try {
 			FinishedGood finishedGood = new FinishedGood(quality, name, costs);
+			Log.methodExit();
 			return finishedGood;
 		} catch (Exception e) {
 			return null; // Kosten oder Qualität ist nicht valide.
 		}
+		
+		
 
 	}
 
@@ -36,7 +43,7 @@ public class FinishedGood extends Product {
 	 */
 	private FinishedGood(int quality, String name, int costs) throws Exception {
 		super(quality, name, costs);
-
+		
 	}
 
 }

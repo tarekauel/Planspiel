@@ -1,6 +1,6 @@
 package Server;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
+import Logger.Log;
 
 /**
  * 
@@ -13,11 +13,11 @@ public abstract class Product {
 	private String name; // Wafer/Gehäuse/Panel
 	private int costs;
 	private int quality;
-	private int storageCostsPerRond;
+	private int storageCostsPerRound;
 
 	/**
-	 * Erstellt ein neues Produkt, wenn die Qualität und die Kosten
-	 * valide sind. Ansosnten wird eine Exception geworfen.
+	 * Erstellt ein neues Produkt, wenn die Qualität (Interval ]0;100] und die Kosten (>0)
+	 * valide sind. Ansonsten wird eine Exception geworfen.
 	 * 
 	 * @param quality
 	 * @param name
@@ -25,29 +25,36 @@ public abstract class Product {
 	 * @throws
 	 */
 	public Product(int quality, String name, int costs) throws Exception {
+		Log.newObj(new Object[]{quality,name,costs});
 		if (checkCostsAreValid(costs) && checkQualityIsValid(quality)) {
 			this.quality = quality;
 			this.name = name;
 			this.costs = costs;
+			Log.methodExit();
 			return;
 		}
 		throw new Exception("Not valid!");
 	}
 
 	public String getName() {
+		Log.get(name);
 		return name;
 	}
 
 	public int getCosts() {
+		Log.get(costs);
 		return costs;
 	}
-
+	
 	public int getQuality() {
+		Log.get(quality);
 		return quality;
+		
 	}
 
-	public int getStorageCostsPerRond() {
-		return storageCostsPerRond;
+	public int getStorageCostsPerRound() {
+		Log.get(storageCostsPerRound);
+		return storageCostsPerRound;
 	}
 
 	/**
@@ -55,7 +62,8 @@ public abstract class Product {
 	 * Lagerkosten der Runde zu erhöhen.
 	 */
 	public void calculateNewCosts() {
-		costs += storageCostsPerRond;
+		costs += storageCostsPerRound;
+		Log.set(costs);
 	}
 
 	/**
@@ -65,6 +73,7 @@ public abstract class Product {
 	 * @return
 	 */
 	private Boolean setCosts(int costs) { //Brachen wir diese Methode???
+		Log.set(costs);
 		if (checkCostsAreValid(costs)) {
 			this.costs = costs;
 			return true;
@@ -87,13 +96,13 @@ public abstract class Product {
 	}
 
 	/**
-	 * Prüft ob die Kosten positiv sind. *
+	 * Prüft ob die Kosten >= 0 sind
 	 * 
 	 * @param costs
 	 * @return
 	 */
 	private static Boolean checkCostsAreValid(int costs) {
-		if (costs > 0) {
+		if (costs >= 0) {
 			return true;
 		}
 		return false;
@@ -107,6 +116,7 @@ public abstract class Product {
 	 * @return
 	 */
 	public Boolean equals(Product product) {
+		Log.method(product);
 		if(product==null){
 			return false;
 		}

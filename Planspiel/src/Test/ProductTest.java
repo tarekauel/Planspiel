@@ -15,26 +15,24 @@ public class ProductTest {
 	}
 
 	@Test
-	public void createValidWafer() {
-		Resource wafer = Resource.create(7, 20, "Wafer");
+	public void createValidWafer() throws Exception{
+		Resource wafer = new Resource(7, "Wafer",20);
 		Boolean isNotNull = wafer!=null;
 		assertEquals(true, isNotNull);
 
 	}
 
 	@Test
-	public void createValidGehause() {
-		Resource gehause = Resource.create(7, 20, "Gehäuse");
+	public void createValidGehause()  throws Exception{
+		Resource gehause = new Resource(7, "Gehäuse", 20);
 		Boolean isNotNull = gehause!=null;
 		assertEquals(true, isNotNull);
 
 	}
 
-	@Test
-	public void createNonValidRessource() {
-		Resource wafer = Resource.create(7, 20, "Panel");
-		Boolean isNotNull = wafer!=null;
-		assertEquals(false, isNotNull);
+	@Test (expected = IllegalArgumentException.class )
+	public void createNonValidRessource()  throws Exception{
+		Resource wafer = new Resource(7, "Panel", 20);
 
 	}
 

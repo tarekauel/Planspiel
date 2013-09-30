@@ -5,6 +5,9 @@ package Server;
 
 import java.util.Random;
 
+import Constant.Constant;
+import Logger.Log;
+
 /**
  * @author Lars
  * 
@@ -14,18 +17,7 @@ import java.util.Random;
  */
 public class Machinery {
 	private int level; //Maschinen ausbaustufe 
-	private Production production; // Hält die Produktions abteilung
-	private int[] capacityArray = { 500, // lvl 1
-			1000, // lvl 2
-			2000, // lvl 3
-			4000, // lvl 4
-			7000, // lvl 5
-			10000, // lvl 6
-			14000, // lvl 7
-			19000, // lvl 8
-			25000, // lvl 9
-			35000 // lvl 10
-	};
+	
 
 	/**
 	 * Erzeugt eine neue Maschine mit Ausbaustufe 1
@@ -34,44 +26,27 @@ public class Machinery {
 	 *            enthält Referenz auf die Produktionsabteilung wird benötigt um
 	 *            die Belastung zu berechnen
 	 */
-	public Machinery(Production p) {
+	public Machinery() {
 
 		level = 1;
-		this.production = p;
-
-	}
-/**
- * 
- * @param quantity zu produzierende Menge
- * @return tatsächlich produzierte Menge
- */
-	public int produce(int quantity) {
-		// diese variable wird nachher returned
-		int produce = 0;
-		//Berechne den Ausschuss(hole den prozentualen Anteil an Müll)
 		
-		produce = (int)(quantity * (percentJunk()/100));
-				
-		return produce;
 	}
+
 /**
- * Gibt einen Prozentsatz an Ausschuss an
+ * Gibt an, ob eine Produktion erfolgreich war oder nicht.
+ * Regelt den Ausschuss
  * 
- * @return Zahl zwischen 0 und 12
+ * @return boolean, true, falls produziert wird, false, falls nicht
  */
-	private int percentJunk() {
-		// Zufallsgenerator holen
+	public boolean isJunk() {
+		Log.get("Ausschuss");
+		//Zufallszahlgenerator initialisieren
 		Random r = new Random();
-		// zufallszahl:
-		int zz;
-		//maximaler prozentualer Ausschuss
-		int max;
-		//Maximaler Ausschuss in % sind zwischen 2 und 12 
-		max = (12-level);
-		//Zufallszahl zwischen 0 und max:
-		zz = r.nextInt(max);
-		//Gib die Zahl zurück
-		return zz;
+		//Chance auf Produktion: 84% + level.. also mindestens 85%
+		
+		return (r.nextInt(100)<(Constant.MACHINERY_JUNK_INIT+level))?false: true;
+	
+	
 	}
 
 	/**
@@ -80,7 +55,8 @@ public class Machinery {
 	 * @return Maschinenkapazität als Integer
 	 */
 	public int getMaxCapacity() {
-		return capacityArray[level];
+		Log.get(Constant.MACHINERY_CAPACITY[level]);
+		return Constant.MACHINERY_CAPACITY[level];
 	}
 
 	/**
@@ -89,6 +65,7 @@ public class Machinery {
 	 * @return Maschinenlevel als Integer
 	 */
 	public int getLevel() {
+		Log.get(level);
 		return this.level;
 	}
 
@@ -99,10 +76,13 @@ public class Machinery {
 	 *         bereits 10
 	 */
 	public boolean increaseLevel() {
+		Log.method();
 		if (level >= 10) {
+			Log.methodExit();
 			return false;
 		}
 		level++;
+		Log.methodExit();
 		return true;
 	}
 
@@ -112,41 +92,33 @@ public class Machinery {
 	 * @return true, falls erfolgreiche Minderung false, falls Maschinenlvl 1
 	 */
 	public boolean decreaseLevel() {
+		Log.method();
 		if (level == 1) {
+			Log.methodExit();
 			return false;
 		}
 		level--;
+		Log.methodExit();
 		return true;
 	}
 
 	/**
-	 * Berechnet aus der produzierten Stückzahl die Auslastung
-	 * 
-	 * @return gibt die Auslastung in Prozent an, als integer
-	 */
-	public int percentageOfUsage() {
-		// Hole die zu produzierenden Mengen aus den Produktionsaufträgen
-		int produced = production.getProducedQuantity();
-		// Hole aus dem internen Bereich die Kapazität der Maschine
-		int maxProduce = capacityArray[level];
-
-		double result = produced / maxProduce;
-
-		result = result * 100;
-
-		return (int) result;
-	}
-	
-	/**
-	 *  Berechnet sich aus Ausbaustufe zum Quadrat mal 150€
+	 *  Berechnet sich aus Ausbaustufe zum Quadrat und einem Faktor
 	 * 
 	 * @return gibt die Fixkosten an
 	 */
 	public int getCosts(){
+		Log.get((level * level) * Constant.MACHINERY_FIX_COST);
 		
-		
-		return (level * level) * 15000;
-				
+		return (level * level) * Constant.MACHINERY_FIX_COST;	
+	}
+	/**
+	 * Gibt Kosten für Hilfsstoffe an. je höher das Maschinen level, je niedriger die Kosten.
+	 * @return Stückkosten auf der Maschine
+	 */
+	public int getPieceCosts(){
+		Log.get(Constant.MACHINERY_PIECE_COST_BASIC * (11 - level));
+		return Constant.MACHINERY_PIECE_COST_BASIC * (11 - level);
 	}
 
 }
