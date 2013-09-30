@@ -28,7 +28,7 @@ public class TypeTest {
 
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void TPercentOfUsageRound0() throws Exception {
 		new TPercentOfUsage(500, 0);
 
