@@ -1,66 +1,136 @@
 package Constant;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class Constant {
+	//Pfad zur Datei mit den Werten
+	private static final String PATH = "constants.ini";
+	
 	// Section BankAccount:
-	public static final long BANK_MAX_CREDIT = 50000; // 500 00
+	public static final long BANK_MAX_CREDIT = Long
+			.parseLong(c("BANK_MAX_CREDIT"));
 
 	// Section Company:
-	public static final long COMPANY_START_CAPITAL = 100000000; // 1 000 000 00
-	public static final int FIXCOST_PURCHASE = 1000000; // 10 000 00
-	public static final int FIXCOST_PRODUCTION = 1000000; // 10 000 00
-	public static final int FIXCOST_STORAGE = 1000000; // 10 000 00
-	public static final int FIXCOST_DISTRIBUTION = 1000000; // 10 000 00
-	public static final int FIXCOST_HUMAN_RESOURCES = 1000000; // 10 000 00
-	public static final int FIXCOST_MARKET_RESEARCH = 1000000; // 10 000 00
+	public static final long COMPANY_START_CAPITAL = Long
+			.parseLong(c("COMPANY_START_CAPITAL"));
+	public static final int FIXCOST_PURCHASE = Integer
+			.parseInt(c("FIXCOST_PURCHASE"));
+	public static final int FIXCOST_PRODUCTION = Integer
+			.parseInt(c("FIXCOST_PRODUCTION"));
+	public static final int FIXCOST_STORAGE = Integer
+			.parseInt(c("FIXCOST_STORAGE"));
+	public static final int FIXCOST_DISTRIBUTION = Integer
+			.parseInt(c("FIXCOST_DISTRIBUTION"));
+	public static final int FIXCOST_HUMAN_RESOURCES = Integer
+			.parseInt(c("FIXCOST_HUMAN_RESOURCE"));
+	public static final int FIXCOST_MARKET_RESEARCH = Integer
+			.parseInt(c("FIXCOST_MARKET_RESEARCH"));
 
 	// Section Machinery:
-	public static final int[] MACHINERY_CAPACITY = { 500, // lvl 1
-			1000, // lvl 2
-			2000, // lvl 3
-			4000, // lvl 4
-			7000, // lvl 5
-			10000, // lvl 6
-			14000, // lvl 7
-			19000, // lvl 8
-			25000, // lvl 9
-			35000 // lvl 10
-	};
-	public static final int MACHINERY_JUNK_INIT = 84; // 15 00
-	public static final int MACHINERY_FIX_COST = 250000;// 2 500 00
-	public static final int MACHINERY_PIECE_COST_BASIC = 1500; // 15 00
+
+	public static final int[] MACHINERY_CAPACITY = a("MACHINERY_CAPACITY");
+	public static final int MACHINERY_JUNK_INIT = Integer
+			.parseInt(c("MACHINERY_JUNK_INIT"));
+	public static final int MACHINERY_FIX_COST = Integer
+			.parseInt(c("MACHINERY_FIX_COST"));
+	public static final int MACHINERY_PIECE_COST_BASIC = Integer
+			.parseInt(c("MACHINERY_PIECE_COST_BASIC"));
 
 	// Section Production
-	public static final int PRODUCTION_WAFERS_PER_PANEL = 54;
-	public static final int PRODUCTION_WORKING_HOURS_PER_PANEL = 5;
-	public static final int PRODUCTION_COST_PER_ORDER = 1000; // 10 00
-	public static final int PRODUCTION_IMPACT_WAFER = 80;
-	public static final int PRODUCTION_IMPACT_CASE = 20;
-	public static final int PRODUCTION_MAX_QUALITY_ADDITION = 20;
-	
+	public static final int PRODUCTION_WAFERS_PER_PANEL = Integer
+			.parseInt(c("PRODUCTION_WAFERS_PER_PANEL"));
+	public static final int PRODUCTION_WORKING_HOURS_PER_PANEL = Integer
+			.parseInt(c("PRODUCTION_WORKING_HOURS_PER_PANEL"));
+	public static final int PRODUCTION_COST_PER_ORDER = Integer
+			.parseInt(c("PRODUCTION_COST_PER_ORDER"));
+	public static final int PRODUCTION_IMPACT_WAFER = Integer
+			.parseInt(c("PRODUCTION_IMPACT_WAFER"));
+	public static final int PRODUCTION_IMPACT_CASE = Integer
+			.parseInt(c("PRODUCTION_IMPACT_CASE"));
+	public static final int PRODUCTION_MAX_QUALITY_ADDITION = Integer
+			.parseInt(c("PRODUCTION_MAX_QUALITY_ADDITION"));
+
 	// Section Technical Constats
-	public static final int TCP_PORT=11111;
-	public static final int UDP_PORT=11111;
-	
+	public static final int TCP_PORT = Integer.parseInt(c("TCP_PORT"));
+	public static final int UDP_PORT = Integer.parseInt(c("UDP_PORT"));
+
 	// Section Logger
-	public static boolean LOG_GET = true;
-	public static boolean LOG_INFO = true;
-	public static boolean LOG_METHOD_NO_PARAM = true;
-	public static boolean LOG_METHOD_1_PARAM = true;
-	public static boolean LOG_METHOD_N_PARAM = true;
-	public static boolean LOG_METHOD_EXIT = true;
-	public static boolean LOG_NEWOBJ_1_PARAM = true;
-	public static boolean LOG_NEWOBJ_N_PARAM = true;
-	public static boolean LOG_SET = true;
-	public static boolean LOG_VERBOSE = true;
-	public static boolean LOG_WARNING = true;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public static boolean LOG_GET = Boolean.getBoolean(c("LOG_GET"));
+	public static boolean LOG_INFO = Boolean.getBoolean(c("LOG_INFO"));
+	public static boolean LOG_METHOD_NO_PARAM = Boolean
+			.getBoolean(c("LOG_METHOD_NO_PARAM"));
+	public static boolean LOG_METHOD_1_PARAM = Boolean
+			.getBoolean(c("LOG_METHOD_1_PARAM"));
+	public static boolean LOG_METHOD_N_PARAM = Boolean
+			.getBoolean(c("LOG_METHOD_N_PARAM"));
+	public static boolean LOG_METHOD_EXIT = Boolean
+			.getBoolean(c("LOG_METHOD_EXIT"));
+	public static boolean LOG_NEWOBJ_1_PARAM = Boolean
+			.getBoolean(c("LOG_NEWOBJ_1_PARAM"));
+	public static boolean LOG_NEWOBJ_N_PARAM = Boolean
+			.getBoolean(c("LOG_NEWOBJ_N_PARAM"));
+	public static boolean LOG_SET = Boolean.getBoolean(c("LOG_SET"));
+	public static final boolean LOG_VERBOSE = Boolean
+			.getBoolean(c("LOG_VERBOSE"));
+	public static boolean LOG_WARNING = Boolean.getBoolean(c("LOG_WARNING"));
+
+	/**
+	 * Gibt ein int Array zurück
+	 * 
+	 * @param s
+	 *            Name der Variablen
+	 * @return String mit dem Inhalt
+	 */
+	private static int[] a(String s) {
+		try {
+			BufferedReader r = new BufferedReader(new FileReader(PATH));
+			String tmp = null;
+			while ((tmp = r.readLine()) != null) {
+				if (tmp.startsWith(s)) {
+					r.close();
+					tmp = tmp.substring(tmp.indexOf("=") + 2).replace("}", "");
+
+					String[] help = tmp.split(",");
+					int[] ret = new int[help.length];
+					for (int i = 0; i < help.length; i++) {
+						ret[i] = Integer.parseInt(help[i]);
+					}
+					return ret;
+
+				}
+			}
+
+			r.close();
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
+
+	/**
+	 * liest einfache Constanten aus, welche noch gecastet werden müssen
+	 * 
+	 * @param s
+	 *            Name der Variablen
+	 * @return String mit dem Inhalt
+	 */
+	private static String c(String s) {
+		try {
+			BufferedReader r = new BufferedReader(new FileReader("PATH"));
+			String tmp = null;
+			while ((tmp = r.readLine()) != null) {
+				if (tmp.startsWith(s)) {
+					r.close();
+					return tmp.substring(tmp.indexOf("=") + 1);
+				}
+			}
+			r.close();
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
 }
