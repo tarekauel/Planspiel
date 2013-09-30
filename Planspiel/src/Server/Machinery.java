@@ -43,8 +43,9 @@ public class Machinery {
 		//Zufallszahlgenerator initialisieren
 		Random r = new Random();
 		//Chance auf Produktion: 84% + level.. also mindestens 85%
-		
-		return (r.nextInt(100)<(Constant.MACHINERY_JUNK_INIT+level))?false: true;
+		boolean ret =(r.nextInt(100)<(Constant.MACHINERY_JUNK_INIT+level))?false: true;
+		Log.get(ret);
+		return ret;
 	
 	
 	}
