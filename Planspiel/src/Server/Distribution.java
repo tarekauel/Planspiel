@@ -12,7 +12,7 @@ public class Distribution extends DepartmentRoundSensitive {
 	private ArrayList<Offer> listOfOffers = new ArrayList<Offer>();
 	
 	// Liste aller Offers dieser Runde
-	private ArrayList<Offer> listOfLatesOffers = new ArrayList<Offer>();
+	private ArrayList<Offer> listOfLatestOffers = new ArrayList<Offer>();
 	
 	/**
 	 * Regulärer Konstruktor der Distribution, 
@@ -68,7 +68,7 @@ public class Distribution extends DepartmentRoundSensitive {
 			Offer offer = new Offer(quantityToSell, price, round, sold,
 					storageElement, this);
 			listOfOffers.add(offer);
-			listOfLatesOffers.add(offer);
+			listOfLatestOffers.add(offer);
 		} catch (IOException e) {
 			e.getMessage(); // korrekt?? 
 		}
@@ -99,13 +99,13 @@ public class Distribution extends DepartmentRoundSensitive {
 	 * @return Liste der aktuellen Offer
 	 */
 	public ArrayList<Offer> getListOfLatestOffers() {
-		Log.get(listOfLatesOffers);
-		return listOfLatesOffers;
+		Log.get(listOfLatestOffers);
+		return listOfLatestOffers;
 	}
 	
 	@Override
 	public void prepareForNewRound( int round ) {
 		Log.method(round);
-		listOfLatesOffers = new ArrayList<Offer>();
+		listOfLatestOffers = new ArrayList<Offer>();
 	}
 }
