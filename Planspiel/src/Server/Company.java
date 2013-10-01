@@ -21,9 +21,14 @@ public class Company {
 
 	public Company(Location l) throws Exception {
 		Log.newObj(l);
+		if (!checkLocation(l)) {
+			throw new IllegalArgumentException("Ungültiger Standort");
+		}
+
 		// erzeuge Bankkonto mit 1 Mio Kapital
 		bankAccount = new BankAccount(Constant.COMPANY_START_CAPITAL);
 		// setze Location
+
 		this.location = l;
 		// 'Kaufe die Location'
 		bankAccount.decreaseBalance(l.getPurchasePrice());
@@ -32,19 +37,27 @@ public class Company {
 		this.purchase = new Purchase(this, Constant.FIXCOST_PURCHASE);
 		this.production = new Production(this, Constant.FIXCOST_PRODUCTION);
 		this.storage = new Storage(this, Constant.FIXCOST_STORAGE);
-		this.distribution = new Distribution(this, Constant.FIXCOST_DISTRIBUTION);
-		this.humanResources = new HumanResources(this, Constant.FIXCOST_HUMAN_RESOURCES);
-		this.marketResearch = new MarketResearch(this, Constant.FIXCOST_MARKET_RESEARCH);
-		
-		//Anmelden an der Gamengine
+		this.distribution = new Distribution(this,
+				Constant.FIXCOST_DISTRIBUTION);
+		this.humanResources = new HumanResources(this,
+				Constant.FIXCOST_HUMAN_RESOURCES);
+		this.marketResearch = new MarketResearch(this,
+				Constant.FIXCOST_MARKET_RESEARCH);
+
+		// Anmelden an der Gamengine
 		GameEngine.getGameEngine().addCompany(this);
-		
 
 	}
 
+	private boolean checkLocation(Location l) {
+		if (l != null) {
+			return Location.getLocationByCountry(l.getCountry()) != null;
+		}
+		return false;
+	}
+
 	public void initRound(int round) {
-		
-		
+
 	}
 
 	public Location getLocation() {
@@ -88,9 +101,10 @@ public class Company {
 		Log.get(marketResearch);
 		return this.marketResearch;
 	}
-@Override
-	public String toString(){
+
+	@Override
+	public String toString() {
 		return "Unternehmen in:" + this.location;
-		
+
 	}
 }
