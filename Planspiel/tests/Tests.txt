@@ -1,4 +1,12 @@
 Momentane Worklist:
+Distribution
+	-Geht:	
+		-Konstruktor Test
+	
+	-Invalider Test:
+		-PrepareForNewRound -> Fehler mit Liste(Test korrektur erbeten)
+	-Fehlt:
+		-createNewOffer
 	
 
 Fertige Tests:
