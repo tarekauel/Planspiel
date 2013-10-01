@@ -23,15 +23,23 @@ public class GeneralTests {
 	public void createMachinery() {
 		// initialisiere
 		m = new Machinery();
-		b = new BankAccount(500000000);
+		b = new BankAccount(990000000);
 
 	}
 
 	@Test
-	public void initializeTest() {
+	public void getTest() {
 		assertEquals(1, m.getLevel());
 	}
 
+	@Test
+	public void increaseWithTooLowMoney() {
+		//noch 1 auf Bankkonto:
+		b.decreaseBalance(b.getBankBalance()-1);
+		
+		assertEquals(false, m.increaseLevel(b));
+	}
+	
 	@Test
 	public void increaseLevel() {
 		// Testing all increases

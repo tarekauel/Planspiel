@@ -73,7 +73,7 @@ public class Machinery {
  * @return gibt die Kosten für den nächsten Ausbau an
  */
 	public int getCostsForNextLevel(){
-		return Constant.MACHINERY_BUILD_COSTS[level+1];
+		return Constant.MACHINERY_BUILD_COSTS[level];
 	}
 	/**
 	 * Prüft ob die Maschine weiter ausgebaut werden kann. Hierfür wird auch ein
@@ -94,7 +94,8 @@ public class Machinery {
 		}
 		// Prüfe ob genug Geld da ist, wenn ja, dann bucht der Befehl es auch
 		// direkt ab!
-		if (!b.decreaseBalance(Constant.MACHINERY_BUILD_COSTS[level + 1])) {
+		//drank denken dass der array bei 0 beginnt, maschine aber bei 1
+		if (!b.decreaseBalance(Constant.MACHINERY_BUILD_COSTS[level])) {
 			Log.methodExit();
 			return false;
 
