@@ -10,9 +10,16 @@ import Logger.Log;
 public class BankAccount {
 
 	private long bankBalance;
-
+/**
+ * erstellt ein neues Bankkonto
+ * @param bankBalance Startguthaben
+ * @exception tritt auf, wenn bankBalance negativ ist
+ */
 	public BankAccount(long bankBalance) {
 		Log.newObj(bankBalance);
+		//CheckAmount wirft Exception falls negative Zahl
+		checkAmount(bankBalance);
+					
 		this.bankBalance = bankBalance;
 	}
 
@@ -23,11 +30,17 @@ public class BankAccount {
 
 	private void setBankBalance(long bankBalance) {
 		Log.set(bankBalance);
+		
 		this.bankBalance = bankBalance;
 	}
-
+	/**
+	 * 
+	 * @param amount der zugebucht werden soll
+	 * @exception wirft exception falls amount < 0 
+	 */
 	public void increaseBalance(long amount) {
 		Log.method();
+		checkAmount(amount);
 		long newBankBalance = getBankBalance() + amount;
 		setBankBalance(newBankBalance);
 
@@ -40,6 +53,7 @@ public class BankAccount {
 	 *            Betrag der abgebucht werden soll ( > 0 )
 	 * @return true: Betrag wurde abgebucht
 	 *         false: Betrag konnte nicht abgebucht werden
+	 * @exception falls amount negativ
 	 */
 	public boolean decreaseBalance(long amount) {
 		Log.method(amount);
