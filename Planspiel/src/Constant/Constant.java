@@ -9,74 +9,74 @@ public class Constant {
 
 	// Section BankAccount:
 	public static final long BANK_MAX_CREDIT = Long
-			.parseLong(c("BANK_MAX_CREDIT"));
+			.parseLong(getConstant("BANK_MAX_CREDIT"));
 
 	// Section Company:
 	public static final long COMPANY_START_CAPITAL = Long
-			.parseLong(c("COMPANY_START_CAPITAL"));
+			.parseLong(getConstant("COMPANY_START_CAPITAL"));
 	public static final int FIXCOST_PURCHASE = Integer
-			.parseInt(c("FIXCOST_PURCHASE"));
+			.parseInt(getConstant("FIXCOST_PURCHASE"));
 	public static final int FIXCOST_PRODUCTION = Integer
-			.parseInt(c("FIXCOST_PRODUCTION"));
+			.parseInt(getConstant("FIXCOST_PRODUCTION"));
 	public static final int FIXCOST_STORAGE = Integer
-			.parseInt(c("FIXCOST_STORAGE"));
+			.parseInt(getConstant("FIXCOST_STORAGE"));
 	public static final int FIXCOST_DISTRIBUTION = Integer
-			.parseInt(c("FIXCOST_DISTRIBUTION"));
+			.parseInt(getConstant("FIXCOST_DISTRIBUTION"));
 	public static final int FIXCOST_HUMAN_RESOURCES = Integer
-			.parseInt(c("FIXCOST_HUMAN_RESOURCE"));
+			.parseInt(getConstant("FIXCOST_HUMAN_RESOURCE"));
 	public static final int FIXCOST_MARKET_RESEARCH = Integer
-			.parseInt(c("FIXCOST_MARKET_RESEARCH"));
+			.parseInt(getConstant("FIXCOST_MARKET_RESEARCH"));
 
 	// Section Machinery:
 
-	public static final int[] MACHINERY_CAPACITY = a("MACHINERY_CAPACITY");
+	public static final int[] MACHINERY_CAPACITY = getIntArray("MACHINERY_CAPACITY");
 	public static final int MACHINERY_JUNK_INIT = Integer
-			.parseInt(c("MACHINERY_JUNK_INIT"));
+			.parseInt(getConstant("MACHINERY_JUNK_INIT"));
 	public static final int MACHINERY_FIX_COST = Integer
-			.parseInt(c("MACHINERY_FIX_COST"));
+			.parseInt(getConstant("MACHINERY_FIX_COST"));
 	public static final int MACHINERY_PIECE_COST_BASIC = Integer
-			.parseInt(c("MACHINERY_PIECE_COST_BASIC"));
+			.parseInt(getConstant("MACHINERY_PIECE_COST_BASIC"));
 
 	// Section Production
 	public static final int PRODUCTION_WAFERS_PER_PANEL = Integer
-			.parseInt(c("PRODUCTION_WAFERS_PER_PANEL"));
+			.parseInt(getConstant("PRODUCTION_WAFERS_PER_PANEL"));
 	public static final int PRODUCTION_WORKING_HOURS_PER_PANEL = Integer
-			.parseInt(c("PRODUCTION_WORKING_HOURS_PER_PANEL"));
+			.parseInt(getConstant("PRODUCTION_WORKING_HOURS_PER_PANEL"));
 	public static final int PRODUCTION_COST_PER_ORDER = Integer
-			.parseInt(c("PRODUCTION_COST_PER_ORDER"));
+			.parseInt(getConstant("PRODUCTION_COST_PER_ORDER"));
 	public static final int PRODUCTION_IMPACT_WAFER = Integer
-			.parseInt(c("PRODUCTION_IMPACT_WAFER"));
+			.parseInt(getConstant("PRODUCTION_IMPACT_WAFER"));
 	public static final int PRODUCTION_IMPACT_CASE = Integer
-			.parseInt(c("PRODUCTION_IMPACT_CASE"));
+			.parseInt(getConstant("PRODUCTION_IMPACT_CASE"));
 	public static final int PRODUCTION_MAX_QUALITY_ADDITION = Integer
-			.parseInt(c("PRODUCTION_MAX_QUALITY_ADDITION"));
+			.parseInt(getConstant("PRODUCTION_MAX_QUALITY_ADDITION"));
 
 	// Section Technical Constats
-	public static final int TCP_PORT = Integer.parseInt(c("TCP_PORT"));
-	public static final int UDP_PORT = Integer.parseInt(c("UDP_PORT"));
+	public static final int TCP_PORT = Integer.parseInt(getConstant("TCP_PORT"));
+	public static final int UDP_PORT = Integer.parseInt(getConstant("UDP_PORT"));
 
 	// Section Logger
-	public static final boolean LOG_GET = ((c("LOG_GET")).toLowerCase()
+	public static final boolean LOG_GET = ((getConstant("LOG_GET")).toLowerCase()
 			.equals("true"));
-	public static final boolean LOG_INFO = ((c("LOG_INFO")).toLowerCase()
+	public static final boolean LOG_INFO = ((getConstant("LOG_INFO")).toLowerCase()
 			.equals("true"));
-	public static final boolean LOG_METHOD_NO_PARAM = ((c("LOG_METHOD_NO_PARAM"))
+	public static final boolean LOG_METHOD_NO_PARAM = ((getConstant("LOG_METHOD_NO_PARAM"))
 			.toLowerCase().equals("true"));
-	public static final boolean LOG_METHOD_1_PARAM = ((c("LOG_METHOD_1_PARAM"))
+	public static final boolean LOG_METHOD_1_PARAM = ((getConstant("LOG_METHOD_1_PARAM"))
 			.toLowerCase().equals("true"));
-	public static final boolean LOG_METHOD_N_PARAM = ((c("LOG_METHOD_N_PARAM"))
+	public static final boolean LOG_METHOD_N_PARAM = ((getConstant("LOG_METHOD_N_PARAM"))
 			.toLowerCase().equals("true"));
-	public static final boolean LOG_METHOD_EXIT = ((c("LOG_METHOD_EXIT"))
+	public static final boolean LOG_METHOD_EXIT = ((getConstant("LOG_METHOD_EXIT"))
 			.toLowerCase().equals("true"));
-	public static final boolean LOG_NEWOBJ_1_PARAM = ((c("LOG_NEWOBJ_1_PARAM"))
+	public static final boolean LOG_NEWOBJ_1_PARAM = ((getConstant("LOG_NEWOBJ_1_PARAM"))
 			.toLowerCase().equals("true"));
-	public static final boolean LOG_NEWOBJ_N_PARAM = ((c("LOG_NEWOBJ_N_PARAM"))
+	public static final boolean LOG_NEWOBJ_N_PARAM = ((getConstant("LOG_NEWOBJ_N_PARAM"))
 			.toLowerCase().equals("true"));
-	public static final boolean LOG_SET = ((c("LOG_SET")).toLowerCase()
+	public static final boolean LOG_SET = ((getConstant("LOG_SET")).toLowerCase()
 			.equals("true"));
-	public static final boolean LOG_VERBOSE = ((c("LOG_VERBOSE")).toLowerCase()
+	public static final boolean LOG_VERBOSE = ((getConstant("LOG_VERBOSE")).toLowerCase()
 			.equals("true"));
-	public static final boolean LOG_WARNING = ((c("LOG_WARNING")).toLowerCase()
+	public static final boolean LOG_WARNING = ((getConstant("LOG_WARNING")).toLowerCase()
 			.equals("true"));
 
 	/**
@@ -86,7 +86,7 @@ public class Constant {
 	 *            Name der Variablen
 	 * @return String mit dem Inhalt
 	 */
-	private static int[] a(String s) {
+	private static int[] getIntArray(String s) {
 		try {
 			BufferedReader r = new BufferedReader(new FileReader(PATH));
 			String tmp = null;
@@ -120,7 +120,7 @@ public class Constant {
 	 *            Name der Variablen
 	 * @return String mit dem Inhalt
 	 */
-	private static String c(String s) {
+	private static String getConstant(String s) {
 		try {
 			BufferedReader r = new BufferedReader(new FileReader(PATH));
 			String tmp = null;
