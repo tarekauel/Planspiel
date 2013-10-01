@@ -30,6 +30,7 @@ public class Constant {
 	// Section Machinery:
 
 	public static final int[] MACHINERY_CAPACITY = getIntArray("MACHINERY_CAPACITY");
+	public static final int[] MACHINERY_BUILD_COSTS = getIntArray("MACHINERY_BUILD_COSTS");
 	public static final int MACHINERY_JUNK_INIT = Integer
 			.parseInt(getConstant("MACHINERY_JUNK_INIT"));
 	public static final int MACHINERY_FIX_COST = Integer
