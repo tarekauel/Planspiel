@@ -1,11 +1,13 @@
 package MachineryTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import Constant.Constant;
-import Server.*;
+import Server.Machinery;
 
 public class GeneralTests {
 
@@ -13,8 +15,6 @@ public class GeneralTests {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		// Logger deaktivieren
-		Constant.PATH="forTest.ini";
 	}
 
 	@Before

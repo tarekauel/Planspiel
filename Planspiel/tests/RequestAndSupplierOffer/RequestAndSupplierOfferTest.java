@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Constant.Constant;
 import Server.Request;
 import Server.Resource;
 import Server.SupplierOffer;
@@ -14,8 +13,6 @@ public class RequestAndSupplierOfferTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		// Logger deaktivieren
-				Constant.PATH="forTest.ini";
 	}
 
 	@Test

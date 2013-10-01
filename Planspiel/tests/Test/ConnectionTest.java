@@ -1,10 +1,8 @@
 package Test;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,11 +33,6 @@ public class ConnectionTest {
 		client3.connect(ip, port);
 		client4 = new Client();
 		client4.connect(ip, port);
-		
-		
-		// Logger deaktivieren
-				Constant.PATH="forTest.ini";
-		
 		
 	}
 

@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Constant.Constant;
 import Server.Resource;
 import Server.StorageElement;
 
@@ -16,8 +15,6 @@ public class TestContstructor {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		// Logger deaktivieren
-				Constant.PATH="forTest.ini";
 	}
 
 	@Before

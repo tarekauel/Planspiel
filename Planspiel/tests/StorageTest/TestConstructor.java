@@ -1,6 +1,6 @@
 package StorageTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,16 +11,10 @@ import Server.Company;
 import Server.Location;
 import Server.Storage;
 
-import Constant.Constant;
-
 public class TestConstructor {
 Company c;
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		// Logger deaktivieren
-				Constant.PATH="forTest.ini";
-		
-		
 		
 		Location.initLocations();
 	}

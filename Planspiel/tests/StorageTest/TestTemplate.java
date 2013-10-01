@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Constant.Constant;
 import Server.Company;
 import Server.Location;
 import Server.Resource;
@@ -21,8 +20,6 @@ public class TestTemplate {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		// Logger deaktivieren
-				Constant.PATH="forTest.ini";
 
 		Location.initLocations();
 	}

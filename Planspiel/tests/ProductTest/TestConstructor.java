@@ -1,11 +1,10 @@
 package ProductTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Constant.Constant;
 import Server.FinishedGood;
 import Server.Resource;
 
@@ -13,8 +12,6 @@ public class TestConstructor {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		// Logger deaktivieren
-				Constant.PATH="forTest.ini";
 	}
 
 	@Test
