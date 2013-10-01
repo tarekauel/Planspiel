@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class Constant {
-	public static String PATH = "game.ini";
-	
+	//Pfad der zu nutzenden INI.
+	public static final String PATH = "forTest.ini";
+
 	// Section BankAccount:
 	public static final long BANK_MAX_CREDIT = Long
 			.parseLong(c("BANK_MAX_CREDIT"));
@@ -55,25 +56,29 @@ public class Constant {
 	public static final int UDP_PORT = Integer.parseInt(c("UDP_PORT"));
 
 	// Section Logger
-	public static final boolean LOG_GET = Boolean.getBoolean(c("LOG_GET"));
-	public static final boolean LOG_INFO = Boolean.getBoolean(c("LOG_INFO"));
-	public static final boolean LOG_METHOD_NO_PARAM = Boolean
-			.getBoolean(c("LOG_METHOD_NO_PARAM"));
-	public static final boolean LOG_METHOD_1_PARAM = Boolean
-			.getBoolean(c("LOG_METHOD_1_PARAM"));
-	public static final boolean LOG_METHOD_N_PARAM = Boolean
-			.getBoolean(c("LOG_METHOD_N_PARAM"));
-	public static final boolean LOG_METHOD_EXIT = Boolean
-			.getBoolean(c("LOG_METHOD_EXIT"));
-	public static final boolean LOG_NEWOBJ_1_PARAM = Boolean
-			.getBoolean(c("LOG_NEWOBJ_1_PARAM"));
-	public static final boolean LOG_NEWOBJ_N_PARAM = Boolean
-			.getBoolean(c("LOG_NEWOBJ_N_PARAM"));
-	public static final boolean LOG_SET = Boolean.getBoolean(c("LOG_SET"));
-	public static final boolean LOG_VERBOSE = Boolean
-			.getBoolean(c("LOG_VERBOSE"));
-	public static final boolean LOG_WARNING = Boolean.getBoolean(c("LOG_WARNING"));
-	
+	public static final boolean LOG_GET = ((c("LOG_GET")).toLowerCase()
+			.equals("true"));
+	public static final boolean LOG_INFO = ((c("LOG_INFO")).toLowerCase()
+			.equals("true"));
+	public static final boolean LOG_METHOD_NO_PARAM = ((c("LOG_METHOD_NO_PARAM"))
+			.toLowerCase().equals("true"));
+	public static final boolean LOG_METHOD_1_PARAM = ((c("LOG_METHOD_1_PARAM"))
+			.toLowerCase().equals("true"));
+	public static final boolean LOG_METHOD_N_PARAM = ((c("LOG_METHOD_N_PARAM"))
+			.toLowerCase().equals("true"));
+	public static final boolean LOG_METHOD_EXIT = ((c("LOG_METHOD_EXIT"))
+			.toLowerCase().equals("true"));
+	public static final boolean LOG_NEWOBJ_1_PARAM = ((c("LOG_NEWOBJ_1_PARAM"))
+			.toLowerCase().equals("true"));
+	public static final boolean LOG_NEWOBJ_N_PARAM = ((c("LOG_NEWOBJ_N_PARAM"))
+			.toLowerCase().equals("true"));
+	public static final boolean LOG_SET = ((c("LOG_SET")).toLowerCase()
+			.equals("true"));
+	public static final boolean LOG_VERBOSE = ((c("LOG_VERBOSE")).toLowerCase()
+			.equals("true"));
+	public static final boolean LOG_WARNING = ((c("LOG_WARNING")).toLowerCase()
+			.equals("true"));
+
 	/**
 	 * Gibt ein int Array zurück
 	 * 
