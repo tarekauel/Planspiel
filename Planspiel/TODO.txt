@@ -14,4 +14,4 @@ TO-DO List
 ---- Bei Product ein setPrice!
 Done --(Logger überall einbinden) 
 -- Logger auf SysOut mit HTML-Ausgabe
--- Maschinenausbaukosten einbauen
+Done -- Maschinenausbaukosten
