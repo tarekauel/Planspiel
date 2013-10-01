@@ -1,13 +1,13 @@
 Momentane Worklist:
--Machinery
-	-Test da:
-		decreaseLevel
-		increaseLevel
-		isJunk()
-	-Fehlt:
-		Maschinenausbaukosten
+	
 
 Fertige Tests:
+-BankAccount
+	-prüft den Konstruktor
+	-prüft Funktion increase und decrease
+-Machinery
+	-prüft den Konstruktor
+	-prüft Funktion increase (inklusvie Maschinenkosten) und decrease
 -Product
 	-prüft den Konstruktor
 -StorageElement
