@@ -12,7 +12,7 @@ import Server.Resource;
 import Server.Storage;
 import Server.StorageElement;
 
-public class TestTemplate {
+public class TestStoreAndUnstore {
 	Company c;
 	Storage s;
 	StorageElement se;

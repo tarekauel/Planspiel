@@ -13,7 +13,7 @@ public class BankAccount {
 /**
  * erstellt ein neues Bankkonto
  * @param bankBalance Startguthaben
- * @exception tritt auf, wenn bankBalance negativ ist
+ * @exception tritt auf, wenn bankBalance negativ oder 0
  */
 	public BankAccount(long bankBalance) {
 		Log.newObj(bankBalance);
@@ -36,7 +36,7 @@ public class BankAccount {
 	/**
 	 * 
 	 * @param amount der zugebucht werden soll
-	 * @exception wirft exception falls amount < 0 
+	 * @exception wirft exception falls amount <= 0 
 	 */
 	public void increaseBalance(long amount) {
 		Log.method();
@@ -58,7 +58,7 @@ public class BankAccount {
 	public boolean decreaseBalance(long amount) {
 		Log.method(amount);
 		checkAmount(amount);
-		if (amount < bankBalance) {
+		if (amount <= bankBalance) {
 			long newBankBalance = getBankBalance() - amount;
 			setBankBalance(newBankBalance);
 			return true;
@@ -72,8 +72,8 @@ public class BankAccount {
 	}
 
 	private void checkAmount(long amount) throws IllegalArgumentException {
-		if (amount < 0) {
-			throw new IllegalArgumentException("Amount darf nicht < 0 sein");
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Amount darf nicht <= 0 sein");
 		}
 	}
 }
