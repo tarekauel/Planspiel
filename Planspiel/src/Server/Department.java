@@ -89,7 +89,7 @@ public abstract class Department {
  * @return true, falls fix Kosten einen positvien Wert haben
  */
 	private boolean checkFixCosts(int f){
-		return (f>0);
+		return (f>=0);
 	}
 	@Override
 	public String toString(){

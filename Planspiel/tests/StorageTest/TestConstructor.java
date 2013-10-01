@@ -31,7 +31,7 @@ Company c;
 		assertEquals(true,(new Storage(c,300)!=null));
 	}
 	
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void StorageCreateFixCost0() throws Exception{
 		new Storage(c,0);
 	}
