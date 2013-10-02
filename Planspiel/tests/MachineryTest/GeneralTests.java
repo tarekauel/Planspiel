@@ -131,7 +131,7 @@ public class GeneralTests {
 	}
 
 	@Test
-	public void randomCheck() {
+	public void randomCheckLevel1() {
 		int counter = 0;
 		// Beweis über Wahrscheinlichkeit:
 		// Maschine auf Stufe 1 darf nicht mehr als 15% aussschuss haben
@@ -142,6 +142,164 @@ public class GeneralTests {
 		assertEquals(false, counter < 15000);
 	}
 
+	@Test
+	public void randomCheckLevel2() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 2 darf nicht mehr als 14% aussschuss haben
+		m.increaseLevel(b);
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 14000);
+	}
+	
+	@Test
+	public void randomCheckLevel3() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 3 darf nicht mehr als 13% aussschuss haben
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 13000);
+	}
+	
+	@Test
+	public void randomCheckLevel4() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 4 darf nicht mehr als 12% aussschuss haben
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 12000);
+	}
+	
+	@Test
+	public void randomCheckLevel5() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 5 darf nicht mehr als 10% aussschuss haben
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 10000);
+	}
+
+	@Test
+	public void randomCheckLevel6() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 6 darf nicht mehr als 9% aussschuss haben
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 9000);
+	}
+
+	@Test
+	public void randomCheckLevel7() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 7 darf nicht mehr als 8% aussschuss haben
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 8000);
+	}
+	@Test
+	public void randomCheckLevel8() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 8 darf nicht mehr als 7% aussschuss haben
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 7000);
+	}
+	
+	@Test
+	public void randomCheckLevel9() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 9 darf nicht mehr als 6% aussschuss haben
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 6000);
+	}
+	
+	@Test
+	public void randomCheckLevel10() {
+		int counter = 0;
+		// Beweis über Wahrscheinlichkeit:
+		// Maschine auf Stufe 10 darf nicht mehr als 5% aussschuss haben
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		m.increaseLevel(b);
+		
+		for (int i = 0; i < 100000; i++) {
+			counter = (m.isJunk()) ? counter : counter + 1;
+
+		}
+		assertEquals(false, counter < 5000);
+	}
+	
 	@After
 	public void resetMachine() {
 		// clear machine
