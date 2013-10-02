@@ -16,7 +16,7 @@ import Server.TMarketShare;
 public class GameTest {
 
 	public static void main(String[] args) throws Exception {
-
+		
 		GameEngine g = GameEngine.getGameEngine();
 
 		Location.initLocations();
@@ -56,26 +56,29 @@ public class GameTest {
 
 		pro.produce();
 
-		d.createOffer(s.getAllFinishedGoods().get(0).getQuality(), s.getAllStorageElements().get(2).getQuantity(), 100);
-		
+		d.createOffer(s.getAllFinishedGoods().get(0).getQuality(), s
+				.getAllStorageElements().get(2).getQuantity(), 100);
+
 		ArrayList<Request> listReq2 = p2.getListOfLatesRequest();
 		p2.acceptSupplierOffer(listReq2.get(0).getSupplierOffers()[0], 54 * 100); // 1000
-																				// Wafer
-																				// kaufen
+																					// Wafer
+																					// kaufen
 		p2.acceptSupplierOffer(listReq2.get(1).getSupplierOffers()[0], 100); // 1000
-																			// Gehäuse
-																			// kaufen
+																				// Gehäuse
+																				// kaufen
 
 		ArrayList<Resource> store2 = s2.getAllResources();
 		pro2.createProductionOrder(store2.get(0), store2.get(1), 100);
 
 		pro2.produce();
 
-		d2.createOffer(s2.getAllFinishedGoods().get(0).getQuality(), s2.getAllStorageElements().get(0).getQuantity(), 100);
+		d2.createOffer(s2.getAllFinishedGoods().get(0).getQuality(), s2
+				.getAllStorageElements().get(0).getQuantity(), 100);
 
 		CustomerMarket.getMarket().handleAllOffers();
 
-		ArrayList<TMarketShare> shares = CustomerMarket.getMarket().getMarketShares();
+		ArrayList<TMarketShare> shares = CustomerMarket.getMarket()
+				.getMarketShares();
 
 		int i = 1;
 
