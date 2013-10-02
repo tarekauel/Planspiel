@@ -151,6 +151,7 @@ public class ProductionOrder {
 	public void produce(int Zuschlag, Storage s, Machinery m) throws Exception {
 		Log.method(new Object[] { Zuschlag, s, m });
 		quantityProduced++;
+		//TODO: Zuschlag umbenennen
 
 		// Prüfe ob bereits produziert wurde:
 		if (panel != null) {
