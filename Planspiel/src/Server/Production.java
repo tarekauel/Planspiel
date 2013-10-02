@@ -88,7 +88,7 @@ public class Production extends DepartmentRoundSensitive {
 	public boolean createProductionOrder(Resource wafer, Resource cases, int quantity) {
 		Log.method(new Object[]{wafer,cases,quantity});
 		// Prüfen, ob genug Geld für die Order (Orderkosten) auf dem Konto ist
-		if (getCompany().getBankAccount().decreaseBalance( Constant.PRODUCTION_COST_PER_ORDER )) {
+		if (getCompany().getBankAccount().decreaseBalance( Constant.Production.COST_PER_ORDER )) {
 
 			// erzeuge den Auftrag:
 			ProductionOrder po = new ProductionOrder(wafer, cases, quantity);
@@ -140,7 +140,7 @@ public class Production extends DepartmentRoundSensitive {
 
 				// Zieht den Lohn für die Produktion vom Konto ab
 				if (!getCompany().getBankAccount().decreaseBalance(
-						Constant.PRODUCTION_WORKING_HOURS_PER_PANEL * getCompany().getHumanResources().getWagesPerHour().getAmount())) {
+						Constant.Production.WORKING_HOURS_PER_PANEL * getCompany().getHumanResources().getWagesPerHour().getAmount())) {
 					innerBreak = true;
 					break;					
 				}
@@ -149,7 +149,7 @@ public class Production extends DepartmentRoundSensitive {
 				// Zieh die Storage elemente aus dem Storage ab:
 				// nutze dafï¿½r das lager des spielers:
 				// Wafer abbuchen (direkt in der Anzahl waferPerPanel)
-				this.getCompany().getStorage().unstore(p.getWafer(), Constant.PRODUCTION_WAFERS_PER_PANEL);
+				this.getCompany().getStorage().unstore(p.getWafer(), Constant.Production.WAFERS_PER_PANEL);
 				// Gehï¿½use abbuchen
 				this.getCompany().getStorage().unstore(p.getCase(), 1);
 
