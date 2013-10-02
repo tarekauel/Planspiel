@@ -11,7 +11,7 @@ TO-DO List
 -- Datei mit Konstanten
 -- StorageCostsUpdate
 -- Bei store die Kosten neu berechnen
----- Bei Product ein setPrice!
+Done -- Bei Product ein setPrice!
 Done --(Logger überall einbinden) 
 -- Logger auf SysOut mit HTML-Ausgabe
 Done -- Maschinenausbaukosten
