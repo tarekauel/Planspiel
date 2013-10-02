@@ -28,9 +28,9 @@ public class Production extends DepartmentRoundSensitive {
 	 * @throws Exception
 	 *             falls Abteilung nicht erstellt werden konnte
 	 */
-	public Production(Company c, int fix) throws Exception {
-		super(c, "Produktion", fix);
-		Log.method(new Object[]{c,fix});
+	public Production(Company c) throws Exception {
+		super(c, "Produktion", Constant.DepartmentFixcost.PRODUCTION);
+		Log.method(c);
 		machine = new Machinery();
 		Log.methodExit();
 	}

@@ -1,6 +1,7 @@
 package Server;
 import java.util.ArrayList;
 
+import Constant.Constant;
 import Logger.Log;
 
 
@@ -8,8 +9,8 @@ public class Storage extends Department {
 
 	private ArrayList<StorageElement> listOfStorageElements = new ArrayList<StorageElement>();
 	
-	public Storage(Company c, int fix) throws Exception {
-        super(c,"Lager",fix);
+	public Storage(Company c) throws Exception {
+        super(c,"Lager",Constant.DepartmentFixcost.STORAGE);
         
     }
 	

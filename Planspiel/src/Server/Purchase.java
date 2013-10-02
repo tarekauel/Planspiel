@@ -3,6 +3,7 @@ package Server;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Constant.Constant;
 import Logger.Log;
 
 /**
@@ -35,9 +36,9 @@ public class Purchase extends DepartmentRoundSensitive {
 	 * @throws Exception
 	 *             falls keine Korrekte erstellung
 	 */
-	public Purchase(Company c, int fix) throws Exception {
-		super(c, "Einkauf", fix);
-		Log.newObj(new Object[] { c, fix });
+	public Purchase(Company c) throws Exception {
+		super(c, "Einkauf", Constant.DepartmentFixcost.PURCHASE);
+		Log.newObj( c );
 		SupplierMarket.getMarket().addPurchase(this);
 	}
 
