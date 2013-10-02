@@ -10,7 +10,7 @@ public aspect ALogger {
 
 	pointcut logSpecificMethod():
 		execution(@LogThis * *.* (..)) || ( initialization(@LogThis *.new(..)) && !within(ALogger));
-
+	
 	before(): logMethodWithoutGet() {
 		StringBuffer output = new StringBuffer();
 		String methodeString = thisJoinPoint.getSignature().toString();
@@ -24,7 +24,7 @@ public aspect ALogger {
 				}
 			}
 		}
-		System.out.println(output.toString());
+		System.out.print(output.toString() + "\n");
 	}
 
 	before() : logVar() {
@@ -33,22 +33,21 @@ public aspect ALogger {
 		for (Object o : thisJoinPoint.getArgs()) {
 			System.err.print(o + ", ");
 		}
-		System.err.println();
+		System.err.print("\n");
 	}
 
 	before() : logSpecificMethod() {
 		StringBuffer output = new StringBuffer();
-		output.append("Methode: " + thisJoinPoint.getSignature());
+		System.err.print("Methode: " + thisJoinPoint.getSignature());
 		if (thisJoinPoint.getArgs().length > 0) {
-			output.append("Param: ");
+			System.err.print("Param: ");
 			for (int i = 0; i < thisJoinPoint.getArgs().length; i++) {
-				output.append(thisJoinPoint.getArgs()[i]);
+				System.err.print(thisJoinPoint.getArgs()[i]+"");
 				if (i < thisJoinPoint.getArgs().length - 1) {
-					output.append(", ");
+					System.err.print(", ");
 				}
 			}
 		}
-		System.err.println(output.toString());
+		System.err.print(output.toString() + "\n");
 	}
-
 }
