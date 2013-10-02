@@ -23,7 +23,7 @@ public class ConnectionTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		String ip = "127.0.0.1";
-		int port = Constant.TCP_PORT;
+		int port = Constant.Server.TCP_PORT;
 		server = Server.getServer();
 		client1 = new Client();
 		client1.connect(ip, port);
