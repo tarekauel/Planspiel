@@ -31,7 +31,7 @@ public class TestStoreAndUnstore {
 		se = new StorageElement(500, w);
 
 		c = new Company(Location.getLocationByCountry("USA"));
-		s = new Storage(c, 10000);
+		s = new Storage(c);
 
 	}
 

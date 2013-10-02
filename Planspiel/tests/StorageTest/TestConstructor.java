@@ -28,21 +28,13 @@ Company c;
 
 	@Test
 	public void StorageCreateValid() throws Exception{
-		assertEquals(true,(new Storage(c,300)!=null));
+		assertEquals(true,(new Storage(c)!=null));
 	}
 	
-	@Test
-	public void StorageCreateFixCost0() throws Exception{
-		new Storage(c,0);
-	}
 	
-	@Test(expected = java.lang.IllegalArgumentException.class)
-	public void StorageCreateFixCostNegative() throws Exception{
-		new Storage(c,-10);
-	}
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void StorageCreateCompanyNull() throws Exception{
-		new Storage(null,10);
+		new Storage(null);
 	}
 	@After
 	public void resetTests() {
