@@ -24,7 +24,7 @@ public aspect ALogger {
 				}
 			}
 		}
-		System.out.print(output.toString() + "\n");
+		System.out.println(output.toString());
 	}
 
 	before() : logVar() {
@@ -33,7 +33,7 @@ public aspect ALogger {
 		for (Object o : thisJoinPoint.getArgs()) {
 			System.err.print(o + ", ");
 		}
-		System.err.print("\n");
+		System.err.println("");
 	}
 
 	before() : logSpecificMethod() {
@@ -48,6 +48,6 @@ public aspect ALogger {
 				}
 			}
 		}
-		System.err.print(output.toString() + "\n");
+		System.err.println(output.toString());
 	}
 }
