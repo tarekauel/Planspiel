@@ -1,6 +1,6 @@
 TO-DO List
 -- Rundenlogik 
--- SupplierMarket
+-- SupplierMarket (Logik)
 -- Test
 -- Reporting
 -- Eingabe Feedback mit zu hohen Werten (Überprüfen)
@@ -11,7 +11,12 @@ TO-DO List
 -- Datei mit Konstanten
 -- StorageCostsUpdate
 -- Bei store die Kosten neu berechnen
----- Bei Product ein setPrice!
+Done -- Bei Product ein setPrice!
 Done --(Logger überall einbinden) 
 -- Logger auf SysOut mit HTML-Ausgabe
 Done -- Maschinenausbaukosten
+-- Location-Daten auslagern
+-- addWage ausimplementieren: Sammelt Löhne für den Durchschnittslohn
+-- ProductionOrder-> Zuschlag sinnvoll berechnen (Motivation, Standort,...)
+-- Messageobjekt zum Austausch mit dem Client
+-- Kostanten in Klassen strukturieren (Michael)

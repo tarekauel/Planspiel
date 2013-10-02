@@ -72,7 +72,7 @@ public abstract class Product {
 	 * @param costs
 	 * @return
 	 */
-	private Boolean setCosts(int costs) { //Brachen wir diese Methode???
+	public Boolean setCosts(int costs) { //Brachen wir diese Methode???
 		Log.set(costs);
 		if (checkCostsAreValid(costs)) {
 			this.costs = costs;
