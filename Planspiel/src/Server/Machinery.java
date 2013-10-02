@@ -42,7 +42,7 @@ public class Machinery {
 		// Zufallszahlgenerator initialisieren
 		Random r = new Random();
 		// Chance auf Produktion: 84% + level.. also mindestens 85%
-		boolean ret = (r.nextInt(100) < (Constant.MACHINERY_JUNK_INIT + level)) ? false
+		boolean ret = (r.nextInt(100) < (Constant.Machinery.JUNK_INIT + level)) ? false
 				: true;
 		Log.get(ret);
 		return ret;
@@ -55,8 +55,8 @@ public class Machinery {
 	 * @return Maschinenkapazität als Integer
 	 */
 	public int getMaxCapacity() {
-		Log.get(Constant.MACHINERY_CAPACITY[level]);
-		return Constant.MACHINERY_CAPACITY[level];
+		Log.get(Constant.Machinery.CAPACITY[level]);
+		return Constant.Machinery.CAPACITY[level];
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class Machinery {
  * @return gibt die Kosten für den nächsten Ausbau an
  */
 	public int getCostsForNextLevel(){
-		return Constant.MACHINERY_BUILD_COSTS[level];
+		return Constant.Machinery.BUILD_COSTS[level];
 	}
 	/**
 	 * Prüft ob die Maschine weiter ausgebaut werden kann. Hierfür wird auch ein
@@ -95,7 +95,7 @@ public class Machinery {
 		// Prüfe ob genug Geld da ist, wenn ja, dann bucht der Befehl es auch
 		// direkt ab!
 		//drank denken dass der array bei 0 beginnt, maschine aber bei 1
-		if (!b.decreaseBalance(Constant.MACHINERY_BUILD_COSTS[level])) {
+		if (!b.decreaseBalance(Constant.Machinery.BUILD_COSTS[level])) {
 			Log.methodExit();
 			return false;
 
@@ -129,9 +129,9 @@ public class Machinery {
 	 * @return gibt die Fixkosten an
 	 */
 	public int getCosts() {
-		Log.get((level * level) * Constant.MACHINERY_FIX_COST);
+		Log.get((level * level) * Constant.Machinery.FIX_COST);
 
-		return (level * level) * Constant.MACHINERY_FIX_COST;
+		return (level * level) * Constant.Machinery.FIX_COST;
 	}
 
 	/**
@@ -141,8 +141,8 @@ public class Machinery {
 	 * @return Stückkosten auf der Maschine
 	 */
 	public int getPieceCosts() {
-		Log.get(Constant.MACHINERY_PIECE_COST_BASIC * (11 - level));
-		return Constant.MACHINERY_PIECE_COST_BASIC * (11 - level);
+		Log.get(Constant.Machinery.PIECE_COST_BASIC * (11 - level));
+		return Constant.Machinery.PIECE_COST_BASIC * (11 - level);
 	}
 
 }
