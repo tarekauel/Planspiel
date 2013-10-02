@@ -23,8 +23,8 @@ public class GeneralTests {
 	public void createMachinery() {
 		// initialisiere
 		m = new Machinery();
-		b = new BankAccount(990000000);
-
+		b = new BankAccount();
+		b.increaseBalance(990000000);
 	}
 
 	@Test
