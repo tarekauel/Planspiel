@@ -1,5 +1,6 @@
 package Server;
 
+import Constant.Constant;
 import Logger.Log;
 
 /**
@@ -15,12 +16,12 @@ public class BankAccount {
  * @param bankBalance Startguthaben
  * @exception tritt auf, wenn bankBalance negativ oder 0
  */
-	public BankAccount(long bankBalance) {
-		Log.newObj(bankBalance);
+	public BankAccount() {
+		Log.newObj(Constant.BankAccount.START_CAPITAL);
 		//CheckAmount wirft Exception falls negative Zahl
-		checkAmount(bankBalance);
+		checkAmount(Constant.BankAccount.START_CAPITAL);
 					
-		this.bankBalance = bankBalance;
+		this.bankBalance = Constant.BankAccount.START_CAPITAL;
 	}
 
 	public long getBankBalance() {

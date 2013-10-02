@@ -152,10 +152,6 @@ public class Constant {
 	}
 	
 	public static class Company{
-
-		// Section Company:
-		public static final long START_CAPITAL = Long
-				.parseLong(getConstant("COMPANY_START_CAPITAL"));
 		
 	}
 	
@@ -164,6 +160,9 @@ public class Constant {
 		// Section BankAccount:
 		public static final long MAX_CREDIT = Long
 				.parseLong(getConstant("BANK_MAX_CREDIT"));
+		// Section Company:
+		public static final long START_CAPITAL = Long
+				.parseLong(getConstant("COMPANY_START_CAPITAL"));
 		
 	}
 	
