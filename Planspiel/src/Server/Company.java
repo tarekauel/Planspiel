@@ -26,7 +26,7 @@ public class Company {
 		}
 
 		// erzeuge Bankkonto mit 1 Mio Kapital
-		bankAccount = new BankAccount(Constant.COMPANY_START_CAPITAL);
+		bankAccount = new BankAccount();
 		// setze Location
 
 		this.location = l;
@@ -34,15 +34,12 @@ public class Company {
 		bankAccount.decreaseBalance(l.getPurchasePrice());
 
 		// Erzuege alle Abteilungen
-		this.purchase = new Purchase(this, Constant.FIXCOST_PURCHASE);
-		this.production = new Production(this, Constant.FIXCOST_PRODUCTION);
-		this.storage = new Storage(this, Constant.FIXCOST_STORAGE);
-		this.distribution = new Distribution(this,
-				Constant.FIXCOST_DISTRIBUTION);
-		this.humanResources = new HumanResources(this,
-				Constant.FIXCOST_HUMAN_RESOURCES);
-		this.marketResearch = new MarketResearch(this,
-				Constant.FIXCOST_MARKET_RESEARCH);
+		this.purchase = new Purchase(this);
+		this.production = new Production(this);
+		this.storage = new Storage(this);
+		this.distribution = new Distribution(this);
+		this.humanResources = new HumanResources(this);
+		this.marketResearch = new MarketResearch(this);
 
 		// Anmelden an der Gamengine
 		GameEngine.getGameEngine().addCompany(this);
