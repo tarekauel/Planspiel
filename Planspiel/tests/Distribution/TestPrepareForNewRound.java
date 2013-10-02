@@ -25,7 +25,7 @@ public class TestPrepareForNewRound {
 	@Before
 	public void initializeTests() throws Exception {
 		c = new Company(Location.getLocationByCountry("USA"));
-		d = new Distribution(c, Constant.FIXCOST_DISTRIBUTION);
+		d = new Distribution(c);
 		
 		d.createOffer(50, 100, 050);
 		

@@ -20,33 +20,12 @@ public class TestConstructor {
 
 	@Test
 	public void createDistribution() throws Exception {
-		new Distribution(c, Constant.FIXCOST_DISTRIBUTION);
+		new Distribution(c);
 	}
 	@Test (expected = java.lang.IllegalArgumentException.class)
 	public void createInvalidCompanyNull() throws Exception {
-		new Distribution(null, Constant.FIXCOST_DISTRIBUTION);
-	}
-	
-	@Test (expected = java.lang.IllegalArgumentException.class)
-	public void createInvalidCompanyNullFixCost0() throws Exception {
-		new Distribution(null, 0);
-	}
-	
-	@Test (expected = java.lang.IllegalArgumentException.class)
-	public void createInvalidCompanyNullFixCostNegative() throws Exception {
-		new Distribution(null, -500);
-	}
-	
-	@Test
-	public void createValidFixCost0() throws Exception {
-		new Distribution(c, 0);
-	}
-	@Test (expected = java.lang.IllegalArgumentException.class)
-	public void createInvalidFixCostNegative() throws Exception {
-		new Distribution(c, -500);
+		new Distribution(null);
 	}
 	
 	
-	
-
 }
