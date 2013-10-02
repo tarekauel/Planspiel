@@ -3,8 +3,8 @@
  */
 package Server;
 
-import Logger.Log;
 import Constant.Constant;
+import Logger.Log;
 
 /**
  * Klasse für den Produktionsauftrag
@@ -124,7 +124,7 @@ public class ProductionOrder {
 	 */
 	public int getRequested() {
 		Log.get(quantityToProduce);
-		
+
 		return quantityToProduce;
 
 	}
@@ -151,7 +151,7 @@ public class ProductionOrder {
 	public void produce(int Zuschlag, Storage s, Machinery m) throws Exception {
 		Log.method(new Object[] { Zuschlag, s, m });
 		quantityProduced++;
-		//TODO: Zuschlag umbenennen
+		// TODO: Zuschlag umbenennen
 
 		// Prüfe ob bereits produziert wurde:
 		if (panel != null) {
@@ -163,17 +163,17 @@ public class ProductionOrder {
 		double additionalFactor = Zuschlag / 100;
 		// durchschnittsqualität der Produkte mit Gewichtung:
 		double midQuality = (wafer.getQuality()
-				* Constant.PRODUCTION_IMPACT_WAFER + cases.getQuality()
-				* Constant.PRODUCTION_IMPACT_CASE) / 100;
+				* Constant.Production.IMPACT_WAFER + cases.getQuality()
+				* Constant.Production.IMPACT_CASE) / 100;
 		// neue Qualität (nicht mehr als double)
 		int newQuality = (int) (midQuality * additionalFactor) * 10;
 
 		// Prüfe ob die neue Qualität durch den Zuschlag zu sehr verändert wurde
-		newQuality = (newQuality - midQuality > Constant.PRODUCTION_MAX_QUALITY_ADDITION) ? (int) (midQuality + Constant.PRODUCTION_MAX_QUALITY_ADDITION)
+		newQuality = (newQuality - midQuality > Constant.Production.MAX_QUALITY_ADDITION) ? (int) (midQuality + Constant.Production.MAX_QUALITY_ADDITION)
 				: newQuality;
 
 		// Berechne herstellkosten:
-		int costs = wafer.getCosts() * Constant.PRODUCTION_WAFERS_PER_PANEL
+		int costs = wafer.getCosts() * Constant.Production.WAFERS_PER_PANEL
 				+ cases.getCosts() + m.getPieceCosts();
 
 		// neues Panel erzeugen
