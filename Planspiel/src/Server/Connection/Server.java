@@ -35,7 +35,7 @@ public class Server {
 	 */
 	public static Server getServer() {
 		if (server == null) {
-			server = new Server(Constant.TCP_PORT);
+			server = new Server(Constant.Server.TCP_PORT);
 		}
 
 		return server;
