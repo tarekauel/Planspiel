@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import Constant.Constant;
 import Logger.Log;
 
 public class Distribution extends DepartmentRoundSensitive {
@@ -24,9 +25,9 @@ public class Distribution extends DepartmentRoundSensitive {
 	 * @throws Exception
 	 *             falls Abteilung nicht erstellt werden konnte
 	 */
-	public Distribution(Company c, int fix)throws Exception{
-		super(c,"Verkauf",fix);
-		Log.method(new Object[]{c,fix});
+	public Distribution(Company c)throws Exception{
+		super(c,"Verkauf",Constant.DepartmentFixcost.DISTRIBUTION);
+		Log.method(new Object[]{c});
 		CustomerMarket.getMarket().addDistribution(this);
 		Log.methodExit();
 	}
