@@ -2,6 +2,7 @@ package Server;
 
 import java.util.ArrayList;
 
+import Constant.Constant;
 import Logger.Log;
 
 /**
@@ -16,9 +17,9 @@ public class HumanResources extends DepartmentRoundSensitive {
 	private ArrayList<BenefitBooking> benefitBooking;
 	private int workingHoursPerRound = 0;
 
-	public HumanResources(Company c, int fix) throws Exception {
-		super(c, "Personal", fix);
-		Log.method(new Object[]{c,fix});
+	public HumanResources(Company c) throws Exception {
+		super(c, "Personal",Constant.DepartmentFixcost.HUMAN_RESOURCES);
+		Log.method(new Object[]{c});
 		setCountEmployees(100); // TODO: Anpassen & in ini-File auslagern
 		setWagePerRound(new TWage(900, GameEngine.getGameEngine().getRound())); // TODO:
 																				// Anpassen
