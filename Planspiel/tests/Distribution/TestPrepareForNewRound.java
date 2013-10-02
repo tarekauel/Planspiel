@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Constant.Constant;
 import Server.Company;
 import Server.Distribution;
 import Server.Location;

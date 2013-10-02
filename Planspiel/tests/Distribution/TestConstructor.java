@@ -6,7 +6,6 @@ import org.junit.Test;
 import Server.Company;
 import Server.Distribution;
 import Server.Location;
-import Constant.Constant;
 
 public class TestConstructor {
 	Company c;
