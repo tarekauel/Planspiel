@@ -20,21 +20,21 @@ public class Log {
 	}
 	
 	public static void warning(String msg) {
-		if(! Constant.LOG_WARNING){
+		if(! Constant.Log.WARNING){
 			return;
 		}
 		log.log(Level.INFO, msg);
 	}
 	
 	public static void verbose(String msg) {
-		if(! Constant.LOG_VERBOSE){
+		if(! Constant.Log.VERBOSE){
 			return;
 		}
 		log.log(Level.INFO, msg);
 	}
 	
 	public static void info(String msg) {
-		if(! Constant.LOG_INFO){
+		if(! Constant.Log.INFO){
 			return;
 		}
 		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
@@ -44,7 +44,7 @@ public class Log {
 	}
 	
 	public static void newObj(Object[] param) {
-		if(! Constant.LOG_NEWOBJ_N_PARAM){
+		if(! Constant.Log.NEWOBJ_N_PARAM){
 			return;
 		}
 		String className = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -59,7 +59,7 @@ public class Log {
 	}
 	
 	public static void newObj(Object param) {
-		if(! Constant.LOG_NEWOBJ_1_PARAM){
+		if(! Constant.Log.NEWOBJ_1_PARAM){
 			return;
 		}
 		String className = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -69,7 +69,7 @@ public class Log {
 	}
 	
 	public static void method() {
-		if(! Constant.LOG_METHOD_NO_PARAM){
+		if(! Constant.Log.METHOD_NO_PARAM){
 			return;
 		}
 		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
@@ -78,7 +78,7 @@ public class Log {
 	}
 	
 	public static void method(Object[] param) {
-		if(! Constant.LOG_METHOD_N_PARAM){
+		if(! Constant.Log.METHOD_N_PARAM){
 			return;
 		}
 		String className = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -93,7 +93,7 @@ public class Log {
 	}
 	
 	public static void method(Object param) {
-		if(! Constant.LOG_METHOD_1_PARAM){
+		if(! Constant.Log.METHOD_1_PARAM){
 			return;
 		}
 		String className = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -103,7 +103,7 @@ public class Log {
 	}
 	
 	public static void methodExit() {
-		if(! Constant.LOG_METHOD_EXIT){
+		if(! Constant.Log.METHOD_EXIT){
 			return;
 		}
 		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
@@ -112,7 +112,7 @@ public class Log {
 	}
 	
 	public static void get(Object param) {
-		if(! Constant.LOG_SET){
+		if(! Constant.Log.SET){
 			return;
 		}
 		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
@@ -120,7 +120,7 @@ public class Log {
 		Log.verbose("Class: " + className + " Method: " + method + " GET: "  + String.valueOf(param));
 	}
 	public static void set(Object param) {
-		if(! Constant.LOG_GET){
+		if(! Constant.Log.GET){
 			return;
 		}
 		String method = Thread.currentThread().getStackTrace()[2].getMethodName();
