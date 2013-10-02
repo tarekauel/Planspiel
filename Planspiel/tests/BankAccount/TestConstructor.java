@@ -20,21 +20,8 @@ public class TestConstructor {
 	@Test
 	public void validCreate() {
 		// Test durch keinen crash
-		new BankAccount(500);
-	}
-
-	@Test(expected = java.lang.IllegalArgumentException.class)
-	public void createNegativAmount() {
-		new BankAccount(-5);
-	}
-
-	@Test(expected = java.lang.IllegalArgumentException.class)
-	public void createAmount0() {
-		new BankAccount(0);
-	}
-
-	
-	
+		new BankAccount();
+	}	
 	
 	@After
 	public void resetTests() {

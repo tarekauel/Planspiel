@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import Constant.Constant;
 import Server.BankAccount;
 
 public class TestBankAccount {
@@ -18,7 +19,7 @@ public class TestBankAccount {
 
 	@Before
 	public void initializeTests() {
-		b = new BankAccount(5000);
+		b = new BankAccount();
 	}
 
 	@Test
@@ -36,7 +37,7 @@ public class TestBankAccount {
 	}
 	@Test
 	public void decrease() {
-		assertEquals(true,b.decreaseBalance(500));
+		assertEquals(true,b.decreaseBalance(Constant.BankAccount.START_CAPITAL - 50));
 	}
 	@Test
 	public void decreaseCompletely() {
@@ -53,7 +54,7 @@ public class TestBankAccount {
 	}
 	@Test
 	public void decreaseTooMuch() {
-		assertEquals(false,b.decreaseBalance(500000));
+		assertEquals(false,b.decreaseBalance(b.getBankBalance()+50));
 	}
 	
 	@After
