@@ -16,7 +16,7 @@ public class Distribution extends DepartmentRoundSensitive {
 	private ArrayList<Offer> listOfLatestOffers = new ArrayList<Offer>();
 	
 	/**
-	 * Regulärer Konstruktor der Distribution, 
+	 * Regulaerer Konstruktor der Distribution, 
 	 * 
 	 * @param c
 	 *            Referenz des Unternehmens
@@ -49,6 +49,13 @@ public class Distribution extends DepartmentRoundSensitive {
 		Log.newObj(new Object[]{c,n,f});
 	}
 
+/**
+ * erstellt ein Offer fuer ein Fertigprodukt mit der uebergebenen Qualitaet, Preis und
+ * Menge die verkauft werden soll
+ * @param quality Qualitaet des Fertigprodukts
+ * @param quantityToSell Menge die verkauft werden soll
+ * @param price Preis zu dem verkauft werden soll
+ */
 	public void createOffer(int quality, int quantityToSell, int price) {
 		Log.method(new Object[]{quality,quantityToSell,price});
 		Storage storage = this.getCompany().getStorage();
@@ -60,9 +67,7 @@ public class Distribution extends DepartmentRoundSensitive {
 					"StorageElement could not found! Class Distribution Method createOffer");
 		}
 
-		int round = GameEngine.getGameEngine().getRound(); // Rundenzahl muss
-															// von GameEngine
-															// gegeben werden.
+		int round = GameEngine.getGameEngine().getRound(); 
 		int sold = 0; // die verkaufte Menge ist beim erstellen eines Offers
 						// immer 0.
 		try {
@@ -71,7 +76,7 @@ public class Distribution extends DepartmentRoundSensitive {
 			listOfOffers.add(offer);
 			listOfLatestOffers.add(offer);
 		} catch (IOException e) {
-			e.getMessage(); // korrekt?? 
+			e.getMessage(); 
 		}
 		Log.methodExit();
 	}// createOffer
@@ -96,7 +101,7 @@ public class Distribution extends DepartmentRoundSensitive {
 	}
 	
 	/**
-	 * Liefert eine Liste der aktuellen Offer zurück
+	 * Liefert eine Liste der aktuellen Offer zurueck
 	 * @return Liste der aktuellen Offer
 	 */
 	public ArrayList<Offer> getListOfLatestOffers() {

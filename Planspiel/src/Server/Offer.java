@@ -6,7 +6,7 @@ import Logger.Log;
 /**
  * Ein Offer Objekt wird erstellt, wenn der Spieler Fertigprodukte verkaufen moechte.
  * Dabei muss er die Menge, den Preis und das zu verkaufende Produkt angeben.
- * Es wird dabei auch überprüft, ob das Produkt existiert bzw ob es in der gewuenschten
+ * Es wird dabei auch überprueft, ob das Produkt existiert bzw ob es in der gewuenschten
  * Menge verkauft werden kann.
  * @author Felix
  *
@@ -23,21 +23,21 @@ public class Offer implements Comparable<Offer>{
 	
 	/**
 	 * Konstruktor fuer ein Offer Objekt
-	 * @param quantityToSell
-	 * @param priceToSell
-	 * @param round
-	 * @param quantitySold
-	 * @param storageElement
-	 * @throws IOException
+	 * @param quantityToSell Menge die verkauft werden soll
+	 * @param priceToSell Verkaufspreis
+	 * @param round Runde in der der Offer erstellt wurde
+	 * @param quantitySold verkaufte Menge
+	 * @param storageElement auf welches StorageElement bezieht sich der Offer
+	 * @throws IOException 
 	 */
-	
+
 	public Offer(int quantityToSell, int priceToSell,int round, int quantitySold, StorageElement storageElement, Distribution d) throws IOException{
 		Log.newObj(new Object[]{quantityToSell,priceToSell,round,quantitySold,storageElement,d});
 		if(quantityToSell<=0 || priceToSell<0){
 			throw new IOException("quantityToSell oder priceToSell ist negativ. Class Offer Method Constructor");
 		}
-		this.quantityToSell = quantityToSell; //muss vorher geprüft werden ob sie negativ ist?!
-		this.priceToSell = priceToSell; // ebenso
+		this.quantityToSell = quantityToSell; 
+		this.priceToSell = priceToSell; 
 		this.round = round;
 		this.quantitySold = quantitySold;
 		this.distribution = d;
@@ -98,6 +98,9 @@ public class Offer implements Comparable<Offer>{
 		}
 	}//increaseQuantitySold
 	
+	/**
+	 * Vergleicht offers wird zum sortieren benoetigt
+	 */
 	@Override
 	public int compareTo(Offer offer) {
 		Log.method(offer);

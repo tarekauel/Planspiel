@@ -4,17 +4,35 @@ import java.util.ArrayList;
 import Constant.Constant;
 import Logger.Log;
 
+/**
+ * Das Storage/Lager verwaltet alle StorageElemente und lagert diese ein und wieder aus.
+ * Es ist eine Abteilung des Unternehmens.
+ * 
+ * 
+ * @author Felix
+ *
+ */
 
 public class Storage extends Department {
 
 	private ArrayList<StorageElement> listOfStorageElements = new ArrayList<StorageElement>();
 	
+	/**
+	 * Erzeugt ein Storage Objekt
+	 * @param c
+	 * @throws Exception falls Objekterzeugung fehlerhaft / Uebergabeparameter fehlerhaft
+	 */
 	public Storage(Company c) throws Exception {
         super(c,"Lager",Constant.DepartmentFixcost.STORAGE);
         
     }
-	
-	
+	/**
+	 * lagert ein Product in das Storage ein. Falls das Produkt als StorageElement schon existiert wird die Quantity 
+	 * erhoeht sonst wird ein neues StorageElement erzeugt. 
+	 * @param product Produkt, das eingelagert werden soll
+ 	 * @param quantity Menge des einzulagernden Produkts
+	 * @throws Exception 
+	 */
 	
 	public void store(Product product, int quantity)throws Exception{
 		Log.method(new Object[]{product,quantity});
@@ -45,6 +63,12 @@ public class Storage extends Department {
 		
 	}// TODO updateStorageElements was macht diese Funktion?! die kosten updaten?!?!?!?!
 	
+	/**
+	 * Berechnet die Summe der Kosten pro Runde, die durch die StorageElemente verursacht werden.
+	 * 
+	 * @return 
+	 */
+	
 	public int getStorageCostsSum(){
 		
 		StorageElement storageElement = null;
@@ -60,6 +84,14 @@ public class Storage extends Department {
 		return sum;
 	}//getStorageCostsSum
 	
+	/**
+	 * lagert das uebergebene Product aus dem Storage mit angegebener Menge aus
+	 * ueberprueft zuvor ob das angegebene Product im Storage in ausreichender Menge vorhanden ist.
+	 * @param product welches product soll ausgelagert werden
+	 * @param quantity wie viel davon soll ausgelagert werden
+	 * @return true bei Erfolg, false sonst
+	 */
+	
 	public boolean unstore(Product product, int quantity){
 		Log.method(new Object[]{product,quantity});
 		//muss hier die angegebene Quantity//Product wieder geprueft werden??
@@ -72,7 +104,7 @@ public class Storage extends Department {
 			productTmp = storageElement.getProduct();
 			if(productTmp == product){
 				success = storageElement.reduceQuantity(quantity); 
-				//falls das storageelement jetzt leer ist, lösche dir Referenz
+				//falls das storageelement jetzt leer ist, lösche die Referenz
 				if (storageElement.getQuantity()==0){
 					listOfStorageElements.remove(storageElement);
 					
@@ -85,6 +117,12 @@ public class Storage extends Department {
 		return success; //success macht keine angabe ob reduceQuantity()fehlschlug oder
 						//kein StorageElement/product in der ArrayList gefunden wurde
 	}//unstore
+	
+	/**
+	 * sucht ein Fertigprodukt anhand seiner eindeutigen Qualitaet 
+	 * @param quality gesuchte Qualitaet
+	 * @return gibt Referenz auf das Objekt zurueck
+	 */
 	
 	public StorageElement getFinishedGoodByQuality(int quality){
 		StorageElement storageElement = null;
@@ -102,6 +140,11 @@ public class Storage extends Department {
 		return null;
 	}//getFinishedGoodByQuality
 	
+	
+	/**
+	 * sucht alle Fertigprodukte im Lager und gibt diese zurueck
+	 * @return 
+	 */
 	public ArrayList<FinishedGood> getAllFinishedGoods(){
 		ArrayList<FinishedGood> finishedGoods = new ArrayList<FinishedGood>(); 
 		StorageElement storageElement = null;
@@ -120,6 +163,10 @@ public class Storage extends Department {
 		return finishedGoods;
 	}//getAllFinishedGoods
 	
+	/**
+	 * sucht alle im Lager vorhandenen Rohstoffe und gibt diese zurueck
+	 * @return Liste aller Rohstoffe
+	 */
 	public ArrayList<Resource> getAllResources(){
 		ArrayList<Resource> resources = new ArrayList<Resource>(); 
 		StorageElement storageElement = null;
