@@ -41,8 +41,14 @@ public class Storage extends Department {
 		boolean found = false; 
 		for(int i=0; i<size; i++){
 			storageElement = listOfStorageElements.get(i);
-			if(storageElement.getProduct() == product){
-				storageElement.increaseQuantity(quantity); //falls Element gefunden wird Anzahl erhï¿½ht
+			if(storageElement.getProduct().equals(product)){
+				//falls Element gefunden wird Anzahl erhoeht und Kosten neu berechnet
+				Product prod = storageElement.getProduct();
+				int oldCosts = prod.getCosts();
+				int oldQuantity = storageElement.getQuantity();
+				int newCosts = (oldCosts*oldQuantity + product.getCosts()*quantity) / (oldQuantity+quantity);
+				prod.setCosts(newCosts);
+				storageElement.increaseQuantity(quantity); 
 				// TODO Kosten müssen neu berechnet werden
 				found = true;
 				break;
@@ -59,9 +65,43 @@ public class Storage extends Department {
 		Log.methodExit();
 	}//store
 	
+	/**
+	 * bucht die Kosten fuer die Lagerung der Produkte pro Runde vom Bankkonto ab
+	 * @return true bei Erfolg
+	 * 		   false sonst.
+	 */
+	
+	public boolean debitStorageCost(){
+		
+		int costs = this.getStorageCostsSum();
+		Company comp = this.getCompany();
+		BankAccount bank = comp.getBankAccount();
+		boolean success = bank.decreaseBalance(costs);
+		Log.get(success);
+		if(success){
+			return true;
+		}
+		else return false;
+		
+	}
+	
+	/**
+	 * erhoeht die Kosten der Produkte im Lager, da sie pro Runde Kosten verursachen.
+	 */
 	public void updateStorageElements(){
+		Log.method();
+		StorageElement storageElement = null;
+		Product product = null;
+		int size = listOfStorageElements.size();
+		for(int i=0; i<size; i++){
+			storageElement = listOfStorageElements.get(i);
+			product = storageElement.getProduct();
+			product.calculateNewCosts();
+		}	
 		
 	}// TODO updateStorageElements was macht diese Funktion?! die kosten updaten?!?!?!?!
+	
+
 	
 	/**
 	 * Berechnet die Summe der Kosten pro Runde, die durch die StorageElemente verursacht werden.

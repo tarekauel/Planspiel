@@ -16,7 +16,7 @@ public class StorageElement {
 	private Product product;
 	/**
 	 * Erzeugt ein neues StorageElement
-	 * @param quantity Anzahl der produkte die das Element enthaelt
+	 * @param quantity Anzahl der Produkte die das Element enthaelt
 	 * @param product Zu verstauendes
 	 * @throws IllegalArgumentException
 	 */
