@@ -28,12 +28,6 @@ public class ProductionOrder {
 	// tatsächlich hergestellte Menge:
 	private int quantityProduced = 0;
 
-	// Paramerter für die Anzahl der Stunden pro Panel
-	private int workingHoursPerPanel = 5;
-
-	// Kosten pro Order
-	private int costsPerOrder = 1000;
-
 	/**
 	 * Erzeugt neue Production order
 	 * 
@@ -47,7 +41,15 @@ public class ProductionOrder {
 	public ProductionOrder(Resource wafer, Resource cases, int quantity) {
 		Log.newObj(new Object[] { wafer, cases, quantity });
 		this.id = counter;
-		// TODO: sicherheitsabfragen
+		if(checkResource(wafer)){
+			throw new IllegalArgumentException("Wafer ist null.");
+		}
+		if(checkResource(cases)){
+			throw new IllegalArgumentException("Gehaeuse ist null.");
+		}
+		if(checkQuantity(quantity)){
+			throw new IllegalArgumentException("Quantity ist nicht größer 0");
+		}
 		this.wafer = wafer;
 		this.cases = cases;
 		this.quantityToProduce = quantity;
@@ -55,6 +57,13 @@ public class ProductionOrder {
 		Log.methodExit();
 	}
 
+	private boolean checkQuantity(int quantity){
+		return quantity > 0;
+	}
+	
+	private boolean checkResource(Resource wafer){
+		return wafer!=null;
+	}
 	/**
 	 * abgeleitetes attribut
 	 * 
@@ -107,9 +116,12 @@ public class ProductionOrder {
 	/**
 	 * Erhöht die Produzierte Menge um 1
 	 * 
+	 * 
 	 * @return int produzierte Menge
 	 */
 	public void increaseProduced() {
+		//TODO: sinnfrei? war das ein geistesblitz von mir, oder hat hier wer unsinn verzapft?
+		//Verwendungsnachweis negativ
 		if (quantityProduced < quantityToProduce) {
 			quantityProduced++;
 			Log.set(quantityProduced);
@@ -118,7 +130,7 @@ public class ProductionOrder {
 	}
 
 	/**
-	 * Gibt die in auftragegebene Menge an
+	 * Gibt die in auftraggegebene Menge an
 	 * 
 	 * @return int Anzahl aus dem Konstruktor
 	 */
@@ -132,7 +144,7 @@ public class ProductionOrder {
 	/**
 	 * Returns the global ID
 	 * 
-	 * @return
+	 * @return global ID
 	 */
 	public int getID() {
 		Log.get(id);
@@ -144,14 +156,14 @@ public class ProductionOrder {
 	 * 
 	 * @param s
 	 *            Storage, in den die Fertigprodukte gebucht werden.
-	 * @param Zuschlag
+	 * @param advantage
 	 *            Der Zuschlagssatz aus Motivation, Land und Forschung
 	 * 
 	 */
-	public void produce(int Zuschlag, Storage s, Machinery m) throws Exception {
-		Log.method(new Object[] { Zuschlag, s, m });
+	public void produce(int advantage, Storage s, Machinery m) throws Exception {
+		Log.method(new Object[] { advantage, s, m });
 		quantityProduced++;
-		// TODO: Zuschlag umbenennen
+
 
 		// Prüfe ob bereits produziert wurde:
 		if (panel != null) {
@@ -160,7 +172,7 @@ public class ProductionOrder {
 		}
 
 		// Es wird in doubles gerechnet:
-		double additionalFactor = Zuschlag / 100;
+		double additionalFactor = advantage / 100;
 		// durchschnittsqualität der Produkte mit Gewichtung:
 		double midQuality = (wafer.getQuality()
 				* Constant.Production.IMPACT_WAFER + cases.getQuality()
@@ -172,7 +184,7 @@ public class ProductionOrder {
 		newQuality = (newQuality - midQuality > Constant.Production.MAX_QUALITY_ADDITION) ? (int) (midQuality + Constant.Production.MAX_QUALITY_ADDITION)
 				: newQuality;
 
-		// Berechne herstellkosten:
+		// Berechne herstellkosten (ohne Berücksichtigung vom Ausschuss):
 		int costs = wafer.getCosts() * Constant.Production.WAFERS_PER_PANEL
 				+ cases.getCosts() + m.getPieceCosts();
 
@@ -184,12 +196,13 @@ public class ProductionOrder {
 	public void storeProduction(Storage s) throws Exception {
 		Log.method(s);
 		// Kosten pro Stück neu berechnen (Ausschuss berücksichtigen)
-		this.panel = FinishedGood.create(panel.getQuality(),
-				(int) (((double) panel.getCosts() * quantityToProduce
-						+ costsPerOrder + workingHoursPerPanel
-						* quantityToProduce
-						* s.getCompany().getHumanResources().getWagesPerHour()
-								.getAmount()) / quantityProduced));
+		this.panel = FinishedGood
+				.create(panel.getQuality(),
+						(int) (((double) panel.getCosts() * quantityToProduce
+								+ Constant.Production.WORKING_HOURS_PER_PANEL + Constant.Production.WORKING_HOURS_PER_PANEL
+								* quantityToProduce
+								* s.getCompany().getHumanResources()
+										.getWagesPerHour().getAmount()) / quantityProduced));
 		s.store(this.panel, quantityProduced);
 		Log.methodExit();
 	}

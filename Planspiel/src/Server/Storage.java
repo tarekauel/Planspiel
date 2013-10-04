@@ -1,233 +1,260 @@
 package Server;
+
 import java.util.ArrayList;
 
 import Constant.Constant;
 import Logger.Log;
 
 /**
- * Das Storage/Lager verwaltet alle StorageElemente und lagert diese ein und wieder aus.
- * Es ist eine Abteilung des Unternehmens.
+ * Das Storage/Lager verwaltet alle StorageElemente und lagert diese ein und
+ * wieder aus. Es ist eine Abteilung des Unternehmens.
  * 
  * 
  * @author Felix
- *
+ * 
  */
 
 public class Storage extends Department {
 
 	private ArrayList<StorageElement> listOfStorageElements = new ArrayList<StorageElement>();
-	
+
 	/**
 	 * Erzeugt ein Storage Objekt
+	 * 
 	 * @param c
-	 * @throws Exception falls Objekterzeugung fehlerhaft / Uebergabeparameter fehlerhaft
+	 * @throws Exception
+	 *             falls Objekterzeugung fehlerhaft / Uebergabeparameter
+	 *             fehlerhaft
 	 */
 	public Storage(Company c) throws Exception {
-        super(c,"Lager",Constant.DepartmentFixcost.STORAGE);
-        
-    }
+		super(c, "Lager", Constant.DepartmentFixcost.STORAGE);
+
+	}
+
 	/**
-	 * lagert ein Product in das Storage ein. Falls das Produkt als StorageElement schon existiert wird die Quantity 
-	 * erhoeht sonst wird ein neues StorageElement erzeugt. 
-	 * @param product Produkt, das eingelagert werden soll
- 	 * @param quantity Menge des einzulagernden Produkts
-	 * @throws Exception 
+	 * lagert ein Product in das Storage ein. Falls das Produkt als
+	 * StorageElement schon existiert wird die Quantity erhoeht sonst wird ein
+	 * neues StorageElement erzeugt.
+	 * 
+	 * @param product
+	 *            Produkt, das eingelagert werden soll
+	 * @param quantity
+	 *            Menge des einzulagernden Produkts
+	 * @throws Exception
 	 */
-	
-	public void store(Product product, int quantity)throws Exception{
-		Log.method(new Object[]{product,quantity});
+
+	public void store(Product product, int quantity) throws Exception {
+		Log.method(new Object[] { product, quantity });
 		int size = listOfStorageElements.size();
 		StorageElement storageElement = null;
-		boolean found = false; 
-		for(int i=0; i<size; i++){
+		boolean found = false;
+		for (int i = 0; i < size; i++) {
 			storageElement = listOfStorageElements.get(i);
-			if(storageElement.getProduct().equals(product)){
-				//falls Element gefunden wird Anzahl erhoeht und Kosten neu berechnet
+			if (storageElement.getProduct().equals(product)) {
+				// falls Element gefunden wird Anzahl erhoeht und Kosten neu
+				// berechnet
 				Product prod = storageElement.getProduct();
 				int oldCosts = prod.getCosts();
 				int oldQuantity = storageElement.getQuantity();
-				int newCosts = (oldCosts*oldQuantity + product.getCosts()*quantity) / (oldQuantity+quantity);
+				int newCosts = (oldCosts * oldQuantity + product.getCosts()
+						* quantity)
+						/ (oldQuantity + quantity);
 				prod.setCosts(newCosts);
-				storageElement.increaseQuantity(quantity); 
+				storageElement.increaseQuantity(quantity);
 				// TODO Kosten müssen neu berechnet werden
 				found = true;
 				break;
 			}
 		}
-		
-		if(!found){
-			//Exceptions lassen Programm stoppen
-			storageElement = new StorageElement(quantity,product);
-			
+
+		if (!found) {
+			// Exceptions lassen Programm stoppen
+			storageElement = new StorageElement(quantity, product);
+
 			listOfStorageElements.add(storageElement);
-			
+
 		}
 		Log.methodExit();
-	}//store
-	
+	}// store
+
 	/**
-	 * bucht die Kosten fuer die Lagerung der Produkte pro Runde vom Bankkonto ab
-	 * @return true bei Erfolg
-	 * 		   false sonst.
+	 * bucht die Kosten fuer die Lagerung der Produkte pro Runde vom Bankkonto
+	 * ab
+	 * 
+	 * @return true bei Erfolg false sonst.
 	 */
-	
-	public boolean debitStorageCost(){
-		
+
+	public boolean debitStorageCost() {
+
 		int costs = this.getStorageCostsSum();
+		// TODO: Warum gehtst du nicht direkt auf this.company?
+		// return this.getCompany().getBankAccount().decreaseBalance(costs);
+		//Wäre vielleciht besser
+
 		Company comp = this.getCompany();
 		BankAccount bank = comp.getBankAccount();
 		boolean success = bank.decreaseBalance(costs);
 		Log.get(success);
-		if(success){
+		if (success) {
 			return true;
-		}
-		else return false;
-		
+		} else
+			return false;
+
 	}
-	
+
 	/**
-	 * erhoeht die Kosten der Produkte im Lager, da sie pro Runde Kosten verursachen.
+	 * erhoeht die Kosten der Produkte im Lager, da sie pro Runde Lagerkosten
+	 * verursachen.
 	 */
-	public void updateStorageElements(){
+	public void updateStorageElements() {
 		Log.method();
 		StorageElement storageElement = null;
 		Product product = null;
 		int size = listOfStorageElements.size();
-		for(int i=0; i<size; i++){
+		for (int i = 0; i < size; i++) {
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
 			product.calculateNewCosts();
-		}	
-		
-	}// TODO updateStorageElements was macht diese Funktion?! die kosten updaten?!?!?!?!
-	
+		}
 
-	
+	}
+
 	/**
-	 * Berechnet die Summe der Kosten pro Runde, die durch die StorageElemente verursacht werden.
+	 * Berechnet die Summe der Kosten pro Runde, die durch die StorageElemente
+	 * verursacht werden.
 	 * 
-	 * @return 
+	 * @return
 	 */
-	
-	public int getStorageCostsSum(){
-		
+
+	public int getStorageCostsSum() {
+
 		StorageElement storageElement = null;
 		Product product = null;
 		int sum = 0;
 		int size = listOfStorageElements.size();
-		for(int i=0; i<size; i++){
+		for (int i = 0; i < size; i++) {
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
 			sum = sum + product.getStorageCostsPerRound();
 		}
 		Log.get(sum);
 		return sum;
-	}//getStorageCostsSum
-	
+	}// getStorageCostsSum
+
 	/**
 	 * lagert das uebergebene Product aus dem Storage mit angegebener Menge aus
-	 * ueberprueft zuvor ob das angegebene Product im Storage in ausreichender Menge vorhanden ist.
-	 * @param product welches product soll ausgelagert werden
-	 * @param quantity wie viel davon soll ausgelagert werden
+	 * ueberprueft zuvor ob das angegebene Product im Storage in ausreichender
+	 * Menge vorhanden ist.
+	 * 
+	 * @param product
+	 *            welches product soll ausgelagert werden
+	 * @param quantity
+	 *            wie viel davon soll ausgelagert werden
 	 * @return true bei Erfolg, false sonst
 	 */
-	
-	public boolean unstore(Product product, int quantity){
-		Log.method(new Object[]{product,quantity});
-		//muss hier die angegebene Quantity//Product wieder geprueft werden??
+
+	public boolean unstore(Product product, int quantity) {
+		Log.method(new Object[] { product, quantity });
+		// muss hier die angegebene Quantity//Product wieder geprueft werden??
 		StorageElement storageElement = null;
 		Product productTmp = null;
 		int size = listOfStorageElements.size();
 		boolean success = false;
-		for(int i=0; i<size; i++){
+		for (int i = 0; i < size; i++) {
 			storageElement = listOfStorageElements.get(i);
 			productTmp = storageElement.getProduct();
-			if(productTmp == product){
-				success = storageElement.reduceQuantity(quantity); 
-				//falls das storageelement jetzt leer ist, lösche die Referenz
-				if (storageElement.getQuantity()==0){
+			if (productTmp == product) {
+				success = storageElement.reduceQuantity(quantity);
+				// falls das storageelement jetzt leer ist, lösche die Referenz
+				if (storageElement.getQuantity() == 0) {
 					listOfStorageElements.remove(storageElement);
-					
+
 				}
-				//beenden der schleife
+				// beenden der schleife
 				break;
 			}
-		}//for sucht passendes StrEl anhand von Prod aendert dann die Anzahl
+		}// for sucht passendes StrEl anhand von Prod aendert dann die Anzahl
 		Log.get(success);
-		return success; //success macht keine angabe ob reduceQuantity()fehlschlug oder
-						//kein StorageElement/product in der ArrayList gefunden wurde
-	}//unstore
-	
+		return success; // success macht keine angabe ob
+						// reduceQuantity()fehlschlug oder
+						// kein StorageElement/product in der ArrayList gefunden
+						// wurde
+	}// unstore
+
 	/**
-	 * sucht ein Fertigprodukt anhand seiner eindeutigen Qualitaet 
-	 * @param quality gesuchte Qualitaet
+	 * sucht ein Fertigprodukt anhand seiner eindeutigen Qualitaet
+	 * 
+	 * @param quality
+	 *            gesuchte Qualitaet
 	 * @return gibt Referenz auf das Objekt zurueck
 	 */
-	
-	public StorageElement getFinishedGoodByQuality(int quality){
+
+	public StorageElement getFinishedGoodByQuality(int quality) {
 		StorageElement storageElement = null;
 		Product product = null;
 		int size = listOfStorageElements.size();
-		for(int i=0; i<size; i++){
+		for (int i = 0; i < size; i++) {
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
-			if(product.getQuality() == quality){
+			if (product.getQuality() == quality) {
 				Log.get(storageElement);
 				return storageElement;
-			}//if
-		}//for
+			}// if
+		}// for
 		Log.get(null);
 		return null;
-	}//getFinishedGoodByQuality
-	
-	
+	}// getFinishedGoodByQuality
+
 	/**
 	 * sucht alle Fertigprodukte im Lager und gibt diese zurueck
-	 * @return 
+	 * 
+	 * @return
 	 */
-	public ArrayList<FinishedGood> getAllFinishedGoods(){
-		ArrayList<FinishedGood> finishedGoods = new ArrayList<FinishedGood>(); 
+	public ArrayList<FinishedGood> getAllFinishedGoods() {
+		ArrayList<FinishedGood> finishedGoods = new ArrayList<FinishedGood>();
 		StorageElement storageElement = null;
 		Product product = null;
 		FinishedGood finishedGood = null;
 		int size = listOfStorageElements.size();
-		for(int i=0; i<size; i++){
+		for (int i = 0; i < size; i++) {
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
-			if(product instanceof FinishedGood){
+			if (product instanceof FinishedGood) {
 				finishedGood = (FinishedGood) product;
 				finishedGoods.add(finishedGood);
 			}
-		}//for
+		}// for
 		Log.get(finishedGoods);
 		return finishedGoods;
-	}//getAllFinishedGoods
-	
+	}// getAllFinishedGoods
+
 	/**
 	 * sucht alle im Lager vorhandenen Rohstoffe und gibt diese zurueck
+	 * 
 	 * @return Liste aller Rohstoffe
 	 */
-	public ArrayList<Resource> getAllResources(){
-		ArrayList<Resource> resources = new ArrayList<Resource>(); 
+	public ArrayList<Resource> getAllResources() {
+		ArrayList<Resource> resources = new ArrayList<Resource>();
 		StorageElement storageElement = null;
 		Product product = null;
 		Resource resource = null;
 		int size = listOfStorageElements.size();
-		for(int i=0; i<size; i++){
+		for (int i = 0; i < size; i++) {
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
-			if(product instanceof Resource){
+			if (product instanceof Resource) {
 				resource = (Resource) product;
 				resources.add(resource);
 			}
-		}//for
+		}// for
 		Log.get(resources);
 		return resources;
-		
-	}//getAllResources
-	
+
+	}// getAllResources
+
 	/**
 	 * Liefert eine Liste aller Storage-Elemente zurück
+	 * 
 	 * @return Liste aller Storage Elemente
 	 */
 	public ArrayList<StorageElement> getAllStorageElements() {
