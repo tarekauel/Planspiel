@@ -6,12 +6,12 @@ import java.io.Serializable;
  * 
  * @author D059270 BeispielMessage
  */
-public class GameDataMessage implements IMessage, Serializable {
+public abstract class GameDataMessage implements IMessage, Serializable {
 
-	private int money = 0;
+	private String playerName="";
 
-	public GameDataMessage(int money) {
-		this.money = money;
+	public GameDataMessage(String playerName) {
+		this.playerName = playerName;
 	}
 
 	@Override
@@ -19,9 +19,11 @@ public class GameDataMessage implements IMessage, Serializable {
 		return "GameDataMessage";
 
 	}
-
-	public int getMoney() {
-		return money;
+	
+	public String getPlayerName(){
+		return playerName;
 	}
+
+	
 
 }

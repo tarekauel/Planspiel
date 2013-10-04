@@ -13,7 +13,7 @@ public class BenefitBooking {
 	private Benefit benefit;
 	private int duration; // Dauer an gebuchten Runden
 	private int startInRound; // Runde in der das Benefit beginnt
-	private int costsSum; // Kosten insgesamt für das gebuchte Benefit
+	private int costsSum; // Kosten insgesamt fuer das gebuchte Benefit
 	private static ArrayList<BenefitBooking> bookedBenefits; // Alle derzeit
 																// gebuchten
 																// Benefits
@@ -21,7 +21,7 @@ public class BenefitBooking {
 	public BenefitBooking() {
 	}
 
-	private BenefitBooking(Benefit benefit, int duration) {
+	public BenefitBooking(Benefit benefit, int duration) {
 		Log.newObj(new Object[] { benefit, duration });
 		this.benefit = benefit;
 		this.duration = duration;

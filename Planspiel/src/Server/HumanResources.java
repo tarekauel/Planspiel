@@ -8,12 +8,12 @@ import Logger.Log;
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 18:11
  */
-
+//TODO: ueberpruefung ob Benefits noch gueltig, entfernen aus bookedbenefits, kosten die benefits per round verursachen
 public class HumanResources extends DepartmentRoundSensitive {
 
 	private TWage wagePerRound; // Lohn pro Runde pro Mitarbeiter
 	private int countEmployees; // Anzahl Mitarbeiter
-	private int wagesSum; // Gesamtkosten Löhne
+	private int wagesSum; // Gesamtkosten Loehne
 	private ArrayList<BenefitBooking> benefitBooking;
 	private int workingHoursPerRound = 0;
 
@@ -32,6 +32,32 @@ public class HumanResources extends DepartmentRoundSensitive {
 		//this.benefitBooking = new BenefitBooking();
 		Log.methodExit();
 
+	}
+	
+	public void bookBenefit(String name, int duration)
+			throws Exception {
+		Log.method();
+		Benefit benefit = Benefit.getBenefitByName(name);
+		boolean benefitAlreadyBooked = false;
+
+		for (BenefitBooking bB : benefitBooking) {
+
+			if (bB.getBenefit().getName().equals(benefit.getName())) {
+				benefitAlreadyBooked = true;
+			}
+
+		}
+
+		if (benefitAlreadyBooked == false) {
+
+			benefitBooking.add(new BenefitBooking(benefit, duration));
+
+		} else if (benefitAlreadyBooked == true) {
+	
+			throw new Exception("Benefit bereits gebucht.");
+
+		}
+		Log.methodExit();
 	}
 
 	private int calcWagesSum() {

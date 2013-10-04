@@ -22,6 +22,15 @@ public class Benefit {
 		this.costsPerRound = costsPerRound;
 
 	}
+	
+	public static Benefit getBenefitByName(String name){
+		for(Benefit benefit : bookableBenefits){
+			if(benefit.name.equals(name)){
+				return benefit;
+			}
+		}
+		return null;
+	}
 
 	public static void createBenefit(String name, int costsPerRound)
 			throws Exception {

@@ -1,7 +1,16 @@
 package Server;
 
+import java.util.ArrayList;
+
 import Message.GameDataMessage;
-import Server.Connection.Server;
+import Message.GameDataMessageFromClient;
+import Message.GameDataMessageFromClient.Distribution.Offer;
+import Message.GameDataMessageFromClient.HumanResources.BenefitBooking;
+import Message.GameDataMessageFromClient.Production.ProductionOrder;
+import Message.GameDataMessageFromClient.Purchase.AcceptedSupplierOffer;
+import Message.GameDataMessageFromClient.Purchase.Request;
+import Message.GameDataMessageToClient;
+
 
 public class GameDataTranslator {
 
@@ -23,13 +32,137 @@ public class GameDataTranslator {
 		return gameDataTranslator;
 	}
 
-	public void convertGameDataMessage2Objects(GameDataMessage gameDataMessage) {
+	public void convertGameDataMessage2Objects(
+			ArrayList<GameDataMessageFromClient> gameDataMessages) throws Exception {
+
+		for (GameDataMessageFromClient gameDataMessage : gameDataMessages) {
+			Company company = findCompanyOfPlayer(gameDataMessage
+					.getPlayerName());
+			handlePurchaseRequests(gameDataMessage.purchase.requests, company);
+			handleAcceptedSupplierOffers(gameDataMessage.purchase.acceptedSupplierOffers, company);
+			handleProductionOrders(gameDataMessage.production.orders, company);
+			handleDistributionOffers(gameDataMessage.distribution.offers, company);
+			handleBenefitBooking(gameDataMessage.humanResources.benefits, company);
+			handleMachineryLevel(gameDataMessage.increaseMachineLevel, company);
+			handleWage(gameDataMessage.wage, company);
+			handleMarketResearch(gameDataMessage.buyMarketResearch, company);
+			
+		}
+		
+	}
+	
+	private void handleMarketResearch(boolean buyMarketResearch, Company company) {
+		if(buyMarketResearch){
+			//company.getMarketResearch()
+		}
 		
 	}
 
+	private void handleWage(int wage, Company company) {
+		HumanResources hr = company.getHumanResources();
+		//hr.setWagePerRound(new TWage(wage,)); 
+		//TODO: Round?
+	}
+
+	private void handleMachineryLevel(boolean increaseMachineLevel, Company company) {
+		if(increaseMachineLevel){
+			company.getProduction().increaseMachineryLevel();
+		}
+		
+	}
+
+	private void handleBenefitBooking(ArrayList<BenefitBooking> benefits,
+			Company company) throws Exception {
+		HumanResources hr = company.getHumanResources();
+
+		for (BenefitBooking benefit : benefits) {
+			hr.bookBenefit(benefit.name, benefit.duration);
+		}
+	}
+
+private void handleDistributionOffers(ArrayList<Offer> offers,
+			Company company) {
+	Distribution distribution = company.getDistribution();
+		for (Offer offer : offers) {
+			distribution.createOffer(offer.quality, offer.quantityToSell,
+					offer.price);
+		}
+	}
+
+/**
+ * 	Sucht die passenden Resources im Lager und erstellt mit ihnen die ProductionOrders
+ * @param orders vom Client angelegte Orders
+ * @param company
+ */
+private void handleProductionOrders(ArrayList<ProductionOrder> orders, Company company) {
+		Storage storage = company.getStorage();
+		for(ProductionOrder prodOrder : orders){
+		Resource wafer = null;
+		Resource  panelCase= null;
+		for(Resource resource : storage.getAllResources()){
+			if(resource.getQuality() == prodOrder.qualityCase && resource.getName().equals("Gehäuse")){
+				panelCase = resource;
+			}
+			if(resource.getQuality() == prodOrder.qualityWafer && resource.getName().equals("Wafer")){
+				wafer = resource;
+			}
+			break;
+		 }//for
+		company.getProduction().createProductionOrder(wafer, panelCase, prodOrder.quantity);
+		}//for
+	}
+
+/**
+ * nimmt die SupplierOffers an. vergleicht dabei die vom Client
+ * uebermittelten SupplierOffers mit denen auf dem Server. Akkzeptiert
+ * die auf dem Server liegende.
+ * @param acceptedSupplierOffers
+ * @param company
+ * @throws Exception
+ */
+	private void handleAcceptedSupplierOffers(
+			ArrayList<AcceptedSupplierOffer> acceptedSupplierOffers,
+			Company company) throws Exception {
+		for(AcceptedSupplierOffer acceptedSupOf : acceptedSupplierOffers){ //geht alle acceptedSupOf des Clients durch
+			for(Server.Request request : company.getPurchase().getListOfLatesRequest()){ //Sucht alle aktuellen Requests auf dem Server 
+				for(SupplierOffer supOf : request.getSupplierOffers()){ // Sucht zum jeweiligen Request die 3 SupplierOffers auf dem Server
+					if(supOf.equals(acceptedSupOf)){//sucht den Offer der client- und serverseitig übereinstimmt
+						company.getPurchase().acceptSupplierOffer(supOf, acceptedSupOf.quantity); // akzeptiert den serverseitigen
+						break;
+					}
+				}
+			}
+		}
+		
+	}
+
+	/**
+	 * Liefert zu einem Spieler die Company-Referenz zurueck.
+	 * 
+	 * @param playerName
+	 * @return Company
+	 */
+	private Company findCompanyOfPlayer(String playerName) {
+		for (Player player : Server.Connection.Server.getServer().getPlayerList()) {
+			if (player.getName().equals(playerName)) {
+				return player.getMyCompany();
+			}
+		}
+		return null;
+	}
+
+	private void handlePurchaseRequests(ArrayList<Request> requests,
+			Company company) throws Exception {
+		for (Request request : requests) {
+			company.getPurchase().createRequest(new Resource(request.quality, request.name, 0));
+		}
+		
+
+	}
+
 	public void createGameDataMessagesAndSend2Clients() {
-		for (Player player : Server.getServer().getPlayerList()) {
-			GameDataMessage message = new GameDataMessage(1);
+		for (Player player : Server.Connection.Server.getServer().getPlayerList()) {
+			GameDataMessageToClient message = new GameDataMessageToClient("Player");
 			player.getMyCompany().getBankAccount().getBankBalance();
 			player.getServerConnection().writeMessage(message);
 		}

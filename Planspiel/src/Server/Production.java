@@ -116,21 +116,21 @@ public class Production extends DepartmentRoundSensitive {
 		// Z�hlt mit, wieviele Werkst�cke auf der Maschine lagen
 		int triedToProduce = 0;
 
-		// Es muss sicher gestellt werden, dass nicht mehr Werkst�cke auf der
+		// Es muss sicher gestellt werden, dass nicht mehr Werkstuecke auf der
 		// Maschine lagen, als diese kann.
 
-		// Schleife �ber alle Production Orders
+		// Schleife ueber alle Production Orders
 
 		for (ProductionOrder p : listOfOpenProductionOrders) {
 			boolean innerBreak = false;
-			// Darf �berhaupt noch jemand produzieren?
+			// Darf ueberhaupt noch jemand produzieren?
 			if (triedToProduce >= max) {
 				// scheinbar nicht
 				break;
 			}
 
-			// Schleife �ber jede einzelne Position des Auftrages
-			// (Werkst�ck)
+			// Schleife ueber jede einzelne Position des Auftrages
+			// (Werkstueck)
 			for (int j = 0; j < p.getRequested(); j++) {
 				// Darf �berhaupt noch jemand produzieren?
 				if (triedToProduce >= max) {
@@ -216,6 +216,10 @@ public class Production extends DepartmentRoundSensitive {
 	public ArrayList<TPercentOfUsage> getListOfAllPercentOfUsage() {
 		Log.get(listOfAllPercentOfUsage);
 		return listOfAllPercentOfUsage;
+	}
+	
+	public void increaseMachineryLevel(){
+		machine.increaseLevel(this.getCompany().getBankAccount());
 	}
 
 	@Override

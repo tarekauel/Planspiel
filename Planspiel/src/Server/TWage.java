@@ -36,7 +36,7 @@ public class TWage {
 	}
 
 	private void calcWageLevel() {
-		// Dazugehöriger Teil muss noch in GameEngine ausprogrammiert werden
+		// Dazugehoeriger Teil muss noch in GameEngine ausprogrammiert werden
 		// Prinzip: Hole Gehälter aller Spieler aus HR und addiere
 		//TODO: Bearbeiten
 	}

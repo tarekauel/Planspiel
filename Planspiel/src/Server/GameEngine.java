@@ -63,21 +63,11 @@ public class GameEngine {
 
 		// ArrayList<Player> allPlayer = Server.getServer().getPlayerList();
 		for (Company company : listOfCompanys) {
-
 			// ---------Storage---------------------
 			company.getStorage().debitStorageCost();
 			// ---------Production---------------------
-			// Parser: erstellt ProductionOrders
 			company.getProduction().produce();
-			// ---------Purchase---------------------
-			// Parser: company.getPurchase().acceptSupplierOffer(supplierOffer,
-			// quantity);
-			// Parser: company.getPurchase().createRequest(resource);
-
-			// Parser: company.getDistribution().createOffer(quality,
-			// quantityToSell, price);
 			// ---------Fixkosten berechnen+abbuchen---------------------
-
 			long costs = company.getMarketResearch().getFixCosts();
 			costs += company.getDistribution().getFixCosts();
 			costs += company.getHumanResources().getFixCosts();

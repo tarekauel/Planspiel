@@ -14,5 +14,7 @@ public class MarketResearch extends Department {
     public MarketResearch(Company c) throws Exception {
         super(c, "Marktforschung",Constant.DepartmentFixcost.MARKET_RESEARCH);
     }
+    
+    //TODO: flag fuer isbookedfornextround automatische kostenverursachung
 
 }

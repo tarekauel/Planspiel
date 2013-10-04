@@ -67,5 +67,19 @@ public class SupplierOffer {
 		Log.get(false);
 		return false;
 	}
+	
+	
+	/**
+	 * Vergleicht ob die Resource identisch sind.
+	 * @param supplierOffer
+	 * @return
+	 */
+
+	public boolean equals(SupplierOffer supplierOffer){
+		if(this.resource.equals(supplierOffer.getResource())){
+			return true;
+		}
+		return false;
+	}
 
 }
