@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import Logger.Log;
+import Server.Connection.ServerConnection;
 
 /**
  * 
@@ -17,9 +18,18 @@ public class Player {
 	private String name = "";
 	private String password = "";
 	private String ip = "";
-	private Socket clientSocket;
-	private Company myCompany;
+	private ServerConnection serverConnection;
 	
+	public ServerConnection getServerConnection() {
+		return serverConnection;
+	}
+
+	public void setServerConnection(ServerConnection serverConnection) {
+		this.serverConnection = serverConnection;
+	}
+
+	private Company myCompany;
+
 	/**
 	 * 
 	 * @return Das Unternehmen des Spielers
@@ -27,8 +37,7 @@ public class Player {
 	public Company getMyCompany() {
 		return myCompany;
 	}
-	
-	
+
 	private int port;
 
 	/**
@@ -38,30 +47,23 @@ public class Player {
 	 * @param password
 	 * @param clientSocket
 	 *            an.
-	 * @throws Exception Location ist invalid.
+	 * @throws Exception
+	 *             Location ist invalid.
 	 */
-	public Player(String name, String password, Socket clientSocket, String location) throws Exception {
-		Log.newObj(new Object[] { name, password, clientSocket, ip, port });
+	public Player(String name, String password,
+			ServerConnection serverConnection, String location)
+			throws Exception {
+
 		this.name = name;
 		this.password = password;
-		this.clientSocket = clientSocket;
-		this.ip = clientSocket.getInetAddress().toString();
-		this.port = clientSocket.getPort();
-		setClientSocket(clientSocket);
-		Location loc= Location.getLocationByCountry(location);
+		this.serverConnection = serverConnection;
+		this.ip = serverConnection.getClientSocket().getInetAddress()
+				.toString();
+		this.port = serverConnection.getClientSocket().getPort();
+
+		Location loc = Location.getLocationByCountry(location);
 		myCompany = new Company(loc);
-		
-		Log.methodExit();		
-	}
 
-	public Socket getClientSocket() {
-		Log.get(clientSocket);
-		return clientSocket;
-	}
-
-	public void setClientSocket(Socket clientSocket) {
-		Log.method(clientSocket);
-		this.clientSocket = clientSocket;
 	}
 
 	public String getPassword() {

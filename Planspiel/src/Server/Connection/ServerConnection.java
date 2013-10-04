@@ -102,7 +102,7 @@ public class ServerConnection extends Thread {
 																				// stimmt
 						player.setIp(clientSocket.getInetAddress().toString());
 						player.setPort(clientSocket.getPort());
-						player.setClientSocket(clientSocket);
+						player.setServerConnection(this);
 						isRelogin = true;
 					}
 				}
@@ -119,7 +119,7 @@ public class ServerConnection extends Thread {
 
 				} else {
 					server.addPlayer(new Player(message.getName(), message
-							.getPassword(), clientSocket, message
+							.getPassword(), this, message
 							.getChosenLocation()));
 
 				}
@@ -191,6 +191,9 @@ public class ServerConnection extends Thread {
 
 	}
 
+	public Socket getClientSocket(){
+		return clientSocket;
+	}
 	/**
 	 * Schlieﬂt die Verbindung mit dem Client
 	 */
