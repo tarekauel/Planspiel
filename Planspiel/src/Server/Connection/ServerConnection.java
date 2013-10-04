@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.io.*;
 
 import Message.*;
+import Server.GameEngine;
 import Server.Player;
 
 /**
@@ -81,23 +82,55 @@ public class ServerConnection extends Thread {
 	 *            LoginConfirmationMessage*
 	 */
 	private void login(LoginMessage message) {
+		boolean isRelogin = false;
+		IMessage messageBack = null;
 		LoginConfirmationMessage loginConfirmationMessage = new LoginConfirmationMessage(
 				true, "Willkommen " + message.getName() + "!");
-		// Prüfe ob Spileername existiert.
+		// Prüfe ob Spielername existiert.
 		for (Player player : server.getPlayerList()) {
 			if (player.getName().equals(message.getName())) {
-				loginConfirmationMessage = new LoginConfirmationMessage(false,
-						"Der Name " + message.getName() + " existiert schon!");
-				// TODO: Handle relogin
+				if (GameEngine.getGameEngine().getRound() == 0) { // 2 Spieler
+																	// haben den
+																	// gleichen
+																	// Namen
+																	// ausgewaehlt.
+					loginConfirmationMessage = new LoginConfirmationMessage(
+							false, "Der Name " + message.getName()
+									+ " existiert schon!");
+				} else { // Spieler loggt sich wieder ein.
+					if (player.getPassword().equals(message.getPassword())) { // Passwort
+																				// stimmt
+						player.setIp(clientSocket.getInetAddress().toString());
+						player.setPort(clientSocket.getPort());
+						player.setClientSocket(clientSocket);
+						isRelogin = true;
+					}
+				}
+
 				break;
 			}
 		}
-		if (loginConfirmationMessage.getSuccess()) {
-			server.addPlayer(new Player(message.getName(), message
-					.getPassword(), clientSocket));
-		}
-		writeMessage(loginConfirmationMessage);
+		messageBack = loginConfirmationMessage;
+		if (loginConfirmationMessage.getSuccess()) { // Login erfolgreich
+			try {
+				if (isRelogin) {
+					// messageBack = new GameDataMessage(0);
+					// TODO: setGameData
 
+				} else {
+					server.addPlayer(new Player(message.getName(), message
+							.getPassword(), clientSocket, message
+							.getChosenLocation()));
+
+				}
+
+			} catch (Exception e) {
+				// TODO: Falsche Location
+				e.printStackTrace();
+			}
+		}
+
+		writeMessage(messageBack);
 	}
 
 	/**

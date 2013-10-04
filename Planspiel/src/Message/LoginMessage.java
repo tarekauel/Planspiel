@@ -2,6 +2,8 @@ package Message;
 
 import java.io.Serializable;
 
+import Server.Location;
+
 /**
  * 
  * @author D059270 Diese Message wird vom Client an den Server als Loginanfrage
@@ -10,10 +12,12 @@ import java.io.Serializable;
 public class LoginMessage implements IMessage, Serializable {
 	private String name = "";
 	private String password = "";
+	private String chosenLocation;
 
-	public LoginMessage(String name, String password) {
+	public LoginMessage(String name, String password, String chosenLocation) {
 		this.name = name;
 		this.password = password;
+		this.chosenLocation = chosenLocation;
 	}
 
 	@Override
@@ -28,6 +32,10 @@ public class LoginMessage implements IMessage, Serializable {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getChosenLocation() {
+		return chosenLocation;
 	}
 
 }

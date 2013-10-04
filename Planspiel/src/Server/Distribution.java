@@ -78,6 +78,8 @@ public class Distribution extends DepartmentRoundSensitive {
 		} catch (IOException e) {
 			e.getMessage(); 
 		}
+		//TODO: Offer kostet Geld
+		
 		Log.methodExit();
 	}// createOffer
 
