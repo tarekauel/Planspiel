@@ -89,6 +89,7 @@ public class StorageElement {
 	 * 		   false sonst
 	 */
 	public boolean increaseQuantity(int quantity){
+		//TODO: durchschnittspreis neu berechnen!
 		Log.method(quantity);
 		if(quantity>0){
 			this.quantity = this.quantity + quantity;
