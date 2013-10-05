@@ -8,7 +8,7 @@ import org.junit.Test;
 import Server.ProductionOrder;
 import Server.Resource;
 
-public class TestTemplate {
+public class ConstructorTest {
 	Resource wafer;
 	Resource cases;
 	
