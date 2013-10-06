@@ -1,5 +1,8 @@
 package Server;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import Logger.Log;
@@ -20,12 +23,14 @@ public class Location {
 	 * muss vor Spielstart aufgerufen werden. Erzeugt die verschiedenen
 	 * Locations
 	 */
+	
 	public static void initLocations() {
 		Log.method();
-		new Location(120,"Deutschland",60000000,9164);
-		new Location(110,"USA",40000000,8054);
-		new Location(90,"China",20000000,6175);
-		new Location(80,"Indien",5000000,3092);
+		
+		//Read from File
+		
+	
+		
 		Log.methodExit();
 	}
 
@@ -41,7 +46,7 @@ public class Location {
 	 * @param w
 	 *            WageLevel / Lohn niveau
 	 */
-	private Location(int a, String c, int p, int w) {
+	public Location(int a, String c, int p, int w) {
 		Log.newObj(new Object[]{c,p,w});
 		this.advantage = a;
 		this.country = c;
