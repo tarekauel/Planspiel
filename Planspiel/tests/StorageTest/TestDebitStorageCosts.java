@@ -24,25 +24,25 @@ public class TestDebitStorageCosts {
 	@Before
 	public void initializeTests() throws Exception {
 		c = new Company(Location.getLocationByCountry("USA"));
-		c.getBankAccount().increaseBalance(100000000);
 		st = c.getStorage();
 		for(int i = 0;i<10;i++){
 			fg = FinishedGood.create(80+i, 20000);
-			st.store(fg,15);
+			st.store(fg,1000);
 		}
 		
 	}
 
 	@Test
 	public void debitStorageCostsValid() throws Exception {
-		assertEquals(true,st.debitStorageCost());
-		
-		
-				
+		assertEquals(true,st.debitStorageCost());		
 	}
 	
 	@Test
-	public void debitStorageCostsIfBankbalanceIsTooLow() {
+	public void debitStorageCostsIfBankbalanceIsTooLow() throws Exception {
+		BankAccount b = c.getBankAccount();
+		//Kontostand wird auf 1 GE verringert, damit dass abbuchen ins negative geht.
+		b.decreaseBalance(b.getBankBalance()+1); 
+		assertEquals(false,st.debitStorageCost());
 		
 	}
 
