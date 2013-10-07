@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import Server.Benefit;
 import Server.Company;
 import Server.CustomerMarket;
 import Server.Distribution;
@@ -18,6 +19,8 @@ public class GameTest {
 	public static void main(String[] args) throws Exception {
 		
 		GameEngine g = GameEngine.getGameEngine();
+		
+		Benefit.initBenefits();
 
 		Location.initLocations();
 
