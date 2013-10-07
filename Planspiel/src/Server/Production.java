@@ -163,9 +163,9 @@ public class Production extends DepartmentRoundSensitive {
 				} else {
 					// Produziere das fertige Panel
 					// Berechne Zuschlag aus Motivation und Location fuer Produktion
-					int wageAdvantage= getCompany().getHumanResources().getAdvatage();
+					int wageMotivation= getCompany().getHumanResources().getMotivation();
 					int locationAdvantage = getCompany().getLocation().getAdvantage();
-					int advantage= wageAdvantage*Constant.Production.MOTIVATION_IMPACT/100+
+					int advantage= wageMotivation*Constant.Production.MOTIVATION_IMPACT/100+
 							locationAdvantage*Constant.Production.LOCATION_IMPACT/100;
 					p.produce(advantage, this.getCompany().getStorage(), this.machine);
 				}
