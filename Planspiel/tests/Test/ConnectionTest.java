@@ -46,8 +46,9 @@ public class ConnectionTest {
 	public void loginTest1() {
 		System.out.println("1");
 		String name="Michael";
-		String passwort="123456";
-		LoginMessage loginMessage = new LoginMessage (name,passwort);
+		String password="123456";
+		String chosenLocation="Deutschland";
+		LoginMessage loginMessage = new LoginMessage(name, password, chosenLocation);
 		client1.writeMessage(loginMessage);
 		IMessage message = client1.readMessage();
 		
@@ -63,8 +64,9 @@ public class ConnectionTest {
 	public void loginTestSameName() {
 		System.out.println("2");
 		String name="Michael";
-		String passwort="123456";
-		LoginMessage loginMessage = new LoginMessage (name,passwort);
+		String password="123456";
+		String chosenLocation="Deutschland";
+		LoginMessage loginMessage = new LoginMessage(name, password, chosenLocation);
 		client3.writeMessage(loginMessage);
 		IMessage message3 = client3.readMessage();
 		
