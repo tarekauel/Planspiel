@@ -2,12 +2,11 @@ package ProductTest;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+import Constant.Constant;
 import Server.FinishedGood;
 import Server.Resource;
-import Constant.Constant;
 
 public class TestConstructor {
 

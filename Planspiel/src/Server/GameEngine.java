@@ -20,6 +20,8 @@ public class GameEngine {
 	//Liste aller Unternehmen, die verloren haben
 	private ArrayList<Company> listOfLosers = new ArrayList<Company>();
 
+
+
 	// Rundennummer
 	private int round = 1;
 
@@ -135,10 +137,20 @@ public class GameEngine {
 		
 
 	}
-	
+	/**
+	 * Fuege einen Verlierer hinzu
+	 * @param c die Firma die verloren hat
+	 */
 	public void addCompanyLost(Company c){
 		listOfLosers.add(c);
 		
+	}
+	/**
+	 * 
+	 * @return alle Verlierer
+	 */
+	public ArrayList<Company> getListOfLosers() {
+		return listOfLosers;
 	}
 
 	@Override
