@@ -54,12 +54,14 @@ public class Storage extends DepartmentRoundSensitive {
 				Product prod = storageElement.getProduct();
 				int oldCosts = prod.getCosts();
 				int oldQuantity = storageElement.getQuantity();
-				int newCosts = (oldCosts * oldQuantity + product.getCosts()
-						* quantity)
-						/ (oldQuantity + quantity);
+				// Berechnung an sich erfolgt in double, danach wird direkt auf
+				// int gecasted
+				int newCosts = (int) ((double) ((oldCosts * oldQuantity + product
+						.getCosts() * quantity) / (oldQuantity + quantity)));
 				prod.setCosts(newCosts);
 				storageElement.increaseQuantity(quantity);
 				// TODO Kosten müssen neu berechnet werden
+
 				found = true;
 				break;
 			}
@@ -79,20 +81,21 @@ public class Storage extends DepartmentRoundSensitive {
 	 * ab
 	 * 
 	 * @return true bei Erfolg false sonst.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 
 	public boolean debitStorageCost() throws Exception {
 
 		int costs = this.getStorageCostsSum();
-		 return this.getCompany().getBankAccount().decreaseBalance(costs);
+		return this.getCompany().getBankAccount().decreaseBalance(costs);
 
 	}
 
 	/**
 	 * erhoeht die Kosten der Produkte im Lager, da sie pro Runde Lagerkosten
 	 * verursachen.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void updateStorageElements() throws Exception {
 		StorageElement storageElement = null;
@@ -111,7 +114,7 @@ public class Storage extends DepartmentRoundSensitive {
 	 * verursacht werden.
 	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 
 	public int getStorageCostsSum() throws Exception {
@@ -241,8 +244,8 @@ public class Storage extends DepartmentRoundSensitive {
 	public ArrayList<StorageElement> getAllStorageElements() {
 		return listOfStorageElements;
 	}
-	
-	public void prepareForNewRound(int round) throws Exception{
+
+	public void prepareForNewRound(int round) throws Exception {
 		updateStorageElements();
 	}
 }
