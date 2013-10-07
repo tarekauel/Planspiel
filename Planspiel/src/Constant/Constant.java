@@ -95,7 +95,10 @@ public class Constant {
 		.parseInt(getConstant("PRODUCTION_IMPACT_CASE"));
 		public static final int MAX_QUALITY_ADDITION = Integer
 		.parseInt(getConstant("PRODUCTION_MAX_QUALITY_ADDITION"));
-		
+		public static final int MOTIVATION_IMPACT = Integer
+				.parseInt(getConstant("PRODUCTION_MOTIVATION_IMPACT"));
+		public static final int LOCATION_IMPACT = Integer
+				.parseInt(getConstant("PRODUCTION_LOCATION_IMPACT"));
 	}
 	
 	public static class Log{
