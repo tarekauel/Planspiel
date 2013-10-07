@@ -1,6 +1,6 @@
 package Server;
 
-import Logger.Log;
+
 
 /**
  * Typ für die Motivation Speichert ein Key-Value Pair von Motivation und Runde
@@ -24,7 +24,7 @@ public class TMotivation {
 	 * @throws Exception
 	 */
 	public TMotivation(int motivation, int round) throws Exception {
-		Log.newObj(new Object[] { motivation, round });
+		
 		if (checkMotivationValid(motivation) == false) {
 			// Motivaions check failed
 			throw new IllegalArgumentException("Motivation invalid");
@@ -35,17 +35,17 @@ public class TMotivation {
 		}
 		this.round = round;
 		this.motivation = motivation;
-		Log.methodExit();
+		
 
 	}
 
 	public int getMotivation() {
-		Log.get(motivation);
+		
 		return this.motivation;
 	}
 
 	public int getRound() {
-		Log.get(round);
+		
 		return this.round;
 	}
 

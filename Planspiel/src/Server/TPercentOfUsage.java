@@ -3,7 +3,7 @@
  */
 package Server;
 
-import Logger.Log;
+
 
 /**
  * Klasse für die Auslastung einer Maschine
@@ -27,7 +27,7 @@ public class TPercentOfUsage {
 	 *             falls die Eingaben ungültig sind
 	 */
 	public TPercentOfUsage(int percentOfUsage, int round) throws Exception {
-		Log.newObj(new Object[] { percentOfUsage, round });
+	
 		if (!checkRound(round)) {
 			throw new IllegalArgumentException("Runde ungültig");
 		}
@@ -43,7 +43,7 @@ public class TPercentOfUsage {
 	 * @return Auslastung der Maschine
 	 */
 	public int getPercentOfUsage() {
-		Log.get(percentOfUsage);
+		
 		return percentOfUsage;
 	}
 
@@ -53,7 +53,7 @@ public class TPercentOfUsage {
 	 */
 
 	public int getRound() {
-		Log.get(round);
+		
 		return round;
 	}
 

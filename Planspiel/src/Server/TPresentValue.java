@@ -1,6 +1,6 @@
 package Server;
 
-import Logger.Log;
+
 
 /**
  * Typ für PresentValue
@@ -21,7 +21,7 @@ public class TPresentValue {
 	 * @throws Exception 
 	 */
 	public TPresentValue( int presentValue,int round) throws Exception {
-		Log.newObj(new Object[]{presentValue,round});
+	
 		if (checkPresentValueValid(presentValue) == false){
 			//Motivaions check failed
 			throw new IllegalArgumentException("Present value invalid");
@@ -32,7 +32,7 @@ public class TPresentValue {
 		}
 		this.round = round;
 		this.presentValue = presentValue;
-		Log.methodExit();
+		
 		
 	}
 	/**
@@ -40,7 +40,7 @@ public class TPresentValue {
 	 * @return gibt den Unternehmenswert an
 	 */
 	public int getPresentValue(){
-		Log.get(presentValue);
+		
 		return this.presentValue;
 	}
 	/**
@@ -48,7 +48,7 @@ public class TPresentValue {
 	 * @return gibt die Runde der PresentValue an
 	 */
 	public int getRound(){
-		Log.get(round);
+		
 		return this.round;		
 	}
 	

@@ -1,6 +1,6 @@
 package Server;
 
-import Logger.Log;
+
 
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 19:04
@@ -13,7 +13,7 @@ public class TWage {
 	private int round;
 
 	public TWage(int amount,int round) throws Exception {
-		Log.newObj(new Object[]{amount, round});
+		
 		if (!checkAmount(amount)) {
 			throw new IllegalArgumentException("Ungültiger Betrag");
 		}
@@ -42,16 +42,16 @@ public class TWage {
 	}
 
 	public int getAmount() {
-		Log.get(amount);
+		
 		return amount;
 	}
 	public int getRound(){
-		Log.get(round);
+	
 		return round;
 	}
 
 	public int getWageLevel() {
-		Log.get(wageLevel);
+	
 		return wageLevel;
 	}
 }

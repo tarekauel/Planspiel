@@ -1,6 +1,6 @@
 package Server;
 
-import Logger.Log;
+
 
 /**
  * 
@@ -21,15 +21,15 @@ public class SupplierOffer {
 	 *             Resource darf nicht null sein
 	 */
 	public SupplierOffer(Resource resource) throws IllegalArgumentException {
-		Log.newObj(resource);
+		
 		if (resource == null)
 			throw new IllegalArgumentException("Resource darf nicht null sein!");
 		this.resource = resource;
-		Log.methodExit();
+		
 	}
 
 	public int getOrderedQuantity() {
-		Log.get(orderedQuantity);
+		
 		return orderedQuantity;
 	}
 
@@ -41,17 +41,17 @@ public class SupplierOffer {
 	 * @return
 	 */
 	public Boolean setOrderedQuantity(int orderedQuantity) {
-		Log.method(orderedQuantity);
+		
 		if (checkOrderedQuantityIsValid(orderedQuantity)) {
 			this.orderedQuantity = orderedQuantity;
-			Log.set(orderedQuantity);
+			
 			return true;
 		}
 		return false;
 	}
 
 	public Resource getResource() {
-		Log.get(resource);
+	
 		return resource;
 	}
 
@@ -63,11 +63,11 @@ public class SupplierOffer {
 	 */
 	private static Boolean checkOrderedQuantityIsValid(int orderedQuantity) {
 		if (orderedQuantity >= 0) {
-			Log.get(true);
+		
 			return true;
 
 		}
-		Log.get(false);
+		
 		return false;
 	}
 
