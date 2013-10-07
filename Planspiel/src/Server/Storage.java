@@ -82,31 +82,22 @@ public class Storage extends DepartmentRoundSensitive {
 	 * ab
 	 * 
 	 * @return true bei Erfolg false sonst.
+	 * @throws Exception 
 	 */
 
-	public boolean debitStorageCost() {
+	public boolean debitStorageCost() throws Exception {
 
 		int costs = this.getStorageCostsSum();
-		// TODO: Warum gehtst du nicht direkt auf this.company?
-		// return this.getCompany().getBankAccount().decreaseBalance(costs);
-		//Wäre vielleciht besser
-
-		Company comp = this.getCompany();
-		BankAccount bank = comp.getBankAccount();
-		boolean success = bank.decreaseBalance(costs);
-		Log.get(success);
-		if (success) {
-			return true;
-		} else
-			return false;
+		 return this.getCompany().getBankAccount().decreaseBalance(costs);
 
 	}
 
 	/**
 	 * erhoeht die Kosten der Produkte im Lager, da sie pro Runde Lagerkosten
 	 * verursachen.
+	 * @throws Exception 
 	 */
-	public void updateStorageElements() {
+	public void updateStorageElements() throws Exception {
 		Log.method();
 		StorageElement storageElement = null;
 		Product product = null;
@@ -124,9 +115,10 @@ public class Storage extends DepartmentRoundSensitive {
 	 * verursacht werden.
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
 
-	public int getStorageCostsSum() {
+	public int getStorageCostsSum() throws Exception {
 
 		StorageElement storageElement = null;
 		Product product = null;
@@ -262,7 +254,7 @@ public class Storage extends DepartmentRoundSensitive {
 		return listOfStorageElements;
 	}
 	
-	public void prepareForNewRound(int round){
+	public void prepareForNewRound(int round) throws Exception{
 		updateStorageElements();
 	}
 }

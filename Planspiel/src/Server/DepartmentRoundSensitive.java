@@ -27,6 +27,6 @@ public abstract class DepartmentRoundSensitive extends Department {
 	 * Wird zu Beginn der Runde von der GameEngine aufgerufen
 	 * @param round Wird mit gegeben, um gegebenfalls Dinge zu prüfen
 	 */	
-	public abstract void prepareForNewRound(int round);
+	public abstract void prepareForNewRound(int round) throws Exception;
 	
 }
