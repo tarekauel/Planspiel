@@ -1,8 +1,6 @@
 package Server;
 
-import java.util.ArrayList;
-
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 19:07
@@ -17,7 +15,7 @@ public class BenefitBooking {
 	
 
 	public BenefitBooking(Benefit benefit, int duration) {
-		Log.newObj(new Object[] { benefit, duration });
+		
 		this.benefit = benefit;
 		this.duration = duration;
 		this.startInRound = GameEngine.getGameEngine().getRound() + 1;
@@ -27,7 +25,7 @@ public class BenefitBooking {
 
 	public static void bookBenefit(Benefit benefit, int duration)
 			throws Exception {
-		Log.method();
+		
 		boolean benefitAlreadyBooked = false;
 
 		for (BenefitBooking bB : bookedBenefits) {
@@ -47,7 +45,7 @@ public class BenefitBooking {
 			throw new Exception("Benefit bereits gebucht.");
 
 		}
-		Log.methodExit();
+		
 	}
 
 	public static int calcCostsSum() {
@@ -67,24 +65,21 @@ public class BenefitBooking {
 	
 
 	public Benefit getBenefit() {
-		Log.get(benefit);
+		
 		return benefit;
 	}
 
 	public int getDuration() {
-		Log.get(duration);
+		
 		return duration;
 	}
 
 	public int getStartInRound() {
-		Log.get(startInRound);
+		
 		return startInRound;
 	}
 
 	public int getRemainingRounds() {
-		Log.get((duration
-				- (GameEngine.getGameEngine().getRound() - startInRound) < 0) ? 0
-				: (duration - (GameEngine.getGameEngine().getRound() - startInRound)));
 
 		return (duration
 				- (GameEngine.getGameEngine().getRound() - startInRound) < 0) ? 0
@@ -93,7 +88,7 @@ public class BenefitBooking {
 	}
 
 	public int getCostsSum() {
-		Log.get(costsSum);
+		
 		return costsSum;
 	}
 	

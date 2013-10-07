@@ -1,6 +1,6 @@
 package Server;
 
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * @author Lars
@@ -20,7 +20,7 @@ public abstract class Department {
 	 * @throws IllegalArgumentException
 	 */
 	public Department(Company c, String n, int f)throws Exception {
-		Log.newObj(new Object[]{c,n,f});
+		
 		
 		if (checkName(n)!=true){
 			throw new IllegalArgumentException("Ung�ltiger Abteilungsname:"+n);
@@ -41,7 +41,7 @@ public abstract class Department {
 	 * @return Referenz auf das Unternehmen
 	 */
 	public Company getCompany(){
-		Log.get(company);
+		
 		return this.company;
 	}
 	/**
@@ -49,7 +49,7 @@ public abstract class Department {
 	 * @return integer Zahl der Fix Koste (Cent Betrag)
 	 */
 	public int getFixCosts(){
-		Log.get(fixCosts);
+		
 		return this.fixCosts;
 	}
 	/**
@@ -57,7 +57,7 @@ public abstract class Department {
 	 * @return String des Abteilungsnamen
 	 */
 	public String getName(){
-		Log.get(name);
+		
 		return this.name;
 	}
 	/**
