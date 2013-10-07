@@ -73,6 +73,8 @@ public class BankAccount  implements IRoundSensitive {
 			setBankBalance(newBankBalance);
 			return true;
 		}
+		//nicht mehr genug geld, also verloren
+		GameEngine.getGameEngine().addCompanyLost(c);
 		return false;
 	}
 
