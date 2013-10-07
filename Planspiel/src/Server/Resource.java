@@ -1,6 +1,6 @@
 package Server;
 
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * 
@@ -18,12 +18,10 @@ public class Resource extends Product {
 	 */
 	public Resource(int quality, String name, int costs) throws Exception {		
 		super(quality, name, costs);
-		Log.newObj(new Object[]{quality,name,costs});
 		if(!checkNameIsValid(name)) {
 			throw new IllegalArgumentException("Name der Resource ist ungültig. Muss Wafer oder Gehäuse sein!");
 		}
 		
-		Log.methodExit();
 	}
 
 	/**
