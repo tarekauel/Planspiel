@@ -1,6 +1,5 @@
 package Server;
 
-import Logger.Log;
 
 /**
  * @author Tarek
@@ -17,9 +16,9 @@ public abstract class DepartmentRoundSensitive extends Department {
 	 */
 	public DepartmentRoundSensitive(Company c, String n, int f) throws Exception {
 		super(c, n, f);
-		Log.method();
+		
 		GameEngine.getGameEngine().addSensitiveDepartment(this);
-		Log.methodExit();
+		
 	}
 
 	/**
