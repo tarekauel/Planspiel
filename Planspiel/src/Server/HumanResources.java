@@ -2,24 +2,39 @@ package Server;
 
 import java.util.ArrayList;
 
+import AspectLogger.LogThis;
 import Constant.Constant;
 import Logger.Log;
 
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 18:11
  */
-//TODO: ueberpruefung ob Benefits noch gueltig, entfernen aus bookedbenefits, kosten die benefits per round verursachen
+// TODO: ueberpruefung ob Benefits noch gueltig, entfernen aus bookedbenefits,
+// kosten die benefits per round verursachen
 public class HumanResources extends DepartmentRoundSensitive {
 
-	private TWage wagePerRound; // Lohn pro Runde pro Mitarbeiter
-	private int countEmployees; // Anzahl Mitarbeiter
-	private int wagesSum; // Gesamtkosten Loehne
+	// Lohn pro Runde pro Mitarbeiter
+	private TWage wagePerRound;
+
+	// Anzahl Mitarbeiter
+	private int countEmployees;
+
+	// Gesamtkosten Loehne
+	private int wagesSum;
+
 	private ArrayList<BenefitBooking> benefitBooking;
 	private int workingHoursPerRound = 0;
 
+	// ---------- Attribute zur Berechnung der Motivaiton
+	// Lohn der Letzten Runde
+	private TWage wageLastRound = null;
+
+	// Summe der Benefitinvestitionen der letzten Runde
+	private long sumBenefit = 0;
+
 	public HumanResources(Company c) throws Exception {
-		super(c, "Personal",Constant.DepartmentFixcost.HUMAN_RESOURCES);
-		Log.method(new Object[]{c});
+		super(c, "Personal", Constant.DepartmentFixcost.HUMAN_RESOURCES);
+		Log.method(new Object[] { c });
 		setCountEmployees(100); // TODO: Anpassen & in ini-File auslagern
 		setWagePerRound(new TWage(900, GameEngine.getGameEngine().getRound())); // TODO:
 																				// Anpassen
@@ -28,17 +43,17 @@ public class HumanResources extends DepartmentRoundSensitive {
 																				// ini-File
 																				// auslagern
 		this.wagesSum = calcWagesSum();
-//TODO: BENEFIT BOOKING!?
-		//this.benefitBooking = new BenefitBooking();
-		
-		// HR bei MarketData registrieren, um den durchschnittslohn zu uebermitteln
+		// TODO: BENEFIT BOOKING!?
+		// this.benefitBooking = new BenefitBooking();
+
+		// HR bei MarketData registrieren, um den durchschnittslohn zu
+		// uebermitteln
 		MarketData.getMarketData().addHR(this);
 		Log.methodExit();
 
 	}
-	
-	public void bookBenefit(String name, int duration)
-			throws Exception {
+
+	public void bookBenefit(String name, int duration) throws Exception {
 		Log.method();
 		Benefit benefit = Benefit.getBenefitByName(name);
 		boolean benefitAlreadyBooked = false;
@@ -56,7 +71,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 			benefitBooking.add(new BenefitBooking(benefit, duration));
 
 		} else if (benefitAlreadyBooked == true) {
-	
+
 			throw new Exception("Benefit bereits gebucht.");
 
 		}
@@ -85,7 +100,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 
 	public int getCountEmployees() {
 		Log.get(countEmployees);
-		
+
 		return countEmployees;
 	}
 
@@ -116,4 +131,33 @@ public class HumanResources extends DepartmentRoundSensitive {
 
 	}
 
+	/**
+	 * Berechnet die Motivation in dieser Runde
+	 * 
+	 * @return Motivation in Prozent
+	 * @throws Exception
+	 */
+	public int getMotivation() throws Exception {
+
+		// Gehaltsunterschied zur Vorrunde
+		double diffWageToLastRound = 0.0;
+
+		// Nur ab der zweiten Runde git es einen Unterschied
+		if (GameEngine.getGameEngine().getRound() > 1) {
+			// Unterschied in Prozent berechnen
+			// (Neuer Lohn - Alter Lohn) / (Alter Lohn)
+			diffWageToLastRound = (wagePerRound.getAmount() - wageLastRound
+					.getAmount()) / (double) wageLastRound.getAmount();
+		}
+
+		// Gehaltsunterschied zur Gruppe
+		// ( Eigener Lohn - Durchschnitt) / Durchschnitt
+		double diffWageToAverage = ((double) (((double) wagePerRound
+				.getAmount() / wagePerRound.getWageLevel()) - MarketData
+				.getMarketData().getAvereageWage().getAmount()) / MarketData
+				.getMarketData().getAvereageWage().getAmount());
+		
+		
+		return 0;
+	}
 }

@@ -172,9 +172,16 @@ public class Constant {
 	public static class Product{
 		public static final int STORAGECOST_WAFER = Integer.parseInt(getConstant("STORAGE_COSTS_WAFER"));
 		public static final int STORAGECOST_CASE = Integer.parseInt(getConstant("STORAGE_COSTS_CASE"));
-		public static final int STORAGECOST_PANEL = Integer.parseInt(getConstant("STORAGE_COSTS_PANEL"));
+		public static final int STORAGECOST_PANEL = Integer.parseInt(getConstant("STORAGE_COSTS_PANEL"));		
+	}
+	
+	// Constanten-Klasse für das HR
+	public static class HumanResources {
+		public static final int IMPACT_DIFF_POS = Integer.parseInt(getConstant("HR_IMPACT_DIFF_POS"));
+		public static final int IMPACT_DIFF_NEG = Integer.parseInt(getConstant("HR_IMPACT_DIFF_NEG"));
 		
-		
+		public static final int IMPACT_DIFF_MARKET = Integer.parseInt(getConstant("HR_IMPACT_DIFF_MARKET"));
+		public static final int IMPACT_DIFF_INTERNAL = Integer.parseInt(getConstant("HR_IMPACT_DIFF_INTERNAL"));
 	}
 	
 	
