@@ -1,11 +1,12 @@
 package ProductionTest;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Server.*;
+import Server.Company;
+import Server.Location;
+import Server.Production;
 
 public class TestConstructor {
 	

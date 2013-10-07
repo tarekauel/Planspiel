@@ -1,14 +1,16 @@
 package ProductionTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Constant.Constant;
-import Server.*;
+import Server.BankAccount;
+import Server.Company;
+import Server.Location;
+import Server.Resource;
 
 public class TestCreateProductionOrder {
 	

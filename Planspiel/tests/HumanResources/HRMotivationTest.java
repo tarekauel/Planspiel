@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import Server.Benefit;
 import Server.Company;
-import Server.GameEngine;
 import Server.HumanResources;
 import Server.Location;
 import Server.MarketData;
