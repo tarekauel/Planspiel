@@ -9,8 +9,6 @@ import Server.Location;
 
 public class DataCreator {
 
-	
-
 	public static void createLocationFile() {
 		ArrayList<Location> listOfLocations = new ArrayList<Location>();
 		listOfLocations.add(new Location(120, "Deutschland", 60000000, 9164));
@@ -18,20 +16,27 @@ public class DataCreator {
 		listOfLocations.add(new Location(90, "China", 20000000, 6175));
 		listOfLocations.add(new Location(80, "Indien", 5000000, 3092));
 
-		PrintWriter pw = new PrintWriter("locations.dat");
-		for (Location location : listOfLocations) {
-			pw.println();
-			//Todo: ich mach noch weiter
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter("locations.dat");
+			for (Location location : listOfLocations) {
+				pw.println(location.getCountry() + ":"
+						+ location.getAdvantage() + ":"
+						+ location.getPurchasePrice() + ":"
+						+ location.getWageLevel());
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-	
+		pw.close();
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-			DataCreator.createLocationFile();
+		DataCreator.createLocationFile();
 	}
 
 }

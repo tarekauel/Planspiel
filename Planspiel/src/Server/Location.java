@@ -1,8 +1,11 @@
 package Server;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Logger.Log;
@@ -22,16 +25,21 @@ public class Location {
 	/**
 	 * muss vor Spielstart aufgerufen werden. Erzeugt die verschiedenen
 	 * Locations
+	 * @throws IOException 
 	 */
 	
-	public static void initLocations() {
-		Log.method();
-		
-		//Read from File
-		
-	
-		
-		Log.methodExit();
+	public static void initLocations() throws IOException {
+		FileReader reader = new FileReader("locations.dat");
+		BufferedReader buffReader= new BufferedReader(reader);
+		String line = buffReader.readLine();
+		while(line !=null){
+			String [] attributes =line.split(":");
+			Location l= new Location(Integer.parseInt(attributes[1]), attributes[0], Integer.parseInt(attributes[2]), Integer.parseInt(attributes[3]));
+			listOfLocations.add(l);
+			line = buffReader.readLine();
+		}
+		buffReader.close();
+			
 	}
 
 	/**

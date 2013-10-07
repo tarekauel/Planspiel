@@ -43,7 +43,7 @@ public class GameTest {
 
 		SupplierMarket.getMarket().handleRequest();
 
-		ArrayList<Request> listReq = p.getListOfLatesRequest();
+		ArrayList<Request> listReq = p.getListOfLatestRequest();
 		p.acceptSupplierOffer(listReq.get(0).getSupplierOffers()[0], 54 * 101); // 1000
 																				// Wafer
 																				// kaufen
@@ -59,7 +59,7 @@ public class GameTest {
 		d.createOffer(s.getAllFinishedGoods().get(0).getQuality(), s
 				.getAllStorageElements().get(2).getQuantity(), 100);
 
-		ArrayList<Request> listReq2 = p2.getListOfLatesRequest();
+		ArrayList<Request> listReq2 = p2.getListOfLatestRequest();
 		p2.acceptSupplierOffer(listReq2.get(0).getSupplierOffers()[0], 54 * 100); // 1000
 																					// Wafer
 																					// kaufen

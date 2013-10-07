@@ -96,7 +96,7 @@ public class SupplierMarket {
 		listOfRequest = new ArrayList<Request>();
 		
 		for(Purchase p:listOfPurchase) {
-			for(Request r:p.getListOfLatesRequest()) {
+			for(Request r:p.getListOfLatestRequest()) {
 				listOfRequest.add(r);
 			}
 		}

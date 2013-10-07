@@ -1,5 +1,6 @@
 package Server;
 
+import Constant.Constant;
 import Logger.Log;
 
 /**
@@ -13,11 +14,10 @@ public abstract class Product {
 	private String name; // Wafer/Gehäuse/Panel
 	private int costs;
 	private int quality;
-	private int storageCostsPerRound;
 
 	/**
-	 * Erstellt ein neues Produkt, wenn die Qualität (Interval ]0;100] und die Kosten (>0)
-	 * valide sind. Ansonsten wird eine Exception geworfen.
+	 * Erstellt ein neues Produkt, wenn die Qualität (Interval ]0;100] und die
+	 * Kosten (>0) valide sind. Ansonsten wird eine Exception geworfen.
 	 * 
 	 * @param quality
 	 * @param name
@@ -25,7 +25,7 @@ public abstract class Product {
 	 * @throws
 	 */
 	public Product(int quality, String name, int costs) throws Exception {
-		Log.newObj(new Object[]{quality,name,costs});
+		Log.newObj(new Object[] { quality, name, costs });
 		if (checkCostsAreValid(costs) && checkQualityIsValid(quality)) {
 			this.quality = quality;
 			this.name = name;
@@ -45,25 +45,49 @@ public abstract class Product {
 		Log.get(costs);
 		return costs;
 	}
-	
+
 	public int getQuality() {
 		Log.get(quality);
 		return quality;
-		
+
 	}
 
-	public int getStorageCostsPerRound() {
-		Log.get(storageCostsPerRound);
-		return storageCostsPerRound;
+	public int getStorageCostsPerRound() throws Exception {
+
+		switch (name) {
+		case "Wafer":
+			return Constant.Product.STORAGECOST_WAFER;
+		case "Gehäuse":
+			return Constant.Product.STORAGECOST_CASE;
+		case "Panel":
+			return Constant.Product.STORAGECOST_PANEL;
+		default:
+			throw new Exception("Name des Products fehlerhaft");
+
+		}
 	}
 
 	/**
-	 * Wird einmal in jeder Runde aufgerfen, um die Kosten des Produktes um sein
-	 * Lagerkosten der Runde zu erhöhen.
+	 * Wird einmal in jeder Runde aufgerfen, um die Kosten des Produktes um
+	 * seine Lagerkosten der Runde zu erhöhen.
+	 * 
+	 * @throws Exception
 	 */
-	public void calculateNewCosts() {
-		costs += storageCostsPerRound;
-		Log.set(costs);
+	public void calculateNewCosts() throws Exception {
+		switch (name) {
+		case "Wafer":
+			costs += Constant.Product.STORAGECOST_WAFER;
+			break;
+		case "Gehäuse":
+			costs += Constant.Product.STORAGECOST_CASE;
+			break;
+		case "Panel":
+			costs += Constant.Product.STORAGECOST_PANEL;
+			break;
+		default:
+			throw new Exception("Name des Products fehlerhaft");
+
+		}
 	}
 
 	/**
@@ -72,7 +96,7 @@ public abstract class Product {
 	 * @param costs
 	 * @return
 	 */
-	public Boolean setCosts(int costs) { //Brachen wir diese Methode???
+	public Boolean setCosts(int costs) { // Brachen wir diese Methode???
 		Log.set(costs);
 		if (checkCostsAreValid(costs)) {
 			this.costs = costs;
@@ -117,7 +141,7 @@ public abstract class Product {
 	 */
 	public Boolean equals(Product product) {
 		Log.method(product);
-		if(product==null){
+		if (product == null) {
 			return false;
 		}
 		if (product.name.equals(this.name) && product.quality == this.quality) {

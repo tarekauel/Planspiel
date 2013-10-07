@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Logger.Log;
 import Message.GameDataMessage;
+import Message.GameDataMessageFromClient;
 import Server.Connection.Server;
 
 public class GameEngine {
@@ -56,9 +57,9 @@ public class GameEngine {
 	 *            Übergebene Eingabedaten der Spieler
 	 * @throws Exception
 	 */
-	public void startNextRound(ArrayList<GameDataMessage> gameDataList)
+	public void startNextRound(ArrayList<GameDataMessageFromClient> gameDataList)
 			throws Exception {
-		Log.method();
+		prepareAllDepartmentsForNewRound();
 		parseClientData(gameDataList);
 
 		// ArrayList<Player> allPlayer = Server.getServer().getPlayerList();
@@ -79,18 +80,19 @@ public class GameEngine {
 		}
 		CustomerMarket.getMarket().handleAllOffers();
 		SupplierMarket.getMarket().handleRequest();
-
+		//restliche Fachlogik (MaschineryLevel, Benefits) 
+		
 		// Creator: CustomerMarket.getMarket().getMarketShares();
 		// Creator: CustomerMarket.getMarket().getAMarketPeak();
 		// Creator: CustomerMarket.getMarket().getCMarketPeak();
 
 		round++; // Runde hochzaehlen
-		prepareAllDepartmentsForNewRound();
+		
 		Log.methodExit();
 	}
 
-	private void parseClientData(ArrayList<GameDataMessage> gameDataList) {
-		// TODO Auto-generated method stub
+	private void parseClientData(ArrayList<GameDataMessageFromClient> gameDataList) throws Exception {
+		GameDataTranslator.getGameDataTranslator().convertGameDataMessage2Objects(gameDataList);
 
 	}
 
