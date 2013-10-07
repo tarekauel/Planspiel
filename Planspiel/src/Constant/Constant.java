@@ -101,33 +101,6 @@ public class Constant {
 				.parseInt(getConstant("PRODUCTION_LOCATION_IMPACT"));
 	}
 	
-	public static class Log{
-
-		// Section Logger
-		public static final boolean GET = ((getConstant("LOG_GET")).toLowerCase()
-				.equals("true"));
-		public static final boolean INFO = ((getConstant("LOG_INFO")).toLowerCase()
-		.equals("true"));
-		public static final boolean METHOD_NO_PARAM = ((getConstant("LOG_METHOD_NO_PARAM"))
-		.toLowerCase().equals("true"));
-		public static final boolean METHOD_1_PARAM = ((getConstant("LOG_METHOD_1_PARAM"))
-		.toLowerCase().equals("true"));
-		public static final boolean METHOD_N_PARAM = ((getConstant("LOG_METHOD_N_PARAM"))
-		.toLowerCase().equals("true"));
-		public static final boolean METHOD_EXIT = ((getConstant("LOG_METHOD_EXIT"))
-		.toLowerCase().equals("true"));
-		public static final boolean NEWOBJ_1_PARAM = ((getConstant("LOG_NEWOBJ_1_PARAM"))
-		.toLowerCase().equals("true"));
-		public static final boolean NEWOBJ_N_PARAM = ((getConstant("LOG_NEWOBJ_N_PARAM"))
-		.toLowerCase().equals("true"));
-		public static final boolean SET = ((getConstant("LOG_SET")).toLowerCase()
-		.equals("true"));
-		public static final boolean VERBOSE = ((getConstant("LOG_VERBOSE")).toLowerCase()
-		.equals("true"));
-		public static final boolean WARNING = ((getConstant("LOG_WARNING")).toLowerCase()
-		.equals("true"));
-		
-	}
 	
 	public static class Server{
 
