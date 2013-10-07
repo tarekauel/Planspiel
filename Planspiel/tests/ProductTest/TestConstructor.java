@@ -7,13 +7,11 @@ import org.junit.Test;
 
 import Server.FinishedGood;
 import Server.Resource;
+import Constant.Constant;
 
 public class TestConstructor {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
+	
 	@Test
 	public void createValidWafer() throws Exception{
 		Resource wafer = new Resource(7, "Wafer",20);
@@ -61,6 +59,17 @@ public class TestConstructor {
 		isNotNull = fg!=null;
 		assertEquals(false, isNotNull);
 
+	}
+	
+	@Test
+	public void updateStorageCostsPanel()throws Exception{
+		FinishedGood good = FinishedGood.create(50, 10);
+		int costBefore = good.getCosts();
+		good.calculateNewCosts();
+		int costAfter = good.getCosts();
+		
+		assertEquals(true,((costBefore+Constant.Product.STORAGECOST_PANEL) == costAfter));
+		
 	}
 
 }
