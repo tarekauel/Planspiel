@@ -10,6 +10,7 @@ import Constant.Constant;
  */
 // TODO: ueberpruefung ob Benefits noch gueltig, entfernen aus bookedbenefits,
 // kosten die benefits per round verursachen
+//TODO alle wagelevel rechnungen / 10 000
 public class HumanResources extends DepartmentRoundSensitive {
 
 	// Lohn pro Runde pro Mitarbeiter
@@ -157,8 +158,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 			// Nur Buchungen beruecksichtigen, die noch eine Restlaufzeit haben
 			// und entweder diese Runde beginnen oder bereits laufen
 			if (bP.getRemainingRounds() > 0
-					&& bP.getStartInRound() <= GameEngine.getGameEngine()
-							.getRound()) {
+					&& bP.getStartInRound() <= round ) {
 
 				// Betrag für diese Runde vom Konto abbuchen
 				if (!getCompany().getBankAccount().decreaseBalance(
@@ -266,6 +266,6 @@ public class HumanResources extends DepartmentRoundSensitive {
 	 */
 	public long getSumBenefits() {
 		return (long) Math.floor(sumBenfit
-				/ getCompany().getLocation().getWageLevel());
+				/ (getCompany().getLocation().getWageLevel()/10000));
 	}
 }

@@ -89,12 +89,12 @@ public class MarketData {
 		
 		// Liste aller HRs durchgehen
 		for(HumanResources hr : listOfHr) {
-			sumWageAmounts += (long) hr.getWagesPerHour().getAmount() / ((double) hr.getWagesPerHour().getWageLevel() / 100);
+			sumWageAmounts += (long) hr.getWagesPerHour().getAmount() / ( hr.getWagesPerHour().getWageLevel() / 10000.0 );
 			++numOfDepts;			
 		}
 		
 		// Den Durchschnittslohn der HRs auf Niveau 100 umgerechnet zurueckgeben
-		return new TWage((int) (sumWageAmounts / numOfDepts), 100, 10000);
+		return new TWage((int) (sumWageAmounts / numOfDepts), GameEngine.getGameEngine().getRound(), 10000);
 	}
 	
 	/**
