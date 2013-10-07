@@ -2,7 +2,7 @@ package Server;
 
 import java.util.ArrayList;
 
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * 
@@ -21,12 +21,10 @@ public class Request {
 	 * @param resource die Resource, die nachgefagt werden soll
 	 */
 	public Request(Resource resource) {
-		Log.newObj(resource);
 		this.resourceReqested = resource;
 		if( resource == null ) {
 			throw new IllegalArgumentException( "Resource darf nicht null sein!");
 		}
-		Log.methodExit();
 	}
 
 	/**
@@ -36,7 +34,6 @@ public class Request {
 	 * @return
 	 */
 	public SupplierOffer[] getSupplierOffers() {
-		Log.get(supplierOffers.toArray(new SupplierOffer[supplierOffers.size()]));
 		return supplierOffers.toArray(new SupplierOffer[supplierOffers.size()]);
 	}
 
@@ -48,7 +45,6 @@ public class Request {
 	 * @return
 	 */
 	public boolean addSupplierOffer(SupplierOffer supplierOffer) {
-		Log.method(supplierOffer);
 		if (supplierOffer == null) {
 			throw new IllegalArgumentException("SupplierOffer darf nicht null sein!");
 		}
@@ -70,7 +66,6 @@ public class Request {
 	 * @return
 	 */
 	public Resource getRequestedResource() {
-		Log.get(resourceReqested);
 		return resourceReqested;
 	}
 

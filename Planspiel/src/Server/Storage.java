@@ -3,7 +3,7 @@ package Server;
 import java.util.ArrayList;
 
 import Constant.Constant;
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * Das Storage/Lager verwaltet alle StorageElemente und lagert diese ein und
@@ -44,7 +44,6 @@ public class Storage extends DepartmentRoundSensitive {
 	 */
 
 	public void store(Product product, int quantity) throws Exception {
-		Log.method(new Object[] { product, quantity });
 		int size = listOfStorageElements.size();
 		StorageElement storageElement = null;
 		boolean found = false;
@@ -74,7 +73,6 @@ public class Storage extends DepartmentRoundSensitive {
 			listOfStorageElements.add(storageElement);
 
 		}
-		Log.methodExit();
 	}// store
 
 	/**
@@ -98,7 +96,6 @@ public class Storage extends DepartmentRoundSensitive {
 	 * @throws Exception 
 	 */
 	public void updateStorageElements() throws Exception {
-		Log.method();
 		StorageElement storageElement = null;
 		Product product = null;
 		int size = listOfStorageElements.size();
@@ -129,7 +126,6 @@ public class Storage extends DepartmentRoundSensitive {
 			product = storageElement.getProduct();
 			sum = sum + product.getStorageCostsPerRound();
 		}
-		Log.get(sum);
 		return sum;
 	}// getStorageCostsSum
 
@@ -146,7 +142,6 @@ public class Storage extends DepartmentRoundSensitive {
 	 */
 
 	public boolean unstore(Product product, int quantity) {
-		Log.method(new Object[] { product, quantity });
 		// muss hier die angegebene Quantity//Product wieder geprueft werden??
 		StorageElement storageElement = null;
 		Product productTmp = null;
@@ -166,7 +161,6 @@ public class Storage extends DepartmentRoundSensitive {
 				break;
 			}
 		}// for sucht passendes StrEl anhand von Prod aendert dann die Anzahl
-		Log.get(success);
 		return success; // success macht keine angabe ob
 						// reduceQuantity()fehlschlug oder
 						// kein StorageElement/product in der ArrayList gefunden
@@ -189,11 +183,9 @@ public class Storage extends DepartmentRoundSensitive {
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
 			if (product.getQuality() == quality) {
-				Log.get(storageElement);
 				return storageElement;
 			}// if
 		}// for
-		Log.get(null);
 		return null;
 	}// getFinishedGoodByQuality
 
@@ -216,7 +208,6 @@ public class Storage extends DepartmentRoundSensitive {
 				finishedGoods.add(finishedGood);
 			}
 		}// for
-		Log.get(finishedGoods);
 		return finishedGoods;
 	}// getAllFinishedGoods
 
@@ -239,7 +230,6 @@ public class Storage extends DepartmentRoundSensitive {
 				resources.add(resource);
 			}
 		}// for
-		Log.get(resources);
 		return resources;
 
 	}// getAllResources
@@ -250,7 +240,6 @@ public class Storage extends DepartmentRoundSensitive {
 	 * @return Liste aller Storage Elemente
 	 */
 	public ArrayList<StorageElement> getAllStorageElements() {
-		Log.get(listOfStorageElements);
 		return listOfStorageElements;
 	}
 	
