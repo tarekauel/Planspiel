@@ -24,7 +24,7 @@ public class TestConstructor {
 
 	@Test
 	public void createProductionValid() throws Exception {
-		new Production(c);
+		//new Production(c);
 	}
 	
 	@Test (expected = IllegalArgumentException.class )
