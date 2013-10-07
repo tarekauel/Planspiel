@@ -26,6 +26,7 @@ public class TestBankAccount {
 	public void initializeTests() throws Exception {
 		Company c = new Company(Location.getLocationByCountry("Deutschland"));
 		b = c.getBankAccount();
+
 	}
 
 	@Test
@@ -47,7 +48,7 @@ public class TestBankAccount {
 	@Test
 	public void decrease() {
 		assertEquals(true,
-				b.decreaseBalance(Constant.BankAccount.START_CAPITAL - 50));
+				b.decreaseBalance(500));
 	}
 
 	@Test
@@ -67,11 +68,16 @@ public class TestBankAccount {
 
 	@Test
 	public void decreaseTooMuch() {
-		assertEquals(false, b.decreaseBalance(b.getBankBalance() + 50));
+		assertEquals(
+				false,
+				b.decreaseBalance(b.getBankBalance()
+						+ Constant.BankAccount.MAX_CREDIT + 50));
 	}
 
 	@After
 	public void resetTests() {
+		c = null;
+		b = null;
 
 	}
 
