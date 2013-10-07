@@ -165,6 +165,11 @@ public class Constant {
 				.parseInt(getConstant("HR_IMPACT_DIFF_MARKET"));
 		public static final int IMPACT_DIFF_INTERNAL = Integer
 				.parseInt(getConstant("HR_IMPACT_DIFF_INTERNAL"));
+		
+		public static final int HR_FACTOR_WAGE = Integer
+				.parseInt(getConstant("HR_FACTOR_WAGE"));
+		public static final int HR_FACTOR_BENEFIT = Integer
+				.parseInt(getConstant("HR_FACTOR_BENEFIT"));
 	}
 
 }
