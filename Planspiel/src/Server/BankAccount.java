@@ -11,19 +11,27 @@ import Constant.Constant;
 public class BankAccount  implements IRoundSensitive {
 
 	private long bankBalance;
+	private Company c;
 /**
  * erstellt ein neues Bankkonto
  * @param bankBalance Startguthaben
- * @exception tritt auf, wenn bankBalance negativ oder 0
+ * @exception tritt auf, wenn Company null
  */
-	public BankAccount() {
+	public BankAccount(Company c) throws Exception {
+		if(!checkCompany(c)){
+			throw new IllegalArgumentException("Company invalid");
+		}
 		
 		//CheckAmount wirft Exception falls negative Zahl
 		checkAmount(Constant.BankAccount.START_CAPITAL);
-					
+		this.c = c;
 		this.bankBalance = Constant.BankAccount.START_CAPITAL;
 	}
-
+	
+	private boolean checkCompany(Company c){
+		return c!=null;
+	}
+	
 	public long getBankBalance() {
 		
 		return bankBalance;
@@ -81,9 +89,13 @@ public class BankAccount  implements IRoundSensitive {
 
 	@Override
 	public void prepareForNewRound(int round)  {
-		//Berechne die Zinsen falls nötig.
+		//Berechne die Zinsen falls noetig.
 		if(bankBalance<0){
-			
+			bankBalance += bankBalance *Constant.BankAccount.RATES;
+		}
+		//Pruefe ob wir jetzt endgültig pleite sind
+		if (bankBalance<Constant.BankAccount.MAX_CREDIT){
+			GameEngine.getGameEngine().addCompanyLost(c);
 		}
 		
 		

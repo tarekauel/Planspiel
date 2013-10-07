@@ -16,6 +16,9 @@ public class GameEngine {
 
 	// Liste aller Unternehmen, die am Spiel teilnehmen
 	private ArrayList<Company> listOfCompanys = new ArrayList<Company>();
+	
+	//Liste aller Unternehmen, die verloren haben
+	private ArrayList<Company> listOfLosers = new ArrayList<Company>();
 
 	// Rundennummer
 	private int round = 1;
@@ -131,6 +134,11 @@ public class GameEngine {
 		listOfCompanys.add(c);
 		
 
+	}
+	
+	public void addCompanyLost(Company c){
+		listOfLosers.add(c);
+		
 	}
 
 	@Override
