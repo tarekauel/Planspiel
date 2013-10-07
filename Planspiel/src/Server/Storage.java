@@ -126,7 +126,7 @@ public class Storage extends DepartmentRoundSensitive {
 		for (int i = 0; i < size; i++) {
 			storageElement = listOfStorageElements.get(i);
 			product = storageElement.getProduct();
-			sum = sum + product.getStorageCostsPerRound();
+			sum = sum + storageElement.getQuantity()*product.getStorageCostsPerRound();
 		}
 		return sum;
 	}// getStorageCostsSum

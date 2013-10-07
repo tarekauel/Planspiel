@@ -23,13 +23,13 @@ public class TestPrepareForNewRound {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//Location.initLocations();
+		Location.initLocations();
 
 	}
 
 	@Before
 	public void initializeTests() throws Exception {
-		l = new Location(110, "USA", 4000000, 750);
+		l = Location.getLocationByCountry("USA"); 
 		c = new Company(l);
 		d = c.getDistribution();
 		st = c.getStorage();
