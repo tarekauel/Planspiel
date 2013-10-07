@@ -8,22 +8,28 @@ package Server;
 
 public class TWage {
 
-	private int amount;
-	private int wageLevel;
-	private int round;
+	private final int amount;
+	private final int wageLevel;
+	private final int round;
 
-	public TWage(int amount,int round) throws Exception {
+	public TWage(int amount,int round, int wageLevel) throws Exception {
 		
 		if (!checkAmount(amount)) {
 			throw new IllegalArgumentException("Ungültiger Betrag");
 		}
 	
-		if (checkRoundValid(round) == false) {
+		if (!checkRoundValid(round)) {
 			// Runden check failed
 			throw new IllegalArgumentException("Round invalid");
 		}
+		
+		if(!checkWageLevel(wageLevel)) {
+			throw new IllegalArgumentException("Wage Level ist ungueltig: " + wageLevel);
+		}
+		
 		this.amount = amount;
 		this.round = round;
+		this.wageLevel = wageLevel;
 	}
 
 	private boolean checkAmount(int amount) {
@@ -34,12 +40,16 @@ public class TWage {
 
 		return (round > 0);
 	}
-
-	private void calcWageLevel() {
-		// Dazugehoeriger Teil muss noch in GameEngine ausprogrammiert werden
-		// Prinzip: Hole GehÃ¤lter aller Spieler aus HR und addiere
-		//TODO: Bearbeiten
+	
+	/**
+	 * Prueft ob das WageLevel groesser als 0 ist
+	 * @param wageLevel zu pruefende WageLevel
+	 * @return Ergebnis der Pruefung
+	 */
+	private boolean checkWageLevel(int wageLevel) {
+		return (wageLevel > 0);
 	}
+
 
 	public int getAmount() {
 		
