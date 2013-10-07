@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Constant.Constant;
-import Logger.Log;
+import Constant.Constant.Log;
 
 public class Distribution extends DepartmentRoundSensitive {
 	
@@ -27,9 +27,9 @@ public class Distribution extends DepartmentRoundSensitive {
 	 */
 	public Distribution(Company c)throws Exception{
 		super(c,"Verkauf",Constant.DepartmentFixcost.DISTRIBUTION);
-		Log.method(new Object[]{c});
+		
 		CustomerMarket.getMarket().addDistribution(this);
-		Log.methodExit();
+		
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class Distribution extends DepartmentRoundSensitive {
 	 */
 	private Distribution(Company c, String n, int f) throws Exception {
 		super(c, n, f);		
-		Log.newObj(new Object[]{c,n,f});
+		
 	}
 
 /**
@@ -57,7 +57,7 @@ public class Distribution extends DepartmentRoundSensitive {
  * @param price Preis zu dem verkauft werden soll
  */
 	public void createOffer(int quality, int quantityToSell, int price) {
-		Log.method(new Object[]{quality,quantityToSell,price});
+		
 		Storage storage = this.getCompany().getStorage();
 		StorageElement storageElement = storage
 				.getFinishedGoodByQuality(quality);
@@ -80,11 +80,11 @@ public class Distribution extends DepartmentRoundSensitive {
 		}
 		//TODO: Offer kostet Geld
 		
-		Log.methodExit();
+		
 	}// createOffer
 
 	public ArrayList<Offer> getListOfOffers() {
-		Log.get(listOfOffers);
+		
 		return listOfOffers;
 	}// getListOfOffers
 
@@ -97,7 +97,7 @@ public class Distribution extends DepartmentRoundSensitive {
 		}
 		Collections.sort(listOfLatestOffers);
 		
-		Log.get(listOfLatestOffers);
+		
 		
 		return listOfLatestOffers;
 	}
@@ -107,13 +107,13 @@ public class Distribution extends DepartmentRoundSensitive {
 	 * @return Liste der aktuellen Offer
 	 */
 	public ArrayList<Offer> getListOfLatestOffers() {
-		Log.get(listOfLatestOffers);
+		
 		return listOfLatestOffers;
 	}
 	
 	@Override
 	public void prepareForNewRound( int round ) {
-		Log.method(round);
+		
 		listOfLatestOffers = new ArrayList<Offer>();
 	}
 }
