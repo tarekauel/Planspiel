@@ -162,8 +162,8 @@ public class Production extends DepartmentRoundSensitive {
 					continue;
 				} else {
 					// Produziere das fertige Panel
-					// TODO: remove 100 , fester Wert f�r Motivation etc.
-					p.produce(100, this.getCompany().getStorage(), this.machine);
+					int advantage= getCompany().getHumanResources().getAdvatage();
+					p.produce(advantage, this.getCompany().getStorage(), this.machine);
 				}
 			}
 
