@@ -54,29 +54,28 @@ public class Distribution extends DepartmentRoundSensitive {
  * @param quality Qualitaet des Fertigprodukts
  * @param quantityToSell Menge die verkauft werden soll
  * @param price Preis zu dem verkauft werden soll
+ * @throws IOException 
  */
-	public void createOffer(int quality, int quantityToSell, int price) {
+	public void createOffer(int quality, int quantityToSell, int price) throws IllegalArgumentException{
 		
 		Storage storage = this.getCompany().getStorage();
 		StorageElement storageElement = storage
 				.getFinishedGoodByQuality(quality);
 
 		if (storageElement == null) {
-			throw new NullPointerException(
+			throw new IllegalArgumentException(
 					"StorageElement could not found! Class Distribution Method createOffer");
 		}
 
 		int round = GameEngine.getGameEngine().getRound(); 
 		int sold = 0; // die verkaufte Menge ist beim erstellen eines Offers
 						// immer 0.
-		try {
+		
 			Offer offer = new Offer(quantityToSell, price, round, sold,
 					storageElement, this);
 			listOfOffers.add(offer);
 			listOfLatestOffers.add(offer);
-		} catch (IOException e) {
-			e.getMessage(); 
-		}
+	
 		//TODO: Offer kostet Geld
 		
 		

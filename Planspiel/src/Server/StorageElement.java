@@ -37,8 +37,10 @@ public class StorageElement {
 	 *         false sonst
 	 */
 	private boolean checkQuantityHigherZero(int quantity){
-		boolean result = (quantity>0)? true:false;
-		return result;
+		if(quantity>0){
+			return true;
+		}
+		else return false;
 	} 
 	
 	/**
