@@ -8,12 +8,14 @@ public class GameDataMessageToClient extends GameDataMessage {
 	public GameDataMessageToClient(String playerName, PurchaseToClient purchase,
 			ProductionToClient production, DistributionToClient distribution,
 			boolean increaseMachineLevel, HumanResourcesToClient humanResources,
+			MarketingToClient marketing,
 			int wage, boolean buyMarketResearch, long cash, long maxCredit) {
 		super(playerName);
 		this.purchase = purchase;
 		this.production = production;
 		this.distribution = distribution;
 		this.increaseMachineLevel = increaseMachineLevel;
+		this.marketing=marketing;
 		this.humanResources = humanResources;
 		this.wage = wage;
 		this.buyMarketResearch = buyMarketResearch;
@@ -24,6 +26,8 @@ public class GameDataMessageToClient extends GameDataMessage {
 	public final PurchaseToClient purchase;
 	public final ProductionToClient production;
 	public final DistributionToClient distribution;
+	public final MarketingToClient marketing;
+	
 	public final boolean increaseMachineLevel;
 	public final HumanResourcesToClient humanResources;
 	public final int wage;
@@ -31,14 +35,14 @@ public class GameDataMessageToClient extends GameDataMessage {
 	public final long cash;
 	public final long maxCredit;
 
-	public class PurchaseToClient {
+	public static class PurchaseToClient {
 		public PurchaseToClient(ArrayList<RequestToClient> requests) {
 			this.requests = requests;
 		}
 
 		public final ArrayList<RequestToClient> requests; // ewige Liste
 
-		public class RequestToClient {
+		public static class RequestToClient {
 			public RequestToClient(String name, int quality,
 					ArrayList<SupplierOfferToClient> supplierOffers) {
 				this.name = name;
@@ -51,28 +55,29 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final String name;
 			public final int quality;
 
-			public class SupplierOfferToClient {
-				public SupplierOfferToClient(String name, int quality, int quantity) {
+			public static class SupplierOfferToClient {
+				public SupplierOfferToClient(String name, int quality, int orderedQuantity) {
 					this.name = name;
 					this.quality = quality;
-					this.quantity = quantity;
+				
+					this.orderedQuantity=orderedQuantity;
 				}
 
 				public final String name;
 				public final int quality;
-				public final int quantity;
+				public final int orderedQuantity;
 			}
 		}
 
 	}
 
-	public class ProductionToClient {
+	public static class ProductionToClient {
 
 		public ProductionToClient(ArrayList<ProductionOrderToClient> orders) {
 			this.orders = orders;
 		}
 
-		public class ProductionOrderToClient {
+		public static class ProductionOrderToClient {
 			public ProductionOrderToClient(int qualityWafer, int qualityCase,
 					int quantity) {
 
@@ -90,13 +95,13 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public class DistributionToClient {
+	public static  class DistributionToClient {
 
 		public DistributionToClient(ArrayList<OfferToClient> offers) {
 			this.offers = offers;
 		}
 
-		public class OfferToClient {
+		public static class OfferToClient {
 
 			public OfferToClient(int quality, int quantityToSell, int price) {
 				this.quality = quality;
@@ -112,7 +117,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 		public final ArrayList<OfferToClient> offers;
 	}
 
-	public class HumanResourcesToClient {
+	public static class HumanResourcesToClient {
 
 		public final ArrayList<BenefitBookingToClient> benefits;
 
@@ -131,7 +136,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 		public final int countEmployees;
 		public final int wageCosts;
 
-		public class BenefitBookingToClient {
+		public static class BenefitBookingToClient {
 
 			public BenefitBookingToClient(String name, int duration) {
 				this.name = name;
@@ -144,7 +149,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public class MarketingToClient {
+	public static class MarketingToClient {
 
 		public MarketingToClient(int peakAMarket, int peakCMarket,
 				ArrayList<MarketShareToClient> marketShares,
@@ -168,12 +173,12 @@ public class GameDataMessageToClient extends GameDataMessage {
 		// For HR
 		public final ArrayList<MotivationRoundToClient> motivationRounds;
 
-		public class MotivationRoundToClient {
+		public static class MotivationRoundToClient {
 			int round;
 			int motivation;
 		}
 
-		public class RessourcePriceToClient {
+		public static class RessourcePriceToClient {
 
 			public RessourcePriceToClient(int quality, int price) {
 
@@ -186,7 +191,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		}
 
-		public class MarketShareToClient {
+		public static class MarketShareToClient {
 
 			public MarketShareToClient(int share, String name) {
 				super();
@@ -201,7 +206,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public class ReportingToClient {
+	public static class ReportingToClient {
 
 		public ReportingToClient(ArrayList<FixCostToClient> fixCosts, MachineryToClient machinery,
 				ArrayList<SellsToClient> sellsOfRounds,
@@ -218,7 +223,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 		public final ArrayList<SellsToClient> sellsOfRounds;
 		public final ArrayList<CashValueOfRoundToClient> cashValues;
 
-		public class SellsToClient {
+		public static class SellsToClient {
 
 			public SellsToClient(int round, ArrayList<Integer> qualities) {
 
@@ -231,7 +236,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		}
 
-		public class FixCostToClient {
+		public static class FixCostToClient {
 
 			public FixCostToClient(String nameOfDepartment, int costs) {
 
@@ -243,7 +248,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int costs;
 		}
 
-		public class MachineryToClient {
+		public static class MachineryToClient {
 
 			public MachineryToClient(int level, int maxCapacity, int averageUsage,
 					int usageLastRound) {
@@ -260,7 +265,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int usageLastRound;
 		}
 
-		public class CashValueOfRoundToClient {
+		public static class CashValueOfRoundToClient {
 
 			public CashValueOfRoundToClient(int round, int costs) {
 

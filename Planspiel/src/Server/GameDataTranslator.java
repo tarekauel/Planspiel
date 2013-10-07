@@ -9,6 +9,9 @@ import Message.GameDataMessageFromClient.ProductionFromClient.ProductionOrderFro
 import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOfferFromClient;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.PurchaseToClient;
+import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
+import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
 
 public class GameDataTranslator {
 
@@ -201,11 +204,27 @@ public class GameDataTranslator {
 
 	private GameDataMessageToClient createGameDataMessageToClient(Player player) {
 		String playerName = player.getName();
+		Company company =player.getMyCompany();
 		
 	
-		Purchase purchase = new Purchase(requests);
+		GameDataMessageToClient.PurchaseToClient purchase = createPurchase(company);
+		
 		GameDataMessageToClient message = new GameDataMessageToClient(playerName, purchase, production, distribution, increaseMachineLevel, humanResources, wage, buyMarketResearch, cash, maxCredit);
 		
+	}
+
+	private PurchaseToClient createPurchase(
+			Company company) {
+		ArrayList<RequestToClient> requests = new ArrayList<PurchaseToClient.RequestToClient>();
+		for (Request request :   company.getPurchase().getListOfRequest()) {
+			ArrayList<SupplierOfferToClient> supplierOffers = new ArrayList<SupplierOfferToClient>();
+			for (SupplierOffer supplierOffer : request.getSupplierOffers()) {
+				
+				supplierOffers.add(new GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient(supplierOffer.getResource().getName(),supplierOffer.getResource().getQuality(),supplierOffer.getOrderedQuantity()));
+			}
+			requests.add(new RequestToClient(request.getRequestedResource().getName(), request.getRequestedResource().getQuality(), supplierOffers));
+		}
+		return new PurchaseToClient(requests);
 	}
 
 }
