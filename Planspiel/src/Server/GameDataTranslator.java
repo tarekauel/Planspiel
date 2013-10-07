@@ -54,10 +54,11 @@ public class GameDataTranslator {
 			handleProductionOrders(gameDataMessage.production.orders, company);
 			handleDistributionOffers(gameDataMessage.distribution.offers,
 					company);
-			//handleBenefitBooking(gameDataMessage.humanResources.benefits,
-			//		company);
+			// handleBenefitBooking(gameDataMessage.humanResources.benefits,
+			// company);
 			// In Creator verschieben. Weil Runde spaeter
-			//handleMachineryLevel(gameDataMessage.increaseMachineLevel, company);
+			// handleMachineryLevel(gameDataMessage.increaseMachineLevel,
+			// company);
 			handleWage(gameDataMessage.wage, company);
 			handleMarketResearch(gameDataMessage.buyMarketResearch, company);
 
@@ -71,16 +72,18 @@ public class GameDataTranslator {
 		}
 
 	}
-/**
- * Hier wird der neue Lohn für nächste Runde gesetzt. 
- * @param wage
- * @param company
- * @throws Exception
- */
+
+	/**
+	 * Hier wird der neue Lohn für nächste Runde gesetzt.
+	 * 
+	 * @param wage
+	 * @param company
+	 * @throws Exception
+	 */
 	private void handleWage(int wage, Company company) throws Exception {
 		HumanResources hr = company.getHumanResources();
 		hr.setWagePerRound(new TWage(wage, GameEngine.getGameEngine()
-				.getRound()+1));
+				.getRound() + 1, company.getLocation().getWageLevel()));
 
 	}
 
@@ -92,8 +95,9 @@ public class GameDataTranslator {
 
 	}
 
-	private void handleBenefitBooking(ArrayList<BenefitBookingFromClient> benefits,
-			Company company) throws Exception {
+	private void handleBenefitBooking(
+			ArrayList<BenefitBookingFromClient> benefits, Company company)
+			throws Exception {
 		HumanResources hr = company.getHumanResources();
 
 		for (BenefitBookingFromClient benefit : benefits) {
@@ -118,8 +122,8 @@ public class GameDataTranslator {
 	 *            vom Client angelegte Orders
 	 * @param company
 	 */
-	private void handleProductionOrders(ArrayList<ProductionOrderFromClient> orders,
-			Company company) {
+	private void handleProductionOrders(
+			ArrayList<ProductionOrderFromClient> orders, Company company) {
 		Storage storage = company.getStorage();
 		for (ProductionOrderFromClient prodOrder : orders) {
 			Resource wafer = null;
@@ -204,25 +208,27 @@ public class GameDataTranslator {
 	public void createGameDataMessagesAndSend2Clients() throws Exception {
 		for (Player player : Server.Connection.Server.getServer()
 				.getPlayerList()) {
-			GameDataMessageToClient message= createGameDataMessageToClient(player);			
+			GameDataMessageToClient message = createGameDataMessageToClient(player);
 			player.getMyCompany().getBankAccount().getBankBalance();
 			player.getServerConnection().writeMessage(message);
 		}
 	}
 
-	private GameDataMessageToClient createGameDataMessageToClient(Player player) throws Exception {
+	private GameDataMessageToClient createGameDataMessageToClient(Player player)
+			throws Exception {
 		String playerName = player.getName();
-		Company company =player.getMyCompany();
-		
-	
+		Company company = player.getMyCompany();
+
 		PurchaseToClient purchase = createPurchase(company);
 		ProductionToClient production = createProduction(company);
 		DistributionToClient distribution = createDistribution(company);
 		HumanResourcesToClient humanResources = createHumanResources(company);
 		MarketingToClient marketing = createMarketing(company);
-		long cash=company.getBankAccount().getBankBalance();
+		long cash = company.getBankAccount().getBankBalance();
 		long maxCredit = Constant.BankAccount.MAX_CREDIT;
-		GameDataMessageToClient message = new GameDataMessageToClient(playerName, purchase, production, distribution, humanResources, marketing, cash, maxCredit);
+		GameDataMessageToClient message = new GameDataMessageToClient(
+				playerName, purchase, production, distribution, humanResources,
+				marketing, cash, maxCredit);
 		return message;
 	}
 
@@ -231,22 +237,28 @@ public class GameDataTranslator {
 		return null;
 	}
 
-	private HumanResourcesToClient createHumanResources(Company company) throws Exception {
-		HumanResources serverHR= company.getHumanResources(); 
+	private HumanResourcesToClient createHumanResources(Company company)
+			throws Exception {
+		HumanResources serverHR = company.getHumanResources();
 		ArrayList<BenefitBookingToClient> benefits = new ArrayList<BenefitBookingToClient>();
 		for (BenefitBooking benefit : serverHR.getBenefitBooking()) {
-			benefits.add(new BenefitBookingToClient(benefit.getBenefit().getName(), benefit.getRemainingRounds()));
+			benefits.add(new BenefitBookingToClient(benefit.getBenefit()
+					.getName(), benefit.getRemainingRounds()));
 		}
-		
-		
-		HumanResourcesToClient hr = new HumanResourcesToClient(benefits, MarketData.getMarketData().getAvereageWage().getAmount(), serverHR.getWagesPerHour().getAmount(), serverHR.getCountEmployees(), serverHR.getWagesSum());
+
+		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,
+				MarketData.getMarketData().getAvereageWage().getAmount(),
+				serverHR.getWagesPerHour().getAmount(),
+				serverHR.getCountEmployees(), serverHR.getWagesSum());
 		return hr;
 	}
 
 	private DistributionToClient createDistribution(Company company) {
 		ArrayList<OfferToClient> offers = new ArrayList<OfferToClient>();
 		for (Offer offer : company.getDistribution().getListOfOffers()) {
-			offers.add(new OfferToClient(offer.getStorageElement().getProduct().getQuality(), offer.getQuantityToSell(),offer.getQuantitySold(), offer.getPrice()));
+			offers.add(new OfferToClient(offer.getStorageElement().getProduct()
+					.getQuality(), offer.getQuantityToSell(), offer
+					.getQuantitySold(), offer.getPrice()));
 		}
 		DistributionToClient distribution = new DistributionToClient(offers);
 		return distribution;
@@ -254,23 +266,31 @@ public class GameDataTranslator {
 
 	private ProductionToClient createProduction(Company company) {
 		ArrayList<ProductionOrderToClient> orders = new ArrayList<ProductionOrderToClient>();
-		for (ProductionOrder productionOrder : company.getProduction().getListOfAllProductionOrders()) {
-			orders.add(new ProductionOrderToClient(productionOrder.getWafer().getQuality(), productionOrder.getCase().getQuality(), productionOrder.getProduced()));
-		} 
+		for (ProductionOrder productionOrder : company.getProduction()
+				.getListOfAllProductionOrders()) {
+			orders.add(new ProductionOrderToClient(productionOrder.getWafer()
+					.getQuality(), productionOrder.getCase().getQuality(),
+					productionOrder.getProduced()));
+		}
 		ProductionToClient production = new ProductionToClient(orders);
 		return production;
 	}
 
-	private PurchaseToClient createPurchase(
-			Company company) {
+	private PurchaseToClient createPurchase(Company company) {
 		ArrayList<RequestToClient> requests = new ArrayList<PurchaseToClient.RequestToClient>();
-		for (Request request :   company.getPurchase().getListOfRequest()) {
+		for (Request request : company.getPurchase().getListOfRequest()) {
 			ArrayList<SupplierOfferToClient> supplierOffers = new ArrayList<SupplierOfferToClient>();
 			for (SupplierOffer supplierOffer : request.getSupplierOffers()) {
-				
-				supplierOffers.add(new GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient(supplierOffer.getResource().getName(),supplierOffer.getResource().getQuality(),supplierOffer.getOrderedQuantity()));
+
+				supplierOffers
+						.add(new GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient(
+								supplierOffer.getResource().getName(),
+								supplierOffer.getResource().getQuality(),
+								supplierOffer.getOrderedQuantity()));
 			}
-			requests.add(new RequestToClient(request.getRequestedResource().getName(), request.getRequestedResource().getQuality(), supplierOffers));
+			requests.add(new RequestToClient(request.getRequestedResource()
+					.getName(), request.getRequestedResource().getQuality(),
+					supplierOffers));
 		}
 		return new PurchaseToClient(requests);
 	}
