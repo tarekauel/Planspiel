@@ -24,7 +24,7 @@ public class Company {
 		}
 
 		// erzeuge Bankkonto mit 1 Mio Kapital
-		bankAccount = new BankAccount();
+		bankAccount = new BankAccount(this);
 		// setze Location
 
 		this.location = l;
