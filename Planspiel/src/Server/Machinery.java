@@ -6,7 +6,7 @@ package Server;
 import java.util.Random;
 
 import Constant.Constant;
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * @author Lars
@@ -38,13 +38,13 @@ public class Machinery {
 	 * @return boolean, true, falls produziert wird, false, falls nicht
 	 */
 	public boolean isJunk() {
-		Log.get("Ausschuss");
+		
 		// Zufallszahlgenerator initialisieren
 		Random r = new Random();
 		// Chance auf Produktion: 84% + level.. also mindestens 85%
 		boolean ret = (r.nextInt(100) < (Constant.Machinery.JUNK_INIT + level)) ? false
 				: true;
-		Log.get(ret);
+		
 		return ret;
 
 	}
@@ -55,7 +55,7 @@ public class Machinery {
 	 * @return Maschinenkapazität als Integer
 	 */
 	public int getMaxCapacity() {
-		Log.get(Constant.Machinery.CAPACITY[level]);
+		
 		return Constant.Machinery.CAPACITY[level];
 	}
 
@@ -65,7 +65,7 @@ public class Machinery {
 	 * @return Maschinenlevel als Integer
 	 */
 	public int getLevel() {
-		Log.get(level);
+		
 		return this.level;
 	}
 /**
@@ -86,22 +86,22 @@ public class Machinery {
 	 *         hohe Kosten
 	 */
 	public boolean increaseLevel(BankAccount b) {
-		Log.method();
+		
 		// check ob die Maschine noch nicht auf Max ist
 		if (level >= 10) {
-			Log.methodExit();
+		
 			return false;
 		}
 		// Prüfe ob genug Geld da ist, wenn ja, dann bucht der Befehl es auch
 		// direkt ab!
 		//drank denken dass der array bei 0 beginnt, maschine aber bei 1
 		if (!b.decreaseBalance(Constant.Machinery.BUILD_COSTS[level])) {
-			Log.methodExit();
+			
 			return false;
 
 		}
 		level++;
-		Log.methodExit();
+		
 		return true;
 
 	}
@@ -113,13 +113,13 @@ public class Machinery {
 	 */
 	public boolean decreaseLevel() {
 		//TODO: vielleicht gibt man dem Spieler einen Teil der Ausbaukosten wieder..
-		Log.method();
+		
 		if (level == 1) {
-			Log.methodExit();
+			
 			return false;
 		}
 		level--;
-		Log.methodExit();
+		
 		return true;
 	}
 
@@ -129,7 +129,7 @@ public class Machinery {
 	 * @return gibt die Fixkosten an
 	 */
 	public int getCosts() {
-		Log.get((level * level) * Constant.Machinery.FIX_COST);
+		
 
 		return (level * level) * Constant.Machinery.FIX_COST;
 	}
@@ -141,7 +141,7 @@ public class Machinery {
 	 * @return Stückkosten auf der Maschine
 	 */
 	public int getPieceCosts() {
-		Log.get(Constant.Machinery.PIECE_COST_BASIC * (11 - level));
+		
 		return Constant.Machinery.PIECE_COST_BASIC * (11 - level);
 	}
 
