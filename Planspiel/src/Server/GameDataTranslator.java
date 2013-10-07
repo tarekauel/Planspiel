@@ -2,6 +2,7 @@ package Server;
 
 import java.util.ArrayList;
 
+import Constant.Constant;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageFromClient.DistributionFromClient.OfferFromClient;
 import Message.GameDataMessageFromClient.HumanResourcesFromClient.BenefitBookingFromClient;
@@ -9,6 +10,13 @@ import Message.GameDataMessageFromClient.ProductionFromClient.ProductionOrderFro
 import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOfferFromClient;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.DistributionToClient;
+import Message.GameDataMessageToClient.MarketingToClient;
+import Message.GameDataMessageToClient.DistributionToClient.OfferToClient;
+import Message.GameDataMessageToClient.HumanResourcesToClient;
+import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
+import Message.GameDataMessageToClient.ProductionToClient;
+import Message.GameDataMessageToClient.ProductionToClient.ProductionOrderToClient;
 import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
@@ -193,7 +201,7 @@ public class GameDataTranslator {
 
 	}
 
-	public void createGameDataMessagesAndSend2Clients() {
+	public void createGameDataMessagesAndSend2Clients() throws Exception {
 		for (Player player : Server.Connection.Server.getServer()
 				.getPlayerList()) {
 			GameDataMessageToClient message= createGameDataMessageToClient(player);			
@@ -202,15 +210,55 @@ public class GameDataTranslator {
 		}
 	}
 
-	private GameDataMessageToClient createGameDataMessageToClient(Player player) {
+	private GameDataMessageToClient createGameDataMessageToClient(Player player) throws Exception {
 		String playerName = player.getName();
 		Company company =player.getMyCompany();
 		
 	
-		GameDataMessageToClient.PurchaseToClient purchase = createPurchase(company);
+		PurchaseToClient purchase = createPurchase(company);
+		ProductionToClient production = createProduction(company);
+		DistributionToClient distribution = createDistribution(company);
+		HumanResourcesToClient humanResources = createHumanResources(company);
+		MarketingToClient marketing = createMarketing(company);
+		long cash=company.getBankAccount().getBankBalance();
+		long maxCredit = Constant.BankAccount.MAX_CREDIT;
+		GameDataMessageToClient message = new GameDataMessageToClient(playerName, purchase, production, distribution, humanResources, marketing, cash, maxCredit);
+		return message;
+	}
+
+	private MarketingToClient createMarketing(Company company) {
+		// TODO Create Marketing Data
+		return null;
+	}
+
+	private HumanResourcesToClient createHumanResources(Company company) throws Exception {
+		HumanResources serverHR= company.getHumanResources(); 
+		ArrayList<BenefitBookingToClient> benefits = new ArrayList<BenefitBookingToClient>();
+		for (BenefitBooking benefit : serverHR.getBenefitBooking()) {
+			benefits.add(new BenefitBookingToClient(benefit.getBenefit().getName(), benefit.getRemainingRounds()));
+		}
 		
-		GameDataMessageToClient message = new GameDataMessageToClient(playerName, purchase, production, distribution, increaseMachineLevel, humanResources, wage, buyMarketResearch, cash, maxCredit);
 		
+		HumanResourcesToClient hr = new HumanResourcesToClient(benefits, MarketData.getMarketData().getAvereageWage().getAmount(), serverHR.getWagesPerHour().getAmount(), serverHR.getCountEmployees(), serverHR.getWagesSum());
+		return hr;
+	}
+
+	private DistributionToClient createDistribution(Company company) {
+		ArrayList<OfferToClient> offers = new ArrayList<OfferToClient>();
+		for (Offer offer : company.getDistribution().getListOfOffers()) {
+			offers.add(new OfferToClient(offer.getStorageElement().getProduct().getQuality(), offer.getQuantityToSell(),offer.getQuantitySold(), offer.getPrice()));
+		}
+		DistributionToClient distribution = new DistributionToClient(offers);
+		return distribution;
+	}
+
+	private ProductionToClient createProduction(Company company) {
+		ArrayList<ProductionOrderToClient> orders = new ArrayList<ProductionOrderToClient>();
+		for (ProductionOrder productionOrder : company.getProduction().getListOfAllProductionOrders()) {
+			orders.add(new ProductionOrderToClient(productionOrder.getWafer().getQuality(), productionOrder.getCase().getQuality(), productionOrder.getProduced()));
+		} 
+		ProductionToClient production = new ProductionToClient(orders);
+		return production;
 	}
 
 	private PurchaseToClient createPurchase(

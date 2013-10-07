@@ -7,18 +7,16 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	public GameDataMessageToClient(String playerName, PurchaseToClient purchase,
 			ProductionToClient production, DistributionToClient distribution,
-			boolean increaseMachineLevel, HumanResourcesToClient humanResources,
+			HumanResourcesToClient humanResources,
 			MarketingToClient marketing,
-			int wage, boolean buyMarketResearch, long cash, long maxCredit) {
+			 long cash, long maxCredit) {
 		super(playerName);
 		this.purchase = purchase;
 		this.production = production;
 		this.distribution = distribution;
-		this.increaseMachineLevel = increaseMachineLevel;
+		
 		this.marketing=marketing;
 		this.humanResources = humanResources;
-		this.wage = wage;
-		this.buyMarketResearch = buyMarketResearch;
 		this.cash = cash;
 		this.maxCredit = maxCredit;
 	}
@@ -28,10 +26,9 @@ public class GameDataMessageToClient extends GameDataMessage {
 	public final DistributionToClient distribution;
 	public final MarketingToClient marketing;
 	
-	public final boolean increaseMachineLevel;
+	
 	public final HumanResourcesToClient humanResources;
-	public final int wage;
-	public final boolean buyMarketResearch;
+	
 	public final long cash;
 	public final long maxCredit;
 
@@ -103,14 +100,16 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		public static class OfferToClient {
 
-			public OfferToClient(int quality, int quantityToSell, int price) {
+			public OfferToClient(int quality, int quantityToSell, int quantitySold, int price) {
 				this.quality = quality;
 				this.quantityToSell = quantityToSell;
+				this.quantitySold = quantitySold;
 				this.price = price;
 			}
 
 			public final int quality;
 			public final int quantityToSell;
+			public final int quantitySold;
 			public final int price;
 		}
 
@@ -138,13 +137,13 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		public static class BenefitBookingToClient {
 
-			public BenefitBookingToClient(String name, int duration) {
+			public BenefitBookingToClient(String name, int remainingRounds) {
 				this.name = name;
-				this.duration = duration;
+				this.remainingRounds = remainingRounds;
 			}
 
 			public final String name;
-			public final int duration;
+			public final int remainingRounds;
 		}
 
 	}
