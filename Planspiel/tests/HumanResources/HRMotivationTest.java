@@ -30,10 +30,10 @@ public class HRMotivationTest {
 
 	@Test
 	public void makeTests() throws Exception{
-		h1.setWagePerRound(new TWage(1000, 1));
-		h2.setWagePerRound(new TWage(2000, 1));
-		TWage expected = new TWage((int) (1500/Location.getLocationByCountry("Deutschland").getWageLevel()),1);
-		
-		assertEquals(expected, MarketData.getMarketData().getAvereageWage());
+		h1.setWagePerRound(new TWage(1000, 1, h1.getCompany().getLocation().getWageLevel()));
+		h2.setWagePerRound(new TWage(2000, 1, h2.getCompany().getLocation().getWageLevel()));
+		TWage expected = new TWage(1500,1,Location.getLocationByCountry("Deutschland").getWageLevel() );
+		TWage averageWage = MarketData.getMarketData().getAvereageWage();
+		assertEquals(expected, averageWage);
 	}
 }
