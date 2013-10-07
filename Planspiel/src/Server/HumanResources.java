@@ -30,6 +30,9 @@ public class HumanResources extends DepartmentRoundSensitive {
 		this.wagesSum = calcWagesSum();
 //TODO: BENEFIT BOOKING!?
 		//this.benefitBooking = new BenefitBooking();
+		
+		// HR bei MarketData registrieren, um den durchschnittslohn zu uebermitteln
+		MarketData.getMarketData().addHR(this);
 		Log.methodExit();
 
 	}
