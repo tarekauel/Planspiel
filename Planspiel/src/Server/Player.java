@@ -1,6 +1,5 @@
 package Server;
 
-import Constant.Constant.Log;
 import Server.Connection.ServerConnection;
 
 /**

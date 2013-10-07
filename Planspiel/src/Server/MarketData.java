@@ -2,8 +2,6 @@ package Server;
 
 import java.util.ArrayList;
 
-import Constant.Constant.Log;
-
 /**
  * Diese Klasse enthält alle Statistischen Marktdaten
  * @author Tarek

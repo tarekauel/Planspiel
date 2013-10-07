@@ -3,7 +3,6 @@ package Server;
 import java.util.ArrayList;
 
 import Constant.Constant;
-import Constant.Constant.Log;
 
 public class Production extends DepartmentRoundSensitive {
 	// Liste aller jemals erstellten Produktions auftr�ge

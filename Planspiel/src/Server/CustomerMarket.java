@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import Constant.Constant.Log;
-
 /**
  * Der CustomerMarket existiert für alle Spieler gemeinsam. Er arbeitet die
  * Angebote der Spieler ab und entscheidet für jeden Käufer welches Angebot er

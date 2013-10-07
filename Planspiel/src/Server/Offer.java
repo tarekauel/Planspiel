@@ -1,8 +1,6 @@
 package Server;
 import java.io.IOException;
 
-import Constant.Constant.Log;
-
 /**
  * Ein Offer Objekt wird erstellt, wenn der Spieler Fertigprodukte verkaufen moechte.
  * Dabei muss er die Menge, den Preis und das zu verkaufende Produkt angeben.

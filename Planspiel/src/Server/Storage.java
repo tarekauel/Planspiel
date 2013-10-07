@@ -3,7 +3,6 @@ package Server;
 import java.util.ArrayList;
 
 import Constant.Constant;
-import Constant.Constant.Log;
 
 /**
  * Das Storage/Lager verwaltet alle StorageElemente und lagert diese ein und

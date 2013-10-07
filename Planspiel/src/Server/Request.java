@@ -2,8 +2,6 @@ package Server;
 
 import java.util.ArrayList;
 
-import Constant.Constant.Log;
-
 /**
  * 
  * @author D059270 Stellt eine Nachfrage nach einem Rohstoff in einer bestimmten

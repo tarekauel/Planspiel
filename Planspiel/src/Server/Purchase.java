@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Constant.Constant;
-import Constant.Constant.Log;
 
 /**
  * Die Purchase-Klasse stellt die Einkaufsabteilung des Unternehmens dar. Sie

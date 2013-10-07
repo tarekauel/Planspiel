@@ -6,7 +6,6 @@ package Server;
 import java.util.Random;
 
 import Constant.Constant;
-import Constant.Constant.Log;
 
 /**
  * @author Lars

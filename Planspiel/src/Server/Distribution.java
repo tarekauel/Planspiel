@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Constant.Constant;
-import Constant.Constant.Log;
 
 public class Distribution extends DepartmentRoundSensitive {
 	
@@ -22,7 +21,7 @@ public class Distribution extends DepartmentRoundSensitive {
 	 *            Referenz des Unternehmens
 	 * @param fix
 	 *            Fixkosten
-	 * @throws Exception
+	 * @throws ExceptionO
 	 *             falls Abteilung nicht erstellt werden konnte
 	 */
 	public Distribution(Company c)throws Exception{
@@ -32,7 +31,7 @@ public class Distribution extends DepartmentRoundSensitive {
 		
 	}
 	
-	/**
+	/**O
 	 * privater Konstruktor damit niemand eine Falsche Abteilung erzeugen kann
 	 * (name falsch)
 	 * 
