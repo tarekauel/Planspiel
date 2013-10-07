@@ -7,23 +7,30 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import Constant.Constant;
 import Server.BankAccount;
+import Server.Company;
+import Server.Location;
 import Server.Machinery;
 
 public class GeneralTests {
 
 	Machinery m;
 	BankAccount b;
+	Company c;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		Location.initLocations();
 	}
 
 	@Before
-	public void createMachinery() {
+	public void createMachinery() throws Exception {
 		// initialisiere
-		m = new Machinery();
-		b = new BankAccount();
+
+		c = new Company(Location.getLocationByCountry("Deutschland"));
+		b = c.getBankAccount();
+		m = c.getProduction().getMachine();
 		b.increaseBalance(990000000);
 	}
 
@@ -33,13 +40,23 @@ public class GeneralTests {
 	}
 
 	@Test
+	public void increaseWithZeroMoney() {
+		// noch 0 auf Bankkonto:
+		b.decreaseBalance(b.getBankBalance());
+
+		assertEquals(true, m.increaseLevel(b));
+	}
+
+	@Test
 	public void increaseWithTooLowMoney() {
-		//noch 1 auf Bankkonto:
-		b.decreaseBalance(b.getBankBalance()-1);
-		
+		// noch 0 auf Bankkonto:
+		b.decreaseBalance(b.getBankBalance());
+		// Decrease bis Dispo ausgeschöpft ( noch einer Frei ist)
+		b.decreaseBalance(Constant.BankAccount.MAX_CREDIT - 1);
+
 		assertEquals(false, m.increaseLevel(b));
 	}
-	
+
 	@Test
 	public void increaseLevel() {
 		// Testing all increases
@@ -137,7 +154,6 @@ public class GeneralTests {
 		// Maschine auf Stufe 1 darf nicht mehr als 15% aussschuss haben
 		for (int i = 0; i < 100000; i++) {
 			counter = (m.isJunk()) ? counter : counter + 1;
-
 		}
 		assertEquals(false, counter < 15000);
 	}
@@ -154,7 +170,7 @@ public class GeneralTests {
 		}
 		assertEquals(false, counter < 14000);
 	}
-	
+
 	@Test
 	public void randomCheckLevel3() {
 		int counter = 0;
@@ -168,7 +184,7 @@ public class GeneralTests {
 		}
 		assertEquals(false, counter < 13000);
 	}
-	
+
 	@Test
 	public void randomCheckLevel4() {
 		int counter = 0;
@@ -183,7 +199,7 @@ public class GeneralTests {
 		}
 		assertEquals(false, counter < 12000);
 	}
-	
+
 	@Test
 	public void randomCheckLevel5() {
 		int counter = 0;
@@ -193,7 +209,7 @@ public class GeneralTests {
 		m.increaseLevel(b);
 		m.increaseLevel(b);
 		m.increaseLevel(b);
-		
+
 		for (int i = 0; i < 100000; i++) {
 			counter = (m.isJunk()) ? counter : counter + 1;
 
@@ -211,7 +227,7 @@ public class GeneralTests {
 		m.increaseLevel(b);
 		m.increaseLevel(b);
 		m.increaseLevel(b);
-		
+
 		for (int i = 0; i < 100000; i++) {
 			counter = (m.isJunk()) ? counter : counter + 1;
 
@@ -230,13 +246,14 @@ public class GeneralTests {
 		m.increaseLevel(b);
 		m.increaseLevel(b);
 		m.increaseLevel(b);
-		
+
 		for (int i = 0; i < 100000; i++) {
 			counter = (m.isJunk()) ? counter : counter + 1;
 
 		}
 		assertEquals(false, counter < 8000);
 	}
+
 	@Test
 	public void randomCheckLevel8() {
 		int counter = 0;
@@ -249,14 +266,14 @@ public class GeneralTests {
 		m.increaseLevel(b);
 		m.increaseLevel(b);
 		m.increaseLevel(b);
-		
+
 		for (int i = 0; i < 100000; i++) {
 			counter = (m.isJunk()) ? counter : counter + 1;
 
 		}
 		assertEquals(false, counter < 7000);
 	}
-	
+
 	@Test
 	public void randomCheckLevel9() {
 		int counter = 0;
@@ -270,14 +287,14 @@ public class GeneralTests {
 		m.increaseLevel(b);
 		m.increaseLevel(b);
 		m.increaseLevel(b);
-		
+
 		for (int i = 0; i < 100000; i++) {
 			counter = (m.isJunk()) ? counter : counter + 1;
 
 		}
 		assertEquals(false, counter < 6000);
 	}
-	
+
 	@Test
 	public void randomCheckLevel10() {
 		int counter = 0;
@@ -292,14 +309,14 @@ public class GeneralTests {
 		m.increaseLevel(b);
 		m.increaseLevel(b);
 		m.increaseLevel(b);
-		
+
 		for (int i = 0; i < 100000; i++) {
 			counter = (m.isJunk()) ? counter : counter + 1;
 
 		}
 		assertEquals(false, counter < 5000);
 	}
-	
+
 	@After
 	public void resetMachine() {
 		// clear machine
