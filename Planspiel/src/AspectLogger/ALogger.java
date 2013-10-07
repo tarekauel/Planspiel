@@ -3,7 +3,7 @@ package AspectLogger;
 public aspect ALogger {
 
 	pointcut logMethodWithoutGet() : 
-	      (execution ( * *.* (..)) && !execution( * *.get* (..)) || initialization( *.new(..))) && !within(ALogger);
+	      ( execution ( * *.* (..)) && ( !execution( * *.get* (..)) || !execution(@Noget * *.get* (..) )) || initialization( *.new(..))) && !within(ALogger);
 
 	pointcut logVar() :
 		set(@LogThis * *.*);

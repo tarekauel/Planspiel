@@ -2,9 +2,8 @@ package Server;
 
 import java.util.ArrayList;
 
-import AspectLogger.LogThis;
+import AspectLogger.NoGet;
 import Constant.Constant;
-import Logger.Log;
 
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 18:11
@@ -34,7 +33,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 
 	public HumanResources(Company c) throws Exception {
 		super(c, "Personal", Constant.DepartmentFixcost.HUMAN_RESOURCES);
-		Log.method(new Object[] { c });
+
 		setCountEmployees(100); // TODO: Anpassen & in ini-File auslagern
 		setWagePerRound(new TWage(900, GameEngine.getGameEngine().getRound())); // TODO:
 																				// Anpassen
@@ -49,12 +48,11 @@ public class HumanResources extends DepartmentRoundSensitive {
 		// HR bei MarketData registrieren, um den durchschnittslohn zu
 		// uebermitteln
 		MarketData.getMarketData().addHR(this);
-		Log.methodExit();
 
 	}
 
 	public void bookBenefit(String name, int duration) throws Exception {
-		Log.method();
+
 		Benefit benefit = Benefit.getBenefitByName(name);
 		boolean benefitAlreadyBooked = false;
 
@@ -75,58 +73,57 @@ public class HumanResources extends DepartmentRoundSensitive {
 			throw new Exception("Benefit bereits gebucht.");
 
 		}
-		Log.methodExit();
+
 	}
 
 	private int calcWagesSum() {
-		Log.get(wagePerRound.getAmount() * this.countEmployees);
+
 		return wagePerRound.getAmount() * this.countEmployees;
 	}
 
 	public void setWagePerRound(TWage wagePerRound) {
-		Log.method(wagePerRound);
+
 		this.wagePerRound = wagePerRound;
 	}
 
 	public void setCountEmployees(int countEmployees) {
-		Log.method(countEmployees);
+
 		this.countEmployees = countEmployees;
 	}
 
 	public TWage getWagesPerHour() {
-		Log.get(wagePerRound);
+
 		return wagePerRound;
 	}
 
 	public int getCountEmployees() {
-		Log.get(countEmployees);
 
 		return countEmployees;
 	}
 
 	public int getWagesSum() {
-		Log.get(wagesSum);
+
 		return wagesSum;
 	}
 
 	public ArrayList<BenefitBooking> getBenefitBooking() {
-		Log.get(benefitBooking);
+
 		return benefitBooking;
 	}
 
 	public void increaseWorkingHour(int quantity) {
-		Log.method(quantity);
+
 		workingHoursPerRound++;
 	}
 
 	public int getWorkingHours() {
-		Log.get(workingHoursPerRound);
+
 		return workingHoursPerRound;
 	}
 
 	@Override
 	public void prepareForNewRound(int round) {
-		Log.method(round);
+
 		workingHoursPerRound = 0;
 
 	}
@@ -137,6 +134,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 	 * @return Motivation in Prozent
 	 * @throws Exception
 	 */
+	@NoGet
 	public int getMotivation() throws Exception {
 
 		// Gehaltsunterschied zur Vorrunde
@@ -150,6 +148,13 @@ public class HumanResources extends DepartmentRoundSensitive {
 					.getAmount()) / (double) wageLastRound.getAmount();
 		}
 
+		// Einfluss auf die Motivation durch den Lohn zur Vorrunde
+		// Berechnung je nach Positiv oder Negativ unterscheiden
+		double influenceWageToLastRound = ((diffWageToLastRound < 0.0) ? 
+				1-Math.pow((diffWageToLastRound*Constant.HumanResources.IMPACT_DIFF_NEG), 2)
+				: 1+Math.sqrt(diffWageToLastRound*Constant.HumanResources.IMPACT_DIFF_POS));
+		
+
 		// Gehaltsunterschied zur Gruppe
 		// ( Eigener Lohn - Durchschnitt) / Durchschnitt
 		double diffWageToAverage = ((double) (((double) wagePerRound
@@ -157,7 +162,18 @@ public class HumanResources extends DepartmentRoundSensitive {
 				.getMarketData().getAvereageWage().getAmount()) / MarketData
 				.getMarketData().getAvereageWage().getAmount());
 		
+		// Einfluss auf die Motivaiton durch den Unterschied zum Markt
+		// Berechnung je nach Positiv oder Negative unterschiedlich
+		double influenceWageToAverage = ((diffWageToAverage < 0.0) ? 
+				1-Math.pow((diffWageToAverage*Constant.HumanResources.IMPACT_DIFF_NEG), 2)
+				: 1+Math.sqrt(diffWageToAverage*Constant.HumanResources.IMPACT_DIFF_POS));
+
+		// Motivation gewichtet berechnen
+		double motivation = influenceWageToLastRound*Constant.HumanResources.IMPACT_DIFF_INTERNAL
+							+ influenceWageToAverage*Constant.HumanResources.IMPACT_DIFF_MARKET;
 		
-		return 0;
+		//TODO Benfitsberechnung noch hinzufuegen
+		
+		return (int) Math.floor(motivation);
 	}
 }
