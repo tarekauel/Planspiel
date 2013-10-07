@@ -21,8 +21,12 @@ public class HumanResources extends DepartmentRoundSensitive {
 	// Gesamtkosten Loehne
 	private int wagesSum;
 
-	private ArrayList<BenefitBooking> benefitBooking;
+	// Liste der gebuchten Benefits
+	private ArrayList<BenefitBooking> benefitBooking = new ArrayList<BenefitBooking>();
+
+	// Anzahl der bereits gebuchten Arbeiterstunden
 	private int workingHoursPerRound = 0;
+
 
 	// ---------- Attribute zur Berechnung der Motivaiton
 	// Lohn der Letzten Runde
@@ -51,28 +55,33 @@ public class HumanResources extends DepartmentRoundSensitive {
 
 	}
 
+	/**
+	 * Bucht ein Benefit ueber den Namen
+	 * @param name Name des Benefits 
+	 * @param duration Dauer in Runden
+	 * @throws Exception Name muss ungleich null und nicht leer sein, duraiton > 0 und Das Benefit noch nicht gebucht worden sein
+	 */
 	public void bookBenefit(String name, int duration) throws Exception {
 
+		// Liefert das Benefit aus der Liste mit allen benefits zurueck
 		Benefit benefit = Benefit.getBenefitByName(name);
-		boolean benefitAlreadyBooked = false;
-
+		
+		// Alle gebuchten Benefits durchsuchen
 		for (BenefitBooking bB : benefitBooking) {
 
-			if (bB.getBenefit().getName().equals(benefit.getName())) {
-				benefitAlreadyBooked = true;
+			// Abgelaufene Buchungen und welche, die nur in dieser Runde noch gueltig sind, sollen ignoriert werden
+			if( bB.getRemainingRounds() <= 1 && bB.getStartInRound() <= GameEngine.getGameEngine().getRound()) 
+				continue;
+			
+			// Auf Gleichheit ueberpruefne
+			if (bB.getBenefit().equals(benefit)) {
+				//TODO durch Nachricht ersetzen?!
+				throw new IllegalArgumentException("Beneift bereits gebucht");
 			}
-
 		}
-
-		if (benefitAlreadyBooked == false) {
-
-			benefitBooking.add(new BenefitBooking(benefit, duration));
-
-		} else if (benefitAlreadyBooked == true) {
-
-			throw new Exception("Benefit bereits gebucht.");
-
-		}
+		
+		// Benefit zur Liste der gebuchten hinzufuegen
+		benefitBooking.add(new BenefitBooking(benefit, duration));
 
 	}
 
@@ -130,7 +139,17 @@ public class HumanResources extends DepartmentRoundSensitive {
 		// Ab beginn der ersten Runde
 		if( wagePerRound != null)
 			wageLastRound = wagePerRound;
+		
+		// Benefits vom Konto abbuchen
+		for( BenefitBooking bP:benefitBooking) {
+			// Nur Buchungen beruecksichtigen, die noch eine Restlaufzeit haben und entweder diese Runde beginnen oder bereits laufen
+			if( bP.getRemainingRounds() > 0 && bP.getStartInRound() <= GameEngine.getGameEngine().getRound()) {
 
+				// Betrag für diese Runde vom Konto abbuchen
+				getCompany().getBankAccount().decreaseBalance(bP.getBenefit().getCostsPerRound() );
+				
+			}
+		}
 	}
 
 	/**
