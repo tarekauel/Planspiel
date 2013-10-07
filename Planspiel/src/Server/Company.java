@@ -1,6 +1,6 @@
 package Server;
 
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 17:22
@@ -19,7 +19,7 @@ public class Company {
 	private MarketResearch marketResearch;
 
 	public Company(Location l) throws Exception {
-		Log.newObj(l);
+		
 		if (!checkLocation(l)) {
 			throw new IllegalArgumentException("Ungültiger Standort");
 		}
@@ -57,44 +57,42 @@ public class Company {
 	}
 
 	public Location getLocation() {
-		Log.get(location);
+		
 		return this.location;
 	}
 
 	public BankAccount getBankAccount() {
-		Log.get(bankAccount);
+		
 		return this.bankAccount;
 	}
 
 	public Purchase getPurchase() {
-		Log.get(purchase);
+		
 		return this.purchase;
 	}
 
 	public Production getProduction() {
-		Log.get(production);
+		
 		return this.production;
 	}
 
 	public Storage getStorage() {
 
-		Log.get(storage);
+
 		return this.storage;
 	}
 
 	public Distribution getDistribution() {
-		Log.get(distribution);
+		
 		return this.distribution;
 	}
 
 	public HumanResources getHumanResources() {
-
-		Log.get(humanResources);
 		return this.humanResources;
 	}
 
 	public MarketResearch getMarketResearch() {
-		Log.get(marketResearch);
+		
 		return this.marketResearch;
 	}
 

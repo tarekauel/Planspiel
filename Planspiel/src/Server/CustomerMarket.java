@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * Der CustomerMarket existiert für alle Spieler gemeinsam. Er arbeitet die
@@ -678,13 +678,13 @@ public class CustomerMarket {
 			sumSales += listOfSales.get(c);
 		}
 
-		Log.info("Summe aller Sales: " + sumSales);
+		
 		// Für jede Firma nun ein MarketShare Object erstellen
 		for (Company c : companyList) {
 			// Marktanteil der Firma berechnen
 			// Zur Liste hinzufügen
 			int salesCompany = listOfSales.get(c);
-			Log.info("Sales der Firma " + c + ": " + salesCompany);
+			
 			listOfMarketShares.add(new TMarketShare(c, (int) (salesCompany * 10000.0 / sumSales)));
 		}
 
