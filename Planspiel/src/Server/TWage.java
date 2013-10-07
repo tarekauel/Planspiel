@@ -64,4 +64,23 @@ public class TWage {
 	
 		return wageLevel;
 	}
+	
+	
+	@Override
+	public boolean equals(Object TWage){
+		TWage in = (TWage) TWage;
+			
+		//Runden ueberpruefen (gleichheit!)
+		if (in.getRound() != this.getRound()){
+			return false;
+		}
+		//Berechnen der gewichteten betraege
+		int weightedIn = (int) (in.getAmount()/in.getWageLevel());
+		int weightedThis = (int) (this.getAmount()/this.getWageLevel());
+		
+		//vergleich der betraege ist finale bedingung
+		return (weightedIn == weightedThis);
+		
+		
+	}
 }
