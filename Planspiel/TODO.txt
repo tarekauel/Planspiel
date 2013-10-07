@@ -10,14 +10,15 @@ TO-DO List
 -- Fixkostenabrechnung
 -- KOMMENTARE IHR *?!*+!*!#
 -- Umlaute wieder umkommentieren
--- StorageCostsUpdate (Bei jedem Produkt im Storage muss calculateNewCosts aufgerufen werden) (und vom Bankkonto abgebucht werden) -Felix 
--- Bei store die Kosten neu berechnen (durchschnittskosten) - Felix
 -- Location-Daten auslagern - Michael
 -- MarketData - addWage ausimplementieren: Sammelt Löhne für den Durchschnittslohn
 -- ProductionOrder-> Zuschlag sinnvoll berechnen (Motivation, Standort,...)
 -- Messageobjekt zum Austausch mit dem Client
 -- UML-Diagramm neu erstellen (ändern wie auch immer)
 
+
+Done -- Bei store die Kosten neu berechnen (durchschnittskosten) - Felix
+Done -- StorageCostsUpdate (Bei jedem Produkt im Storage muss calculateNewCosts aufgerufen werden) (und vom Bankkonto abgebucht werden) -Felix
 Done -- Bei Product ein setPrice!
 Done --(Logger überall einbinden) 
 Done -- Logger auf SysOut mit HTML-Ausgabe

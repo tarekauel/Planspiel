@@ -166,5 +166,13 @@ public class Constant {
 		
 	}
 	
+	public static class Product{
+		public static final int STORAGECOST_WAFER = Integer.parseInt(getConstant("STORAGE_COSTS_WAFER"));
+		public static final int STORAGECOST_CASE = Integer.parseInt(getConstant("STORAGE_COSTS_CASE"));
+		public static final int STORAGECOST_PANEL = Integer.parseInt(getConstant("STORAGE_COSTS_PANEL"));
+		
+		
+	}
+	
 	
 }
