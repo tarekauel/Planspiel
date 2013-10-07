@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Constant.Constant;
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * Die Purchase-Klasse stellt die Einkaufsabteilung des Unternehmens dar. Sie
@@ -38,7 +38,6 @@ public class Purchase extends DepartmentRoundSensitive {
 	 */
 	public Purchase(Company c) throws Exception {
 		super(c, "Einkauf", Constant.DepartmentFixcost.PURCHASE);
-		Log.newObj( c );
 		SupplierMarket.getMarket().addPurchase(this);
 	}
 
@@ -70,7 +69,6 @@ public class Purchase extends DepartmentRoundSensitive {
 	 */
 
 	public void createRequest(Resource resource) throws Exception {
-		Log.method(resource);
 		if (resource == null) {
 			throw new NullPointerException(
 					"Resource is null! Class Purchase Method createRequest");
@@ -80,7 +78,6 @@ public class Purchase extends DepartmentRoundSensitive {
 		// Request request = Request.create(resource);
 		listOfRequests.add(request);
 		listOfLatestRequests.add(request);
-		Log.methodExit();
 	}
 
 	/**
@@ -96,7 +93,6 @@ public class Purchase extends DepartmentRoundSensitive {
 
 	public void acceptSupplierOffer(SupplierOffer supplierOffer, int quantity)
 			throws Exception {
-		Log.method(new Object[]{supplierOffer,quantity});
 		if (supplierOffer == null) {
 			throw new NullPointerException(
 					"supplierOffer is null! Class Purchase Method acceptSupplierOffer");
@@ -123,11 +119,9 @@ public class Purchase extends DepartmentRoundSensitive {
 			supplierOffer.setOrderedQuantity(quantity);
 			listOfLatestSupplierOffers.add(supplierOffer);
 		}
-		Log.methodExit();
 	}
 
 	public ArrayList<Request> getListOfRequest() {
-		Log.get(listOfRequests);
 		return listOfRequests;
 	}
 
@@ -137,7 +131,6 @@ public class Purchase extends DepartmentRoundSensitive {
 	 * @return Liste der Request
 	 */
 	public ArrayList<Request> getListOfLatestRequest() {
-		Log.get(listOfLatestRequests);
 		return listOfLatestRequests;
 	}
 
@@ -147,10 +140,8 @@ public class Purchase extends DepartmentRoundSensitive {
 
 	@Override
 	public void prepareForNewRound(int round) {
-		Log.method(round);
 		listOfLatestRequests = new ArrayList<Request>();
 		listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
-		Log.methodExit();
 	}
 
 }

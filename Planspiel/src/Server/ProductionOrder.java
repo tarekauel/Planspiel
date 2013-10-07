@@ -4,7 +4,7 @@
 package Server;
 
 import Constant.Constant;
-import Logger.Log;
+import Constant.Constant.Log;
 
 /**
  * Klasse für den Produktionsauftrag
@@ -39,7 +39,6 @@ public class ProductionOrder {
 	 */
 
 	public ProductionOrder(Resource wafer, Resource cases, int quantity) {
-		Log.newObj(new Object[] { wafer, cases, quantity });
 		this.id = counter;
 		if(checkResource(wafer)){
 			throw new IllegalArgumentException("Wafer ist null.");
@@ -54,7 +53,6 @@ public class ProductionOrder {
 		this.cases = cases;
 		this.quantityToProduce = quantity;
 		counter++;
-		Log.methodExit();
 	}
 
 	private boolean checkQuantity(int quantity){
@@ -70,7 +68,6 @@ public class ProductionOrder {
 	 * @return int Ausschuss
 	 */
 	public int getWaste() {
-		Log.get(quantityToProduce - quantityProduced);
 		return quantityToProduce - quantityProduced;
 
 	}
@@ -80,7 +77,6 @@ public class ProductionOrder {
 	 * @return gibt den verwendeten Wafer wieder
 	 */
 	public Resource getWafer() {
-		Log.get(wafer);
 		return this.wafer;
 	}
 
@@ -89,7 +85,6 @@ public class ProductionOrder {
 	 * @return gibt das verwendete Gehäuse zurück
 	 */
 	public Resource getCase() {
-		Log.get(cases);
 		return this.cases;
 	}
 
@@ -98,7 +93,6 @@ public class ProductionOrder {
 	 * @return gibt das Fertige Erzeugnis zurück
 	 */
 	public FinishedGood getPanel() {
-		Log.get(panel);
 		return this.panel;
 
 	}
@@ -109,7 +103,6 @@ public class ProductionOrder {
 	 * @return int produzierte Menge
 	 */
 	public int getProduced() {
-		Log.get(quantityProduced);
 		return quantityProduced;
 	}
 
@@ -124,7 +117,6 @@ public class ProductionOrder {
 		//Verwendungsnachweis negativ
 		if (quantityProduced < quantityToProduce) {
 			quantityProduced++;
-			Log.set(quantityProduced);
 
 		}
 	}
@@ -135,7 +127,6 @@ public class ProductionOrder {
 	 * @return int Anzahl aus dem Konstruktor
 	 */
 	public int getRequested() {
-		Log.get(quantityToProduce);
 
 		return quantityToProduce;
 
@@ -147,7 +138,6 @@ public class ProductionOrder {
 	 * @return global ID
 	 */
 	public int getID() {
-		Log.get(id);
 		return this.id;
 	}
 
@@ -161,7 +151,6 @@ public class ProductionOrder {
 	 * 
 	 */
 	public void produce(int advantage, Storage s, Machinery m) throws Exception {
-		Log.method(new Object[] { advantage, s, m });
 		quantityProduced++;
 
 
@@ -190,11 +179,9 @@ public class ProductionOrder {
 
 		// neues Panel erzeugen
 		panel = FinishedGood.create(newQuality, costs);
-		Log.methodExit();
 	}
 
 	public void storeProduction(Storage s) throws Exception {
-		Log.method(s);
 		// Kosten pro Stück neu berechnen (Ausschuss berücksichtigen)
 		this.panel = FinishedGood
 				.create(panel.getQuality(),
@@ -204,7 +191,6 @@ public class ProductionOrder {
 								* s.getCompany().getHumanResources()
 										.getWagesPerHour().getAmount()) / quantityProduced));
 		s.store(this.panel, quantityProduced);
-		Log.methodExit();
 	}
 
 }

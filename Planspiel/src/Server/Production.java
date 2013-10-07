@@ -3,7 +3,7 @@ package Server;
 import java.util.ArrayList;
 
 import Constant.Constant;
-import Logger.Log;
+import Constant.Constant.Log;
 
 public class Production extends DepartmentRoundSensitive {
 	// Liste aller jemals erstellten Produktions auftrï¿½ge
@@ -30,9 +30,7 @@ public class Production extends DepartmentRoundSensitive {
 	 */
 	public Production(Company c) throws Exception {
 		super(c, "Produktion", Constant.DepartmentFixcost.PRODUCTION);
-		Log.method(c);
 		machine = new Machinery();
-		Log.methodExit();
 	}
 
 	/**
@@ -59,7 +57,6 @@ public class Production extends DepartmentRoundSensitive {
 	 * @return gibt die Fixkosten zurück
 	 */
 	public int getFixCosts() {
-		Log.get(super.getFixCosts() + this.machine.getCosts());
 		return super.getFixCosts() + this.machine.getCosts();
 	}
 
@@ -68,7 +65,6 @@ public class Production extends DepartmentRoundSensitive {
 	 * @return gibt die Maschine der Produktion zurï¿½ck
 	 */
 	public Machinery getMachine() {
-		Log.get(machine);
 		return this.machine;
 	}
 
@@ -86,7 +82,6 @@ public class Production extends DepartmentRoundSensitive {
 	 *         genügen Bargeld)
 	 */
 	public boolean createProductionOrder(Resource wafer, Resource cases, int quantity) {
-		Log.method(new Object[]{wafer,cases,quantity});
 		// Prüfen, ob genug Geld für die Order (Orderkosten) auf dem Konto ist
 		if (getCompany().getBankAccount().decreaseBalance( Constant.Production.COST_PER_ORDER )) {
 
@@ -96,10 +91,8 @@ public class Production extends DepartmentRoundSensitive {
 			listOfAllProductionOrders.add(po);
 			// nimm ihn in die Liste der noch nicht bearbeiteten Auftrï¿½ge auf
 			listOfOpenProductionOrders.add(po);
-			Log.methodExit();
 			return true;
 		}
-		Log.methodExit();
 		return false;
 	}
 
@@ -110,7 +103,6 @@ public class Production extends DepartmentRoundSensitive {
 	 * 
 	 */
 	public void produce() throws Exception {
-		Log.method();
 		// Gibt die Maximale Anzahl der Werkstï¿½cke an
 		int max = this.machine.getMaxCapacity();
 		// Zï¿½hlt mit, wieviele Werkstï¿½cke auf der Maschine lagen
@@ -189,7 +181,6 @@ public class Production extends DepartmentRoundSensitive {
 
 		listOfAllPercentOfUsage.add(new TPercentOfUsage(sum / this.machine.getMaxCapacity(), GameEngine.getGameEngine()
 				.getRound()));
-		Log.methodExit();
 	}
 
 	/**
@@ -198,7 +189,6 @@ public class Production extends DepartmentRoundSensitive {
 	 *         Spielbeginn zurï¿½ck
 	 */
 	public ArrayList<ProductionOrder> getListOfAllProductionOrders() {
-		Log.get(listOfAllProductionOrders);
 		return listOfAllProductionOrders;
 	}
 
@@ -209,7 +199,6 @@ public class Production extends DepartmentRoundSensitive {
 	 *         Runde angelegt wurden
 	 */
 	public ArrayList<ProductionOrder> getListOfOpenProductionOrders() {
-		Log.get(listOfOpenProductionOrders);
 		return listOfOpenProductionOrders;
 	}
 
@@ -218,7 +207,6 @@ public class Production extends DepartmentRoundSensitive {
 	 * @return gibt die Liste aller Auslastungen fï¿½r diesen Spieler wieder
 	 */
 	public ArrayList<TPercentOfUsage> getListOfAllPercentOfUsage() {
-		Log.get(listOfAllPercentOfUsage);
 		return listOfAllPercentOfUsage;
 	}
 	
@@ -228,8 +216,6 @@ public class Production extends DepartmentRoundSensitive {
 
 	@Override
 	public void prepareForNewRound(int round) {
-		Log.method(round);
 		listOfOpenProductionOrders = new ArrayList<ProductionOrder>();
-		Log.methodExit();
 	}
 }

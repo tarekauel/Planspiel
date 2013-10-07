@@ -25,29 +25,24 @@ public abstract class Product {
 	 * @throws
 	 */
 	public Product(int quality, String name, int costs) throws Exception {
-		Log.newObj(new Object[] { quality, name, costs });
 		if (checkCostsAreValid(costs) && checkQualityIsValid(quality)) {
 			this.quality = quality;
 			this.name = name;
 			this.costs = costs;
-			Log.methodExit();
 			return;
 		}
 		throw new Exception("Not valid!");
 	}
 
 	public String getName() {
-		Log.get(name);
 		return name;
 	}
 
 	public int getCosts() {
-		Log.get(costs);
 		return costs;
 	}
 
 	public int getQuality() {
-		Log.get(quality);
 		return quality;
 
 	}
@@ -97,7 +92,6 @@ public abstract class Product {
 	 * @return
 	 */
 	public Boolean setCosts(int costs) { // Brachen wir diese Methode???
-		Log.set(costs);
 		if (checkCostsAreValid(costs)) {
 			this.costs = costs;
 			return true;
@@ -140,7 +134,6 @@ public abstract class Product {
 	 * @return
 	 */
 	public Boolean equals(Product product) {
-		Log.method(product);
 		if (product == null) {
 			return false;
 		}

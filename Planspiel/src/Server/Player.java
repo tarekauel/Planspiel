@@ -1,9 +1,6 @@
 package Server;
 
-import java.net.ServerSocket;
-import java.net.Socket;
-
-import Logger.Log;
+import Constant.Constant.Log;
 import Server.Connection.ServerConnection;
 
 /**
@@ -67,17 +64,14 @@ public class Player {
 	}
 
 	public String getPassword() {
-		Log.get(password);
 		return password;
 	}
 
 	public String getName() {
-		Log.get(name);
 		return name;
 	}
 
 	public String getIp() {
-		Log.get(ip);
 		return ip;
 	}
 
@@ -86,7 +80,6 @@ public class Player {
 	}
 
 	public int getPort() {
-		Log.get(port);
 		return port;
 	}
 
