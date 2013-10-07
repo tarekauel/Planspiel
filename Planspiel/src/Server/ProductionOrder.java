@@ -39,13 +39,13 @@ public class ProductionOrder {
 
 	public ProductionOrder(Resource wafer, Resource cases, int quantity) {
 		this.id = counter;
-		if(checkResource(wafer)){
+		if(!checkResource(wafer)){
 			throw new IllegalArgumentException("Wafer ist null.");
 		}
-		if(checkResource(cases)){
+		if(!checkResource(cases)){
 			throw new IllegalArgumentException("Gehaeuse ist null.");
 		}
-		if(checkQuantity(quantity)){
+		if(!checkQuantity(quantity)){
 			throw new IllegalArgumentException("Quantity ist nicht größer 0");
 		}
 		this.wafer = wafer;
