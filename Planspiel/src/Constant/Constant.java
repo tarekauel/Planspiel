@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 public class Constant {
 	//Pfad der zu nutzenden INI.
-	public static final String PATH = "forTest.ini";
+	public static final String PATH = "game.ini";
 	/**
 	 * Gibt ein int Array zurück
 	 * 
