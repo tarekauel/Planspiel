@@ -14,7 +14,7 @@ import Logger.Log;
  * 
  */
 
-public class Storage extends Department {
+public class Storage extends DepartmentRoundSensitive {
 
 	private ArrayList<StorageElement> listOfStorageElements = new ArrayList<StorageElement>();
 
@@ -260,5 +260,9 @@ public class Storage extends Department {
 	public ArrayList<StorageElement> getAllStorageElements() {
 		Log.get(listOfStorageElements);
 		return listOfStorageElements;
+	}
+	
+	public void prepareForNewRound(int round){
+		updateStorageElements();
 	}
 }
