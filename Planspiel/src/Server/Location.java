@@ -35,7 +35,6 @@ public class Location {
 		while(line !=null){
 			String [] attributes =line.split(":");
 			Location l= new Location(Integer.parseInt(attributes[1]), attributes[0], Integer.parseInt(attributes[2]), Integer.parseInt(attributes[3]));
-			listOfLocations.add(l);
 			line = buffReader.readLine();
 		}
 		buffReader.close();
@@ -55,7 +54,7 @@ public class Location {
 	 *            WageLevel / Lohn niveau
 	 */
 	public Location(int a, String c, int p, int w) {
-		Log.newObj(new Object[]{c,p,w});
+		
 		this.advantage = a;
 		this.country = c;
 		this.purchasePrice = p;
@@ -66,7 +65,7 @@ public class Location {
 	}
 
 	public static ArrayList<Location> getListOfLocations() {
-		Log.get(listOfLocations);
+		
 		return listOfLocations;
 	}
 	/**
@@ -83,7 +82,7 @@ public class Location {
 			//Vergleiche (ignoriere Groß/Kleinschreibung)
 			if(o.getCountry().toLowerCase().equals(c.toLowerCase())){
 				//Strings stimmen überein, also zurückgeben
-				Log.get(o);
+				
 				return o;
 			}
 		}
@@ -91,22 +90,22 @@ public class Location {
 	}
 
 	public int getAdvantage() {
-		Log.get(advantage);
+		
 		return this.advantage;
 	}
 
 	public String getCountry() {
-		Log.get(country);
+		
 		return this.country;
 	}
 
 	public int getPurchasePrice() {
-		Log.get(purchasePrice);
+		
 		return this.purchasePrice;
 	}
 
 	public int getWageLevel() {
-		Log.get(wageLevel) ;
+		
 		return this.wageLevel;
 	}
 	

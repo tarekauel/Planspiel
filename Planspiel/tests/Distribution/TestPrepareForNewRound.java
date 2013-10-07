@@ -10,12 +10,11 @@ import org.junit.Test;
 import Server.Company;
 import Server.Distribution;
 import Server.FinishedGood;
-import Server.GameEngine;
 import Server.Location;
-import Server.Product;
 import Server.Storage;
 
 public class TestPrepareForNewRound {
+	Location l;
 	Company c;
 	Distribution d;
 	Storage st;
@@ -23,14 +22,14 @@ public class TestPrepareForNewRound {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Location.initLocations();
+		//Location.initLocations();
 
 	}
 
 	@Before
 	public void initializeTests() throws Exception {
-		
-		c = new Company(Location.getLocationByCountry("USA"));
+		l = new Location(110, "USA", 4000000, 750);
+		c = new Company(l);
 		d = new Distribution(c);
 		st = new Storage(c);
 		fg = FinishedGood.create(8, 20000);
@@ -45,7 +44,7 @@ public class TestPrepareForNewRound {
 	
 	@Test 
 	public void valid() {
-		
+		assertEquals(4,d.getListOfLatestOffers().size());
 		d.prepareForNewRound(5);
 		assertEquals(0,d.getListOfLatestOffers().size());
 		
