@@ -97,6 +97,22 @@ public class MarketData {
 		return new TWage((int) (sumWageAmounts / numOfDepts), 100);
 	}
 	
+	/**
+	 * Liefert den durchschnittlichen Betrag der Benefitinvestitonen zurueck
+	 * @return Durchschnittsliche Benefitinvestionen auf Niveau 100
+	 */
+	public long getAverageBenefit() {
+		
+		// kummulierte Summe der Benefits aller Spieler
+		long sumBenefits = 0;
+		
+		for(HumanResources hr : listOfHr ) {
+			sumBenefits += hr.getSumBenefits();
+		}
+		
+		return (long) sumBenefits / listOfHr.size();
+	}
+	
 	
 	
 
