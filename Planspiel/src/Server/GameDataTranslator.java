@@ -2,7 +2,6 @@ package Server;
 
 import java.util.ArrayList;
 
-import Message.GameDataMessage;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageFromClient.Distribution.Offer;
 import Message.GameDataMessageFromClient.HumanResources.BenefitBooking;
