@@ -72,4 +72,24 @@ public class TestConstructor {
 		
 	}
 
+	@Test
+	public void updateStorageCostsCase()throws Exception{
+		Resource good = new Resource(50, "Gehäuse", 10);
+		int costBefore = good.getCosts();
+		good.calculateNewCosts();
+		int costAfter = good.getCosts();
+		
+		assertEquals(true,((costBefore+Constant.Product.STORAGECOST_CASE) == costAfter));
+		
+	}
+	@Test
+	public void updateStorageCostsWafer()throws Exception{
+		Resource good = new Resource(50, "Wafer", 10);
+		int costBefore = good.getCosts();
+		good.calculateNewCosts();
+		int costAfter = good.getCosts();
+		
+		assertEquals(true,((costBefore+Constant.Product.STORAGECOST_WAFER) == costAfter));
+		
+	}
 }
