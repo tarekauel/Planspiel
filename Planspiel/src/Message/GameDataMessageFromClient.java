@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class GameDataMessageFromClient extends GameDataMessage {
 
-	public GameDataMessageFromClient(String playerName, Purchase purchase,
-			Production production, Distribution distribution,
-			boolean increaseMachineLevel, HumanResources humanResources,
+	public GameDataMessageFromClient(String playerName, PurchaseFromClient purchase,
+			ProductionFromClient production, DistributionFromClient distribution,
+			boolean increaseMachineLevel, HumanResourcesFromClient humanResources,
 			int wage, boolean buyMarketResearch) {
 		super(playerName);
 		this.purchase = purchase;
@@ -18,26 +18,26 @@ public class GameDataMessageFromClient extends GameDataMessage {
 		this.buyMarketResearch = buyMarketResearch;
 	}
 
-	public final Purchase purchase;
-	public final Production production;
-	public final Distribution distribution;
+	public final PurchaseFromClient purchase;
+	public final ProductionFromClient production;
+	public final DistributionFromClient distribution;
 	public final boolean increaseMachineLevel;
-	public final HumanResources humanResources;
+	public final HumanResourcesFromClient humanResources;
 	public final int wage;
 	public final boolean buyMarketResearch;
 
-	public class Purchase {
-		public Purchase(ArrayList<Request> requests,
-				ArrayList<AcceptedSupplierOffer> acceptedSupplierOffers) {
+	public class PurchaseFromClient {
+		public PurchaseFromClient(ArrayList<RequestFromClient> requests,
+				ArrayList<AcceptedSupplierOfferFromClient> acceptedSupplierOffers) {
 			this.requests = requests;
 			this.acceptedSupplierOffers = acceptedSupplierOffers;
 		}
 
-		public final ArrayList<Request> requests; // Artikel
+		public final ArrayList<RequestFromClient> requests; // Artikel
 
 		// und
-		public class Request {
-			public Request(String name, int quality) {
+		public class RequestFromClient {
+			public RequestFromClient(String name, int quality) {
 				this.name = name;
 				this.quality = quality;
 
@@ -48,8 +48,8 @@ public class GameDataMessageFromClient extends GameDataMessage {
 		}
 
 		// Qualitaet
-		public class AcceptedSupplierOffer {
-			public AcceptedSupplierOffer(String name, int quality, int quantity) {
+		public class AcceptedSupplierOfferFromClient {
+			public AcceptedSupplierOfferFromClient(String name, int quality, int quantity) {
 				this.name = name;
 				this.quality = quality;
 				this.quantity = quantity;
@@ -60,18 +60,18 @@ public class GameDataMessageFromClient extends GameDataMessage {
 			public final int quantity;
 		}
 
-		public final ArrayList<AcceptedSupplierOffer> acceptedSupplierOffers;
+		public final ArrayList<AcceptedSupplierOfferFromClient> acceptedSupplierOffers;
 
 	}
 
-	public class Production {
+	public class ProductionFromClient {
 
-		public Production(ArrayList<ProductionOrder> orders) {
+		public ProductionFromClient(ArrayList<ProductionOrderFromClient> orders) {
 			this.orders = orders;
 		}
 
-		public class ProductionOrder {
-			public ProductionOrder(int qualityWafer, int qualityCase,
+		public class ProductionOrderFromClient {
+			public ProductionOrderFromClient(int qualityWafer, int qualityCase,
 					int quantity) {
 
 				this.qualityWafer = qualityWafer;
@@ -84,19 +84,19 @@ public class GameDataMessageFromClient extends GameDataMessage {
 			public final int quantity;
 		}
 
-		public final ArrayList<ProductionOrder> orders;
+		public final ArrayList<ProductionOrderFromClient> orders;
 
 	}
 
-	public class Distribution {
+	public class DistributionFromClient {
 
-		public Distribution(ArrayList<Offer> offers) {
+		public DistributionFromClient(ArrayList<OfferFromClient> offers) {
 			this.offers = offers;
 		}
 
-		public class Offer {
+		public class OfferFromClient {
 
-			public Offer(int quality, int quantityToSell, int price) {
+			public OfferFromClient(int quality, int quantityToSell, int price) {
 				this.quality = quality;
 				this.quantityToSell = quantityToSell;
 				this.price = price;
@@ -107,19 +107,19 @@ public class GameDataMessageFromClient extends GameDataMessage {
 			public final int price;
 		}
 
-		public final ArrayList<Offer> offers;
+		public final ArrayList<OfferFromClient> offers;
 	}
 
-	public class HumanResources {
+	public class HumanResourcesFromClient {
 
-		public HumanResources(ArrayList<BenefitBooking> benefits) {
+		public HumanResourcesFromClient(ArrayList<BenefitBookingFromClient> benefits) {
 
 			this.benefits = benefits;
 		}
 
-		public class BenefitBooking {
+		public class BenefitBookingFromClient {
 
-			public BenefitBooking(String name, int duration) {
+			public BenefitBookingFromClient(String name, int duration) {
 				this.name = name;
 				this.duration = duration;
 			}
@@ -128,7 +128,7 @@ public class GameDataMessageFromClient extends GameDataMessage {
 			public final int duration;
 		}
 
-		public final ArrayList<BenefitBooking> benefits;
+		public final ArrayList<BenefitBookingFromClient> benefits;
 	}
 
 }

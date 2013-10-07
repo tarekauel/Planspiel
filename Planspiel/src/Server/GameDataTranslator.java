@@ -3,11 +3,11 @@ package Server;
 import java.util.ArrayList;
 
 import Message.GameDataMessageFromClient;
-import Message.GameDataMessageFromClient.Distribution.Offer;
-import Message.GameDataMessageFromClient.HumanResources.BenefitBooking;
-import Message.GameDataMessageFromClient.Production.ProductionOrder;
-import Message.GameDataMessageFromClient.Purchase.AcceptedSupplierOffer;
-import Message.GameDataMessageFromClient.Purchase.Request;
+import Message.GameDataMessageFromClient.DistributionFromClient.OfferFromClient;
+import Message.GameDataMessageFromClient.HumanResourcesFromClient.BenefitBookingFromClient;
+import Message.GameDataMessageFromClient.ProductionFromClient.ProductionOrderFromClient;
+import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOfferFromClient;
+import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
 
 public class GameDataTranslator {
@@ -81,19 +81,19 @@ public class GameDataTranslator {
 
 	}
 
-	private void handleBenefitBooking(ArrayList<BenefitBooking> benefits,
+	private void handleBenefitBooking(ArrayList<BenefitBookingFromClient> benefits,
 			Company company) throws Exception {
 		HumanResources hr = company.getHumanResources();
 
-		for (BenefitBooking benefit : benefits) {
+		for (BenefitBookingFromClient benefit : benefits) {
 			hr.bookBenefit(benefit.name, benefit.duration);
 		}
 	}
 
-	private void handleDistributionOffers(ArrayList<Offer> offers,
+	private void handleDistributionOffers(ArrayList<OfferFromClient> offers,
 			Company company) {
 		Distribution distribution = company.getDistribution();
-		for (Offer offer : offers) {
+		for (OfferFromClient offer : offers) {
 			distribution.createOffer(offer.quality, offer.quantityToSell,
 					offer.price);
 		}
@@ -107,10 +107,10 @@ public class GameDataTranslator {
 	 *            vom Client angelegte Orders
 	 * @param company
 	 */
-	private void handleProductionOrders(ArrayList<ProductionOrder> orders,
+	private void handleProductionOrders(ArrayList<ProductionOrderFromClient> orders,
 			Company company) {
 		Storage storage = company.getStorage();
-		for (ProductionOrder prodOrder : orders) {
+		for (ProductionOrderFromClient prodOrder : orders) {
 			Resource wafer = null;
 			Resource panelCase = null;
 			for (Resource resource : storage.getAllResources()) {
@@ -139,10 +139,10 @@ public class GameDataTranslator {
 	 * @throws Exception
 	 */
 	private void handleAcceptedSupplierOffers(
-			ArrayList<AcceptedSupplierOffer> acceptedSupplierOffers,
+			ArrayList<AcceptedSupplierOfferFromClient> acceptedSupplierOffers,
 			Company company) throws Exception {
 		// geht alle acceptedSupOf des Clients durch
-		for (AcceptedSupplierOffer acceptedSupOf : acceptedSupplierOffers) {
+		for (AcceptedSupplierOfferFromClient acceptedSupOf : acceptedSupplierOffers) {
 			// Sucht alle aktuellen Requests auf dem Server
 			for (Server.Request request : company.getPurchase()
 					.getListOfLatestRequest()) {
@@ -181,9 +181,9 @@ public class GameDataTranslator {
 
 	}
 
-	private void handlePurchaseRequests(ArrayList<Request> requests,
+	private void handlePurchaseRequests(ArrayList<RequestFromClient> requests,
 			Company company) throws Exception {
-		for (Request request : requests) {
+		for (RequestFromClient request : requests) {
 			company.getPurchase().createRequest(
 					new Resource(request.quality, request.name, 0));
 		}
@@ -193,11 +193,19 @@ public class GameDataTranslator {
 	public void createGameDataMessagesAndSend2Clients() {
 		for (Player player : Server.Connection.Server.getServer()
 				.getPlayerList()) {
-			GameDataMessageToClient message = new GameDataMessageToClient(
-					"Player");
+			GameDataMessageToClient message= createGameDataMessageToClient(player);			
 			player.getMyCompany().getBankAccount().getBankBalance();
 			player.getServerConnection().writeMessage(message);
 		}
+	}
+
+	private GameDataMessageToClient createGameDataMessageToClient(Player player) {
+		String playerName = player.getName();
+		
+	
+		Purchase purchase = new Purchase(requests);
+		GameDataMessageToClient message = new GameDataMessageToClient(playerName, purchase, production, distribution, increaseMachineLevel, humanResources, wage, buyMarketResearch, cash, maxCredit);
+		
 	}
 
 }

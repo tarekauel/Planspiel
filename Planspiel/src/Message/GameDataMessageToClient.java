@@ -2,13 +2,12 @@ package Message;
 
 import java.util.ArrayList;
 
-import Message.GameDataMessageFromClient.Purchase.AcceptedSupplierOffer;
 
 public class GameDataMessageToClient extends GameDataMessage {
 
-	public GameDataMessageToClient(String playerName, Purchase purchase,
-			Production production, Distribution distribution,
-			boolean increaseMachineLevel, HumanResources humanResources,
+	public GameDataMessageToClient(String playerName, PurchaseToClient purchase,
+			ProductionToClient production, DistributionToClient distribution,
+			boolean increaseMachineLevel, HumanResourcesToClient humanResources,
 			int wage, boolean buyMarketResearch, long cash, long maxCredit) {
 		super(playerName);
 		this.purchase = purchase;
@@ -22,39 +21,38 @@ public class GameDataMessageToClient extends GameDataMessage {
 		this.maxCredit = maxCredit;
 	}
 
-	public final Purchase purchase;
-	public final Production production;
-	public final Distribution distribution;
+	public final PurchaseToClient purchase;
+	public final ProductionToClient production;
+	public final DistributionToClient distribution;
 	public final boolean increaseMachineLevel;
-	public final HumanResources humanResources;
+	public final HumanResourcesToClient humanResources;
 	public final int wage;
 	public final boolean buyMarketResearch;
 	public final long cash;
 	public final long maxCredit;
 
-	public class Purchase {
-		public Purchase(ArrayList<Request> requests,
-				ArrayList<AcceptedSupplierOffer> allSupplierOffers) {
+	public class PurchaseToClient {
+		public PurchaseToClient(ArrayList<RequestToClient> requests) {
 			this.requests = requests;
 		}
 
-		public final ArrayList<Request> requests; // ewige Liste
+		public final ArrayList<RequestToClient> requests; // ewige Liste
 
-		public class Request {
-			public Request(String name, int quality,
-					ArrayList<SupplierOffer> supplierOffers) {
+		public class RequestToClient {
+			public RequestToClient(String name, int quality,
+					ArrayList<SupplierOfferToClient> supplierOffers) {
 				this.name = name;
 				this.quality = quality;
 				this.supplierOffers = supplierOffers;
 
 			}
 
-			public final ArrayList<SupplierOffer> supplierOffers;
+			public final ArrayList<SupplierOfferToClient> supplierOffers;
 			public final String name;
 			public final int quality;
 
-			public class SupplierOffer {
-				public SupplierOffer(String name, int quality, int quantity) {
+			public class SupplierOfferToClient {
+				public SupplierOfferToClient(String name, int quality, int quantity) {
 					this.name = name;
 					this.quality = quality;
 					this.quantity = quantity;
@@ -68,14 +66,14 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public class Production {
+	public class ProductionToClient {
 
-		public Production(ArrayList<ProductionOrder> orders) {
+		public ProductionToClient(ArrayList<ProductionOrderToClient> orders) {
 			this.orders = orders;
 		}
 
-		public class ProductionOrder {
-			public ProductionOrder(int qualityWafer, int qualityCase,
+		public class ProductionOrderToClient {
+			public ProductionOrderToClient(int qualityWafer, int qualityCase,
 					int quantity) {
 
 				this.qualityWafer = qualityWafer;
@@ -88,19 +86,19 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int quantity;
 		}
 
-		public final ArrayList<ProductionOrder> orders; // Ewige Liste
+		public final ArrayList<ProductionOrderToClient> orders; // Ewige Liste
 
 	}
 
-	public class Distribution {
+	public class DistributionToClient {
 
-		public Distribution(ArrayList<Offer> offers) {
+		public DistributionToClient(ArrayList<OfferToClient> offers) {
 			this.offers = offers;
 		}
 
-		public class Offer {
+		public class OfferToClient {
 
-			public Offer(int quality, int quantityToSell, int price) {
+			public OfferToClient(int quality, int quantityToSell, int price) {
 				this.quality = quality;
 				this.quantityToSell = quantityToSell;
 				this.price = price;
@@ -111,14 +109,14 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int price;
 		}
 
-		public final ArrayList<Offer> offers;
+		public final ArrayList<OfferToClient> offers;
 	}
 
-	public class HumanResources {
+	public class HumanResourcesToClient {
 
-		public final ArrayList<BenefitBooking> benefits;
+		public final ArrayList<BenefitBookingToClient> benefits;
 
-		public HumanResources(ArrayList<BenefitBooking> benefits,
+		public HumanResourcesToClient(ArrayList<BenefitBookingToClient> benefits,
 				int averageWage, int myWage, int countEmployees, int wageCosts) {
 
 			this.benefits = benefits;
@@ -133,9 +131,9 @@ public class GameDataMessageToClient extends GameDataMessage {
 		public final int countEmployees;
 		public final int wageCosts;
 
-		public class BenefitBooking {
+		public class BenefitBookingToClient {
 
-			public BenefitBooking(String name, int duration) {
+			public BenefitBookingToClient(String name, int duration) {
 				this.name = name;
 				this.duration = duration;
 			}
@@ -146,13 +144,13 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public class Marketing {
+	public class MarketingToClient {
 
-		public Marketing(int peakAMarket, int peakCMarket,
-				ArrayList<MarketShare> marketShares,
-				ArrayList<RessourcePrice> waferPrice,
-				ArrayList<RessourcePrice> casePrice,
-				ArrayList<MotivationRound> motivationRounds) {
+		public MarketingToClient(int peakAMarket, int peakCMarket,
+				ArrayList<MarketShareToClient> marketShares,
+				ArrayList<RessourcePriceToClient> waferPrice,
+				ArrayList<RessourcePriceToClient> casePrice,
+				ArrayList<MotivationRoundToClient> motivationRounds) {
 
 			this.peakAMarket = peakAMarket;
 			this.peakCMarket = peakCMarket;
@@ -164,20 +162,20 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		public final int peakAMarket;
 		public final int peakCMarket;
-		public final ArrayList<MarketShare> marketShares;
-		public final ArrayList<RessourcePrice> waferPrice;
-		public final ArrayList<RessourcePrice> casePrice;
+		public final ArrayList<MarketShareToClient> marketShares;
+		public final ArrayList<RessourcePriceToClient> waferPrice;
+		public final ArrayList<RessourcePriceToClient> casePrice;
 		// For HR
-		public final ArrayList<MotivationRound> motivationRounds;
+		public final ArrayList<MotivationRoundToClient> motivationRounds;
 
-		public class MotivationRound {
+		public class MotivationRoundToClient {
 			int round;
 			int motivation;
 		}
 
-		public class RessourcePrice {
+		public class RessourcePriceToClient {
 
-			public RessourcePrice(int quality, int price) {
+			public RessourcePriceToClient(int quality, int price) {
 
 				this.quality = quality;
 				this.price = price;
@@ -188,9 +186,9 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		}
 
-		public class MarketShare {
+		public class MarketShareToClient {
 
-			public MarketShare(int share, String name) {
+			public MarketShareToClient(int share, String name) {
 				super();
 				this.share = share;
 				this.name = name;
@@ -203,11 +201,11 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public class Reporting {
+	public class ReportingToClient {
 
-		public Reporting(ArrayList<FixCost> fixCosts, Machinery machinery,
-				ArrayList<Sells> sellsOfRounds,
-				ArrayList<CashValueOfRound> cashValues) {
+		public ReportingToClient(ArrayList<FixCostToClient> fixCosts, MachineryToClient machinery,
+				ArrayList<SellsToClient> sellsOfRounds,
+				ArrayList<CashValueOfRoundToClient> cashValues) {
 
 			this.fixCosts = fixCosts;
 			this.machinery = machinery;
@@ -215,14 +213,14 @@ public class GameDataMessageToClient extends GameDataMessage {
 			this.cashValues = cashValues;
 		}
 
-		public final ArrayList<FixCost> fixCosts;
-		public final Machinery machinery;
-		public final ArrayList<Sells> sellsOfRounds;
-		public final ArrayList<CashValueOfRound> cashValues;
+		public final ArrayList<FixCostToClient> fixCosts;
+		public final MachineryToClient machinery;
+		public final ArrayList<SellsToClient> sellsOfRounds;
+		public final ArrayList<CashValueOfRoundToClient> cashValues;
 
-		public class Sells {
+		public class SellsToClient {
 
-			public Sells(int round, ArrayList<Integer> qualities) {
+			public SellsToClient(int round, ArrayList<Integer> qualities) {
 
 				this.round = round;
 				this.qualities = qualities;
@@ -233,9 +231,9 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		}
 
-		public class FixCost {
+		public class FixCostToClient {
 
-			public FixCost(String nameOfDepartment, int costs) {
+			public FixCostToClient(String nameOfDepartment, int costs) {
 
 				this.nameOfDepartment = nameOfDepartment;
 				this.costs = costs;
@@ -245,9 +243,9 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int costs;
 		}
 
-		public class Machinery {
+		public class MachineryToClient {
 
-			public Machinery(int level, int maxCapacity, int averageUsage,
+			public MachineryToClient(int level, int maxCapacity, int averageUsage,
 					int usageLastRound) {
 
 				this.level = level;
@@ -262,9 +260,9 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int usageLastRound;
 		}
 
-		public class CashValueOfRound {
+		public class CashValueOfRoundToClient {
 
-			public CashValueOfRound(int round, int costs) {
+			public CashValueOfRoundToClient(int round, int costs) {
 
 				this.round = round;
 				this.costs = costs;
