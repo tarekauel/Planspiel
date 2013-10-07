@@ -86,17 +86,24 @@ public class GameEngine {
 		// Creator: CustomerMarket.getMarket().getAMarketPeak();
 		// Creator: CustomerMarket.getMarket().getCMarketPeak();
 
+		createDataForClientAndSend();
+		
 		round++; // Runde hochzaehlen
 		
-		Log.methodExit();
+		
 	}
 
 	private void parseClientData(ArrayList<GameDataMessageFromClient> gameDataList) throws Exception {
 		GameDataTranslator.getGameDataTranslator().convertGameDataMessage2Objects(gameDataList);
 
 	}
+	
+	private void createDataForClientAndSend() throws Exception {
+		GameDataTranslator.getGameDataTranslator().createGameDataMessagesAndSend2Clients();
 
-	private void prepareAllDepartmentsForNewRound() {
+	}
+
+	private void prepareAllDepartmentsForNewRound() throws Exception {
 		for (DepartmentRoundSensitive d : listSensitiveDepartments) {
 			d.prepareForNewRound(round);
 		}

@@ -1,12 +1,13 @@
 package Message;
 
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 
 public class GameDataMessageFromClient extends GameDataMessage {
 
-	public Purchase purchase;
+	public Purchase purchase= new Purchase();
 	public Production production;
 	public Distribution distribution;
 	public boolean increaseMachineLevel;
@@ -20,7 +21,9 @@ public class GameDataMessageFromClient extends GameDataMessage {
 	}
 
 	public class Purchase {
-		
+		public Purchase(){
+			
+		}
 		public class Request {
 			public String name;
 			public int quality;
