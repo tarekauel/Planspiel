@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import Constant.Constant;
 import Server.*;
 
 public class TestCreateProductionOrder {
@@ -36,21 +37,29 @@ public class TestCreateProductionOrder {
 	
 	@Test (expected = IllegalArgumentException.class )
 	public void createProductionOrderInvalidWafer() {
-		assertEquals(true,c.getProduction().createProductionOrder(null, cases, 100));
+		c.getProduction().createProductionOrder(null, cases, 100);
 	}
 	
 	@Test (expected = IllegalArgumentException.class )
 	public void createProductionOrderInvalidCases() {
-		assertEquals(true,c.getProduction().createProductionOrder(wafer, null, 100));
+		c.getProduction().createProductionOrder(wafer, null, 100);
 	}
 	
 	@Test (expected = IllegalArgumentException.class )
 	public void createProductionOrderQuantityEQZero() {
-		assertEquals(true,c.getProduction().createProductionOrder(wafer, cases, 0));
+		c.getProduction().createProductionOrder(wafer, cases, 0);
 	}
 	@Test (expected = IllegalArgumentException.class )
 	public void createProductionOrderQuantityLowerZero() {
-		assertEquals(true,c.getProduction().createProductionOrder(wafer, cases, -1));
+		c.getProduction().createProductionOrder(wafer, cases, -1);
+	}
+	
+	@Test
+	public void createProductionOrderBancAccountToLow() {
+		BankAccount b = c.getBankAccount();
+		b.decreaseBalance(b.getBankBalance());
+		b.decreaseBalance(Constant.BankAccount.MAX_CREDIT-1);
+		assertEquals(false,c.getProduction().createProductionOrder(wafer, cases, 100));
 	}
 
 
