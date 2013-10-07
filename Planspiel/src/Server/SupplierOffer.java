@@ -14,12 +14,15 @@ public class SupplierOffer {
 
 	/**
 	 * Erstellt ein SupllierOffer (Angebot vom Beschaffungsmarkt an den Spieler)
-	 * @param resource Produkt, dass Angeboten wird
-	 * @throws IllegalArgumentException Resource darf nicht null sein
+	 * 
+	 * @param resource
+	 *            Produkt, dass Angeboten wird
+	 * @throws IllegalArgumentException
+	 *             Resource darf nicht null sein
 	 */
 	public SupplierOffer(Resource resource) throws IllegalArgumentException {
 		Log.newObj(resource);
-		if( resource == null)
+		if (resource == null)
 			throw new IllegalArgumentException("Resource darf nicht null sein!");
 		this.resource = resource;
 		Log.methodExit();
@@ -67,16 +70,17 @@ public class SupplierOffer {
 		Log.get(false);
 		return false;
 	}
-	
-	
+
 	/**
 	 * Vergleicht ob die Resource identisch sind.
+	 * 
 	 * @param supplierOffer
 	 * @return
 	 */
-
-	public boolean equals(SupplierOffer supplierOffer){
-		if(this.resource.equals(supplierOffer.getResource())){
+	@Override
+	public boolean equals(Object object) {
+		SupplierOffer supplierOffer = (SupplierOffer) object;
+		if (this.resource.equals(supplierOffer.getResource())) {
 			return true;
 		}
 		return false;

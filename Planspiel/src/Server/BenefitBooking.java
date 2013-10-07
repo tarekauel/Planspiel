@@ -10,16 +10,11 @@ import Logger.Log;
 
 public class BenefitBooking {
 
-	private Benefit benefit;
-	private int duration; // Dauer an gebuchten Runden
-	private int startInRound; // Runde in der das Benefit beginnt
-	private int costsSum; // Kosten insgesamt fuer das gebuchte Benefit
-	private static ArrayList<BenefitBooking> bookedBenefits; // Alle derzeit
-																// gebuchten
-																// Benefits
-
-	public BenefitBooking() {
-	}
+	private final Benefit benefit;
+	private final  int duration; // Dauer an gebuchten Runden
+	private final int startInRound; // Runde in der das Benefit beginnt
+	private final int costsSum; // Kosten insgesamt fuer das gebuchte Benefit
+	
 
 	public BenefitBooking(Benefit benefit, int duration) {
 		Log.newObj(new Object[] { benefit, duration });
@@ -69,10 +64,7 @@ public class BenefitBooking {
 
 	}
 
-	public static ArrayList<BenefitBooking> getBookedBenefits() {
-		Log.get(bookedBenefits);
-		return bookedBenefits;
-	}
+	
 
 	public Benefit getBenefit() {
 		Log.get(benefit);

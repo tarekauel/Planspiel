@@ -136,7 +136,7 @@ public class Purchase extends DepartmentRoundSensitive {
 	 * 
 	 * @return Liste der Request
 	 */
-	public ArrayList<Request> getListOfLatesRequest() {
+	public ArrayList<Request> getListOfLatestRequest() {
 		Log.get(listOfLatestRequests);
 		return listOfLatestRequests;
 	}
