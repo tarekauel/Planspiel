@@ -67,8 +67,8 @@ public class TWage {
 	}
 
 	@Override
-	public boolean equals(Object TWage) {
-		TWage in = (TWage) TWage;
+	public boolean equals(Object tWage) {
+		TWage in = (TWage) tWage;
 
 		// Runden ueberpruefen (gleichheit!)
 		if (in.getRound() != this.getRound()) {
