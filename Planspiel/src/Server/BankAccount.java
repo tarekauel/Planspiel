@@ -8,7 +8,7 @@ import Constant.Constant;
  * TODO: checkmethoden!
  */
 
-public class BankAccount {
+public class BankAccount  implements IRoundSensitive {
 
 	private long bankBalance;
 /**
@@ -57,9 +57,10 @@ public class BankAccount {
 	 * @exception falls amount negativ
 	 */
 	public boolean decreaseBalance(long amount) {
-		
 		checkAmount(amount);
-		if (amount <= bankBalance) {
+		
+		//Kann ich das noch bezahlen? bankBalance kann auch negativ sein
+		if (amount <= (bankBalance+Constant.BankAccount.MAX_CREDIT)) {
 			long newBankBalance = getBankBalance() - amount;
 			setBankBalance(newBankBalance);
 			return true;
@@ -76,5 +77,15 @@ public class BankAccount {
 		if (amount <= 0) {
 			throw new IllegalArgumentException("Amount darf nicht <= 0 sein");
 		}
+	}
+
+	@Override
+	public void prepareForNewRound(int round)  {
+		//Berechne die Zinsen falls nötig.
+		if(bankBalance<0){
+			
+		}
+		
+		
 	}
 }
