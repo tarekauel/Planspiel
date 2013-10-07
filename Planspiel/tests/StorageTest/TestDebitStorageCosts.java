@@ -40,7 +40,7 @@ public class TestDebitStorageCosts {
 	@Test
 	public void debitStorageCostsIfBankbalanceIsTooLow() throws Exception {
 		BankAccount b = c.getBankAccount();
-		//Kontostand wird auf 1 GE verringert, damit dass abbuchen ins negative geht.
+		//Kontostand wird auf 1 GE verringert, damit das abbuchen ins negative geht.
 		b.decreaseBalance(b.getBankBalance()+1); 
 		assertEquals(false,st.debitStorageCost());
 		
