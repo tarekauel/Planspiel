@@ -125,6 +125,11 @@ public class HumanResources extends DepartmentRoundSensitive {
 	public void prepareForNewRound(int round) {
 
 		workingHoursPerRound = 0;
+		
+		// Lohn der aktuellen Runde als Lohn der letzten Runde deklarieren
+		// Ab beginn der ersten Runde
+		if( wagePerRound != null)
+			wageLastRound = wagePerRound;
 
 	}
 
