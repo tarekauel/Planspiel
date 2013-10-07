@@ -17,7 +17,7 @@ public class BankAccount {
  * @exception tritt auf, wenn bankBalance negativ oder 0
  */
 	public BankAccount() {
-		Log.newObj(Constant.BankAccount.START_CAPITAL);
+		
 		//CheckAmount wirft Exception falls negative Zahl
 		checkAmount(Constant.BankAccount.START_CAPITAL);
 					
@@ -25,12 +25,12 @@ public class BankAccount {
 	}
 
 	public long getBankBalance() {
-		Log.get(bankBalance);
+		
 		return bankBalance;
 	}
 
 	private void setBankBalance(long bankBalance) {
-		Log.set(bankBalance);
+		
 		
 		this.bankBalance = bankBalance;
 	}
@@ -40,7 +40,7 @@ public class BankAccount {
 	 * @exception wirft exception falls amount <= 0 
 	 */
 	public void increaseBalance(long amount) {
-		Log.method();
+		
 		checkAmount(amount);
 		long newBankBalance = getBankBalance() + amount;
 		setBankBalance(newBankBalance);
@@ -57,7 +57,7 @@ public class BankAccount {
 	 * @exception falls amount negativ
 	 */
 	public boolean decreaseBalance(long amount) {
-		Log.method(amount);
+		
 		checkAmount(amount);
 		if (amount <= bankBalance) {
 			long newBankBalance = getBankBalance() - amount;
