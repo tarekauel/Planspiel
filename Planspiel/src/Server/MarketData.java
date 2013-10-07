@@ -26,6 +26,9 @@ public class MarketData {
 	// Runde, in der die Löhne gelten;
 	private int round = 0;
 	
+	// Liste der Personalabteilungen
+	private ArrayList<HumanResources> listOfHr = new ArrayList<HumanResources>();
+	
 	
 	
 	/**
@@ -67,8 +70,36 @@ public class MarketData {
 		return customerMarket.getCMarketPeak();
 	}
 	
-	public void addWage(TWage wage) {
+	/**
+	 * Fuegt eine Personalabteilun zu den Makrtdaten hinzu, um den Durchschnittslohn zu berechnen
+	 * @param hr Personalabteilung, die hinzugefügt werden soll
+	 */
+	public void addHR( HumanResources hr ) {
+		if( hr == null)
+			throw new IllegalArgumentException("HR-Referenz darf nicht null sein!");
+		this.listOfHr.add(hr);
+	}
+	
+	/**
+	 * Liefert den Durchschnittslohn aller Abteilungen auf Niveau 100 umgerechnet zurück
+	 * @return Durchschnittslohn auf Niveau 100
+	 * @throws Exception
+	 */
+	public TWage getAvereageWage() throws Exception {
+		// Summe aller WageAmounts (auf das Niveau 100 gerechnet)
+		long sumWageAmounts = 0;
 		
+		// Anzahl der Abteilungen, die in der Summe kummuliert worden sind
+		int numOfDepts = 0;
+		
+		// Liste aller HRs durchgehen
+		for(HumanResources hr : listOfHr) {
+			sumWageAmounts += (long) hr.getWagesPerHour().getAmount() / (long) hr.getWagesPerHour().getWageLevel();
+			++numOfDepts;			
+		}
+		
+		// Den Durchschnittslohn der HRs auf Niveau 100 umgerechnet zurueckgeben
+		return new TWage((int) (sumWageAmounts / numOfDepts), 100);
 	}
 	
 	
