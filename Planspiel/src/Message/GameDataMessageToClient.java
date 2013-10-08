@@ -8,15 +8,15 @@ public class GameDataMessageToClient extends GameDataMessage {
 	public GameDataMessageToClient(String playerName, PurchaseToClient purchase,
 			ProductionToClient production, DistributionToClient distribution,
 			HumanResourcesToClient humanResources,
-			MarketingToClient marketing,
+			MarketingToClient marketing, ReportingToClient reporting,
 			 long cash, long maxCredit) {
 		super(playerName);
 		this.purchase = purchase;
 		this.production = production;
 		this.distribution = distribution;
-		
 		this.marketing=marketing;
 		this.humanResources = humanResources;
+		this.reporting = reporting;
 		this.cash = cash;
 		this.maxCredit = maxCredit;
 	}
@@ -25,10 +25,8 @@ public class GameDataMessageToClient extends GameDataMessage {
 	public final ProductionToClient production;
 	public final DistributionToClient distribution;
 	public final MarketingToClient marketing;
-	
-	
-	public final HumanResourcesToClient humanResources;
-	
+	public final ReportingToClient reporting;	
+	public final HumanResourcesToClient humanResources;	
 	public final long cash;
 	public final long maxCredit;
 

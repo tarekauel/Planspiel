@@ -1,5 +1,7 @@
 package Server;
 
+import java.util.ArrayList;
+
 import Server.Connection.ServerConnection;
 
 /**
@@ -14,8 +16,13 @@ public class Player {
 	private String name = "";
 	private String password = "";
 	private String ip = "";
+	private int port;
 	private ServerConnection serverConnection;
+	private ArrayList<Message.IMessage> messagesFromClient = new ArrayList<Message.IMessage>();
+	private ArrayList<Message.IMessage> messagesToClient = new ArrayList<Message.IMessage>();
+	private Company myCompany;
 	
+
 	public ServerConnection getServerConnection() {
 		return serverConnection;
 	}
@@ -24,8 +31,7 @@ public class Player {
 		this.serverConnection = serverConnection;
 	}
 
-	private Company myCompany;
-
+	
 	/**
 	 * 
 	 * @return Das Unternehmen des Spielers
@@ -34,8 +40,7 @@ public class Player {
 		return myCompany;
 	}
 
-	private int port;
-
+	
 	/**
 	 * Legt einen neuen Spieler mit den Parametern:
 	 * 
@@ -61,6 +66,7 @@ public class Player {
 		myCompany = new Company(loc);
 
 	}
+	
 
 	public String getPassword() {
 		return password;
@@ -84,6 +90,22 @@ public class Player {
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+
+	public void addMessagesToClient(Message.IMessage messagesToClient) {
+		this.messagesToClient.add(messagesToClient);
+	}
+
+	public void addMessagesFromClient(Message.IMessage messagesFromClient) {
+		this.messagesFromClient.add(messagesFromClient);
+	}
+
+	public ArrayList<Message.IMessage> getMessagesToClient() {
+		return messagesToClient;
+	}
+
+	public ArrayList<Message.IMessage> getMessagesFromClient() {
+		return messagesFromClient;
 	}
 
 }

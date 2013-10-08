@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import Constant.Constant;
 import Message.GameDataMessage;
+import Message.GameDataMessageFromClient;
+import Server.GameEngine;
 import Server.Player;
 
 /**
@@ -59,10 +61,19 @@ public class Server {
 		return playerList;
 	}
 
-	public synchronized void notifyGameData() {
+	public synchronized void notifyGameData() throws Exception {
 		if (receivedGameMessages >= maxPlayer) {
+			//set to 0 for nextRound
 			receivedGameMessages = 0;
-			// TODO:Starte Spiel
+			
+			ArrayList<GameDataMessageFromClient> gameDataList = new ArrayList<GameDataMessageFromClient>();
+			
+			//Get GameData from all Players
+			for (Player player : playerList) {
+				gameDataList.add((GameDataMessageFromClient)player.getMessagesFromClient().get(player.getMessagesFromClient().size()-1));
+			}
+			GameEngine.getGameEngine().startNextRound(gameDataList);
+			return;
 		}
 		receivedGameMessages++;
 	}
