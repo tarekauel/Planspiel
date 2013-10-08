@@ -140,9 +140,15 @@ public class Production extends DepartmentRoundSensitive {
 				// Zieh die Storage elemente aus dem Storage ab:
 				// nutze dafï¿½r das lager des spielers:
 				// Wafer abbuchen (direkt in der Anzahl waferPerPanel)
-				this.getCompany().getStorage().unstore(p.getWafer(), Constant.Production.WAFERS_PER_PANEL);
+				if (!this.getCompany().getStorage().unstore(p.getWafer(), Constant.Production.WAFERS_PER_PANEL)){
+					innerBreak = true;
+					break;	
+				};
 				// Gehï¿½use abbuchen
-				this.getCompany().getStorage().unstore(p.getCase(), 1);
+				if(!this.getCompany().getStorage().unstore(p.getCase(), 1)){
+					innerBreak = true;
+					break;	
+				};
 
 				// "Werkstï¿½ck auf Maschine legen":
 				triedToProduce++;
@@ -208,7 +214,9 @@ public class Production extends DepartmentRoundSensitive {
 	public ArrayList<TPercentOfUsage> getListOfAllPercentOfUsage() {
 		return listOfAllPercentOfUsage;
 	}
-	
+	/**
+	 * erhöht das Maschinen level (falls möglich)
+	 */
 	public void increaseMachineryLevel(){
 		machine.increaseLevel(this.getCompany().getBankAccount());
 	}
