@@ -220,7 +220,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Button id="new" fx:id="newSaleOfferButton" layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Neues Angebot erstellen" />
+                <Button fx:id="newSaleOfferButton" layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Neues Angebot erstellen" />
                 <Button fx:id="newSaleOfferSaveButton" layoutX="197.0" layoutY="15.0" mnemonicParsing="false" text="Angebot speichern" />
                 <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="51.0" maxHeight="140.0" minHeight="100.0" minWidth="672.0" prefHeight="140.0" prefWidth="727.0" text="Verkaufsangebot">
                   <content>
