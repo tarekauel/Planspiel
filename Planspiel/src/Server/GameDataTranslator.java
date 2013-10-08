@@ -226,7 +226,6 @@ public class GameDataTranslator {
 		for (Player player : Server.Connection.Server.getServer()
 				.getPlayerList()) {
 			GameDataMessageToClient message = createGameDataMessageToClient(player);
-			player.getMyCompany().getBankAccount().getBankBalance();
 			player.getServerConnection().writeMessage(message);
 		}
 	}
@@ -242,14 +241,19 @@ public class GameDataTranslator {
 			throws Exception {
 		String playerName = player.getName();
 		Company company = player.getMyCompany();
-
+		
+		//Abteilungen erstellen
 		PurchaseToClient purchase = createPurchase(company);
 		ProductionToClient production = createProduction(company);
 		DistributionToClient distribution = createDistribution(company);
 		HumanResourcesToClient humanResources = createHumanResources(company);
 		MarketingToClient marketing = createMarketing(company);
+		
+		//Hauptdaten erstellen
 		long cash = company.getBankAccount().getBankBalance();
 		long maxCredit = Constant.BankAccount.MAX_CREDIT;
+		
+		// Message erstellen
 		GameDataMessageToClient message = new GameDataMessageToClient(
 				playerName, purchase, production, distribution, humanResources,
 				marketing, cash, maxCredit);

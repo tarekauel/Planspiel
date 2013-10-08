@@ -20,8 +20,9 @@ import Server.Player;
 
 public class ServerConnection extends Thread {
 	private Socket clientSocket;
-	private int clientId = 0;
-	private Server server = null;
+	private final int clientId;
+	private final Server server;
+	private Player player;
 
 	/**
 	 * Wird von der Thread.start()-Methode aufgerufen. Es wird auf ankommende
@@ -45,12 +46,26 @@ public class ServerConnection extends Thread {
 									// Clients
 				login((LoginMessage) message);
 				break;
-
+			case "GameDataMessageFromClient": 
+				// Es handelt sich um eine Message mit Spieldaten											
+				handleGameDataMessageFromClient((GameDataMessageToClient) message);
+				break;
 			default:
 				break;
 			}
 		}
 
+	}
+
+	private void handleGameDataMessageFromClient(GameDataMessageToClient message) {
+		
+		try {
+			server.notifyGameData();
+		} catch (Exception e) {
+			//Fehler in Message
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -118,14 +133,15 @@ public class ServerConnection extends Thread {
 					// TODO: setGameData
 
 				} else {
-					server.addPlayer(new Player(message.getName(), message
-							.getPassword(), this, message
-							.getChosenLocation()));
+					Player p= new Player(message.getName(), message
+							.getPassword(), this, message.getChosenLocation());
+					player=p;
+					server.addPlayer(p);
 
 				}
 
 			} catch (Exception e) {
-				// TODO: Falsche Location
+				//Falsche Location
 				e.printStackTrace();
 			}
 		}
@@ -163,7 +179,7 @@ public class ServerConnection extends Thread {
 			System.out.println(txt);
 
 		}
-
+		player.addMessagesFromClient(message);
 		return message;
 	}
 
@@ -176,7 +192,7 @@ public class ServerConnection extends Thread {
 	 *            dokumentiert.
 	 */
 	public void writeMessage(IMessage message) { // Nachricht schreiben
-
+		player.addMessagesToClient(message);
 		ObjectOutputStream object;
 		try {
 			object = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -191,9 +207,10 @@ public class ServerConnection extends Thread {
 
 	}
 
-	public Socket getClientSocket(){
+	public Socket getClientSocket() {
 		return clientSocket;
 	}
+
 	/**
 	 * Schlieﬂt die Verbindung mit dem Client
 	 */
