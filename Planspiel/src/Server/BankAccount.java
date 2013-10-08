@@ -14,7 +14,7 @@ public class BankAccount  implements IRoundSensitive {
 	private Company c;
 /**
  * erstellt ein neues Bankkonto
- * @param bankBalance Startguthaben
+ * @param c Das Unternehmen, dem das Konto zugeordnet ist
  * @exception tritt auf, wenn Company null
  */
 	public BankAccount(Company c) throws Exception {
