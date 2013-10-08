@@ -129,7 +129,9 @@ public class ClientGameUIController implements Initializable {
     	endRoundButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {           	
-            	round++;           	
+            	round++;    
+            	//TEST
+            	processRoundProgressBar(round);
             }
         }); 
     	
