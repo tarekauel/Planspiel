@@ -11,7 +11,7 @@ public class Constant {
 	 * Gibt ein int Array zurück
 	 * 
 	 * @param s
-	 *            Name der Variablen
+	 *            Name der Variablen in der Constant Datei
 	 * @return String mit dem Inhalt
 	 */
 	private static int[] getIntArray(String s) {
@@ -45,7 +45,7 @@ public class Constant {
 	 * liest einfache Constanten aus, welche noch gecastet werden müssen
 	 * 
 	 * @param s
-	 *            Name der Variablen
+	 *            Name der Variablen in der Constant datei
 	 * @return String mit dem Inhalt
 	 */
 	private static String getConstant(String s) {

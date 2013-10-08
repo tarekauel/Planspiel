@@ -3,11 +3,6 @@ package Server;
 import Constant.Constant;
 
 
-/**
- * Created by: User: Lars Trey Date: 28.09.13 Time: 17:24
- * TODO: checkmethoden!
- */
-
 public class BankAccount  implements IRoundSensitive {
 
 	private long bankBalance;
@@ -27,23 +22,33 @@ public class BankAccount  implements IRoundSensitive {
 		this.c = c;
 		this.bankBalance = Constant.BankAccount.START_CAPITAL;
 	}
-	
+	/**
+	 * Prüft die Validität des Unternehmens
+	 * @param c Company = Unternehmen, welches geprüft wird
+	 * @return true, falls die Company != null
+	 */
 	private boolean checkCompany(Company c){
 		return c!=null;
 	}
-	
+	/**
+	 * 
+	 * @return gibt den momentanen Kontostand aus
+	 */
 	public long getBankBalance() {
 		
 		return bankBalance;
 	}
-
+/**
+ * setzt einen neuen Kontostand
+ * @param bankBalance neuer Kontostand
+ */
 	private void setBankBalance(long bankBalance) {
 		
 		
 		this.bankBalance = bankBalance;
 	}
 	/**
-	 * 
+	 * Bucht einen Geldbetrag auf ein Konto
 	 * @param amount der zugebucht werden soll
 	 * @exception wirft exception falls amount <= 0 
 	 */
@@ -82,7 +87,11 @@ public class BankAccount  implements IRoundSensitive {
 	public String toString() {
 		return "Guthaben:" + this.bankBalance;
 	}
-
+/**
+ * prüft einen Geldbetrag auf validität (groesser 0)
+ * @param amount Geldbetrag der Geprüft werden soll
+ * @throws IllegalArgumentException
+ */
 	private void checkAmount(long amount) throws IllegalArgumentException {
 		if (amount <= 0) {
 			throw new IllegalArgumentException("Amount darf nicht <= 0 sein");
