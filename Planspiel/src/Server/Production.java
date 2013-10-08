@@ -172,6 +172,7 @@ public class Production extends DepartmentRoundSensitive {
 			p.storeProduction(this.getCompany().getStorage());
 
 			// Wird true, wenn auf dem Konto kein Geld mehr für Produktion ist
+			//oder nicht mehr ausreichend Rohstoffe vorhanden sind
 			if (innerBreak)
 				break;
 
