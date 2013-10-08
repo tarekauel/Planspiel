@@ -11,13 +11,13 @@ import java.util.ArrayList;
 public class Benefit {
 
 	// Bezeichnung
-	private final String name; 
-	
+	private final String name;
+
 	// Kosten pro Runde
-	private final int costsPerRound; 
+	private final int costsPerRound;
 
 	// Alle buchbaren Benefits
-	private static ArrayList<Benefit> bookableBenefits = new ArrayList<Benefit>(); 
+	private static ArrayList<Benefit> bookableBenefits = new ArrayList<Benefit>();
 
 	/**
 	 * Erstellt ein neues Benefit
@@ -35,14 +35,23 @@ public class Benefit {
 		if (!checkCostsPerRound(costsPerRound))
 			throw new IllegalArgumentException("Kosten muesen >0 sein");
 		this.costsPerRound = costsPerRound;
-		
-		if( getBenefitByName( name ) == null)	{	
+
+		if (getBenefitByName(name) == null) {
 			bookableBenefits.add(this);
 		} else {
-			throw new IllegalArgumentException("Benefit existiert bereits: " + name );
+			throw new IllegalArgumentException("Benefit existiert bereits: "
+					+ name);
 		}
 	}
 
+	/**
+	 * Sucht aus der Liste aller buchbaren Benefits einen bestimmten Eintrag
+	 * heraus
+	 * 
+	 * @param name
+	 *            des Benefits, nach dem gesucht wird
+	 * @return Benefit, welches gesucht wurde. null, falls nicht gefunden
+	 */
 	public static Benefit getBenefitByName(String name) {
 		for (Benefit benefit : bookableBenefits) {
 			if (benefit.name.equals(name)) {
@@ -52,6 +61,16 @@ public class Benefit {
 		return null;
 	}
 
+	/**
+	 * Erzeugt ein neues Benefit
+	 * 
+	 * @param name
+	 *            Bezeichner des Benefits
+	 * @param costsPerRound
+	 *            Die kosten pro Runde
+	 * @throws Exception
+	 *             tritt auf, falls das Benefit bereits existiert
+	 */
 	public static void createBenefit(String name, int costsPerRound)
 			throws Exception {
 
@@ -78,33 +97,51 @@ public class Benefit {
 
 	}
 
+	/**
+	 * 
+	 * @return gibt eine Liste aller buchbaren Benefits zurück
+	 */
 	public static ArrayList<Benefit> getBookableBenefits() {
 
 		return bookableBenefits;
 
 	}
 
+	/**
+	 * Initialisiert eine Liste mit benefits
+	 * 
+	 * @throws Exception
+	 *             falls ein Fehler in der initialisierung auftritt
+	 */
+
 	public static void initBenefits() throws Exception {
-		BufferedReader r = new BufferedReader( new FileReader("benefit.dat"));
+		BufferedReader r = new BufferedReader(new FileReader("benefit.dat"));
 		String line = null;
 		while ((line = r.readLine()) != null) {
 			// Zeile Teile trennen
 			String[] lineParts = line.split(";", 2);
-			
+
 			// Nur wenn zwei Teile gefunden wurden, ist der Eintrag gueltig
-			if(lineParts.length != 2)
+			if (lineParts.length != 2)
 				continue;
-			
-			new Benefit(lineParts[0], Integer.parseInt(lineParts[1]));			
+
+			new Benefit(lineParts[0], Integer.parseInt(lineParts[1]));
 		}
 
+		r.close();
 	}
-
+/**
+ * 
+ * @return gibt den Namen eines Benefits an
+ */
 	public String getName() {
 
 		return name;
 	}
-
+/**
+ * 
+ * @return gibt die Kosten pro Runde eines Benefits an
+ */
 	public int getCostsPerRound() {
 
 		return costsPerRound;
@@ -112,7 +149,7 @@ public class Benefit {
 
 	@Override
 	public String toString() {
-		return name + " " + costsPerRound;
+		return name + ":" + costsPerRound;
 	}
 
 	/**
@@ -138,12 +175,12 @@ public class Benefit {
 	private boolean checkCostsPerRound(int c) {
 		return (c > 0);
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		Benefit b = (Benefit) o;
 		// Prueft nur auf Namensgleichheit
-		if( b.getName().equals(getName()))				
+		if (b.getName().equals(getName()))
 			return true;
 		return false;
 	}
