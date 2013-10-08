@@ -2,6 +2,8 @@ package Server;
 
 import java.util.ArrayList;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import Constant.Constant;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageFromClient.DistributionFromClient.OfferFromClient;
@@ -15,11 +17,16 @@ import Message.GameDataMessageToClient.MarketingToClient;
 import Message.GameDataMessageToClient.DistributionToClient.OfferToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
+import Message.GameDataMessageToClient.MarketingToClient.MarketShareToClient;
+import Message.GameDataMessageToClient.MarketingToClient.MotivationRoundToClient;
 import Message.GameDataMessageToClient.ProductionToClient;
+import Message.GameDataMessageToClient.MarketingToClient.RessourcePriceToClient;
 import Message.GameDataMessageToClient.ProductionToClient.ProductionOrderToClient;
 import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
+import Message.GameDataMessageToClient.ReportingToClient;
+import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
 
 public class GameDataTranslator {
 
@@ -201,6 +208,24 @@ public class GameDataTranslator {
 	}
 
 	/**
+	 * Findet zu einer Company den Spielernamen
+	 * @param company
+	 * @return
+	 */
+	private String findPlayerNameOfCompany(Company company) {
+
+		for (Player player : Server.Connection.Server.getServer()
+				.getPlayerList()) {
+			//Pruefung auf Identitaet
+			if(player.getMyCompany() == company){
+				return player.getName();
+			}
+		}
+		throw new IllegalArgumentException("Die Company ist ungültig!");
+
+	}
+
+	/**
 	 * Erstellt Requests für den Einkauf
 	 * 
 	 * @param requests
@@ -248,16 +273,29 @@ public class GameDataTranslator {
 		DistributionToClient distribution = createDistribution(company);
 		HumanResourcesToClient humanResources = createHumanResources(company);
 		MarketingToClient marketing = createMarketing(company);
-		
+		ReportingToClient reporting = createReporting(company);
 		//Hauptdaten erstellen
 		long cash = company.getBankAccount().getBankBalance();
 		long maxCredit = Constant.BankAccount.MAX_CREDIT;
 		
 		// Message erstellen
-		GameDataMessageToClient message = new GameDataMessageToClient(
-				playerName, purchase, production, distribution, humanResources,
-				marketing, cash, maxCredit);
+		GameDataMessageToClient message = new GameDataMessageToClient(playerName, purchase, production, distribution, humanResources, marketing, reporting, cash, maxCredit);
 		return message;
+	}
+
+	private ReportingToClient createReporting(Company company) {
+		ArrayList<FixCostToClient> fixCosts= new ArrayList<FixCostToClient>();
+		//getFixCostsOfAllDepartments
+		fixCosts.add(new FixCostToClient("Verkauf", company.getDistribution().getFixCosts()));
+		fixCosts.add(new FixCostToClient("Personal", company.getHumanResources().getFixCosts()));
+		fixCosts.add(new FixCostToClient("Marktforschung", company.getMarketResearch().getFixCosts()));
+		fixCosts.add(new FixCostToClient("Produktion", company.getProduction().getFixCosts()));
+		fixCosts.add(new FixCostToClient("Einkauf", company.getPurchase().getFixCosts()));
+		fixCosts.add(new FixCostToClient("Lager", company.getStorage().getFixCosts()));
+		
+		//TODO:Rest uebergeben
+		ReportingToClient reporting = new ReportingToClient(fixCosts, machinery, sellsOfRounds, cashValues);
+		return null;
 	}
 
 	/**
@@ -267,8 +305,39 @@ public class GameDataTranslator {
 	 * @return
 	 */
 	private MarketingToClient createMarketing(Company company) {
-		// TODO Create Marketing Data
-		return null;
+		//getPeaks
+		int peakAMarket= CustomerMarket.getMarket().getAMarketPeak();
+		int peakCMarket= CustomerMarket.getMarket().getCMarketPeak();
+		
+		//getMarkewtShares
+		ArrayList<MarketShareToClient> marketShares = new ArrayList<MarketShareToClient>();
+				
+		for (TMarketShare marketShare : CustomerMarket.getMarket().getMarketShares()) {
+			marketShares.add(new MarketShareToClient(marketShare.getMarketShare(), findPlayerNameOfCompany(marketShare.getCompany())));
+		}
+		
+		//getWaferPrices
+		ArrayList<RessourcePriceToClient> waferPrices = new ArrayList<RessourcePriceToClient>();
+		java.util.Iterator<TResourcePrice>  waferPriceIterator= SupplierMarket.getMarket().getWaferPricelist().iterator();
+		while (waferPriceIterator.hasNext()) {
+			TResourcePrice resourcePrice = waferPriceIterator.next();
+			waferPrices.add(new RessourcePriceToClient(resourcePrice.getQuality(), resourcePrice.getPrice()));
+		}
+		
+		//getCasePrices
+		ArrayList<RessourcePriceToClient> casePrices = new ArrayList<RessourcePriceToClient>();
+		java.util.Iterator<TResourcePrice>  casePriceIterator= SupplierMarket.getMarket().getCasePricelist().iterator();
+		while (casePriceIterator.hasNext()) {
+			TResourcePrice resourcePrice = casePriceIterator.next();
+			casePrices.add(new RessourcePriceToClient(resourcePrice.getQuality(), resourcePrice.getPrice()));
+		}
+		
+		//getMotivationListOfRound
+		ArrayList<MotivationRoundToClient> motivationRounds = new ArrayList<MotivationRoundToClient>();
+		//company.getHumanResources(). TODO: Get List of Motivations
+		
+		MarketingToClient marketing = new MarketingToClient(peakAMarket, peakCMarket, marketShares, waferPrices, casePrices, motivationRounds);
+		return marketing;
 	}
 
 	/**
