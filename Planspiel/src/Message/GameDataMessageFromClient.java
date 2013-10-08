@@ -26,7 +26,7 @@ public class GameDataMessageFromClient extends GameDataMessage {
 	public final int wage;
 	public final boolean buyMarketResearch;
 
-	public class PurchaseFromClient {
+	public static class PurchaseFromClient {
 		public PurchaseFromClient(ArrayList<RequestFromClient> requests,
 				ArrayList<AcceptedSupplierOfferFromClient> acceptedSupplierOffers) {
 			this.requests = requests;
@@ -36,7 +36,7 @@ public class GameDataMessageFromClient extends GameDataMessage {
 		public final ArrayList<RequestFromClient> requests; // Artikel
 
 		// und
-		public class RequestFromClient {
+		public static class RequestFromClient {
 			public RequestFromClient(String name, int quality) {
 				this.name = name;
 				this.quality = quality;
@@ -48,7 +48,7 @@ public class GameDataMessageFromClient extends GameDataMessage {
 		}
 
 		// Qualitaet
-		public class AcceptedSupplierOfferFromClient {
+		public  static class AcceptedSupplierOfferFromClient {
 			public AcceptedSupplierOfferFromClient(String name, int quality, int quantity) {
 				this.name = name;
 				this.quality = quality;
@@ -64,13 +64,13 @@ public class GameDataMessageFromClient extends GameDataMessage {
 
 	}
 
-	public class ProductionFromClient {
+	public  static class ProductionFromClient {
 
 		public ProductionFromClient(ArrayList<ProductionOrderFromClient> orders) {
 			this.orders = orders;
 		}
 
-		public class ProductionOrderFromClient {
+		public  static class ProductionOrderFromClient {
 			public ProductionOrderFromClient(int qualityWafer, int qualityCase,
 					int quantity) {
 
@@ -88,13 +88,13 @@ public class GameDataMessageFromClient extends GameDataMessage {
 
 	}
 
-	public class DistributionFromClient {
+	public  static class DistributionFromClient {
 
 		public DistributionFromClient(ArrayList<OfferFromClient> offers) {
 			this.offers = offers;
 		}
 
-		public class OfferFromClient {
+		public static class OfferFromClient {
 
 			public OfferFromClient(int quality, int quantityToSell, int price) {
 				this.quality = quality;
@@ -110,14 +110,14 @@ public class GameDataMessageFromClient extends GameDataMessage {
 		public final ArrayList<OfferFromClient> offers;
 	}
 
-	public class HumanResourcesFromClient {
+	public static class HumanResourcesFromClient {
 
 		public HumanResourcesFromClient(ArrayList<BenefitBookingFromClient> benefits) {
 
 			this.benefits = benefits;
 		}
 
-		public class BenefitBookingFromClient {
+		public static class BenefitBookingFromClient {
 
 			public BenefitBookingFromClient(String name, int duration) {
 				this.name = name;
