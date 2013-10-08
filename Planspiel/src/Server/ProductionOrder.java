@@ -149,7 +149,7 @@ public class ProductionOrder {
 	 *            Der Zuschlagssatz aus Motivation, Land und Forschung
 	 * 
 	 */
-	public void produce(int advantage, Storage s, Machinery m) throws Exception {
+	public void produce(int advantageInt, Storage s, Machinery m)  throws Exception{
 		quantityProduced++;
 
 
@@ -160,13 +160,14 @@ public class ProductionOrder {
 		}
 
 		// Es wird in doubles gerechnet:
+		double advantage = advantageInt;
 		double additionalFactor = advantage / 100;
 		// durchschnittsqualität der Produkte mit Gewichtung:
 		double midQuality = (wafer.getQuality()
 				* Constant.Production.IMPACT_WAFER + cases.getQuality()
 				* Constant.Production.IMPACT_CASE) / 100;
 		// neue Qualität (nicht mehr als double)
-		int newQuality = (int) (midQuality * additionalFactor) * 10;
+		int newQuality = (int) (midQuality * additionalFactor) ;
 
 		// Prüfe ob die neue Qualität durch den Zuschlag zu sehr verändert wurde
 		newQuality = (newQuality - midQuality > Constant.Production.MAX_QUALITY_ADDITION) ? (int) (midQuality + Constant.Production.MAX_QUALITY_ADDITION)
