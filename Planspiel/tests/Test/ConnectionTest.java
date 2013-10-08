@@ -11,6 +11,7 @@ import Constant.Constant;
 import Message.IMessage;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
+import Server.Location;
 import Server.Connection.Server;
 
 public class ConnectionTest {
@@ -22,6 +23,7 @@ public class ConnectionTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		Location.initLocations();
 		String ip = "127.0.0.1";
 		int port = Constant.Server.TCP_PORT;
 		server = Server.getServer();

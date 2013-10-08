@@ -89,7 +89,7 @@ public class ServerConnection extends Thread {
 		// Prüfe ob Spielername existiert.
 		for (Player player : server.getPlayerList()) {
 			if (player.getName().equals(message.getName())) {
-				if (GameEngine.getGameEngine().getRound() == 0) { // 2 Spieler
+				if (GameEngine.getGameEngine().getRound() == 1) { // 2 Spieler
 																	// haben den
 																	// gleichen
 																	// Namen
