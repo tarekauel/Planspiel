@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.net.URL?>
 <?import javafx.collections.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
-<?import java.lang.*?>
-<?import java.net.URL?>
 
-<AnchorPane id="MainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="919.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/2.2" xmlns:fx="http://javafx.com/fxml" fx:controller="Client.UI.ClientUIGameController">
+<AnchorPane id="MainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="919.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Client.UI.ClientGameUIController">
   <children>
     <Label id="TitleLabel" layoutX="14.0" layoutY="12.0" text="Planspiel v0.1" textFill="#33ff54">
       <font>
         <Font size="25.0" />
       </font>
     </Label>
-    <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="14.0" layoutY="61.0" maxHeight="100.0" minHeight="100.0" minWidth="672.0" text="Generelle Informationen">
+    <TitledPane id="GeneralInformationBox" animated="false" collapsible="true" layoutX="14.0" layoutY="61.0" maxHeight="100.0" minHeight="100.0" minWidth="672.0" text="Generelle Informationen">
       <content>
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="74.0" prefWidth="770.0" />
       </content>
     </TitledPane>
-    <TitledPane id="EventBox" animated="false" collapsible="false" layoutX="14.0" layoutY="174.0" minWidth="672.0" prefWidth="774.0" text="Ereignisse">
+    <TitledPane id="EventBox" animated="false" collapsible="true" layoutX="14.0" layoutY="174.0" minWidth="672.0" prefWidth="774.0" text="Ereignisse">
       <content>
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="140.0" prefWidth="668.0">
           <children>
-            <ListView layoutX="10.0" layoutY="8.0" prefHeight="122.0" prefWidth="750.0" />
+            <ListView fx:id="eventListView" layoutX="10.0" layoutY="8.0" prefHeight="122.0" prefWidth="750.0" />
           </children>
         </AnchorPane>
       </content>
@@ -35,15 +37,15 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Button layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Neue Anfrage" />
-                <Button layoutX="137.0" layoutY="15.0" mnemonicParsing="false" text="Anfrage speichern" />
+                <Button fx:id="newPurchaseRequestButton" layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Neue Anfrage" />
+                <Button fx:id="newPurchaseRequestSaveButton" layoutX="137.0" layoutY="15.0" mnemonicParsing="false" text="Anfrage speichern" />
                 <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="49.0" maxHeight="122.0" minHeight="100.0" minWidth="672.0" prefHeight="107.0" prefWidth="727.0" text="Anfrage">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="84.0" prefWidth="723.0">
                       <children>
                         <Label layoutX="14.0" layoutY="14.0" text="Artikel:" />
                         <Label layoutX="14.0" layoutY="48.0" text="Qualität:" />
-                        <ChoiceBox layoutX="76.0" layoutY="12.0" prefWidth="171.0">
+                        <ChoiceBox fx:id="newPurchaseRequestArticleNameChoiceBox" layoutX="76.0" layoutY="12.0" prefWidth="171.0">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -52,8 +54,8 @@
                             </FXCollections>
                           </items>
                         </ChoiceBox>
-                        <Slider layoutX="76.0" layoutY="50.0" prefWidth="574.0" />
-                        <TextField layoutX="658.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
+                        <Slider id="purchaseRequestArticleChoiceBox" fx:id="newPurchaseRequestArticleQualitySlider" layoutX="76.0" layoutY="50.0" prefWidth="574.0" />
+                        <TextField id="purchaseRequestArticleQuality" fx:id="newPurchaseRequestArticleQualityTextField" layoutX="658.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -62,7 +64,7 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="81.0" prefWidth="353.0">
                       <children>
-                        <TableView layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
+                        <TableView fx:id="purchaseRequestsTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
                           <columns>
                             <TableColumn prefWidth="28.0" text="#" />
                             <TableColumn prefWidth="81.0" text="Artikel" />
@@ -78,7 +80,7 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="81.0" prefWidth="365.0">
                       <children>
-                        <TableView layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
+                        <TableView fx:id="purchaseOffersTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
                           <columns>
                             <TableColumn prefWidth="28.0" text="#" />
                             <TableColumn prefWidth="81.0" text="Artikel" />
@@ -99,15 +101,15 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="468.0" prefWidth="774.0">
               <children>
-                <Button layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Auftrag erstellen" />
-                <Button layoutX="151.0" layoutY="15.0" mnemonicParsing="false" text="Auftrag abschicken" />
+                <Button fx:id="newProductionOrderButton" layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Auftrag erstellen" />
+                <Button fx:id="newProductionOrderSaveButton" layoutX="151.0" layoutY="15.0" mnemonicParsing="false" text="Auftrag abschicken" />
                 <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="49.0" maxHeight="122.0" minHeight="100.0" minWidth="672.0" prefHeight="107.0" prefWidth="727.0" text="Produktionsauftrag erstellen">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="84.0" prefWidth="723.0">
                       <children>
                         <Label layoutX="14.0" layoutY="14.0" text="Wafer:" />
                         <Label layoutX="14.0" layoutY="48.0" text="Gehäuse:" />
-                        <ChoiceBox layoutX="76.0" layoutY="12.0" prefWidth="148.0">
+                        <ChoiceBox fx:id="newProductionOrderWaferChoiceBox" layoutX="76.0" layoutY="12.0" prefWidth="148.0">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -116,9 +118,9 @@
                             </FXCollections>
                           </items>
                         </ChoiceBox>
-                        <Slider layoutX="484.0" layoutY="16.0" prefWidth="160.0" />
-                        <TextField layoutX="658.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" />
-                        <ChoiceBox layoutX="76.0" layoutY="46.0" prefWidth="148.0">
+                        <Slider fx:id="newProductionOrderOutputAmountSlider" layoutX="484.0" layoutY="16.0" prefWidth="160.0" />
+                        <TextField id="newProductionOrderOutputAmountTextBox" fx:id="newProductionOrderOutputAmountTextField" layoutX="658.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" />
+                        <ChoiceBox fx:id="newProductionOrderCaseChoiceBox" layoutX="76.0" layoutY="46.0" prefWidth="148.0">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -129,9 +131,9 @@
                         </ChoiceBox>
                         <Label layoutX="242.0" layoutY="15.0" text="Stück auf Lager:" />
                         <Label layoutX="242.0" layoutY="48.0" text="Stück auf Lager:" />
-                        <TextField layoutX="342.0" layoutY="11.0" prefHeight="25.0" prefWidth="51.0" />
-                        <TextField layoutX="342.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
-                        <TextField disable="true" editable="false" layoutX="528.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
+                        <TextField fx:id="newProductionOrderWaferStorageAmountTextField" layoutX="342.0" layoutY="11.0" prefHeight="25.0" prefWidth="51.0" />
+                        <TextField fx:id="newProductionOrderCaseStorageAmountTextField" layoutX="342.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
+                        <TextField fx:id="newProductionOrderCostsTextField" disable="true" editable="false" layoutX="528.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
                         <Label layoutX="431.0" layoutY="48.0" text="Materialkosten:" />
                         <Label layoutX="431.0" layoutY="15.0" text="Menge:" />
                       </children>
@@ -142,7 +144,7 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="81.0" prefWidth="353.0">
                       <children>
-                        <TableView layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="486.0">
+                        <TableView fx:id="productionOrdersTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="486.0">
                           <columns>
                             <TableColumn prefWidth="28.0" text="#" />
                             <TableColumn prefWidth="69.0" text="Q Wafer" />
@@ -163,11 +165,11 @@
                       <children>
                         <Label layoutX="14.0" layoutY="18.0" text="Ausbaustufe:" />
                         <Label layoutX="14.0" layoutY="51.0" text="Max. Kapazität:" />
-                        <TextField disable="true" editable="false" layoutX="114.0" layoutY="14.0" prefHeight="25.0" prefWidth="65.0" />
-                        <TextField disable="true" editable="false" layoutX="114.0" layoutY="47.0" prefHeight="25.0" prefWidth="65.0" />
+                        <TextField id="machineryLevelTextBox" fx:id="machineryLevelTextField" disable="true" editable="false" layoutX="114.0" layoutY="14.0" prefHeight="25.0" prefWidth="65.0" />
+                        <TextField fx:id="machineryMaximumCapacityTextField" disable="true" editable="false" layoutX="114.0" layoutY="47.0" prefHeight="25.0" prefWidth="65.0" />
                         <Label layoutX="14.0" layoutY="87.0" text="gepl. Auslastung:" />
-                        <ProgressBar layoutX="113.0" layoutY="88.0" prefHeight="16.0" prefWidth="65.00009999999747" progress="0.65" />
-                        <CheckBox layoutX="14.0" layoutY="121.0" mnemonicParsing="false" text="Maschine ausbauen" />
+                        <ProgressBar id="machinery" fx:id="machineryWorkloadProgressBar" layoutX="113.0" layoutY="88.0" prefHeight="16.0" prefWidth="65.00009999999747" progress="0.65" />
+                        <CheckBox id="machinery" fx:id="machineryIncreaseLevelCheckBox" layoutX="14.0" layoutY="121.0" mnemonicParsing="false" text="Maschine ausbauen" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -186,10 +188,10 @@
                       <children>
                         <Label layoutX="14.0" layoutY="14.0" text="Wafer:" />
                         <Label layoutX="14.0" layoutY="48.0" text="Gehäuse:" />
-                        <TextField disable="true" editable="false" layoutX="77.0" layoutY="11.0" prefHeight="25.0" prefWidth="73.0" />
-                        <TextField disable="true" editable="false" layoutX="77.0" layoutY="44.0" prefHeight="25.0" prefWidth="73.0" />
+                        <TextField fx:id="storageCostsWaferTextField" disable="true" editable="false" layoutX="77.0" layoutY="11.0" prefHeight="25.0" prefWidth="73.0" />
+                        <TextField fx:id="storageCostsCasesTextField" disable="true" editable="false" layoutX="77.0" layoutY="44.0" prefHeight="25.0" prefWidth="73.0" />
                         <Label layoutX="177.0" layoutY="14.0" prefWidth="34.9998779296875" text="Panel:" />
-                        <TextField disable="true" editable="false" layoutX="227.0" layoutY="11.0" prefHeight="25.0" prefWidth="73.0" />
+                        <TextField fx:id="storageCostsPanelsTextField" disable="true" editable="false" layoutX="227.0" layoutY="11.0" prefHeight="25.0" prefWidth="73.0" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -198,7 +200,7 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="84.0" prefWidth="723.0">
                       <children>
-                        <TableView layoutX="9.0" layoutY="7.0" prefHeight="270.0" prefWidth="704.0000999999975">
+                        <TableView fx:id="storagePositionsTableView" layoutX="9.0" layoutY="7.0" prefHeight="270.0" prefWidth="704.0000999999975">
                           <columns>
                             <TableColumn prefWidth="28.0" text="#" />
                             <TableColumn prefWidth="460.0" text="Ressource" />
@@ -218,15 +220,15 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Button layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Neues Angebot erstellen" />
-                <Button layoutX="197.0" layoutY="15.0" mnemonicParsing="false" text="Angebot speichern" />
-                <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="49.0" maxHeight="140.0" minHeight="100.0" minWidth="672.0" prefHeight="140.0" prefWidth="727.0" text="Anfrage">
+                <Button id="new" fx:id="newSaleOfferButton" layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Neues Angebot erstellen" />
+                <Button fx:id="newSaleOfferSaveButton" layoutX="197.0" layoutY="15.0" mnemonicParsing="false" text="Angebot speichern" />
+                <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="51.0" maxHeight="140.0" minHeight="100.0" minWidth="672.0" prefHeight="140.0" prefWidth="727.0" text="Verkaufsangebot">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="115.0" prefWidth="723.0">
                       <children>
                         <Label layoutX="14.0" layoutY="14.0" text="Artikel:" />
                         <Label layoutX="14.0" layoutY="81.0" text="Menge:" />
-                        <ChoiceBox layoutX="76.0" layoutY="12.0" prefWidth="392.0">
+                        <ChoiceBox fx:id="newSaleOfferArticleChoiceBox" layoutX="76.0" layoutY="12.0" prefWidth="392.0">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -235,25 +237,25 @@
                             </FXCollections>
                           </items>
                         </ChoiceBox>
-                        <Slider layoutX="76.0" layoutY="83.0" prefWidth="329.0" />
-                        <TextField layoutX="417.0" layoutY="77.0" prefHeight="25.0" prefWidth="51.0" />
+                        <Slider fx:id="newSaleOfferArticleAmountSlider" layoutX="76.0" layoutY="83.0" prefWidth="329.0" />
+                        <TextField fx:id="newSaleOfferArticleAmountTextField" layoutX="417.0" layoutY="77.0" prefHeight="25.0" prefWidth="51.0" />
                         <Label layoutX="14.0" layoutY="50.0" text="VP/ME:" />
-                        <TextField layoutX="76.0" layoutY="46.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="newSaleOfferArticlePriceTextField" layoutX="76.0" layoutY="46.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="527.0" layoutY="13.0" text="Selbstkosten/ME:" />
-                        <TextField disable="true" editable="false" layoutX="649.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="newSaleOfferCostsTextField" disable="true" editable="false" layoutX="649.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="527.0" layoutY="48.0" text="Vertriebskosten/ME:" />
-                        <TextField disable="true" editable="false" layoutX="649.0" layoutY="43.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="newSaleOfferDistributionCostsTextField" disable="true" editable="false" layoutX="649.0" layoutY="43.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="527.0" layoutY="81.0" text="Max. Gewinn:" />
-                        <TextField disable="true" editable="false" layoutX="649.0" layoutY="77.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="newSaleOfferMaximumProfitTextField" disable="true" editable="false" layoutX="649.0" layoutY="77.0" prefHeight="25.0" prefWidth="60.0" />
                       </children>
                     </AnchorPane>
                   </content>
                 </TitledPane>
-                <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="201.0" maxHeight="283.0" minHeight="100.0" minWidth="353.0" prefHeight="253.0" prefWidth="727.0" text="Angebot">
+                <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="201.0" maxHeight="283.0" minHeight="100.0" minWidth="353.0" prefHeight="253.0" prefWidth="727.0" text="Angebote und Verkäufe">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="81.0" prefWidth="353.0">
                       <children>
-                        <TableView layoutX="13.0" layoutY="7.0" prefHeight="208.0" prefWidth="698.0">
+                        <TableView id="saleOrder" fx:id="salesTableView" layoutX="13.0" layoutY="7.0" prefHeight="208.0" prefWidth="698.0">
                           <columns>
                             <TableColumn prefWidth="28.0" text="#" />
                             <TableColumn prefWidth="167.0" text="Artikel" />
@@ -281,22 +283,22 @@
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="212.0">
                       <children>
                         <Label layoutX="14.0" layoutY="13.0" text="Stundenlohn:" />
-                        <TextField layoutX="136.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="hrWagesPerHourTextField" layoutX="136.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="43.0" text="Durchschnittslohn:" />
-                        <TextField disable="true" editable="false" layoutX="136.0" layoutY="38.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="hrAverageWagesTextField" disable="true" editable="false" layoutX="136.0" layoutY="38.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="72.0" text="Mitarbeiter:" />
-                        <TextField disable="true" editable="false" layoutX="136.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="hrCountEmployeesTextField" disable="true" editable="false" layoutX="136.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="102.0" text="Lohnkosten:" />
-                        <TextField disable="true" editable="false" layoutX="136.0" layoutY="98.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="hrWageCostsTextField" disable="true" editable="false" layoutX="136.0" layoutY="98.0" prefHeight="25.0" prefWidth="60.0" />
                       </children>
                     </AnchorPane>
                   </content>
                 </TitledPane>
-                <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="189.0" maxHeight="284.0" minHeight="100.0" minWidth="353.0" prefHeight="266.0" prefWidth="727.0" text="Anfragen">
+                <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="24.0" layoutY="189.0" maxHeight="284.0" minHeight="100.0" minWidth="353.0" prefHeight="266.0" prefWidth="727.0" text="Mitarbeitermotivation">
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="81.0" prefWidth="353.0">
                       <children>
-                        <LineChart id="LineChart" alternativeColumnFillVisible="true" layoutX="-10.0" layoutY="-2.0" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
+                        <LineChart fx:id="hrMotivationLineChart" alternativeColumnFillVisible="true" layoutX="-10.0" layoutY="-2.0" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -313,12 +315,12 @@
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="133.0" prefWidth="492.0">
                       <children>
                         <Label layoutX="14.0" layoutY="43.0" text="Dauer (Runden):" />
-                        <TextField layoutX="143.0" layoutY="38.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField id="bookBenefitDuration" fx:id="bookBenefitDurationTextField" layoutX="143.0" layoutY="38.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="72.0" text="Kosten/Runde:" />
-                        <TextField disable="true" editable="false" layoutX="143.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="bookBenefitCostsPerRoundTextField" disable="true" editable="false" layoutX="143.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="102.0" text="Gesamtkosten:" />
-                        <TextField disable="true" editable="false" layoutX="143.0" layoutY="98.0" prefHeight="25.0" prefWidth="60.0" />
-                        <ChoiceBox layoutX="14.0" layoutY="10.0" prefWidth="116.0">
+                        <TextField id="bookBenefitDurationTextField" fx:id="benefitsTotalCostsTextField" disable="true" editable="false" layoutX="143.0" layoutY="98.0" prefHeight="25.0" prefWidth="60.0" />
+                        <ChoiceBox fx:id="benefitsChoiceBox" layoutX="14.0" layoutY="10.0" prefWidth="116.0">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -327,8 +329,8 @@
                             </FXCollections>
                           </items>
                         </ChoiceBox>
-                        <Button layoutX="143.0" layoutY="10.0" mnemonicParsing="false" text="Buchen" />
-                        <TableView layoutX="214.0" layoutY="10.0" prefHeight="113.0" prefWidth="267.0">
+                        <Button fx:id="bookBenefitButton" layoutX="143.0" layoutY="10.0" mnemonicParsing="false" text="Buchen" />
+                        <TableView fx:id="bookedBeneftisTableView" layoutX="214.0" layoutY="10.0" prefHeight="113.0" prefWidth="267.0">
                           <columns>
                             <TableColumn prefWidth="28.0" text="#" />
                             <TableColumn prefWidth="83.0" text="Benefit" />
@@ -353,7 +355,7 @@
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="304.0">
                       <children>
                         <Label layoutX="14.0" layoutY="13.0" text="Durchschnittslohn letzte Runde:" />
-                        <TextField disable="true" editable="false" layoutX="230.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="marketResearchAverageWagesLastRoundTextField" disable="true" editable="false" layoutX="230.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="43.0" text="Ws. meistgefragte Qualität A-Markt:" />
                         <Label layoutX="14.0" layoutY="72.0" text="Ws. meistgefragte Qualität C-Markt:" />
                         <TextField disable="true" editable="false" layoutX="230.0" layoutY="39.0" prefHeight="25.0" prefWidth="60.0" />
@@ -403,20 +405,19 @@
                     <AnchorPane id="Content" disable="false" focusTraversable="false" minHeight="0.0" minWidth="0.0" prefHeight="147.0" prefWidth="352.0" visible="true">
                       <children>
                         <Label layoutX="14.0" layoutY="13.0" text="Einkauf:" />
-                        <TextField id="das" disable="true" editable="false" layoutX="102.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField id="das" fx:id="reportingSalesFixCostsTextField" disable="true" editable="false" layoutX="102.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="43.0" text="Produktion:" />
-                        <TextField disable="true" editable="false" layoutX="102.0" layoutY="39.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="reportingProductionFixCostsTextField" disable="true" editable="false" layoutX="102.0" layoutY="39.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="72.0" text="Lager:" />
-                        <TextField disable="true" editable="false" layoutX="102.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="reportingStorageFixCostsTextField" disable="true" editable="false" layoutX="102.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="103.0" text="Verkauf:" />
-                        <TextField disable="true" editable="false" layoutX="102.0" layoutY="99.0" prefHeight="25.0" prefWidth="60.0" />
-                        <Label layoutX="197.0" layoutY="13.0" text="Personal" />
-                        <TextField disable="true" editable="false" layoutX="285.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
-                        <TextField disable="true" editable="false" layoutX="285.0" layoutY="39.0" prefHeight="25.0" prefWidth="60.0" />
-                        <Label layoutX="197.0" layoutY="72.0" text="Marketing:" />
-                        <TextField disable="true" editable="false" layoutX="285.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" />
-                        <Label layoutX="197.0" layoutY="103.0" text="Reporting:" />
-                        <TextField disable="true" editable="false" layoutX="285.0" layoutY="99.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="reportingPurchaseFixCostsTextField" disable="true" editable="false" layoutX="102.0" layoutY="99.0" prefHeight="25.0" prefWidth="60.0" />
+                        <Label layoutX="197.0" layoutY="13.0" prefWidth="56.0" text="Personal:" />
+                        <TextField fx:id="reportingHRFixCostsTextField" disable="true" editable="false" layoutX="285.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
+                        <Label layoutX="197.0" layoutY="43.0" text="Marketing:" />
+                        <TextField fx:id="reportingMarketingFixCostsTextField" disable="true" editable="false" layoutX="285.0" layoutY="39.0" prefHeight="25.0" prefWidth="60.0" />
+                        <Label layoutX="197.0" layoutY="74.0" text="Reporting:" />
+                        <TextField fx:id="reportingReportingFixCostsTextField" disable="true" editable="false" layoutX="285.0" layoutY="70.0" prefHeight="25.0" prefWidth="60.0" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -425,7 +426,7 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="244.0" prefWidth="361.0">
                       <children>
-                        <BarChart barGap="3.0" cache="false" categoryGap="10.0" layoutX="-2.0" layoutY="-17.0" legendSide="TOP" legendVisible="false" prefHeight="260.0" prefWidth="365.0" title="">
+                        <BarChart fx:id="reportingSalesBarChart" barGap="3.0" cache="false" categoryGap="10.0" layoutX="-2.0" layoutY="-17.0" legendSide="TOP" legendVisible="false" prefHeight="260.0" prefWidth="365.0" title="">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -441,7 +442,7 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="234.0" prefWidth="352.0">
                       <children>
-                        <LineChart id="LineChart" alternativeColumnFillVisible="false" alternativeRowFillVisible="true" disable="false" focusTraversable="false" layoutX="-4.0" layoutY="-17.0" legendSide="BOTTOM" legendVisible="false" prefHeight="260.0" prefWidth="365.0" title="">
+                        <LineChart id="LineChart" fx:id="reportingCompanyValueLineChart" alternativeColumnFillVisible="false" alternativeRowFillVisible="true" disable="false" focusTraversable="false" layoutX="-4.0" layoutY="-17.0" legendSide="BOTTOM" legendVisible="false" prefHeight="260.0" prefWidth="365.0" title="">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -458,13 +459,13 @@
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="147.0" prefWidth="352.0">
                       <children>
                         <Label layoutX="14.0" layoutY="13.0" text="Ausbaustufe:" />
-                        <TextField id="das" disable="true" layoutX="174.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField id="das" fx:id="reportingMachineryLevelTextField" disable="true" layoutX="174.0" layoutY="9.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="43.0" text="Maximale Kapazität:" />
-                        <TextField disable="true" layoutX="174.0" layoutY="39.0" prefHeight="25.0" prefWidth="60.0" />
+                        <TextField fx:id="reportingMachineryMaxCapacityTextField" disable="true" layoutX="174.0" layoutY="39.0" prefHeight="25.0" prefWidth="60.0" />
                         <Label layoutX="14.0" layoutY="71.0" text="Auslastung (Durchschnitt):" />
-                        <ProgressBar layoutX="174.0" layoutY="72.0" prefHeight="16.0" prefWidth="177.0" progress="0.65" />
+                        <ProgressBar id="reportingMachineryAvg" fx:id="reportingMachineryAvgWorkloadProgressBar" layoutX="174.0" layoutY="72.0" prefHeight="16.0" prefWidth="177.0" progress="0.65" />
                         <Label layoutX="14.0" layoutY="97.0" text="Auslastung (letzte Runde):" />
-                        <ProgressBar layoutX="174.0" layoutY="98.0" prefHeight="16.0" prefWidth="177.0" progress="0.56" />
+                        <ProgressBar fx:id="reportingMachineryLastRoundWorkloadProgressBar" layoutX="174.0" layoutY="98.0" prefHeight="16.0" prefWidth="177.0" progress="0.56" />
                       </children>
                     </AnchorPane>
                   </content>
@@ -475,9 +476,9 @@
         </Tab>
       </tabs>
     </TabPane>
-    <Button id="EndRoundButton" layoutX="650.0" layoutY="17.0" mnemonicParsing="false" text="Runde beenden" />
-    <ProgressBar layoutX="16.0" layoutY="878.0" prefHeight="21.0" prefWidth="770.0" progress="0.26" />
-    <Label layoutX="384.0" layoutY="880.0" text="Runde" />
+    <Button id="EndRoundButton" fx:id="endRoundButton" layoutX="650.0" layoutY="17.0" mnemonicParsing="false" text="Runde beenden" />
+    <ProgressBar fx:id="roundProgressBar" layoutX="16.0" layoutY="878.0" prefHeight="21.0" prefWidth="770.0" progress="0.26" />
+    <Label fx:id="roundLabel" layoutX="384.0" layoutY="880.0" text="Runde" />
   </children>
   <stylesheets>
     <URL value="@style.css" />

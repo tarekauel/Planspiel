@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="LoginPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="454.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Client.UI.ClientUILoginController">
+<AnchorPane id="LoginPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="454.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Client.UI.ClientLoginUIController">
   <children>
     <Pane layoutX="18.0" layoutY="69.0" prefHeight="192.0" prefWidth="419.0">
       <children>
@@ -17,9 +17,9 @@
             <Font name="Segoe UI Light" size="25.0" />
           </font>
         </Label>
-        <TextField id="LoginField" layoutX="14.0" layoutY="62.0" prefHeight="45.0" prefWidth="320.0" promptText="User ID" style="" text="" />
-        <Button id="LoginButton" layoutX="348.0" layoutY="62.0" mnemonicParsing="false" prefHeight="106.0" prefWidth="57.0" text="Go" />
-        <PasswordField id="PasswordField" layoutX="14.0" layoutY="123.0" prefHeight="45.0" prefWidth="320.0" promptText="Password" />
+        <TextField fx:id="loginNameField" id="LoginField" layoutX="14.0" layoutY="62.0" prefHeight="45.0" prefWidth="320.0" promptText="User ID" style="" text="" />
+        <Button fx:id="loginButton" id="LoginButton" layoutX="348.0" layoutY="62.0" mnemonicParsing="false" prefHeight="106.0" prefWidth="57.0" text="Go" />
+        <PasswordField fx:id="passwordField" id="PasswordField" layoutX="14.0" layoutY="123.0" prefHeight="45.0" prefWidth="320.0" promptText="Password" />
       </children>
     </Pane>
   </children>
