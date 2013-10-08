@@ -135,37 +135,45 @@ public class ClientGameUIController implements Initializable {
     	
     	newPurchaseRequestButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {           	
+            public void handle(ActionEvent actionEvent) {      
+            	//Felder resetten
             	newPurchaseRequestArticleQualitySlider.adjustValue(0.0);
-            	newPurchaseRequestArticleQualityTextField.setText(0.0);
+            	newPurchaseRequestArticleQualityTextField.setText("0.0");
             }
         }); 
     	
     	newPurchaseRequestSaveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {           	
-            	round++;           	
+            	          	
             }
         }); 
     	
     	newProductionOrderButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {           	
-            	round++;           	
+            	//Felder resetten  	
             }
         }); 
     	
     	newProductionOrderSaveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {           	
-            	round++;           	
+            	       	
+            }
+        }); 
+    	
+    	newSaleOfferButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {           	
+            	//Felder resetten    	
             }
         }); 
     	
     	newSaleOfferSaveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {           	
-            	round++;           	
+            	          	
             }
         }); 
     	
