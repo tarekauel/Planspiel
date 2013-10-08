@@ -1,12 +1,5 @@
 package Client.UI;
 
-/**
- * Created by:
- * User: Lars Trey
- * Date: 08.10.13
- * Time: 16:38
- */
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,30 +10,23 @@ import java.io.IOException;
 import java.util.concurrent.Executor;
 
 /**
- *
+ * Diese Klasse erzeugt das Game-UI aus der geladenen FXML-Datei und gibt ab an den vernküpften Controller.
  * @author Lars Trey
+ *
  */
-public class ClientUI extends Application {
+public class ClientGameUI extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        new ClientUI();
-    }
+        
+    	Parent root = FXMLLoader.load(getClass().getResource("ClientGameUI.fxml"));
+		
+		Scene scene = new Scene(root);
 
-    public ClientUI(){
-
-       try {
-           final Parent root = FXMLLoader.load(Executor.class.getResource("Login.fxml"));
-           final Stage stage = new Stage(){{
-               setScene(new Scene(root, 300, 250));
-               setTitle("Planspiel - Client - Login");
-               setResizable(false);
-               show();
-           }};
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
-
+		stage.setTitle("Planspiel - Client - Game");
+		stage.setScene(scene);	
+		stage.show();    	
+    	
     }
 
     /**
