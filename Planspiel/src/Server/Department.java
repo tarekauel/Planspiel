@@ -1,10 +1,6 @@
 package Server;
 
 
-/**
- * @author Lars
- * Abstrakte Klasse der Abteilung
- */
 public abstract class Department {
 
 	private int fixCosts;
@@ -12,7 +8,7 @@ public abstract class Department {
 	private Company company;
 
 	/**
-	 * 
+	 *  erstellt eine neue Abteilung
 	 * @param c Referenz auf das Unternehmen
 	 * @param n Name der Abteilung
 	 * @param f Cent Zahl der fixKosten
@@ -22,10 +18,10 @@ public abstract class Department {
 		
 		
 		if (checkName(n)!=true){
-			throw new IllegalArgumentException("Ungï¿½ltiger Abteilungsname:"+n);
+			throw new IllegalArgumentException("Ungültiger Abteilungsname:"+n);
 		}
 		if (checkFixCosts(f)!=true){
-			throw new IllegalArgumentException("Ungï¿½ltige Fixkosten:"+f);
+			throw new IllegalArgumentException("Ungültige Fixkosten:"+f);
 		}
 		if (c == null){
 			throw new IllegalArgumentException("Null-Referenz Unternehmen");
@@ -84,7 +80,7 @@ public abstract class Department {
 	}
 /**
  * 
- * @param f zu prï¿½fende fix Kosten
+ * @param f zu prüfende fix Kosten
  * @return true, falls fix Kosten einen positvien Wert haben
  */
 	private boolean checkFixCosts(int f){
