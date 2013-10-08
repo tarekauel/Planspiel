@@ -31,7 +31,7 @@ public class Distribution extends DepartmentRoundSensitive {
 		
 	}
 	
-	/**O
+	/**
 	 * privater Konstruktor damit niemand eine Falsche Abteilung erzeugen kann
 	 * (name falsch)
 	 * 
@@ -54,7 +54,7 @@ public class Distribution extends DepartmentRoundSensitive {
  * @param quality Qualitaet des Fertigprodukts
  * @param quantityToSell Menge die verkauft werden soll
  * @param price Preis zu dem verkauft werden soll
- * @throws IOException 
+ * @throws IllegalArgumentException 
  */
 	public void createOffer(int quality, int quantityToSell, int price) throws IllegalArgumentException{
 		
@@ -81,11 +81,18 @@ public class Distribution extends DepartmentRoundSensitive {
 		
 	}// createOffer
 
+	/**
+	 * 
+	 * @return liefert eine Liste aller Angebote
+	 */
 	public ArrayList<Offer> getListOfOffers() {
 		
 		return listOfOffers;
 	}// getListOfOffers
-
+	/**
+	 * 
+	 * @return liefert eine sortierte Liste aller Angebote dieser Runde
+	 */
 	public ArrayList<Offer> getSortedListOfLatestOffers() {
 		ArrayList<Offer> listOfLatestOffers = new ArrayList<Offer>();
 		for (Offer elem : listOfOffers) {
