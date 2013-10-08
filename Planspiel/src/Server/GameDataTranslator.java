@@ -25,10 +25,6 @@ public class GameDataTranslator {
 
 	private static GameDataTranslator gameDataTranslator = null;
 
-	private GameDataTranslator() {
-		// TODO Auto-generated constructor stub
-	}
-
 	/**
 	 * Singleton Kostruktor
 	 * 
@@ -82,8 +78,10 @@ public class GameDataTranslator {
 	 */
 	private void handleWage(int wage, Company company) throws Exception {
 		HumanResources hr = company.getHumanResources();
-		hr.setWagePerRound(new TWage(wage, GameEngine.getGameEngine()
-				.getRound() + 1, company.getLocation().getWageLevel()));
+		TWage wages = new TWage(wage,
+				GameEngine.getGameEngine().getRound() + 1, company
+						.getLocation().getWageLevel());
+		hr.setWagePerRound(wages);
 
 	}
 
@@ -105,6 +103,12 @@ public class GameDataTranslator {
 		}
 	}
 
+	/**
+	 * Erstellt Offers für die Distribution
+	 * 
+	 * @param offers
+	 * @param company
+	 */
 	private void handleDistributionOffers(ArrayList<OfferFromClient> offers,
 			Company company) {
 		Distribution distribution = company.getDistribution();
@@ -196,6 +200,14 @@ public class GameDataTranslator {
 
 	}
 
+	/**
+	 * Erstellt Requests für den Einkauf
+	 * 
+	 * @param requests
+	 *            von Client
+	 * @param company
+	 * @throws Exception
+	 */
 	private void handlePurchaseRequests(ArrayList<RequestFromClient> requests,
 			Company company) throws Exception {
 		for (RequestFromClient request : requests) {
@@ -205,6 +217,11 @@ public class GameDataTranslator {
 
 	}
 
+	/**
+	 * Erstellt die GameMessages und liefert sie an die Clients
+	 * 
+	 * @throws Exception
+	 */
 	public void createGameDataMessagesAndSend2Clients() throws Exception {
 		for (Player player : Server.Connection.Server.getServer()
 				.getPlayerList()) {
@@ -214,6 +231,13 @@ public class GameDataTranslator {
 		}
 	}
 
+	/**
+	 * Sorgt für die Erstellung einer GamDataMessageToClient
+	 * 
+	 * @param player
+	 * @return
+	 * @throws Exception
+	 */
 	private GameDataMessageToClient createGameDataMessageToClient(Player player)
 			throws Exception {
 		String playerName = player.getName();
@@ -232,14 +256,28 @@ public class GameDataTranslator {
 		return message;
 	}
 
+	/**
+	 * Erstellt die Marketingdaten für den Client
+	 * 
+	 * @param company
+	 * @return
+	 */
 	private MarketingToClient createMarketing(Company company) {
 		// TODO Create Marketing Data
 		return null;
 	}
 
+	/**
+	 * Erstellt die HR-Daten für den Client
+	 * 
+	 * @param company
+	 * @return
+	 * @throws Exception
+	 */
 	private HumanResourcesToClient createHumanResources(Company company)
 			throws Exception {
 		HumanResources serverHR = company.getHumanResources();
+		// Create Benefits
 		ArrayList<BenefitBookingToClient> benefits = new ArrayList<BenefitBookingToClient>();
 		for (BenefitBooking benefit : serverHR.getBenefitBooking()) {
 			benefits.add(new BenefitBookingToClient(benefit.getBenefit()
@@ -253,7 +291,14 @@ public class GameDataTranslator {
 		return hr;
 	}
 
+	/**
+	 * Erstellt die Verkaufsdaten für den Cliet.
+	 * 
+	 * @param company
+	 * @return
+	 */
 	private DistributionToClient createDistribution(Company company) {
+		// Create Offers
 		ArrayList<OfferToClient> offers = new ArrayList<OfferToClient>();
 		for (Offer offer : company.getDistribution().getListOfOffers()) {
 			offers.add(new OfferToClient(offer.getStorageElement().getProduct()
@@ -264,7 +309,14 @@ public class GameDataTranslator {
 		return distribution;
 	}
 
+	/**
+	 * Erstellt die Produktionsdaten für den Client
+	 * 
+	 * @param company
+	 * @return
+	 */
 	private ProductionToClient createProduction(Company company) {
+		// Create Productionorders
 		ArrayList<ProductionOrderToClient> orders = new ArrayList<ProductionOrderToClient>();
 		for (ProductionOrder productionOrder : company.getProduction()
 				.getListOfAllProductionOrders()) {
@@ -276,9 +328,17 @@ public class GameDataTranslator {
 		return production;
 	}
 
+	/**
+	 * Erstellt die Einkaufsdaten für den Client
+	 * 
+	 * @param company
+	 * @return
+	 */
 	private PurchaseToClient createPurchase(Company company) {
+		// Create Requests
 		ArrayList<RequestToClient> requests = new ArrayList<PurchaseToClient.RequestToClient>();
 		for (Request request : company.getPurchase().getListOfRequest()) {
+			// Create SupplierOffers
 			ArrayList<SupplierOfferToClient> supplierOffers = new ArrayList<SupplierOfferToClient>();
 			for (SupplierOffer supplierOffer : request.getSupplierOffers()) {
 
