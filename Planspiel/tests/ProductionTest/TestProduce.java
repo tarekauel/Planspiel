@@ -33,7 +33,7 @@ public class TestProduce {
 
 	@Test
 	public void produceValid() throws Exception {
-		c.getProduction().createProductionOrder(wafer, cases, quantity)
+		c.getProduction().createProductionOrder(wafer, cases, 5);
 		c.getProduction().produce();
 		assertEquals(0,st.getAllFinishedGoods().size());
 	}
