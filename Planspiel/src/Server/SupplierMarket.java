@@ -126,25 +126,53 @@ public class SupplierMarket {
 		for (Request r : listOfRequest) {
 			int reqQuality = r.getRequestedResource().getQuality();
 			String reqName = r.getRequestedResource().getName();
-			// TODO: Später durch Zufallslogik ersetzen. Daran denken, dass
-			// nicht Quality von -1 abegefragt wird.
+			int[] offerQualities = getOfferQualities( reqQuality);
 			if (reqName.equals("Gehäuse")) {
-				r.addSupplierOffer(new SupplierOffer(new Resource(--reqQuality, reqName, casePricelist.ceiling(
-						new TResourcePrice(reqQuality, 1)).getPrice())));
-				r.addSupplierOffer(new SupplierOffer(new Resource(++reqQuality, reqName, casePricelist.ceiling(
-						new TResourcePrice(reqQuality, 1)).getPrice())));
-				r.addSupplierOffer(new SupplierOffer(new Resource(++reqQuality, reqName, casePricelist.ceiling(
-						new TResourcePrice(reqQuality, 1)).getPrice())));
+				for( int i=0; i<offerQualities.length; i++) {
+					r.addSupplierOffer(new SupplierOffer(new Resource(offerQualities[i], reqName, casePricelist.ceiling(
+							new TResourcePrice(offerQualities[i], 1)).getPrice())));
+				}
 			} else {
-				r.addSupplierOffer(new SupplierOffer(new Resource(--reqQuality, reqName, waferPricelist.ceiling(
-						new TResourcePrice(reqQuality, 1)).getPrice())));
-				r.addSupplierOffer(new SupplierOffer(new Resource(++reqQuality, reqName, waferPricelist.ceiling(
-						new TResourcePrice(reqQuality, 1)).getPrice())));
-				r.addSupplierOffer(new SupplierOffer(new Resource(++reqQuality, reqName, waferPricelist.ceiling(
-						new TResourcePrice(reqQuality, 1)).getPrice())));
+				for( int i=0; i<offerQualities.length; i++) {
+					r.addSupplierOffer(new SupplierOffer(new Resource(offerQualities[i], reqName, waferPricelist.ceiling(
+							new TResourcePrice(offerQualities[i], 1)).getPrice())));
+				}
 			}
 
 		}
+	}
+	
+	/**
+	 * Liefert drei Qualitaeten zurueck, die unterschiedlich sind
+	 * @param reqQuality Nachgefrage Qualitaet
+	 * @return Array mit 3 unterschiedlichen Qualitaeten
+	 */
+	private int[] getOfferQualities( int reqQuality ) {
+		int[] out = new int[3];
+		
+		for( int i=0; i < out.length; i++) {
+			
+			// Sucht bis eine neue Zufallszahl gefunden wurde			
+			while(true) {
+				int variance = 20;
+				int newQuality = reqQuality + (int) Math.floor( Math.random() * variance+1) - variance/2;
+				if( newQuality > 0) {
+					boolean unique = true;
+					for( int j=0; j<out.length; j++) {
+						if( out[j] == newQuality ) {
+							unique = false;
+							break;
+						}
+					}				
+					if(unique) {
+						out[i] = newQuality;
+						break;
+					}
+				}
+			}
+		}
+		
+		return out;
 	}
 
 	public void recalculatePrices() {
@@ -242,6 +270,7 @@ public class SupplierMarket {
 				}
 
 				// Spread berechnen und addieren fuer j < i
+				// TODO eventuell Einfluss auf Nachbarn anders berechnen
 				if (j < i) {
 					newSpreadsCase[j] += share - share * (i - j) * 0.2;
 				} else {

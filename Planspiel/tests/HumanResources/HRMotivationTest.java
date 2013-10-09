@@ -50,8 +50,8 @@ public class HRMotivationTest {
 		int motivationH1 = h1.getMotivation();
 		int motivationH2 = h2.getMotivation();
 		
-		assertEquals(100,motivationH1);
-		assertEquals(100,motivationH2);
+		assertEquals(70,motivationH1);
+		assertEquals(115,motivationH2);
 	}
 	
 	

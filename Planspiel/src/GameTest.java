@@ -41,11 +41,10 @@ public class GameTest {
 		Storage s2 = c2.getStorage();
 		Distribution d2 = c2.getDistribution();
 
-		p2.createRequest(new Resource(20, "Wafer", 0));
-		p2.createRequest(new Resource(20, "Gehäuse", 0));
+		p2.createRequest(new Resource(26, "Wafer", 0));
+		p2.createRequest(new Resource(26, "Gehäuse", 0));
 
 		SupplierMarket.getMarket().handleRequest();
-		SupplierMarket.getMarket().recalculatePrices();
 
 		ArrayList<Request> listReq = p.getListOfLatestRequest();
 		p.acceptSupplierOffer(listReq.get(0).getSupplierOffers()[0], 54 * 101); // 1000
@@ -55,6 +54,7 @@ public class GameTest {
 																			// Gehäuse
 																			// kaufen
 
+		
 		ArrayList<Resource> store = s.getAllResources();
 		pro.createProductionOrder(store.get(0), store.get(1), 100);
 
@@ -70,7 +70,7 @@ public class GameTest {
 		p2.acceptSupplierOffer(listReq2.get(1).getSupplierOffers()[0], 100); // 1000
 																				// Gehäuse
 																				// kaufen
-
+		SupplierMarket.getMarket().recalculatePrices();
 		ArrayList<Resource> store2 = s2.getAllResources();
 		pro2.createProductionOrder(store2.get(0), store2.get(1), 100);
 
