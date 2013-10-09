@@ -10,23 +10,38 @@ public class RandomTest {
 
 	
 	@Test
-	public void test() {
-		double fakeRandom = Math.random(); // Immer zwischen 0 und 1
-		assertEquals(0.5, fakeRandom,0.5);
+	@FakeRandom( newRandom =  { 1.0, 2.0 }, methodName = { "a", "b" } )
+	public void meinTestA() {
+		assertEquals((int) 1.0, (int) a() );
+		assertEquals((int) 2.0, (int) b() );
 	}
 	
 	@Test
-	@FakeRandom(newRandom = 2.0 )
-	public void testA() {
-		int fakeRandom = (int) Math.random(); // Immer 2
-		assertEquals(2, fakeRandom);
+	@FakeRandom( newRandom = { 7.0, 5.0 }, methodName = { "b", "a" } )
+	public void meinTestB() {
+		assertEquals((int) 5.0, (int) a() );
+		assertEquals((int) 7.0, (int) b() );
 	}
 	
 	@Test
-	@FakeRandom(newRandom = 5.0 )
-	public void testB() {
-		int fakeRandom = (int) Math.random(); // Immer 5
-		assertEquals(5, fakeRandom);
+	@FakeRandom( newRandom = { 7.0}, methodName = { "a" } )
+	public void meinTestC() {
+		assertEquals((int) 7.0, (int) c() );
+		assertEquals(0.5, b(), 0.5);	     // Untouched!	
 	}
+	
+	public double a() {
+		return Math.random();
+	}
+	
+	public double b() {
+		return Math.random();
+	}
+	
+	public double c() {
+		return a();
+	}
+	
+	
 
 }
