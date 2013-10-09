@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.text.MaskFormatter;
 
-public class ClientUI implements IClientUI {
+public class ClientUI_deprecated implements IClientUI {
 
 	private JFrame frame;
 	private JPanel panel1;
@@ -46,7 +46,7 @@ public class ClientUI implements IClientUI {
 		frame.setVisible(false);
 	}
 
-	public ClientUI(final IClient client) {
+	public ClientUI_deprecated(final IClient client) {
 		initialize();
 
 		connect_button.addActionListener(new ActionListener() {
