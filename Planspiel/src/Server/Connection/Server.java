@@ -19,7 +19,7 @@ public class Server {
 	private ArrayList<Player> playerList = new ArrayList<Player>();
 	private ConnectionListener connectionListener = null;
 	private int receivedGameMessages = 0;
-	private int maxPlayer = 0;
+	private int maxPlayer = Constant.Server.MAX_PLAYER;
 
 	/**
 	 * 

@@ -108,6 +108,8 @@ public class Constant {
 				.parseInt(getConstant("TCP_PORT"));
 		public static final int UDP_PORT = Integer
 				.parseInt(getConstant("UDP_PORT"));
+		public static final int MAX_PLAYER = Integer
+				.parseInt(getConstant("MAX_PLAYER"));
 
 	}
 
