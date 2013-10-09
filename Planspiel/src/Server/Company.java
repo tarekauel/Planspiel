@@ -5,6 +5,8 @@ package Server;
  */
 
 public class Company {
+	
+	private String name;
 
 	private Location location;
 	private BankAccount bankAccount;
@@ -25,12 +27,40 @@ public class Company {
 	 *             falls falsche eingabe werte
 	 * @exception IllegalArgumentException
 	 */
-	public Company(Location l) throws Exception {
+	/*public Company(Location l) throws Exception {
 
 		if (!checkLocation(l)) {
 			throw new IllegalArgumentException("Ungültiger Standort");
 		}
 
+		// erzeuge Bankkonto mit 1 Mio Kapital
+		bankAccount = new BankAccount(this);
+		// setze Location
+
+		this.location = l;
+		// 'Kaufe die Location'
+		bankAccount.decreaseBalance(l.getPurchasePrice());
+
+		// Erzuege alle Abteilungen
+		this.purchase = new Purchase(this);
+		this.production = new Production(this);
+		this.storage = new Storage(this);
+		this.distribution = new Distribution(this);
+		this.humanResources = new HumanResources(this);
+		this.marketResearch = new MarketResearch(this);
+
+		// Anmelden an der Gamengine
+		GameEngine.getGameEngine().addCompany(this);
+
+	}
+	*/
+	
+	public Company(Location l, String name) throws Exception {
+
+		if (!checkLocation(l)) {
+			throw new IllegalArgumentException("Ungültiger Standort");
+		}
+		this.name = name;
 		// erzeuge Bankkonto mit 1 Mio Kapital
 		bankAccount = new BankAccount(this);
 		// setze Location
@@ -94,6 +124,7 @@ public class Company {
 		return this.bankAccount;
 	}
 
+
 	/**
 	 * 
 	 * @return liefert den Einkauf
@@ -145,6 +176,13 @@ public class Company {
 	public MarketResearch getMarketResearch() {
 
 		return this.marketResearch;
+	}
+	/**
+	 * 
+	 * @return liefert namen der Company/Spielers zurueck
+	 */
+	public String getName(){
+		return this.name;
 	}
 
 	@Override

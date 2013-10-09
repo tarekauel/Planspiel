@@ -197,10 +197,9 @@ public class GameDataTranslator {
 	 */
 	private Company findCompanyOfPlayer(String playerName) {
 
-		for (Player player : Server.Connection.Server.getServer()
-				.getPlayerList()) {
-			if (player.getName().equals(playerName)) {
-				return player.getMyCompany();
+		for (Company company : GameEngine.getGameEngine().getListOfCompanys()) {
+			if (company.getName().equals(playerName)) {
+				return company;
 			}
 		}
 		throw new IllegalArgumentException("Der Playername ist invalid!");
@@ -212,7 +211,7 @@ public class GameDataTranslator {
 	 * @param company
 	 * @return
 	 */
-	private String findPlayerNameOfCompany(Company company) {
+	/*private String findPlayerNameOfCompany(Company company) {
 
 		for (Player player : Server.Connection.Server.getServer()
 				.getPlayerList()) {
@@ -224,6 +223,7 @@ public class GameDataTranslator {
 		throw new IllegalArgumentException("Die Company ist ungültig!");
 
 	}
+	*/
 
 	/**
 	 * Erstellt Requests für den Einkauf
@@ -316,7 +316,7 @@ public class GameDataTranslator {
 		ArrayList<MarketShareToClient> marketShares = new ArrayList<MarketShareToClient>();
 				
 		for (TMarketShare marketShare : CustomerMarket.getMarket().getMarketShares()) {
-			marketShares.add(new MarketShareToClient(marketShare.getMarketShare(), findPlayerNameOfCompany(marketShare.getCompany())));
+			marketShares.add(new MarketShareToClient(marketShare.getMarketShare(), company.getName()));
 		}
 		
 		//getWaferPrices

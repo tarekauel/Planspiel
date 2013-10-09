@@ -53,6 +53,13 @@ public class GameEngine {
 		
 		return round;
 	}
+	/**
+	 * 
+	 * @return gibt alles Companys der Spieler zurueck
+	 */
+	public ArrayList<Company> getListOfCompanys(){
+		return this.listOfCompanys;
+	}
 
 	/**
 	 * Startet die nächste Runde
