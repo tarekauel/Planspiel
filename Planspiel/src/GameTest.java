@@ -45,6 +45,7 @@ public class GameTest {
 		p2.createRequest(new Resource(20, "Gehäuse", 0));
 
 		SupplierMarket.getMarket().handleRequest();
+		SupplierMarket.getMarket().recalculatePrices();
 
 		ArrayList<Request> listReq = p.getListOfLatestRequest();
 		p.acceptSupplierOffer(listReq.get(0).getSupplierOffers()[0], 54 * 101); // 1000

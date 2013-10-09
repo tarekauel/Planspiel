@@ -15,17 +15,13 @@ import Server.TWage;
 
 public class HRMotivationTest {
 	
-	private HumanResources h1 = null;
-	private HumanResources h2 = null;
+	private static HumanResources h1 = null;
+	private static HumanResources h2 = null;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		Location.initLocations();
-		Benefit.initBenefits();
-	}
-
-	@Before
-	public void initializeTests() throws Exception {
+		Benefit.initBenefits();		
 		h1 = new Company( Location.getLocationByCountry("Test")).getHumanResources();
 		h2 = new Company( Location.getLocationByCountry("TestB")).getHumanResources();		
 	}
@@ -43,12 +39,20 @@ public class HRMotivationTest {
 	public void testAverageBenefit() throws Exception {
 		h1.bookBenefit("Sport", 10);
 		h2.bookBenefit("Sport", 10);
-		
-		h1.prepareForNewRound(2);
-		h2.prepareForNewRound(2);
-		
-		long bft = MarketData.getMarketData().getAverageBenefit();
-		System.out.println(bft);
-		
+		// TODO Runde muss fakebar sein!
+		assertEquals( 15000,  MarketData.getMarketData().getAverageBenefit());
 	}
+	
+	@Test
+	public void testMotivation() throws Exception{
+		h1.setWagePerRound(new TWage(1000, 1, h1.getCompany().getLocation().getWageLevel()));
+		h2.setWagePerRound(new TWage(1000, 1, h2.getCompany().getLocation().getWageLevel()));
+		int motivationH1 = h1.getMotivation();
+		int motivationH2 = h2.getMotivation();
+		
+		assertEquals(100,motivationH1);
+		assertEquals(100,motivationH2);
+	}
+	
+	
 }
