@@ -267,7 +267,8 @@ public class GameDataTranslator {
 	private GameDataMessageToClient createGameDataMessageToClient(Player player)
 			throws Exception {
 		String playerName = player.getName();
-		Company company = player.getMyCompany();
+	//	Company company = player.getMyCompany(); TODO: AUSKOMMENTIERT
+		Company company = null;
 		
 		//Abteilungen erstellen
 		PurchaseToClient purchase = createPurchase(company);
@@ -297,7 +298,7 @@ public class GameDataTranslator {
 		fixCosts.add(new FixCostToClient("Lager", company.getStorage().getFixCosts()));
 		
 		//TODO:Rest uebergeben
-		ReportingToClient reporting = new ReportingToClient(fixCosts, machinery, sellsOfRounds, cashValues);
+		//ReportingToClient reporting = new ReportingToClient(fixCosts, machinery, sellsOfRounds, cashValues); TODO: AUSKOMMENTIERT
 		return null;
 	}
 
