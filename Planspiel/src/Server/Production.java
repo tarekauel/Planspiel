@@ -147,6 +147,8 @@ public class Production extends DepartmentRoundSensitive {
 				// Gehï¿½use abbuchen
 				if(!this.getCompany().getStorage().unstore(p.getCase(), 1)){
 					innerBreak = true;
+					//falls nicht genuegend cases vorhanden muessen Wafer wieder zurueckgebucht werden
+					this.getCompany().getStorage().store(p.getWafer(),Constant.Production.WAFERS_PER_PANEL);
 					break;	
 				};
 
@@ -156,6 +158,7 @@ public class Production extends DepartmentRoundSensitive {
 				// Gucken, ob wir tatsï¿½chlich produzieren:
 				if (machine.isJunk()) {
 					// Das Teil ist also Ausschuss
+					p.increaseWaste();
 					continue;
 				} else {
 					// Produziere das fertige Panel
@@ -169,7 +172,9 @@ public class Production extends DepartmentRoundSensitive {
 			}
 
 			// Lager die Produktion ein und berechnet die Kosten neu
+			if(p.getProduced()!=0){
 			p.storeProduction(this.getCompany().getStorage());
+			}
 
 			// Wird true, wenn auf dem Konto kein Geld mehr für Produktion ist
 			//oder nicht mehr ausreichend Rohstoffe vorhanden sind

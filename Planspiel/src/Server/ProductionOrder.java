@@ -26,6 +26,8 @@ public class ProductionOrder {
 	private int quantityToProduce = 0;
 	// tatsächlich hergestellte Menge:
 	private int quantityProduced = 0;
+	//Menge des Ausschuss kann nicht abgeleitet werden
+	private int waste = 0;
 
 	/**
 	 * Erzeugt neue Production order
@@ -67,8 +69,14 @@ public class ProductionOrder {
 	 * @return int Ausschuss
 	 */
 	public int getWaste() {
-		return quantityToProduce - quantityProduced;
+		return this.waste;
 
+	}
+	/**
+	 * erhoeht den ausschuss um 1
+	 */
+	public void increaseWaste(){
+		waste++;
 	}
 
 	/**
@@ -182,9 +190,9 @@ public class ProductionOrder {
 		// Kosten pro Stück neu berechnen (Ausschuss berücksichtigen)
 		this.panel = FinishedGood
 				.create(panel.getQuality(),
-						(int) (((double) panel.getCosts() * quantityToProduce
+						(int) (((double) panel.getCosts() * (quantityProduced + waste)
 								+ Constant.Production.WORKING_HOURS_PER_PANEL + Constant.Production.WORKING_HOURS_PER_PANEL
-								* quantityToProduce
+								* (quantityProduced + waste)
 								* s.getCompany().getHumanResources()
 										.getWagesPerHour().getAmount()) / quantityProduced));
 		s.store(this.panel, quantityProduced);

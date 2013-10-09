@@ -70,27 +70,29 @@ public class TestProduce {
 
 	@Test
 	public void produceNotEnougWaferResources() throws Exception {
-		c.getStorage().store(wafer80, 1);
+		c.getStorage().store(wafer80, 50);
 		c.getStorage().store(cases, 50);
 		c.getProduction().createProductionOrder(wafer80, cases, 400);
 		c.getProduction().produce();
 		assertEquals(0, c.getProduction().getListOfAllProductionOrders().get(0)
-				.getProduced()
+			.getProduced()
 				+ c.getProduction().getListOfAllProductionOrders().get(0)
 						.getWaste());
+
 	}
 
+	
 	@Test
 	public void produceNotEnougCaseResources() throws Exception {
 		c.getStorage().store(wafer80, 500);
 		c.getStorage().store(cases, 1);
-		c.getProduction().createProductionOrder(wafer80, cases, 400);
+		c.getProduction().createProductionOrder(wafer80, cases, 100);
 		c.getProduction().produce();
-		assertEquals(1, c.getProduction().getListOfAllProductionOrders().get(0)
-				.getWaste()
-				+ c.getProduction().getListOfAllProductionOrders().get(0)
+		assertEquals(446,c.getStorage().getAllStorageElements().get(0).getQuantity());
+		assertEquals(1, c.getProduction().getListOfAllProductionOrders().get(0).getWaste()+c.getProduction().getListOfAllProductionOrders().get(0)
 						.getProduced());
 	}
+	
 
 	@After
 	public void resetTests() {
