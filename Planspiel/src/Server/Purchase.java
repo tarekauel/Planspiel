@@ -23,7 +23,7 @@ public class Purchase extends DepartmentRoundSensitive {
 	private ArrayList<Request> listOfLatestRequests = new ArrayList<Request>();
 
 	// Liste aller akzeptierten SupplierOffers dieser Runde ( für den Markt )
-	private ArrayList<SupplierOffer> listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
+	private ArrayList<SupplierOffer> listOfLatestAcceptedSupplierOffers = new ArrayList<SupplierOffer>();
 
 	/**
 	 * Name wird vom Konstruktor gesetzt.
@@ -116,7 +116,7 @@ public class Purchase extends DepartmentRoundSensitive {
 				quantity * supplierOffer.getResource().getCosts())) {
 			storage.store(resource, quantity);
 			supplierOffer.setOrderedQuantity(quantity);
-			listOfLatestSupplierOffers.add(supplierOffer);
+			listOfLatestAcceptedSupplierOffers.add(supplierOffer);
 		}
 	}
 
@@ -134,13 +134,13 @@ public class Purchase extends DepartmentRoundSensitive {
 	}
 
 	public ArrayList<SupplierOffer> getListOfAcceptedSupplierOffer() {
-		return getListOfAcceptedSupplierOffer();
+		return listOfLatestAcceptedSupplierOffers;
 	}
 
 	@Override
 	public void prepareForNewRound(int round) {
 		listOfLatestRequests = new ArrayList<Request>();
-		listOfLatestSupplierOffers = new ArrayList<SupplierOffer>();
+		listOfLatestAcceptedSupplierOffers = new ArrayList<SupplierOffer>();
 	}
 
 }
