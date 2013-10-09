@@ -30,7 +30,7 @@ public class TestStoreAndUnstore {
 		w = new Resource(50, "Wafer", 5000);
 		se = new StorageElement(500, w);
 
-		c = new Company(Location.getLocationByCountry("USA"));
+		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
 		s = new Storage(c);
 
 	}

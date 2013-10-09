@@ -20,7 +20,7 @@ public class TestConstructor {
 
 	@Before
 	public void initializeTests() throws Exception {
-		c = new Company(Location.getLocationByCountry("USA"));
+		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
 	}
 
 	@Test

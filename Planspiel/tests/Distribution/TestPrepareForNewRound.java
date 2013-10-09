@@ -30,7 +30,7 @@ public class TestPrepareForNewRound {
 	@Before
 	public void initializeTests() throws Exception {
 		l = Location.getLocationByCountry("USA"); 
-		c = new Company(l);
+		c = new Company(l,"OTTO");
 		d = c.getDistribution();
 		st = c.getStorage();
 		fg = FinishedGood.create(80, 20000);

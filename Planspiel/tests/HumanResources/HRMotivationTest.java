@@ -22,8 +22,8 @@ public class HRMotivationTest {
 	public static void setUpBeforeClass() throws Exception {
 		Location.initLocations();
 		Benefit.initBenefits();		
-		h1 = new Company( Location.getLocationByCountry("Test")).getHumanResources();
-		h2 = new Company( Location.getLocationByCountry("TestB")).getHumanResources();		
+		h1 = new Company( Location.getLocationByCountry("Test"),"OTTO").getHumanResources();
+		h2 = new Company( Location.getLocationByCountry("TestB"),"ANNA").getHumanResources();		
 	}
 
 	@Test

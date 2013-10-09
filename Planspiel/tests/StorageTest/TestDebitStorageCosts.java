@@ -23,7 +23,7 @@ public class TestDebitStorageCosts {
 
 	@Before
 	public void initializeTests() throws Exception {
-		c = new Company(Location.getLocationByCountry("USA"));
+		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
 		st = c.getStorage();
 		for(int i = 0;i<10;i++){
 			fg = FinishedGood.create(80+i, 20000);

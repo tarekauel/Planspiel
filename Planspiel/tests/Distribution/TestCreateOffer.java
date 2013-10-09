@@ -23,7 +23,7 @@ public class TestCreateOffer {
 
 	@Before
 	public void initializeTests() throws Exception {
-		c = new Company(Location.getLocationByCountry("USA"));
+		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
 		st = c.getStorage();
 		d = c.getDistribution();
 		fg = FinishedGood.create(80, 1000);

@@ -13,7 +13,7 @@ public class TestConstructor {
 	@Before
 	public void initTests() throws Exception {
 		Location.initLocations();
-		c = new Company(Location.getLocationByCountry("Deutschland"));
+		c = new Company(Location.getLocationByCountry("Deutschland"),"OTTO");
 
 	}
 

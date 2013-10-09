@@ -24,7 +24,7 @@ public class TestBankAccount {
 
 	@Before
 	public void initializeTests() throws Exception {
-		Company c = new Company(Location.getLocationByCountry("Deutschland"));
+		Company c = new Company(Location.getLocationByCountry("Deutschland"),"OTTO");
 		b = c.getBankAccount();
 
 	}

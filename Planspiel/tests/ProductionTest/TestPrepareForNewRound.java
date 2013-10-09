@@ -24,7 +24,7 @@ public class TestPrepareForNewRound {
 
 	@Before
 	public void initializeTests() throws Exception{
-		c = new Company(Location.getLocationByCountry("USA"));
+		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
 		p = c.getProduction();
 		wafer = new Resource(80, "Wafer", 10000);
 		cases = new Resource(50, "Gehäuse", 10000);

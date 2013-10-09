@@ -20,16 +20,16 @@ public class TestConstructor {
 
 	@Test
 	public void createCompany() throws Exception {
-		new Company(Location.getLocationByCountry("Deutschland"));
+		new Company(Location.getLocationByCountry("Deutschland"),"OTTO");
 	}
 
 	@Test (expected = java.lang.IllegalArgumentException.class)
 	public void createInvalidByWrongName() throws Exception {
-		new Company(Location.getLocationByCountry("Deutschlsd"));
+		new Company(Location.getLocationByCountry("Deutschlsd"),"OTTO");
 	}
 	@Test (expected = java.lang.IllegalArgumentException.class)
 	public void createInvalidByNull() throws Exception {
-		new Company(null);
+		new Company(null,null);
 	}
 
 

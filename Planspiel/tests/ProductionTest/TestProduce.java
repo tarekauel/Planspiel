@@ -26,7 +26,7 @@ public class TestProduce {
 
 	@Before
 	public void initializeTests() throws Exception {
-		c = new Company(Location.getLocationByCountry("USA"));
+		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
 		st = c.getStorage();
 		wafer80 = new Resource(80, "Wafer", 100000);
 		wafer70 = new Resource(70, "Wafer", 100000);

@@ -28,7 +28,7 @@ public class GeneralTests {
 	public void createMachinery() throws Exception {
 		// initialisiere
 
-		c = new Company(Location.getLocationByCountry("Deutschland"));
+		c = new Company(Location.getLocationByCountry("Deutschland"),"OTTO");
 		b = c.getBankAccount();
 		m = c.getProduction().getMachine();
 		b.increaseBalance(990000000);
