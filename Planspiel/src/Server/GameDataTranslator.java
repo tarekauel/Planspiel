@@ -148,7 +148,7 @@ public class GameDataTranslator {
 						&& resource.getName().equals("Wafer")) {
 					wafer = resource;
 				}
-				break;
+				
 			}// for
 			company.getProduction().createProductionOrder(wafer, panelCase,
 					prodOrder.quantity);
