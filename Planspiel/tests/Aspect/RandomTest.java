@@ -2,32 +2,38 @@ package Aspect;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Random;
+
 import org.junit.Test;
 
 import AspectLogger.FakeRandom;
 
 public class RandomTest {
 
+	Random r = new Random();
 	
 	@Test
-	@FakeRandom( newRandom =  { 1.0, 2.0 }, methodName = { "a", "b" } )
+	@FakeRandom( mathRandomNewRandom =  { 1.0, 2.0 }, mathRandomMethodName = { "a", "b" } )
 	public void meinTestA() {
 		assertEquals((int) 1.0, (int) a() );
 		assertEquals((int) 2.0, (int) b() );
 	}
 	
 	@Test
-	@FakeRandom( newRandom = { 7.0, 5.0 }, methodName = { "b", "a" } )
+	@FakeRandom( mathRandomNewRandom = { 7.0, 5.0 }, mathRandomMethodName = { "b", "a" } )
 	public void meinTestB() {
 		assertEquals((int) 5.0, (int) a() );
 		assertEquals((int) 7.0, (int) b() );
 	}
 	
 	@Test
-	@FakeRandom( newRandom = { 7.0}, methodName = { "a" } )
+	@FakeRandom( mathRandomNewRandom = { 7.0, 10.0 }, mathRandomMethodName = { "a", "meinTestC" }, randomNextIntNewRandom = { 1 }, randomNextIntMethodName = { "meinTestC" } )
 	public void meinTestC() {
 		assertEquals((int) 7.0, (int) c() );
-		assertEquals(0.5, b(), 0.5);	     // Untouched!	
+		assertEquals(0.5, b(), 0.5);
+		assertEquals(1, r.nextInt());
+		assertEquals(1, r.nextInt(100));
+		assertEquals(10, (int) Math.random());
 	}
 	
 	public double a() {
@@ -41,7 +47,5 @@ public class RandomTest {
 	public double c() {
 		return a();
 	}
-	
-	
 
 }

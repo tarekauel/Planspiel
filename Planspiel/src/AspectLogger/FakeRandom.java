@@ -9,7 +9,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface FakeRandom {
-	String[] methodName();
-	double[] newRandom();
+	String[] mathRandomMethodName() default {};
+	double[] mathRandomNewRandom() default {};
+	
+	String[] randomNextIntMethodName() default {};
+	int[] randomNextIntNewRandom() default {};
 }
-
