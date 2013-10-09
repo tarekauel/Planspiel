@@ -285,6 +285,7 @@ public class GameDataTranslator {
 
 	private ReportingToClient createReporting(Company company) {
 		ArrayList<FixCostToClient> fixCosts= new ArrayList<FixCostToClient>();
+		
 		//getFixCostsOfAllDepartments
 		fixCosts.add(new FixCostToClient("Verkauf", company.getDistribution().getFixCosts()));
 		fixCosts.add(new FixCostToClient("Personal", company.getHumanResources().getFixCosts()));
