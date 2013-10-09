@@ -35,7 +35,6 @@ public class TestProduce {
 	}
 
 	@Test
-	// so wird aber nicht die logik geprueft oder?
 	public void produceValid() throws Exception {
 		c.getStorage().store(wafer80, 2160);
 		c.getStorage().store(cases, 50);
@@ -45,12 +44,14 @@ public class TestProduce {
 	}
 
 	@Test
+	// produzieren ohne Produktionsauftraege
 	public void produceWithoutProdOrder() throws Exception {
 		c.getProduction().produce();
 		assertEquals(0, st.getAllFinishedGoods().size());
 	}
 
 	@Test
+	//produzieren obwohl maximale Kapazitaet erreicht
 	public void produceMaxCapacityReached() throws Exception {
 		c.getStorage().store(wafer80, 600);
 		c.getStorage().store(wafer70, 600);
@@ -69,6 +70,7 @@ public class TestProduce {
 	}
 
 	@Test
+	//es soll solange produziert werden bis Wafer auf 0
 	public void produceNotEnougWaferResources() throws Exception {
 		c.getStorage().store(wafer80, 50);
 		c.getStorage().store(cases, 50);
@@ -83,6 +85,8 @@ public class TestProduce {
 
 	
 	@Test
+	//es soll solange produziert werden bis Cases auf 0
+	//dabei werden schon abgebuchte Wafer wieder zurueck gebucht
 	public void produceNotEnougCaseResources() throws Exception {
 		c.getStorage().store(wafer80, 500);
 		c.getStorage().store(cases, 1);
