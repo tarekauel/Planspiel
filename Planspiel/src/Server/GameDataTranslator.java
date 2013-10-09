@@ -247,12 +247,14 @@ public class GameDataTranslator {
 	 * 
 	 * @throws Exception
 	 */
-	public void createGameDataMessagesAndSend2Clients() throws Exception {
+	public ArrayList<GameDataMessageToClient> createGameDataMessages() throws Exception {
+		ArrayList<GameDataMessageToClient> messges = new ArrayList<GameDataMessageToClient>();
 		for (Player player : Server.Connection.Server.getServer()
 				.getPlayerList()) {
-			GameDataMessageToClient message = createGameDataMessageToClient(player);
-			player.getServerConnection().writeMessage(message);
+			messges.add(createGameDataMessageToClient(player));
+			
 		}
+		return messges;
 	}
 
 	/**

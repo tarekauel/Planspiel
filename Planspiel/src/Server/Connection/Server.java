@@ -6,6 +6,7 @@ import java.util.Vector;
 import Constant.Constant;
 import Message.GameDataMessage;
 import Message.GameDataMessageFromClient;
+import Message.GameDataMessageToClient;
 import Server.GameEngine;
 import Server.Player;
 
@@ -21,15 +22,7 @@ public class Server {
 	private int receivedGameMessages = 0;
 	private int maxPlayer = Constant.Server.MAX_PLAYER;
 
-	/**
-	 * 
-	 * started den Server
-	 */
-	public static void main(String[] args) {
-		Server server = new Server(11111);
-
-	}
-
+	
 	/**
 	 * Returned den Server. Somit ist ein Sigleton sichergestellt.
 	 * 
@@ -63,27 +56,41 @@ public class Server {
 
 	public synchronized void notifyGameData() throws Exception {
 		if (receivedGameMessages >= maxPlayer) {
-			//set to 0 for nextRound
-			receivedGameMessages = 0;
-			
-			ArrayList<GameDataMessageFromClient> gameDataList = new ArrayList<GameDataMessageFromClient>();
-			
-			//Get GameData from all Players
-			for (Player player : playerList) {
-				gameDataList.add((GameDataMessageFromClient)player.getMessagesFromClient().get(player.getMessagesFromClient().size()-1));
-			}
-			GameEngine.getGameEngine().startNextRound(gameDataList);
+			//All Clients are ready
+			handleRound();			
 			return;
 		}
 		receivedGameMessages++;
 	}
 
-	public void sendResultsToClients(
-			ArrayList<GameDataMessage> messagesToClients) {
-		// TODO: Send Results
-
+	private void handleRound() throws Exception {
+		//set to 0 for nextRound
+		receivedGameMessages = 0;
+		
+		ArrayList<GameDataMessageFromClient> gameDataList = new ArrayList<GameDataMessageFromClient>();
+		
+		//Get GameData from all Players
+		for (Player player : playerList) {
+			gameDataList.add((GameDataMessageFromClient)player.getMessagesFromClient().get(player.getMessagesFromClient().size()-1));
+		}
+		
+		//Play Round
+		ArrayList<GameDataMessageToClient> messages= GameEngine.getGameEngine().startNextRound(gameDataList);
+		
+		// Send new GameData to Clients
+		for (GameDataMessageToClient gameDataMessageToClient : messages) {
+			//Find Player
+			for (Player player : playerList) {
+				if (gameDataMessageToClient.getPlayerName().equals(player.getName())) {
+					//Send
+					player.getServerConnection().writeMessage(gameDataMessageToClient);
+				}
+				
+			}
+		}
 	}
 
+	
 	public synchronized void addPlayer(Player player) {
 		playerList.add(player);
 	}
@@ -94,7 +101,7 @@ public class Server {
 	 */
 	public void close() {
 		connectionListener.close();
-		// connectionListener.interrupt();
+		
 
 	}
 

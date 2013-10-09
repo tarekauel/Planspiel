@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 import Message.GameDataMessageFromClient;
+import Message.GameDataMessageToClient;
 
 public class GameEngine {
 
@@ -60,7 +61,7 @@ public class GameEngine {
 	 *            Übergebene Eingabedaten der Spieler
 	 * @throws Exception
 	 */
-	public void startNextRound(ArrayList<GameDataMessageFromClient> gameDataList)
+	public ArrayList<GameDataMessageToClient> startNextRound(ArrayList<GameDataMessageFromClient> gameDataList)
 			throws Exception {
 		prepareAllDepartmentsForNewRound();
 		parseClientData(gameDataList);
@@ -88,11 +89,11 @@ public class GameEngine {
 		// Creator: CustomerMarket.getMarket().getMarketShares();
 		// Creator: CustomerMarket.getMarket().getAMarketPeak();
 		// Creator: CustomerMarket.getMarket().getCMarketPeak();
-
-		createDataForClientAndSend();
 		
 		round++; // Runde hochzaehlen
 		
+		 return createDataForClient();		
+	
 		
 	}
 
@@ -101,8 +102,8 @@ public class GameEngine {
 
 	}
 	
-	private void createDataForClientAndSend() throws Exception {
-		GameDataTranslator.getGameDataTranslator().createGameDataMessagesAndSend2Clients();
+	private ArrayList<GameDataMessageToClient> createDataForClient() throws Exception {
+		return GameDataTranslator.getGameDataTranslator().createGameDataMessages();
 
 	}
 
