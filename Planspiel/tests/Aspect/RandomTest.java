@@ -13,21 +13,22 @@ public class RandomTest {
 	Random r = new Random();
 	
 	@Test
-	@FakeRandom( mathRandomNewRandom =  { 1.0, 2.0 }, mathRandomMethodName = { "a", "b" } )
+	@FakeRandom( mathRandomNewRandom =  { 1.0, 2.0 }, mathRandomMethodName = { "Aspect.RandomTest.a", "Aspect.RandomTest.b" } )
 	public void meinTestA() {
 		assertEquals((int) 1.0, (int) a() );
 		assertEquals((int) 2.0, (int) b() );
 	}
 	
 	@Test
-	@FakeRandom( mathRandomNewRandom = { 7.0, 5.0 }, mathRandomMethodName = { "b", "a" } )
+	@FakeRandom( mathRandomNewRandom = { 7.0, 5.0 }, mathRandomMethodName = { "Aspect.RandomTest.b", "Aspect.RandomTest.a" } )
 	public void meinTestB() {
 		assertEquals((int) 5.0, (int) a() );
 		assertEquals((int) 7.0, (int) b() );
 	}
 	
 	@Test
-	@FakeRandom( mathRandomNewRandom = { 7.0, 10.0 }, mathRandomMethodName = { "a", "meinTestC" }, randomNextIntNewRandom = { 1 }, randomNextIntMethodName = { "meinTestC" } )
+	@FakeRandom( mathRandomNewRandom = { 7.0, 10.0 }, mathRandomMethodName = { "Aspect.RandomTest.a", "Aspect.RandomTest.meinTestC" }, 
+	randomNextIntNewRandom = { 1 }, randomNextIntMethodName = { "Aspect.RandomTest.meinTestC" } )
 	public void meinTestC() {
 		assertEquals((int) 7.0, (int) c() );
 		assertEquals(0.5, b(), 0.5);
@@ -49,3 +50,4 @@ public class RandomTest {
 	}
 
 }
+

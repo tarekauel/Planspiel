@@ -31,7 +31,8 @@ public aspect AspectRandom {
 								FakeRandom fakeRandom = m.getAnnotation(FakeRandom.class);
 								String[] methodNames = fakeRandom.mathRandomMethodName();
 								for( int l=0; l < methodNames.length; l++ ) {
-									if( stack[2].getMethodName().equals( methodNames[l])) {
+									String callerMethodName = stack[2].getClassName() + "." + stack[2].getMethodName();
+									if( callerMethodName.equals( methodNames[l])) {
 										return fakeRandom.mathRandomNewRandom()[l];
 									}
 								}											
@@ -66,7 +67,8 @@ public aspect AspectRandom {
 								FakeRandom fakeRandom = m.getAnnotation(FakeRandom.class);
 								String[] methodNames = fakeRandom.randomNextIntMethodName();
 								for( int l=0; l < methodNames.length; l++ ) {
-									if( stack[2].getMethodName().equals( methodNames[l])) {
+									String callerMethodName = stack[2].getClassName() + "." + stack[2].getMethodName();
+									if( callerMethodName.equals( methodNames[l])) {
 										return fakeRandom.randomNextIntNewRandom()[l];
 									}
 								}											
@@ -83,4 +85,3 @@ public aspect AspectRandom {
 	}
 
 }
-
