@@ -14,4 +14,7 @@ public @interface FakeRandom {
 	
 	String[] randomNextIntMethodName() default {};
 	int[] randomNextIntNewRandom() default {};
+	
+	String[] randomNextGaussianMethodName() default {};
+	double[] randomNextGaussianNewRandom() default {};
 }

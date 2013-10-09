@@ -37,6 +37,12 @@ public class RandomTest {
 		assertEquals(10, (int) Math.random());
 	}
 	
+	@Test
+	@FakeRandom( randomNextGaussianNewRandom = { 1.0 }, randomNextGaussianMethodName = { "Aspect.RandomTest.meinTestD" } )
+	public void meinTestD() {
+		assertEquals(1, (int) r.nextGaussian());
+	}
+	
 	public double a() {
 		return Math.random();
 	}
@@ -50,4 +56,5 @@ public class RandomTest {
 	}
 
 }
+
 
