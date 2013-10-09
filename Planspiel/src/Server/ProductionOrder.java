@@ -142,14 +142,11 @@ public class ProductionOrder {
 
 	/**
 	 * Wird jede Runde aufgerufen und fertigt den Produktionsauftrag
-	 * 
-	 * @param s
-	 *            Storage, in den die Fertigprodukte gebucht werden.
 	 * @param advantage
 	 *            Der Zuschlagssatz aus Motivation, Land und Forschung
 	 * 
 	 */
-	public void produce(int advantageInt, Storage s, Machinery m)  throws Exception{
+	public void produce(int advantageInt, Machinery m)  throws Exception{
 		quantityProduced++;
 
 

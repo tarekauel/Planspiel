@@ -34,7 +34,7 @@ public class TestConstructor {
 	}
 
 	@Test
-	public void createValidFinishedGood() {
+	public void createValidFinishedGood() throws Exception {
 		FinishedGood fg = FinishedGood.create(7, 10);
 		Boolean isNotNull = fg!=null;
 		assertEquals(true, isNotNull);
@@ -42,21 +42,20 @@ public class TestConstructor {
 	}
 
 	@Test
-	public void createNonValidProductByCosts() {
+	public void createNonValidProductByCosts() throws Exception{
 		FinishedGood fg = FinishedGood.create(7, -1);
 		Boolean isNotNull = fg!=null;
 		assertEquals(false, isNotNull);
 
 	}
 
-	@Test
-	public void createNonValidProductByQuality() {
+	@Test (expected = IllegalArgumentException.class )
+	public void createNonValidProductByQuality() throws Exception{
 		FinishedGood fg = FinishedGood.create(101, 10);
 		Boolean isNotNull = fg!=null;
 		assertEquals(false, isNotNull);
 		fg = FinishedGood.create(-1, 10);
-		isNotNull = fg!=null;
-		assertEquals(false, isNotNull);
+
 
 	}
 	

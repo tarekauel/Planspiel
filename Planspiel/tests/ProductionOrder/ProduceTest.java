@@ -39,7 +39,7 @@ public class ProduceTest {
 	public void produceValid() throws Exception{
 		prodOrd = p.getListOfAllProductionOrders().get(0);	
 		int advantage = 100;
-		prodOrd.produce(advantage, c.getStorage(), c.getProduction().getMachine());
+		prodOrd.produce(advantage, c.getProduction().getMachine());
 		assertEquals(true,prodOrd.getPanel()!=null);
 		assertEquals(true,prodOrd.getPanel().getQuality() == 74);
 		assertEquals(true,prodOrd.getPanel().getCosts() == 655000);
@@ -50,7 +50,7 @@ public class ProduceTest {
 	public void produceNewQualityDifferenceInvalid() throws Exception{
 		prodOrd = p.getListOfAllProductionOrders().get(0);
 		int advantage = 1000;
-		prodOrd.produce(advantage, c.getStorage(), c.getProduction().getMachine());
+		prodOrd.produce(advantage, c.getProduction().getMachine());
 		assertEquals(true, prodOrd.getPanel().getQuality()== 94);
 	}
 	
@@ -59,7 +59,7 @@ public class ProduceTest {
 	public void produceNewQualityInvalid() throws Exception{
 		prodOrd = p.getListOfAllProductionOrders().get(0);
 		int advantage = 10;
-		prodOrd.produce(advantage, c.getStorage(), c.getProduction().getMachine());
+		prodOrd.produce(advantage, c.getProduction().getMachine());
 		assertEquals(true, prodOrd.getPanel().getQuality()==7);
 	}
 	//TODO: Um InputParameter zu pruefen fehlt die passende Exception es wird immer null zurueckgeliefert momentan

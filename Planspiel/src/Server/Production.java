@@ -164,7 +164,7 @@ public class Production extends DepartmentRoundSensitive {
 					int locationAdvantage = getCompany().getLocation().getAdvantage();
 					int advantage= wageMotivation*Constant.Production.MOTIVATION_IMPACT/100+
 							locationAdvantage*Constant.Production.LOCATION_IMPACT/100;
-					p.produce(advantage, this.getCompany().getStorage(), this.machine);
+					p.produce(advantage, this.machine);
 				}
 			}
 

@@ -24,13 +24,16 @@ public abstract class Product {
 	 * @throws
 	 */
 	public Product(int quality, String name, int costs) throws Exception {
-		if (checkCostsAreValid(costs) && checkQualityIsValid(quality)) {
-			this.quality = quality;
-			this.name = name;
-			this.costs = costs;
-			return;
+		if (checkCostsAreValid(costs)) {
+			if (checkQualityIsValid(quality)) {
+				this.quality = quality;
+				this.name = name;
+				this.costs = costs;
+				return;
+			}
+			throw new IllegalArgumentException("Quality not valid!");
 		}
-		throw new Exception("Not valid!");
+		throw new IllegalArgumentException("Costs not valid!");
 	}
 
 	public String getName() {

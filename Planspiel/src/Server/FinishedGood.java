@@ -15,17 +15,15 @@ public class FinishedGood extends Product {
 	 * @param costs
 	 * @param name
 	 * @return
+	 * @throws Exception 
 	 */
-	public static FinishedGood create(int quality, int costs) {
+	public static FinishedGood create(int quality, int costs) throws Exception {
 		
 		String name = "Panel";
-		try {
 			FinishedGood finishedGood = new FinishedGood(quality, name, costs);
 			
 			return finishedGood;
-		} catch (Exception e) {
-			return null; // Kosten oder Qualität ist nicht valide.
-		}
+	
 		
 		
 
