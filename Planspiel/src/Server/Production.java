@@ -135,6 +135,7 @@ public class Production extends DepartmentRoundSensitive {
 					innerBreak = true;
 					break;					
 				}
+				
 
 				// Abbuchen der Ressourcen:
 				// Zieh die Storage elemente aus dem Storage ab:
@@ -151,6 +152,8 @@ public class Production extends DepartmentRoundSensitive {
 					this.getCompany().getStorage().store(p.getWafer(),Constant.Production.WAFERS_PER_PANEL);
 					break;	
 				};
+				//Bucht die Stunden im HR ein:
+				this.getCompany().getHumanResources().increaseWorkingHour(Constant.Production.WORKING_HOURS_PER_PANEL);
 
 				// "Werkst�ck auf Maschine legen":
 				triedToProduce++;
