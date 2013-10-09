@@ -12,21 +12,17 @@ import Message.IMessage;
  * @author D059270 Diese Klasse stellt den Client dar und sorgt für eine
  *         Verbindung mit dem Server.
  */
-public class Client implements IClient {
+public class Client  {
 	private Socket clientSocket;
 
-	private final IClientUI ui;
+	
 
 	public static void main(String[] args) {
 		new Client();
 	}
 
-	public Client() {
-		ui = new ClientUI(this);
-		new Thread(ui).start();
-	}
-
-	@Override
+	
+	
 	/**
 	 * Erstellt einen Socket und verbindet mit dem Server, auf entsprechender IP und entsprechendem Port. Wird kein Server gefunden, wir dies auf der Console dokumentiert. 
 	 */
@@ -34,7 +30,7 @@ public class Client implements IClient {
 		Socket socket = null;
 		try {
 			socket = new Socket(ip, port);
-			ui.hide();
+			
 		} catch (UnknownHostException e) {
 			System.out.println("Kein Server gefunden!");
 
