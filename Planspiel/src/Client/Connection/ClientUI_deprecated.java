@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.text.MaskFormatter;
 
-public class ClientUI_deprecated implements IClientUI {
+public class ClientUI_deprecated {
 
 	private JFrame frame;
 	private JPanel panel1;
@@ -36,17 +36,17 @@ public class ClientUI_deprecated implements IClientUI {
 	//private JTextField message_textfield;
 	//private JButton send_button;
 
-	@Override
+	
 	public void run() {
 		frame.setVisible(true);
 	}
 
-	@Override
+	
 	public void hide() {
 		frame.setVisible(false);
 	}
 
-	public ClientUI_deprecated(final IClient client) {
+	public ClientUI_deprecated() {
 		initialize();
 
 		connect_button.addActionListener(new ActionListener() {
@@ -56,8 +56,8 @@ public class ClientUI_deprecated implements IClientUI {
 						&& portTextfield.getDocument().getLength() > 0
 						&& validIP(hostTextfield.getText()) 
 						&& validPort(portTextfield.getText())) {
-					client.connect(hostTextfield.getText(),
-							Integer.parseInt(portTextfield.getText()));
+					//client.connect(hostTextfield.getText(),
+					//		Integer.parseInt(portTextfield.getText()));
 				} else {
 					io_textarea.setText("Bitte die Verbindungsdaten korrekt angeben!");
 				}
