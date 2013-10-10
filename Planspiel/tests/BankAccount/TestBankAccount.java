@@ -40,9 +40,11 @@ public class TestBankAccount {
 		b.increaseBalance(-5000000);
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void increaseAmount0() {
+		long bankBalance = (long) b.getBankBalance();
 		b.increaseBalance(0);
+		assertEquals(true,(b.getBankBalance()==bankBalance));
 	}
 
 	@Test
@@ -61,9 +63,9 @@ public class TestBankAccount {
 		b.decreaseBalance(-500);
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void decreaseAmount0() {
-		b.decreaseBalance(0);
+		assertEquals(true,b.decreaseBalance(0));
 	}
 
 	@Test
