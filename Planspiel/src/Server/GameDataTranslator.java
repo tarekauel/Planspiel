@@ -27,6 +27,7 @@ import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
 import Message.GameDataMessageToClient.ReportingToClient;
 import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
+import Server.Connection.Player;
 
 public class GameDataTranslator {
 
