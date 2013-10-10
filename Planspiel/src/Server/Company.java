@@ -60,6 +60,10 @@ public class Company {
 		if (!checkLocation(l)) {
 			throw new IllegalArgumentException("Ungültiger Standort");
 		}
+		
+		if (!checkName(name)){
+			throw new IllegalArgumentException("Name darf nicht leer sein");
+		}
 		this.name = name;
 		// erzeuge Bankkonto mit 1 Mio Kapital
 		bankAccount = new BankAccount(this);
@@ -94,6 +98,14 @@ public class Company {
 			return Location.getLocationByCountry(l.getCountry()) != null;
 		}
 		return false;
+	}
+	/**
+	 * Prueft den Namen , darf nicht null oder "" sein
+	 * @param name der zu pruefen ist
+	 * @return true, falls name valide
+	 */
+	private boolean checkName(String name){
+		return (name==null || name == "");
 	}
 
 	/**
