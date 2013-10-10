@@ -105,7 +105,7 @@ public class Company {
 	 * @return true, falls name valide
 	 */
 	private boolean checkName(String name){
-		return (name==null || name == "");
+		return !(name==null || name == "");
 	}
 
 	/**
