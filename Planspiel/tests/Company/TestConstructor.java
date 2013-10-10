@@ -24,13 +24,20 @@ public class TestConstructor {
 	}
 
 	@Test (expected = java.lang.IllegalArgumentException.class)
-	public void createInvalidByWrongName() throws Exception {
+	public void createInvalidByWrongCountry() throws Exception {
 		new Company(Location.getLocationByCountry("Deutschlsd"),"OTTO");
 	}
 	@Test (expected = java.lang.IllegalArgumentException.class)
-	public void createInvalidByNull() throws Exception {
+	public void createInvalidByNullCountryAndName() throws Exception {
 		new Company(null,null);
 	}
-
+	@Test (expected = java.lang.IllegalArgumentException.class)
+	public void createInvalidByWrongName() throws Exception {
+		new Company(Location.getLocationByCountry("Deutschlsd"),"");
+	}
+	@Test (expected = java.lang.IllegalArgumentException.class)
+	public void createInvalidByNullName() throws Exception {
+		new Company(Location.getLocationByCountry("Deutschland"),null);
+	}
 
 }
