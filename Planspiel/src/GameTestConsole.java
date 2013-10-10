@@ -61,7 +61,7 @@ public class GameTestConsole {
 			}
 			System.out.print("Land: ");
 			String location = console.readLine();
-			game.addCompany(new Company(Location.getLocationByCountry(location), name));
+			new Company(Location.getLocationByCountry(location), name);
 			++counter;
 			playernames.add(name);
 		}
