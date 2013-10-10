@@ -135,7 +135,8 @@ public class GameTestConsole {
 					new HumanResourcesFromClient(bBook), wage, marketing));
 		}
 		
-		game.startNextRound(messages);
+		Object o = game.startNextRound(messages);
+		int i = 1;
 	}
 
 }

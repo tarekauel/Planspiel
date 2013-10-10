@@ -2,8 +2,6 @@ package Server;
 
 import java.util.ArrayList;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 import Constant.Constant;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageFromClient.DistributionFromClient.OfferFromClient;
@@ -13,21 +11,20 @@ import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOffe
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.DistributionToClient;
-import Message.GameDataMessageToClient.MarketingToClient;
 import Message.GameDataMessageToClient.DistributionToClient.OfferToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
+import Message.GameDataMessageToClient.MarketingToClient;
 import Message.GameDataMessageToClient.MarketingToClient.MarketShareToClient;
 import Message.GameDataMessageToClient.MarketingToClient.MotivationRoundToClient;
-import Message.GameDataMessageToClient.ProductionToClient;
 import Message.GameDataMessageToClient.MarketingToClient.RessourcePriceToClient;
+import Message.GameDataMessageToClient.ProductionToClient;
 import Message.GameDataMessageToClient.ProductionToClient.ProductionOrderToClient;
 import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
 import Message.GameDataMessageToClient.ReportingToClient;
 import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
-import Server.Connection.Player;
 
 public class GameDataTranslator {
 
@@ -250,9 +247,8 @@ public class GameDataTranslator {
 	 */
 	public ArrayList<GameDataMessageToClient> createGameDataMessages() throws Exception {
 		ArrayList<GameDataMessageToClient> messges = new ArrayList<GameDataMessageToClient>();
-		for (Player player : Server.Connection.Server.getServer()
-				.getPlayerList()) {
-			messges.add(createGameDataMessageToClient(player));
+		for (Company c : GameEngine.getGameEngine().getListOfCompanys()) {
+			messges.add(createGameDataMessageToClient(c));
 			
 		}
 		return messges;
@@ -261,15 +257,15 @@ public class GameDataTranslator {
 	/**
 	 * Sorgt für die Erstellung einer GamDataMessageToClient
 	 * 
-	 * @param player
+	 * @param company
 	 * @return
 	 * @throws Exception
 	 */
-	private GameDataMessageToClient createGameDataMessageToClient(Player player)
+	private GameDataMessageToClient createGameDataMessageToClient(Company company)
 			throws Exception {
-		String playerName = player.getName();
+		String playerName = company.getName();
 	//	Company company = player.getMyCompany(); TODO: AUSKOMMENTIERT
-		Company company = null;
+		
 		
 		//Abteilungen erstellen
 		PurchaseToClient purchase = createPurchase(company);
