@@ -24,7 +24,7 @@ public class GameTest {
 
 		Location.initLocations();
 
-		Company c = new Company(Location.getLocationByCountry("Deutschland"));
+		Company c = new Company(Location.getLocationByCountry("Deutschland"),"OTTO");
 
 		Purchase p = c.getPurchase();
 		Production pro = c.getProduction();
@@ -34,7 +34,7 @@ public class GameTest {
 		p.createRequest(new Resource(20, "Wafer", 0));
 		p.createRequest(new Resource(20, "Gehäuse", 0));
 
-		Company c2 = new Company(Location.getLocationByCountry("Deutschland"));
+		Company c2 = new Company(Location.getLocationByCountry("Deutschland"),"ANNA");
 
 		Purchase p2 = c2.getPurchase();
 		Production pro2 = c2.getProduction();
