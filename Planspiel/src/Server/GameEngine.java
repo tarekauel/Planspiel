@@ -91,6 +91,7 @@ public class GameEngine {
 		}
 		CustomerMarket.getMarket().handleAllOffers();
 		SupplierMarket.getMarket().handleRequest();
+				
 		//restliche Fachlogik (MaschineryLevel, Benefits) 
 		
 		// Creator: CustomerMarket.getMarket().getMarketShares();

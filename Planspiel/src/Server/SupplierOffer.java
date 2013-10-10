@@ -1,5 +1,7 @@
 package Server;
 
+import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOfferFromClient;
+
 
 
 /**
@@ -84,6 +86,15 @@ public class SupplierOffer {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Ueberprueft ob ein AcceptedSupplierOffer zu einem Server.SupplierOffer passt
+	 * @param o Vergleichs Angebot vom Client
+	 * @return true identisch, false ungleich
+	 */
+	public boolean equals(AcceptedSupplierOfferFromClient o) {
+		return (this.resource.getName().equals(o.name) && this.resource.getQuality() == o.quality); 
 	}
 
 }

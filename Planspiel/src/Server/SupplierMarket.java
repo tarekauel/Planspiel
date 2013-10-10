@@ -140,6 +140,8 @@ public class SupplierMarket {
 			}
 
 		}
+		
+		recalculatePrices();
 	}
 	
 	/**
@@ -175,7 +177,7 @@ public class SupplierMarket {
 		return out;
 	}
 
-	public void recalculatePrices() {
+	private void recalculatePrices() {
 		// Summe des Umsatzes aus Sicht des Beschaffungsmarkt in der Runde
 		long sumSalesWafer = 0;
 		// Summe des Umsatzes aus Sicht des Beschaffungsmarkt in der Runde

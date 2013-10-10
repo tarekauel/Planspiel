@@ -21,6 +21,9 @@ public class Purchase extends DepartmentRoundSensitive {
 
 	// Liste aller Request dieser Runde
 	private ArrayList<Request> listOfLatestRequests = new ArrayList<Request>();
+	
+	// Liste aller Requests der Vorrunde
+	private ArrayList<Request> listOfLastRoundRequests = new ArrayList<Request>();
 
 	// Liste aller akzeptierten SupplierOffers dieser Runde ( für den Markt )
 	private ArrayList<SupplierOffer> listOfLatestAcceptedSupplierOffers = new ArrayList<SupplierOffer>();
@@ -136,9 +139,18 @@ public class Purchase extends DepartmentRoundSensitive {
 	public ArrayList<SupplierOffer> getListOfAcceptedSupplierOffer() {
 		return listOfLatestAcceptedSupplierOffers;
 	}
+	
+	/**
+	 * Liefert alle Requests zurueck, die in der Vorrunde erzeugt worden sind (und in der aktuellen angenommen werden koennen)
+	 * @return Liste der Requests
+	 */
+	public ArrayList<Request> getListOfLastRoundRequests() {
+		return listOfLastRoundRequests;
+	}
 
 	@Override
 	public void prepareForNewRound(int round) {
+		listOfLastRoundRequests = listOfLatestRequests;
 		listOfLatestRequests = new ArrayList<Request>();
 		listOfLatestAcceptedSupplierOffers = new ArrayList<SupplierOffer>();
 	}
