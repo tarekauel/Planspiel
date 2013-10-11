@@ -47,7 +47,7 @@ public class ServerConnection extends Thread {
 				break;
 			case "GameDataMessageFromClient": 
 				// Es handelt sich um eine Message mit Spieldaten											
-				handleGameDataMessageFromClient((GameDataMessageToClient) message);
+				handleGameDataMessageFromClient((GameDataMessageFromClient) message);
 				break;
 			default:
 				break;
@@ -56,7 +56,7 @@ public class ServerConnection extends Thread {
 
 	}
 
-	private void handleGameDataMessageFromClient(GameDataMessageToClient message) {
+	private void handleGameDataMessageFromClient(GameDataMessageFromClient message) {
 		
 		try {
 			server.notifyGameData();

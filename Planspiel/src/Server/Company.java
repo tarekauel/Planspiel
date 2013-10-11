@@ -5,7 +5,7 @@ package Server;
  */
 
 public class Company {
-	
+
 	private String name;
 
 	private Location location;
@@ -27,43 +27,38 @@ public class Company {
 	 *             falls falsche eingabe werte
 	 * @exception IllegalArgumentException
 	 */
-	/*public Company(Location l) throws Exception {
+	/*
+	 * public Company(Location l) throws Exception {
+	 * 
+	 * if (!checkLocation(l)) { throw new
+	 * IllegalArgumentException("Ungültiger Standort"); }
+	 * 
+	 * // erzeuge Bankkonto mit 1 Mio Kapital bankAccount = new
+	 * BankAccount(this); // setze Location
+	 * 
+	 * this.location = l; // 'Kaufe die Location'
+	 * bankAccount.decreaseBalance(l.getPurchasePrice());
+	 * 
+	 * // Erzuege alle Abteilungen this.purchase = new Purchase(this);
+	 * this.production = new Production(this); this.storage = new Storage(this);
+	 * this.distribution = new Distribution(this); this.humanResources = new
+	 * HumanResources(this); this.marketResearch = new MarketResearch(this);
+	 * 
+	 * // Anmelden an der Gamengine GameEngine.getGameEngine().addCompany(this);
+	 * 
+	 * }
+	 */
 
-		if (!checkLocation(l)) {
-			throw new IllegalArgumentException("Ungültiger Standort");
-		}
-
-		// erzeuge Bankkonto mit 1 Mio Kapital
-		bankAccount = new BankAccount(this);
-		// setze Location
-
-		this.location = l;
-		// 'Kaufe die Location'
-		bankAccount.decreaseBalance(l.getPurchasePrice());
-
-		// Erzuege alle Abteilungen
-		this.purchase = new Purchase(this);
-		this.production = new Production(this);
-		this.storage = new Storage(this);
-		this.distribution = new Distribution(this);
-		this.humanResources = new HumanResources(this);
-		this.marketResearch = new MarketResearch(this);
-
-		// Anmelden an der Gamengine
-		GameEngine.getGameEngine().addCompany(this);
-
-	}
-	*/
-	
 	public Company(Location l, String name) throws Exception {
 
 		if (!checkLocation(l)) {
 			throw new IllegalArgumentException("Ungültiger Standort");
 		}
+
 		
-		if (!checkName(name)){
-			throw new IllegalArgumentException("Name darf nicht leer sein");
-		}
+		 if (!checkName(name)){
+		 throw new IllegalArgumentException("Name darf nicht leer sein");
+		 }
 		this.name = name;
 		// erzeuge Bankkonto mit 1 Mio Kapital
 		bankAccount = new BankAccount(this);
@@ -99,13 +94,16 @@ public class Company {
 		}
 		return false;
 	}
+
 	/**
 	 * Prueft den Namen , darf nicht null oder "" sein
-	 * @param name der zu pruefen ist
+	 * 
+	 * @param name
+	 *            der zu pruefen ist
 	 * @return true, falls name valide
 	 */
-	private boolean checkName(String name){
-		return !(name==null || name == "");
+	private boolean checkName(String name) {
+		return !(name == null || name == "");
 	}
 
 	/**
@@ -135,7 +133,6 @@ public class Company {
 
 		return this.bankAccount;
 	}
-
 
 	/**
 	 * 
@@ -189,11 +186,12 @@ public class Company {
 
 		return this.marketResearch;
 	}
+
 	/**
 	 * 
 	 * @return liefert namen der Company/Spielers zurueck
 	 */
-	public String getName(){
+	public String getName() {
 		return this.name;
 	}
 
