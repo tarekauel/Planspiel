@@ -53,16 +53,17 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int quality;
 
 			public static class SupplierOfferToClient {
-				public SupplierOfferToClient(String name, int quality, int orderedQuantity) {
+				public SupplierOfferToClient(String name, int quality, int orderedQuantity,int price) {
 					this.name = name;
 					this.quality = quality;
-				
+					this.price = price;
 					this.orderedQuantity=orderedQuantity;
 				}
 
 				public final String name;
 				public final int quality;
 				public final int orderedQuantity;
+				public final int price;
 			}
 		}
 
@@ -76,18 +77,18 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		public static class ProductionOrderToClient {
 			public ProductionOrderToClient(int qualityWafer, int qualityCase,
-					int quantity, int costsPerPanel) {
+					int quantity) {
 
 				this.qualityWafer = qualityWafer;
 				this.qualityCase = qualityCase;
 				this.quantity = quantity;
-				this.costsPerPanel = costsPerPanel;
+			
 			}
 
 			public final int qualityWafer;
 			public final int qualityCase;
 			public final int quantity;
-			public final int costsPerPanel;
+			
 		}
 
 		public final ArrayList<ProductionOrderToClient> orders; // Ewige Liste

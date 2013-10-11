@@ -410,7 +410,7 @@ public class GameDataTranslator {
 				.getListOfAllProductionOrders()) {
 			orders.add(new ProductionOrderToClient(productionOrder.getWafer()
 					.getQuality(), productionOrder.getCase().getQuality(),
-					productionOrder.getProduced(),productionOrder.getCase().getCosts()));
+					productionOrder.getProduced()));
 		}
 		ProductionToClient production = new ProductionToClient(orders);
 		return production;
@@ -434,7 +434,7 @@ public class GameDataTranslator {
 						.add(new GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient(
 								supplierOffer.getResource().getName(),
 								supplierOffer.getResource().getQuality(),
-								supplierOffer.getOrderedQuantity()));
+								supplierOffer.getOrderedQuantity(), supplierOffer.getResource().getCosts()));
 			}
 			requests.add(new RequestToClient(request.getRequestedResource()
 					.getName(), request.getRequestedResource().getQuality(),
