@@ -76,18 +76,18 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		public static class ProductionOrderToClient {
 			public ProductionOrderToClient(int qualityWafer, int qualityCase,
-					int quantity, int costs) {
+					int quantity, int costsPerPanel) {
 
 				this.qualityWafer = qualityWafer;
 				this.qualityCase = qualityCase;
 				this.quantity = quantity;
-				this.costs = costs;
+				this.costsPerPanel = costsPerPanel;
 			}
 
 			public final int qualityWafer;
 			public final int qualityCase;
 			public final int quantity;
-			public final int costs;
+			public final int costsPerPanel;
 		}
 
 		public final ArrayList<ProductionOrderToClient> orders; // Ewige Liste
@@ -97,9 +97,14 @@ public class GameDataMessageToClient extends GameDataMessage {
 	public static class StorageToClient {
 		
 
-		public StorageToClient(
+		
+		public StorageToClient(int storageCostsWafer, int storageCostsCase,
+				int storageCostsPanel,
 				ArrayList<StorageElenmentToClient> storageElements) {
 			
+			this.storageCostsWafer = storageCostsWafer;
+			this.storageCostsCase = storageCostsCase;
+			this.storageCostsPanel = storageCostsPanel;
 			this.storageElements = storageElements;
 		}
 
@@ -116,6 +121,9 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int quantity;
 			
 		}
+		public final int storageCostsWafer;
+		public final int storageCostsCase;
+		public final int storageCostsPanel;
 
 		public final ArrayList<StorageElenmentToClient> storageElements; // Liste StoageElements
 

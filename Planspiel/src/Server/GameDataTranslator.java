@@ -25,6 +25,8 @@ import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
 import Message.GameDataMessageToClient.ReportingToClient;
 import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
+import Message.GameDataMessageToClient.StorageToClient;
+import Message.GameDataMessageToClient.StorageToClient.StorageElenmentToClient;
 
 public class GameDataTranslator {
 
@@ -169,7 +171,7 @@ public class GameDataTranslator {
 		for (AcceptedSupplierOfferFromClient acceptedSupOf : acceptedSupplierOffers) {
 			// Sucht alle aktuellen Requests auf dem Server
 			for (Server.Request request : company.getPurchase()
-					.getListOfLastRoundRequests()) { // TODO so gehts nicht....
+					.getListOfLastRoundRequests()) {
 				// Sucht zum jeweiligen Request die 3 SupplierOffers auf dem
 				// Server
 				for (SupplierOffer supOf : request.getSupplierOffers()) {
@@ -274,13 +276,25 @@ public class GameDataTranslator {
 		HumanResourcesToClient humanResources = createHumanResources(company);
 		MarketingToClient marketing = createMarketing(company);
 		ReportingToClient reporting = createReporting(company);
+		StorageToClient storage = createStorage(company);
 		//Hauptdaten erstellen
 		long cash = company.getBankAccount().getBankBalance();
 		long maxCredit = Constant.BankAccount.MAX_CREDIT;
 		
 		// Message erstellen
-		GameDataMessageToClient message = new GameDataMessageToClient(playerName, purchase, production, distribution, humanResources, marketing, reporting, cash, maxCredit);
+		GameDataMessageToClient message = new GameDataMessageToClient(playerName, purchase, production, storage, distribution, humanResources, marketing, reporting, cash, maxCredit);
 		return message;
+	}
+
+	private StorageToClient createStorage(Company company) {
+		Storage serverStorage = company.getStorage();
+		ArrayList<StorageElenmentToClient> storageElements = new ArrayList<StorageElenmentToClient>();
+		for (StorageElement storageElenment : serverStorage.getAllStorageElements()) {
+			storageElements.add(new StorageElenmentToClient(storageElenment.getProduct().getName(), storageElenment.getProduct().getQuality(), storageElenment.getQuantity()));
+		}
+		
+		StorageToClient storage = new StorageToClient(Constant.Product.STORAGECOST_WAFER, Constant.Product.STORAGECOST_CASE, Constant.Product.STORAGECOST_PANEL, storageElements);
+		return storage;
 	}
 
 	private ReportingToClient createReporting(Company company) {
@@ -396,7 +410,7 @@ public class GameDataTranslator {
 				.getListOfAllProductionOrders()) {
 			orders.add(new ProductionOrderToClient(productionOrder.getWafer()
 					.getQuality(), productionOrder.getCase().getQuality(),
-					productionOrder.getProduced()));
+					productionOrder.getProduced(),productionOrder.getCase().getCosts()));
 		}
 		ProductionToClient production = new ProductionToClient(orders);
 		return production;
