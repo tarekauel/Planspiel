@@ -12,8 +12,6 @@ public class Production extends DepartmentRoundSensitive {
 	// Referenz auf die Maschine (auf der wir ja produzieren mï¿½ssen)
 	Machinery					machine;
 
-	// Liste der Auslastungen fï¿½r diesen Spieler
-	ArrayList<TPercentOfUsage>	listOfAllPercentOfUsage		= new ArrayList<TPercentOfUsage>();
 
 
 	/**
@@ -186,15 +184,9 @@ public class Production extends DepartmentRoundSensitive {
 
 		}
 
-		// summe aller auftrï¿½ge
-		int sum = 0;
-		// hole Summe aller ProductionOrders dieser Runde
-		for (ProductionOrder o : listOfOpenProductionOrders) {
-			sum += o.getRequested();
-		}
+		
 
-		listOfAllPercentOfUsage.add(new TPercentOfUsage(sum / this.machine.getMaxCapacity(), GameEngine.getGameEngine()
-				.getRound()));
+	
 	}
 
 	/**
@@ -216,18 +208,13 @@ public class Production extends DepartmentRoundSensitive {
 		return listOfOpenProductionOrders;
 	}
 
-	/**
-	 * 
-	 * @return gibt die Liste aller Auslastungen fï¿½r diesen Spieler wieder
-	 */
-	public ArrayList<TPercentOfUsage> getListOfAllPercentOfUsage() {
-		return listOfAllPercentOfUsage;
-	}
+
 	/**
 	 * erhöht das Maschinen level (falls möglich)
+	 * @return true, falls erhöht, false falls nicht erhöht
 	 */
-	public void increaseMachineryLevel(){
-		machine.increaseLevel(this.getCompany().getBankAccount());
+	public boolean increaseMachineryLevel(){
+		return machine.increaseLevel(this.getCompany().getBankAccount());
 	}
 
 	@Override
