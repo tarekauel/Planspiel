@@ -1,9 +1,11 @@
 package Message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class GameDataMessageToClient extends GameDataMessage {
+public class GameDataMessageToClient extends GameDataMessage implements Serializable
+	{
 
 	public GameDataMessageToClient(String playerName, PurchaseToClient purchase,
 			ProductionToClient production,StorageToClient storage, DistributionToClient distribution,
@@ -32,14 +34,14 @@ public class GameDataMessageToClient extends GameDataMessage {
 	public final long cash;
 	public final long maxCredit;
 
-	public static class PurchaseToClient {
+	public static class PurchaseToClient implements Serializable {
 		public PurchaseToClient(ArrayList<RequestToClient> requests) {
 			this.requests = requests;
 		}
 
 		public final ArrayList<RequestToClient> requests; // ewige Liste
 
-		public static class RequestToClient {
+		public static class RequestToClient implements Serializable {
 			public RequestToClient(String name, int quality,
 					ArrayList<SupplierOfferToClient> supplierOffers) {
 				this.name = name;
@@ -52,7 +54,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final String name;
 			public final int quality;
 
-			public static class SupplierOfferToClient {
+			public static class SupplierOfferToClient implements Serializable {
 				public SupplierOfferToClient(String name, int quality, int orderedQuantity,int price) {
 					this.name = name;
 					this.quality = quality;
@@ -69,13 +71,13 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public static class ProductionToClient {
+	public static class ProductionToClient implements Serializable {
 
 		public ProductionToClient(ArrayList<ProductionOrderToClient> orders) {
 			this.orders = orders;
 		}
 
-		public static class ProductionOrderToClient {
+		public static class ProductionOrderToClient implements Serializable {
 			public ProductionOrderToClient(int qualityWafer, int qualityCase,
 					int quantity) {
 
@@ -95,7 +97,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 	
-	public static class StorageToClient {
+	public static class StorageToClient implements Serializable {
 		
 
 		
@@ -109,7 +111,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 			this.storageElements = storageElements;
 		}
 
-		public static class StorageElenmentToClient {
+		public static class StorageElenmentToClient implements Serializable {
 			
 			public StorageElenmentToClient(String type, int quality,
 					int quantity) {
@@ -130,7 +132,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public static  class DistributionToClient {
+	public static  class DistributionToClient implements Serializable {
 
 		public DistributionToClient(ArrayList<OfferToClient> offers) {
 			this.offers = offers;
@@ -154,7 +156,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 		public final ArrayList<OfferToClient> offers;
 	}
 
-	public static class HumanResourcesToClient {
+	public static class HumanResourcesToClient implements Serializable {
 
 		public final ArrayList<BenefitBookingToClient> benefits;
 
@@ -173,7 +175,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 		public final int countEmployees;
 		public final int wageCosts;
 
-		public static class BenefitBookingToClient {
+		public static class BenefitBookingToClient implements Serializable {
 
 			public BenefitBookingToClient(String name, int remainingRounds) {
 				this.name = name;
@@ -186,7 +188,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public static class MarketingToClient {
+	public static class MarketingToClient implements Serializable {
 
 		public MarketingToClient(int peakAMarket, int peakCMarket,
 				ArrayList<MarketShareToClient> marketShares,
@@ -210,12 +212,12 @@ public class GameDataMessageToClient extends GameDataMessage {
 		// For HR
 		public final ArrayList<MotivationRoundToClient> motivationRounds;
 
-		public static class MotivationRoundToClient {
+		public static class MotivationRoundToClient implements Serializable {
 			int round;
 			int motivation;
 		}
 
-		public static class RessourcePriceToClient {
+		public static class RessourcePriceToClient implements Serializable{
 
 			public RessourcePriceToClient(int quality, int price) {
 
@@ -228,7 +230,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		}
 
-		public static class MarketShareToClient {
+		public static class MarketShareToClient implements Serializable {
 
 			public MarketShareToClient(int share, String name) {
 				super();
@@ -243,7 +245,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 	}
 
-	public static class ReportingToClient {
+	public static class ReportingToClient implements Serializable {
 
 		public ReportingToClient(ArrayList<FixCostToClient> fixCosts, MachineryToClient machinery,
 				ArrayList<SellsToClient> sellsOfRounds,
@@ -260,7 +262,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 		public final ArrayList<SellsToClient> sellsOfRounds;
 		public final ArrayList<CashValueOfRoundToClient> cashValues;
 
-		public static class SellsToClient {
+		public static class SellsToClient  implements Serializable{
 
 			public SellsToClient(int round, ArrayList<Integer> qualities) {
 
@@ -273,7 +275,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		}
 
-		public static class FixCostToClient {
+		public static class FixCostToClient implements Serializable {
 
 			public FixCostToClient(String nameOfDepartment, int costs) {
 
@@ -285,7 +287,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int costs;
 		}
 
-		public static class MachineryToClient {
+		public static class MachineryToClient implements Serializable{
 
 			public MachineryToClient(int level, int maxCapacity, int averageUsage,
 					int usageLastRound) {
@@ -302,7 +304,7 @@ public class GameDataMessageToClient extends GameDataMessage {
 			public final int usageLastRound;
 		}
 
-		public static class CashValueOfRoundToClient {
+		public static class CashValueOfRoundToClient implements Serializable {
 
 			public CashValueOfRoundToClient(int round, int costs) {
 

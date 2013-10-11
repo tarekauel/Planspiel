@@ -15,45 +15,46 @@ import Message.GameDataMessageToClient;
 import Message.IMessage;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
+import Message.GameDataMessageFromClient.DistributionFromClient;
+import Message.GameDataMessageFromClient.HumanResourcesFromClient;
+import Message.GameDataMessageFromClient.ProductionFromClient;
+import Message.GameDataMessageFromClient.PurchaseFromClient;
+import Message.GameDataMessageFromClient.DistributionFromClient.OfferFromClient;
+import Message.GameDataMessageFromClient.HumanResourcesFromClient.BenefitBookingFromClient;
+import Message.GameDataMessageFromClient.ProductionFromClient.ProductionOrderFromClient;
+import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOfferFromClient;
+import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Server.GameEngine;
 import Server.Location;
 import Server.Connection.Server;
 
 public class GameEngineRoundTest {
 
-	public GameEngineRoundTest() {
-		// TODO Auto-generated constructor stub
-	}
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		Location.initLocations();
-	}
-
-	@Before
-	public void initializeTests() {
-	}
+	
 
 	@Test
-	public void makeTests() {
+	public void roundTestWithConnection() {
 		// Server starten
-		Server s = Server.getServer();
+		Server.main(null);
 
 		// Client 1 connect
 		Client c1 = new Client();
 		c1.connect("localhost", Constant.Server.TCP_PORT);
-		c1.writeMessage(new LoginMessage("Player1", "passwort1", "Deutschland"));
+		
 
 		// Client 2 connect
 		Client c2 = new Client();
 		c2.connect("localhost", Constant.Server.TCP_PORT);
-		c2.writeMessage(new LoginMessage("Player2", "passwort1", "USA"));
+		
 
 		// Client 3 connect
 		Client c3 = new Client();
 		c3.connect("localhost", Constant.Server.TCP_PORT);
-		c3.writeMessage(new LoginMessage("Player3", "passwort1", "China"));
-
+		
+		c1.writeMessage(new LoginMessage("SolarWorld", "passwort1", "Deutschland"));
+		c2.writeMessage(new LoginMessage("SolarPlus", "passwort1", "USA"));
+		c3.writeMessage(new LoginMessage("SolarMax", "passwort1", "China"));
+		
 		// Read LoginConfirmationMessages
 		LoginConfirmationMessage message1 = (LoginConfirmationMessage) c1
 				.readMessage();
@@ -65,8 +66,61 @@ public class GameEngineRoundTest {
 				.readMessage();
 		assertEquals(true, message3.getSuccess());
 
-		// Read LoginConfirmationMessages
-		GameDataMessageToClient
+		/*fail();
+		// Get Game Data
+		GameDataMessageToClient gameMessage1 = (GameDataMessageToClient) c1.readMessage();
+		assertEquals(Constant.BankAccount.START_CAPITAL, gameMessage1.cash);
+		GameDataMessageToClient gameMessage2 = (GameDataMessageToClient) c2.readMessage();
+		assertEquals(Constant.BankAccount.START_CAPITAL, gameMessage2.cash);
+		GameDataMessageToClient gameMessage3 = (GameDataMessageToClient) c3.readMessage();
+		assertEquals(Constant.BankAccount.START_CAPITAL, gameMessage3.cash);*/
+		
+		// Set GameData
+		ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
+		requests.add ( new RequestFromClient("Wafer", 25) );
+		requests.add ( new RequestFromClient("Gehäuse", 40) );
+		
+		ArrayList<AcceptedSupplierOfferFromClient> accepted = new ArrayList<AcceptedSupplierOfferFromClient>();
+		
+		ArrayList<ProductionOrderFromClient> proOrder = new ArrayList<ProductionOrderFromClient>();
+		
+		ArrayList<OfferFromClient> offerList = new ArrayList<OfferFromClient>();
+		
+		ArrayList<BenefitBookingFromClient> bBook = new ArrayList<BenefitBookingFromClient>();
+		
+		GameDataMessageFromClient gameMessagefromClient1 = new GameDataMessageFromClient("SolarWorld", 
+				new PurchaseFromClient( requests, accepted ), 
+				new ProductionFromClient(proOrder), 
+				new DistributionFromClient( offerList ), 
+				false, 
+				new HumanResourcesFromClient( bBook), 
+				10000, 
+				true);
+		GameDataMessageFromClient gameMessagefromClient2 =  new GameDataMessageFromClient("SolarPlus", 
+				new PurchaseFromClient( requests, accepted ), 
+				new ProductionFromClient(proOrder), 
+				new DistributionFromClient( offerList ), 
+				false, 
+				new HumanResourcesFromClient( bBook), 
+				10000, 
+				true);
+		
+		GameDataMessageFromClient gameMessagefromClient3 =  new GameDataMessageFromClient("SolarMax", 
+				new PurchaseFromClient( requests, accepted ), 
+				new ProductionFromClient(proOrder), 
+				new DistributionFromClient( offerList ), 
+				false, 
+				new HumanResourcesFromClient( bBook), 
+				10000, 
+				true);
+	
+		//Send GameData		
+		
+		c1.writeMessage(gameMessagefromClient1);
+		c2.writeMessage(gameMessagefromClient2);
+		c3.writeMessage(gameMessagefromClient3);
+		
+		
 
 	}
 

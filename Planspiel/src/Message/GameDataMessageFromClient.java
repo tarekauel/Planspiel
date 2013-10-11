@@ -1,8 +1,9 @@
 package Message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameDataMessageFromClient extends GameDataMessage {
+public class GameDataMessageFromClient   extends GameDataMessage implements Serializable {
 
 	public GameDataMessageFromClient(String playerName, PurchaseFromClient purchase,
 			ProductionFromClient production, DistributionFromClient distribution,
@@ -26,7 +27,7 @@ public class GameDataMessageFromClient extends GameDataMessage {
 	public final int wage;
 	public final boolean buyMarketResearch;
 
-	public static class PurchaseFromClient {
+	public static class PurchaseFromClient implements Serializable {
 		public PurchaseFromClient(ArrayList<RequestFromClient> requests,
 				ArrayList<AcceptedSupplierOfferFromClient> acceptedSupplierOffers) {
 			this.requests = requests;
@@ -36,7 +37,7 @@ public class GameDataMessageFromClient extends GameDataMessage {
 		public final ArrayList<RequestFromClient> requests; // Artikel
 
 		// und
-		public static class RequestFromClient {
+		public static class RequestFromClient implements Serializable {
 			public RequestFromClient(String name, int quality) {
 				this.name = name;
 				this.quality = quality;
@@ -48,7 +49,7 @@ public class GameDataMessageFromClient extends GameDataMessage {
 		}
 
 		// Qualitaet
-		public  static class AcceptedSupplierOfferFromClient {
+		public  static class AcceptedSupplierOfferFromClient implements Serializable {
 			public AcceptedSupplierOfferFromClient(String name, int quality, int quantity) {
 				this.name = name;
 				this.quality = quality;
@@ -64,13 +65,13 @@ public class GameDataMessageFromClient extends GameDataMessage {
 
 	}
 
-	public  static class ProductionFromClient {
+	public  static class ProductionFromClient implements Serializable {
 
 		public ProductionFromClient(ArrayList<ProductionOrderFromClient> orders) {
 			this.orders = orders;
 		}
 
-		public  static class ProductionOrderFromClient {
+		public  static class ProductionOrderFromClient implements Serializable {
 			public ProductionOrderFromClient(int qualityWafer, int qualityCase,
 					int quantity) {
 
@@ -88,13 +89,13 @@ public class GameDataMessageFromClient extends GameDataMessage {
 
 	}
 
-	public  static class DistributionFromClient {
+	public  static class DistributionFromClient implements Serializable {
 
 		public DistributionFromClient(ArrayList<OfferFromClient> offers) {
 			this.offers = offers;
 		}
 
-		public static class OfferFromClient {
+		public static class OfferFromClient implements Serializable {
 
 			public OfferFromClient(int quality, int quantityToSell, int price) {
 				this.quality = quality;
@@ -110,14 +111,14 @@ public class GameDataMessageFromClient extends GameDataMessage {
 		public final ArrayList<OfferFromClient> offers;
 	}
 
-	public static class HumanResourcesFromClient {
+	public static class HumanResourcesFromClient implements Serializable {
 
 		public HumanResourcesFromClient(ArrayList<BenefitBookingFromClient> benefits) {
 
 			this.benefits = benefits;
 		}
 
-		public static class BenefitBookingFromClient {
+		public static class BenefitBookingFromClient implements Serializable {
 
 			public BenefitBookingFromClient(String name, int duration) {
 				this.name = name;

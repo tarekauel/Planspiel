@@ -1,5 +1,6 @@
 package Server.Connection;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -8,6 +9,7 @@ import Message.GameDataMessage;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageToClient;
 import Server.GameEngine;
+import Server.Location;
 
 /**
  * 
@@ -27,7 +29,12 @@ public class Server {
 	 */
 	
 	public static void main(String[] args) {
-		getServer();
+		try {
+			getServer();
+		} catch (Exception e) {
+			System.out.println("Server musste aufgrund eines Fehlers beendet werdenbeendet werden!");
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -35,9 +42,11 @@ public class Server {
 	 * Returned den Server. Somit ist ein Sigleton sichergestellt.
 	 * 
 	 * @return
+	 * @throws IOException 
 	 */
-	public static Server getServer() {
+	public static Server getServer() throws IOException {
 		if (server == null) {
+			Location.initLocations();
 			server = new Server(Constant.Server.TCP_PORT);
 		}
 
