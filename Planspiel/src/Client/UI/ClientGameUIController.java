@@ -10,7 +10,8 @@ package Client.UI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,12 +26,16 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
+import Client.UI.ClientGameUIModel.Request;
+import Client.UI.ClientGameUIModel.SupplierOffer;
+import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
@@ -58,9 +63,19 @@ public class ClientGameUIController implements Initializable{
 	@FXML private ChoiceBox newPurchaseRequestArticleNameChoiceBox;
 	@FXML private Slider newPurchaseRequestArticleQualitySlider;
 	@FXML private TextField newPurchaseRequestArticleQualityTextField;
-	@FXML private TableView purchaseRequestsTableView;
-	@FXML private TableColumn purchaseReqArtikelTableColumn;
-	@FXML private TableView purchaseOffersTableView;
+	@FXML private TableView<Request> purchaseRequestsTableView;
+	@FXML private TableColumn<Request,String> purchaseRequestArtikelTableColumn;
+	@FXML private TableColumn<Request,String> purchaseRequestIdTableColumn;
+	@FXML private TableColumn<Request,String> purchaseRequestQualityTableColumn;
+	@FXML private TableColumn<Request,String> purchaseRequestStatusTableColumn;
+	private final ObservableList<Request> purchaseRequestTableData = FXCollections.observableArrayList();
+	@FXML private TableView<SupplierOffer> purchaseOffersTableView;
+	@FXML private TableColumn<SupplierOffer,String> purchaseOffersIdTableColumn;
+	@FXML private TableColumn<SupplierOffer,String> purchaseOffersArtikelTableColumn;
+	@FXML private TableColumn<SupplierOffer,String> purchaseOffersQualityTableColumn;
+	@FXML private TableColumn<SupplierOffer,String> purchaseOffersQuantityTableColumn;
+	@FXML private TableColumn<SupplierOffer,String> purchaseOffersPriceTableColumn;	
+	private final ObservableList<SupplierOffer> purchaseOffersTableData = FXCollections.observableArrayList();
     //Production
 	@FXML private Button newProductionOrderButton;
 	@FXML private Button newProductionOrderSaveButton;
@@ -121,14 +136,7 @@ public class ClientGameUIController implements Initializable{
  * @param in Message, die geparsed werden soll
  */
 	public void parseAnswerFromServer(GameDataMessageToClient in){
-		
-		for (RequestToClient r:in.purchase.requests){
-			machineryLevelTextField.setText(r.name);
-			parsePurchase(in.purchase);
-			
-		}
-		
-			
+		parsePurchase(in.purchase);			
 	}
 	
 	
@@ -138,29 +146,18 @@ public class ClientGameUIController implements Initializable{
 	 * @param in das Klassen objekt für den Verkauf
 	 */
 	private void parsePurchase(PurchaseToClient in){
-		final ObservableList<Request> data = FXCollections.observableArrayList();
-		for(RequestToClient req:in.requests) {
-			Request request = new Request(req.name);
-			data.add(request);
-		}
 		
-		purchaseRequestsTableView.setItems(
-				 data
-				);
+		
+			for(int i=in.requests.size()-1; i>=0; i--) {
+				RequestToClient req = in.requests.get(i);
+			
+			Request request = new Request(req, i);
+			purchaseRequestTableData.add(request);
+		}			
 		
 	}
 	
-	public static class Request {
-		private final SimpleStringProperty name;
-			
-		private Request( String name) {
-			this.name = new SimpleStringProperty(name);
-		}
-		
-		public String getName() {
-			return name.get();
-		}
-	}
+	
 	
     /**
      * Hier werden alle Felder des UIs initialisiert, die initial beim Aufrufen des UIs gefuellt sein sollen.
@@ -171,9 +168,63 @@ public class ClientGameUIController implements Initializable{
     	this.model = new ClientGameUIModel();
     	processRoundProgressBar(model.getRound());
     	
-    	purchaseReqArtikelTableColumn.setCellValueFactory(
+    	purchaseRequestArtikelTableColumn.setCellValueFactory(
     			new PropertyValueFactory<Request, String>("name")
     			);
+    	
+    	purchaseRequestIdTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<Request, String>("id")
+    			);
+    	
+    	purchaseRequestStatusTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<Request, String>("status")
+    			);
+    	
+    	purchaseRequestQualityTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<Request, String>("quality")
+    			);
+    	
+    	purchaseRequestsTableView.setItems(
+				 purchaseRequestTableData
+				);
+    	
+    	// Verhindert, dass man eine neue Spalte durch schieben hinzufügen kann
+    	purchaseRequestsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);    	    	
+    	
+    	purchaseRequestIdTableColumn.setSortType(TableColumn.SortType.DESCENDING);
+    	purchaseRequestsTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);    	
+    	purchaseRequestsTableView.getSelectionModel().selectedItemProperty().addListener(
+    			new ChangeListener<Request>() {
+    				public void changed(ObservableValue<? extends Request> observable, Request oldValue, Request newValue) {
+    					purchaseOffersTableData.clear();
+    					for( SupplierOffer o:newValue.getOffer()) {
+    						purchaseOffersTableData.add(o);
+    					}
+    				}
+    			}
+    			);
+    	    	
+    	purchaseOffersArtikelTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<SupplierOffer, String>("name")
+    			);
+    	purchaseOffersIdTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<SupplierOffer, String>("id")
+    			);
+    	purchaseOffersQualityTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<SupplierOffer, String>("quality")
+    			);
+    	purchaseOffersQuantityTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<SupplierOffer, String>("quantity")
+    			);
+    	purchaseOffersPriceTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<SupplierOffer, String>("price")
+    			);
+    	purchaseOffersTableView.setItems(
+    			purchaseOffersTableData
+    			);
+    	
+    	purchaseOffersTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+    	purchaseOffersTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);  
     	
     	
     	/**
@@ -191,18 +242,27 @@ public class ClientGameUIController implements Initializable{
     	
     	newPurchaseRequestButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {      
+            public void handle(ActionEvent actionEvent) {                  	
             	//Felder resetten
             	newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
-            	newPurchaseRequestArticleQualitySlider.adjustValue(0.0);
-            	newPurchaseRequestArticleQualityTextField.setText("0.0");
+            	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
+            	newPurchaseRequestArticleQualityTextField.setText("1.0");
             }
         }); 
     	
     	newPurchaseRequestSaveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {           	
-
+            public void handle(ActionEvent actionEvent) {  
+            	purchaseRequestTableData.add(
+            			new Request(
+            					newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
+            					String.valueOf(((int) newPurchaseRequestArticleQualitySlider.getValue())))); 
+            			model.addRequest(new RequestFromClient(newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
+            					((int) newPurchaseRequestArticleQualitySlider.getValue())));
+            			
+            			newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
+                    	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
+                    	newPurchaseRequestArticleQualityTextField.setText("1.0");
             }
         }); 
     	

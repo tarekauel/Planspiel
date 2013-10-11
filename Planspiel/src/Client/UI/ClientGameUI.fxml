@@ -43,13 +43,12 @@
                         <ChoiceBox fx:id="newPurchaseRequestArticleNameChoiceBox" layoutX="76.0" layoutY="12.0" prefWidth="171.0">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="Item 1" />
-                              <String fx:value="Item 2" />
-                              <String fx:value="Item 3" />
+                              <String fx:value="Wafer"/>
+                              <String fx:value="Gehäuse" />                              
                             </FXCollections>
                           </items>
                         </ChoiceBox>
-                        <Slider id="purchaseRequestArticleChoiceBox" fx:id="newPurchaseRequestArticleQualitySlider" layoutX="76.0" layoutY="50.0" prefWidth="574.0" />
+                        <Slider id="purchaseRequestArticleChoiceBox" fx:id="newPurchaseRequestArticleQualitySlider" layoutX="76.0" layoutY="50.0" prefWidth="574.0" min="1.0" max="100.0" />
                         <TextField id="purchaseRequestArticleQuality" fx:id="newPurchaseRequestArticleQualityTextField" layoutX="658.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
                       </children>
                     </AnchorPane>
@@ -59,12 +58,12 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="81.0" prefWidth="353.0">
                       <children>
-                        <TableView fx:id="purchaseRequestsTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
+                        <TableView fx:id="purchaseRequestsTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0"  >
                           <columns>
-                            <TableColumn prefWidth="28.0" text="#" fx:id="purchaseReqIdTableColumn" />
-                            <TableColumn prefWidth="81.0" text="Artikel" fx:id="purchaseReqArtikelTableColumn" />
-                            <TableColumn prefWidth="61.0" text="Qualität" />
-                            <TableColumn prefWidth="150.0" text="Status" />
+                            <TableColumn prefWidth="28.0" text="#" fx:id="purchaseRequestIdTableColumn" />
+                            <TableColumn prefWidth="81.0" text="Artikel" fx:id="purchaseRequestArtikelTableColumn" />
+                            <TableColumn prefWidth="61.0" text="Qualität" fx:id="purchaseRequestQualityTableColumn" />
+                            <TableColumn prefWidth="150.0" text="Status"  fx:id="purchaseRequestStatusTableColumn"/>
                           </columns>
                         </TableView>
                       </children>
@@ -77,11 +76,11 @@
                       <children>
                         <TableView fx:id="purchaseOffersTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
                           <columns>
-                            <TableColumn prefWidth="28.0" text="#" />
-                            <TableColumn prefWidth="81.0" text="Artikel" />
-                            <TableColumn prefWidth="61.0" text="Qualität" />
-                            <TableColumn prefWidth="75.0" text="Preis/ME" />
-                            <TableColumn prefWidth="75.0" text="Menge" />
+                            <TableColumn prefWidth="28.0" text="#"  fx:id="purchaseOffersIdTableColumn"/>
+                            <TableColumn prefWidth="81.0" text="Artikel"  fx:id="purchaseOffersArtikelTableColumn"/>
+                            <TableColumn prefWidth="61.0" text="Qualität"  fx:id="purchaseOffersQualityTableColumn"/>
+                            <TableColumn prefWidth="75.0" text="Preis/ME"  fx:id="purchaseOffersPriceTableColumn"/>
+                            <TableColumn prefWidth="75.0" text="Menge"  fx:id="purchaseOffersQuantityTableColumn"/>
                           </columns>
                         </TableView>
                       </children>
