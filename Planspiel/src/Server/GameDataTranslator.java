@@ -169,7 +169,7 @@ public class GameDataTranslator {
 		for (AcceptedSupplierOfferFromClient acceptedSupOf : acceptedSupplierOffers) {
 			// Sucht alle aktuellen Requests auf dem Server
 			for (Server.Request request : company.getPurchase()
-					.getListOfLastRoundRequests()) { // TODO so gehts nicht....
+					.getListOfLastRoundRequests()) {
 				// Sucht zum jeweiligen Request die 3 SupplierOffers auf dem
 				// Server
 				for (SupplierOffer supOf : request.getSupplierOffers()) {

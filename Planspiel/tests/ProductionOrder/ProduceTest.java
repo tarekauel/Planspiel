@@ -35,7 +35,7 @@ public class ProduceTest {
 	}
 
 	@Test
-	//in ProductionOrder produce() Zeile  169 muss Faktor 10 weg sonst Qualities von 0-1000
+	//TODO in ProductionOrder produce() Zeile  169 muss Faktor 10 weg sonst Qualities von 0-1000
 	public void produceValid() throws Exception{
 		prodOrd = p.getListOfAllProductionOrders().get(0);	
 		int advantage = 100;
@@ -43,6 +43,7 @@ public class ProduceTest {
 		assertEquals(true,prodOrd.getPanel()!=null);
 		assertEquals(true,prodOrd.getPanel().getQuality() == 74);
 		assertEquals(true,prodOrd.getPanel().getCosts() == 655000);
+		fail();
 	}
 	
 	//ueberprueft ob die Qualitaet um mehr als 20 Punkte gestiegen ist

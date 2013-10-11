@@ -14,35 +14,36 @@ import Constant.Constant;
 public class HumanResources extends DepartmentRoundSensitive {
 
 	// Lohn pro Runde pro Mitarbeiter
-	private TWage						wagePerRound;
+	private TWage wagePerRound;
 
 	// Anzahl Mitarbeiter
-	private int							countEmployees;
+	private int countEmployees;
 
 	// Gesamtkosten Loehne
-	private int							wagesSum;
+	private int wagesSum;
 
 	// Liste der gebuchten Benefits
-	private ArrayList<BenefitBooking>	benefitBooking			= new ArrayList<BenefitBooking>();
+	private ArrayList<BenefitBooking> benefitBooking = new ArrayList<BenefitBooking>();
 
 	// Anzahl der bereits gebuchten Arbeiterstunden
-	private int							workingHoursPerRound	= 0;
+	private int workingHoursPerRound = 0;
 
 	// ---------- Attribute zur Berechnung der Motivaiton
 	// Lohn der Letzten Runde
-	private TWage						wageLastRound			= null;
+	private TWage wageLastRound = null;
 
 	// Summe der Benefitinvestitionen der letzten Runde
-	private long						sumBenefitLastRound		= 0;
+	private long sumBenefitLastRound = 0;
 
 	// Summe der Benefitinvestitionen dieser Runde
-	private long						sumBenfit				= 0;
+	private long sumBenfit = 0;
 
 	public HumanResources(Company c) throws Exception {
 		super(c, "Personal", Constant.DepartmentFixcost.HUMAN_RESOURCES);
 
 		setCountEmployees(100); // TODO: Anpassen & in ini-File auslagern
-		setWagePerRound(new TWage(900, GameEngine.getGameEngine().getRound(), c.getLocation().getWageLevel())); // TODO:
+		setWagePerRound(new TWage(900, GameEngine.getGameEngine().getRound(), c
+				.getLocation().getWageLevel())); // TODO:
 		// Anpassen
 		// &
 		// in
@@ -79,7 +80,9 @@ public class HumanResources extends DepartmentRoundSensitive {
 
 			// Abgelaufene Buchungen und welche, die nur in dieser Runde noch
 			// gueltig sind, sollen ignoriert werden
-			if (bB.getRemainingRounds() <= 1 && bB.getStartInRound() <= GameEngine.getGameEngine().getRound())
+			if (bB.getRemainingRounds() <= 1
+					&& bB.getStartInRound() <= GameEngine.getGameEngine()
+							.getRound())
 				continue;
 
 			// Auf Gleichheit ueberpruefne
@@ -158,7 +161,8 @@ public class HumanResources extends DepartmentRoundSensitive {
 			if (bP.getRemainingRounds() > 0 && bP.getStartInRound() <= round) {
 
 				// Betrag für diese Runde vom Konto abbuchen
-				if (!getCompany().getBankAccount().decreaseBalance(bP.getBenefit().getCostsPerRound())) {
+				if (!getCompany().getBankAccount().decreaseBalance(
+						bP.getBenefit().getCostsPerRound())) {
 
 					// Benefitinvestitionen kummulieren
 					sumBenefits += bP.getBenefit().getCostsPerRound();
@@ -174,76 +178,93 @@ public class HumanResources extends DepartmentRoundSensitive {
 	/**
 	 * Berechnet die Motivation in dieser Runde
 	 * 
-	 * @return Motivation in Prozent
+	 * @return Motivation in Prozent * 100
 	 * @throws Exception
 	 */
 	@NoGet
 	public int getMotivation() throws Exception {
 		// TODO: testen mit unterschieden zur letzten Runde!
 		// Gehaltsunterschied zur Vorrunde
-		double diffWageToLastRound = 0.0;
+		double diffWageToLastRound = 1.0;
 
 		// Nur ab der zweiten Runde git es einen Unterschied
 		if (GameEngine.getGameEngine().getRound() > 1) {
 			// Unterschied in Prozent berechnen
-			// (Neuer Lohn - Alter Lohn) / (Alter Lohn)
-			diffWageToLastRound = (wagePerRound.getAmount() - wageLastRound.getAmount())
+			// (Neuer Lohn) / (Alter Lohn)
+			diffWageToLastRound = (wagePerRound.getAmount())
 					/ (double) wageLastRound.getAmount();
 		}
 
 		// Einfluss auf die Motivation durch den Lohn zur Vorrunde
 		// Berechnung je nach Positiv oder Negativ unterscheiden
-		double influenceWageToLastRound = ((diffWageToLastRound < 0.0) ? 1 - Math.pow((diffWageToLastRound
-				* Constant.HumanResources.IMPACT_DIFF_NEG / 10), 2) : 1 + Math.sqrt(diffWageToLastRound
-				* Constant.HumanResources.IMPACT_DIFF_POS / 10));
+		double influenceWageToLastRound = ((diffWageToLastRound < 1.0) ? 1 - Math
+				.pow(((diffWageToLastRound - 1) * (Constant.HumanResources.IMPACT_DIFF_NEG / 10.0)),
+						2)
+				: 1 + Math.sqrt((diffWageToLastRound - 1)
+						* (Constant.HumanResources.IMPACT_DIFF_POS / 10.0)));
 
 		// Gehaltsunterschied zur Gruppe
-		// ( Eigener Lohn - Durchschnitt) / Durchschnitt
-		double averageWageAmount = MarketData.getMarketData().getAvereageWage().getAmount();
-		double diffWageToAverage = ((wagePerRound.getAmount() / (wagePerRound.getWageLevel() / 10000.0)) - averageWageAmount)
-				/ averageWageAmount;
+		// ( Eigener Lohn) / Durchschnitt
+		double averageWageAmount = MarketData.getMarketData().getAvereageWage()
+				.getAmount();
+		double diffWageToAverage = ((wagePerRound.getAmount() / (wagePerRound
+				.getWageLevel() / 10000.0))) / averageWageAmount;
 
 		// Einfluss auf die Motivaiton durch den Unterschied zum Markt
 		// Berechnung je nach Positiv oder Negative unterschiedlich
-		double influenceWageToAverage = ((diffWageToAverage < 0.0) ? 1 - Math.pow((diffWageToAverage
-				* Constant.HumanResources.IMPACT_DIFF_NEG / 10), 2) : 1 + Math.sqrt(diffWageToAverage
-				* Constant.HumanResources.IMPACT_DIFF_POS / 10));
+		double influenceWageToAverage = ((diffWageToAverage < 1.0) ? 1 - Math
+				.pow(((diffWageToAverage - 1) * (Constant.HumanResources.IMPACT_DIFF_NEG / 10.0)),
+						2)
+				: 1 + Math.sqrt((diffWageToAverage - 1)
+						* (Constant.HumanResources.IMPACT_DIFF_POS / 10.0)));
 
 		// Unterschied wird ab der zweiten Runde berechnet
-		double diffBenefitToLastRound = 0.0;
+		double diffBenefitToLastRound = 1.0;
 
 		if (GameEngine.getGameEngine().getRound() > 1) {
-			diffBenefitToLastRound = (sumBenfit - sumBenefitLastRound) / (double) sumBenefitLastRound;
+			// Wenn weder Benfits in dieser Runde noch in der letzten existieren, bleibt die das verhaeltnis 100%
+			if( !(sumBenefitLastRound == 0 && sumBenfit == 0) ) {
+				// Wenn diese Runde Benefits hinzugekommen sind, in der letzten Runde keine existierten, dann wird die letzte Rund als 1 cent betrachtet, um Div0 zu verhindern
+				if( sumBenefitLastRound == 0) {
+					sumBenefitLastRound = 1;
+				}
+				diffBenefitToLastRound = (sumBenfit) / (double) sumBenefitLastRound;
+			}
 		}
 
 		// Einfluss auf die Motivaiton berechnen
-		double influenceBenefitToLastRound = ((diffBenefitToLastRound < 0.0) ? 1 - Math.pow((diffBenefitToLastRound
-				* Constant.HumanResources.IMPACT_DIFF_NEG / 10), 2) : 1 + Math.sqrt(diffBenefitToLastRound
-				* Constant.HumanResources.IMPACT_DIFF_POS / 10));
+		double influenceBenefitToLastRound = ((diffBenefitToLastRound < 1.0) ? 1 - Math
+				.pow(((diffBenefitToLastRound - 1) * (Constant.HumanResources.IMPACT_DIFF_NEG / 10.0)),
+						2)
+				: 1 + Math.sqrt((diffBenefitToLastRound - 1)
+						* (Constant.HumanResources.IMPACT_DIFF_POS / 10.0)));
 
 		// Unterschied zur Gruppe berechnen
 		double averageBenefit = MarketData.getMarketData().getAverageBenefit();
-		double diffBenefitToAverage = 0.0;
-		
+		double diffBenefitToAverage = 1.0;
+
 		if (averageBenefit > 0.0) {
-			diffBenefitToAverage = ((sumBenfit / (getCompany().getLocation().getWageLevel() / 10000.0)) - averageBenefit)
-					/ averageBenefit;
+			diffBenefitToAverage = ((sumBenfit / (getCompany().getLocation()
+					.getWageLevel() / 10000.0))) / averageBenefit;
 		}
 
-		// Einfluss auf die Motiviont berechnen
-		double influenceBenefitToAverage = ((diffBenefitToAverage < 0.0) ? 1 - Math.pow((diffBenefitToAverage
-				* Constant.HumanResources.IMPACT_DIFF_NEG / 10), 2) : 1 + Math.sqrt(diffBenefitToAverage
-				* Constant.HumanResources.IMPACT_DIFF_POS / 10));
+		// Einfluss auf die Motivation berechnen
+		double influenceBenefitToAverage = ((diffBenefitToAverage < 1.0) ? 1 - Math
+				.pow(((diffBenefitToAverage - 1) * (Constant.HumanResources.IMPACT_DIFF_NEG / 10.0)),
+						2)
+				: 1 + Math.sqrt((diffBenefitToAverage - 1)
+						* (Constant.HumanResources.IMPACT_DIFF_POS / 10.0)));
 
 		// Motivation gewichtet berechnen TODO: mal checken
-		double motivation = ((influenceWageToLastRound * Constant.HumanResources.IMPACT_DIFF_INTERNAL + influenceWageToAverage
-				* Constant.HumanResources.IMPACT_DIFF_MARKET)
-				* Constant.HumanResources.HR_FACTOR_WAGE+ (influenceBenefitToLastRound
-				* Constant.HumanResources.IMPACT_DIFF_INTERNAL + influenceBenefitToAverage
-				* Constant.HumanResources.IMPACT_DIFF_MARKET)
-				* Constant.HumanResources.HR_FACTOR_BENEFIT) / 100;
+		double motivation = (influenceWageToLastRound
+				* (Constant.HumanResources.IMPACT_DIFF_INTERNAL / 100.0) + influenceWageToAverage
+				* (Constant.HumanResources.IMPACT_DIFF_MARKET / 100.0))
+				* (Constant.HumanResources.HR_FACTOR_WAGE / 100.0)
+				+ (influenceBenefitToLastRound	* (Constant.HumanResources.IMPACT_DIFF_INTERNAL / 100.0) + influenceBenefitToAverage
+				* (Constant.HumanResources.IMPACT_DIFF_MARKET / 100.0))
+				* (Constant.HumanResources.HR_FACTOR_BENEFIT / 100.0);
 
-		return (int) Math.floor(motivation);
+		return (int)( motivation * 10000 ); // TODO ueberpruefen
 	}
 
 	/**
@@ -253,6 +274,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 	 * @return Lohnniveauinvestionen auf Niveau 100
 	 */
 	public long getSumBenefits() {
-		return (long) Math.floor(sumBenfit / (getCompany().getLocation().getWageLevel() / 10000.0));
+		return (long) Math.floor(sumBenfit
+				/ (getCompany().getLocation().getWageLevel() / 10000.0));
 	}
 }
