@@ -1,6 +1,7 @@
 package GameDataTranslator;
 
 	import java.util.ArrayList;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,7 +26,7 @@ import Server.Location;
 import Server.SupplierMarket;
 import Server.SupplierOffer;
 
-	public class M2DAcceptSupplierOffer {
+	public class M2DAcceptSupplierOfferENDLOS {
 		
 		Company c;
 		ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
@@ -72,7 +73,7 @@ import Server.SupplierOffer;
 		}
 
 		@Test
-		@FakeRandom( mathRandomNewRandom = { 50 }, mathRandomMethodName = { "Server.SupplierMarket.getOfferQualities()"} )
+		@FakeRandom( mathRandomNewRandom = { 50.0 }, mathRandomMethodName = { "Server.SupplierMarket.getOfferQualities"} )
 		public void convertRequest() throws Exception {
 			GameDataTranslator.getGameDataTranslator().convertGameDataMessage2Objects(gameDataMessages);
 			SupplierMarket.getMarket().handleRequest();
