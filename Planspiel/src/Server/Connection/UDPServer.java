@@ -39,8 +39,9 @@ public class UDPServer extends Thread {
 		}
 
 		while (true) {
+			//System.out.println("Wait for UDP Messages:");
 			String message = receive(socket, packet, buffer);
-
+		 //	System.out.println("Received UDP Message:");
 			if (message.trim().equals("Ich suche den Spielserver!")) {
 
 				String responeMessage = "Ich bin der Spielserver!Port:"

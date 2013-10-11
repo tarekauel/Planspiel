@@ -47,7 +47,7 @@ public class UDPClient extends Thread {
 	}
 
 	/**
-	 * Started den Thread
+	 * Started den Thread und das Suchen
 	 */
 	public void run() {
 		byte[] buffer = new byte[1024];
@@ -55,7 +55,7 @@ public class UDPClient extends Thread {
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
 		try {
-			socket = new DatagramSocket(Constant.Server.UDP_PORT);
+			socket = new DatagramSocket();
 		} catch (SocketException e) {
 			// Kann nicht an Port lauschen
 			e.printStackTrace();
@@ -63,15 +63,16 @@ public class UDPClient extends Thread {
 
 		while (true) {
 
-			send("Ich suche den Spielserver!", "255.255.255.255",
+			send(socket,"Ich suche den Spielserver!", "127.0.0.1",
 					Constant.Server.UDP_PORT);
 			
 			// Nach einer Minute wird erneut eine Nachricht gesendet, da UDP
 			// "unzuverlässig" ist.
 			timerWaitForAnswer.schedule(timerTask(), 60000);
-
+			//System.out.println("Wait for UDP Message from Server");
+			
 			String message = receive(socket, packet, buffer);
-
+			//	System.out.println("Received UDP Message from Server");
 			if (message.trim().startsWith("Ich bin der Spielserver!")) {
 
 				tcpServerPort = Integer.parseInt(message.split(":")[1].trim());
@@ -89,7 +90,7 @@ public class UDPClient extends Thread {
 
 			@Override
 			public void run() {
-				send("Ich suche den Spielserver!", "255.255.255.255",
+				send(socket,"Ich suche den Spielserver!", "255.255.255.255",
 						Constant.Server.UDP_PORT);
 				if (sentMessages>3) {
 					tcpServerPort=-1;
@@ -132,17 +133,17 @@ public class UDPClient extends Thread {
 	 * @param ip
 	 * @param port
 	 */
-	private void send(String nachricht, String ip, int port) {
+	private void send(DatagramSocket socket,String nachricht, String ip, int port) {
 		sentMessages++;
 		try {
 			System.out.println("Gesendet an " + ip + ":" + port + ": "
 					+ nachricht);
-			DatagramSocket socket = new DatagramSocket();
+			
 			byte[] buffer = nachricht.getBytes();
 			DatagramPacket packet = new DatagramPacket(buffer, buffer.length,
 					InetAddress.getByName(ip.replace("/", "")), port);
 			socket.send(packet);
-			socket.close();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

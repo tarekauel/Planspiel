@@ -7,12 +7,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Client.Connection.Client;
+import Client.Connection.UDPClient;
 import Constant.Constant;
 import Message.IMessage;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
 import Server.Location;
 import Server.Connection.Server;
+import Server.Connection.UDPServer;
 
 public class ConnectionTest {
 	private static Server server = null;
@@ -46,7 +48,7 @@ public class ConnectionTest {
 
 	@Test
 	public void loginTest1() {
-		System.out.println("1");
+		
 		String name="Michael";
 		String password="123456";
 		String chosenLocation="Deutschland";
@@ -64,7 +66,7 @@ public class ConnectionTest {
 	
 	@Test
 	public void loginTestSameName() {
-		System.out.println("2");
+		
 		String name="Michael";
 		String password="123456";
 		String chosenLocation="Deutschland";
@@ -81,6 +83,25 @@ public class ConnectionTest {
 		IMessage message4 = client4.readMessage();
 		LoginConfirmationMessage loginConfirmationMessage4 = (LoginConfirmationMessage) message4;
 		assertEquals(false, loginConfirmationMessage4.getSuccess());
+		
+	}
+	
+	@Test
+	public void udpTest() {
+		UDPServer udpServer = new UDPServer(Constant.Server.TCP_PORT, Constant.Server.UDP_PORT);
+		udpServer.start();
+		UDPClient udpClient = new UDPClient();
+		udpClient.start();
+		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertEquals(Constant.Server.TCP_PORT,udpClient.getTcpPortOfServer());
+		
 		
 	}
 	
