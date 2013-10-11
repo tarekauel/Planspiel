@@ -434,7 +434,7 @@ public class GameDataTranslator {
 						.add(new GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient(
 								supplierOffer.getResource().getName(),
 								supplierOffer.getResource().getQuality(),
-								supplierOffer.getOrderedQuantity(), supplierOffer.getResource().getCosts()));
+								supplierOffer.getOrderedQuantity(), supplierOffer.getResource().getCosts(), supplierOffer.getRound()));
 			}
 			requests.add(new RequestToClient(request.getRequestedResource()
 					.getName(), request.getRequestedResource().getQuality(),

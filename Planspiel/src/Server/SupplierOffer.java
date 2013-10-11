@@ -12,6 +12,7 @@ import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOffe
 public class SupplierOffer {
 
 	private int orderedQuantity;
+	private final int round;
 	private Resource resource;
 
 	/**
@@ -27,12 +28,21 @@ public class SupplierOffer {
 		if (resource == null)
 			throw new IllegalArgumentException("Resource darf nicht null sein!");
 		this.resource = resource;
+		this.round = GameEngine.getGameEngine().getRound();
 		
 	}
 
 	public int getOrderedQuantity() {
 		
 		return orderedQuantity;
+	}
+	
+	/**
+	 * Liefert die Runde zurück, in der das Angebot erstellt wurde
+	 * @return
+	 */
+	public int getRound() {
+		return round;
 	}
 
 	/**

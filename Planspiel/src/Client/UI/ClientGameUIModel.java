@@ -1,6 +1,5 @@
 package Client.UI;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -88,18 +87,22 @@ public class ClientGameUIModel {
 		private final SimpleStringProperty quantity;
 		private final SimpleStringProperty price;
 		private final SimpleStringProperty id;
+		private final int round;
 		private static int lastId = 0;
 		
 		public SupplierOffer( SupplierOfferToClient offer, int id) {
-			this( offer.name, offer.quality+"", offer.orderedQuantity+"", offer.price+"", id);
+			this( offer.name, offer.quality+"", offer.orderedQuantity+"", offer.price+"", id, offer.round);
 		}
 		
-		private SupplierOffer( String name, String quality, String quantity,  String price, int id) {
+		private SupplierOffer( String name, String quality, String quantity,  String price, int id, int round) {
 			this.name = new SimpleStringProperty(name);
 			this.quality = new SimpleStringProperty(quality);
+			// Falls Quantity 0 ist soll nichts erscheinen!
+			quantity = (quantity.equals("0")) ? "" : quantity;
 			this.quantity = new SimpleStringProperty(quantity);
 			this.id = new SimpleStringProperty(id+"");
-			this.price = new SimpleStringProperty(price);				
+			this.price = new SimpleStringProperty(price);	
+			this.round = round;
 			lastId = id;
 		}
 		
@@ -121,6 +124,10 @@ public class ClientGameUIModel {
 		
 		public String getId() {
 			return id.get();
+		}
+		
+		public int getRound() {
+			return round;
 		}
 	}
 
