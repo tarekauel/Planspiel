@@ -89,7 +89,13 @@ public class GameEngine {
 			company.getBankAccount().decreaseBalance(costs);
 
 		}
-		CustomerMarket.getMarket().handleAllOffers();
+		
+		//Der CustomerMarkt darf erst ab Runde 4 beginnnen
+		//sonst ist er bereits gestorben, wenn angebote kommen
+		if (round>=4){
+			CustomerMarket.getMarket().handleAllOffers();
+		}
+		
 		SupplierMarket.getMarket().handleRequest();
 				
 		//restliche Fachlogik (MaschineryLevel, Benefits) 
