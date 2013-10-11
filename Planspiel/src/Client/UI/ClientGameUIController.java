@@ -8,14 +8,15 @@ package Client.UI;
  */
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import javafx.beans.value.ChangeListener;
+import aaaaa.GameTestConsole;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -25,17 +26,16 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
 import javafx.util.StringConverter;
-import javafx.util.converter.DoubleStringConverter;
+import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 
 
 /**
  * Dies ist die Controller-Klasse der Game-Stage. Hier wird alles implementiert, was das Game-UI manipulieren soll.
  * @author Lars Trey
  */
-public class ClientGameUIController implements Initializable {
+public class ClientGameUIController implements Initializable{
 	
 	private ClientGameUIModel model;
 
@@ -109,6 +109,17 @@ public class ClientGameUIController implements Initializable {
 	@FXML private BarChart reportingSalesBarChart;
 	@FXML private LineChart reportingCompanyValueLineChart;
 
+
+	public void parseAnswerFromServer(GameDataMessageToClient in){
+		
+		for (RequestToClient r:in.purchase.requests){
+			machineryLevelTextField.setText(r.name);
+		}
+		
+		
+		
+	}
+	
     /**
      * Hier werden alle Felder des UIs initialisiert, die initial beim Aufrufen des UIs gefuellt sein sollen.
      */
@@ -201,6 +212,9 @@ public class ClientGameUIController implements Initializable {
     	newProductionOrderOutputAmountTextField.textProperty().bindBidirectional(newProductionOrderOutputAmountSlider.valueProperty(), stringConverterForSliders);
     	newSaleOfferArticleAmountTextField.textProperty().bindBidirectional(newSaleOfferArticleAmountSlider.valueProperty(), stringConverterForSliders);
     	
+    	//TODO:
+    	parseAnswerFromServer(GameTestConsole.data);
+    	//END WORK
     }
     
     /**

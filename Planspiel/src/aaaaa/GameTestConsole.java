@@ -1,7 +1,10 @@
+package aaaaa;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import Client.UI.ClientGameUIController;
+import Client.UI.ClientUIStart;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageFromClient.DistributionFromClient;
 import Message.GameDataMessageFromClient.DistributionFromClient.OfferFromClient;
@@ -31,6 +34,8 @@ public class GameTestConsole {
 
 	private static ArrayList<String>	playernames	= new ArrayList<String>();
 
+	public static GameDataMessageToClient data;
+	
 	public static void main(String[] args) throws Exception {
 
 		startGame();
@@ -191,7 +196,11 @@ public class GameTestConsole {
 		}
 
 		for (GameDataMessageToClient answer : game.startNextRound(messages)) {
-
+			//TODO
+			
+			data = answer;
+			ClientUIStart.main(null);
+			//END OF WoRK
 			System.out.println("Auswertung Spieler" + answer.getPlayerName());
 			
 			System.out.println("Antwort vom Purchase");
@@ -223,6 +232,9 @@ public class GameTestConsole {
 				OfferToClient o = answer.distribution.offers.get(i);
 				System.out.println("Angebot #" + i + " Q. " + o.quality + " Price " + o.price + "  Verkauft " + o.quantitySold + " von " + o.quantityToSell);
 			}
+			
+			
+			
 		}
 	}
 
