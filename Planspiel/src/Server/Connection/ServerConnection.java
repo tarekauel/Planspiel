@@ -178,7 +178,11 @@ public class ServerConnection extends Thread {
 			System.out.println(txt);
 
 		}
-		player.addMessagesFromClient(message);
+		
+		if(player!=null)
+		{			
+		player.addMessagesFromClient(message);		
+		}
 		return message;
 	}
 
@@ -191,7 +195,9 @@ public class ServerConnection extends Thread {
 	 *            dokumentiert.
 	 */
 	public void writeMessage(IMessage message) { // Nachricht schreiben
+		if(player!=null){
 		player.addMessagesToClient(message);
+		}
 		ObjectOutputStream object;
 		try {
 			object = new ObjectOutputStream(clientSocket.getOutputStream());
