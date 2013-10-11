@@ -8,6 +8,7 @@ package Client.UI;
  */
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -35,13 +36,12 @@ import javafx.util.converter.DoubleStringConverter;
  * @author Lars Trey
  */
 public class ClientGameUIController implements Initializable {
+	
+	private ClientGameUIModel model;
 
 	/**
 	 * Hier werden alle Felder des UIs mit Variablen verknüpft.
 	 */
-    //General
-	private int round;
-	private int maxRounds = 20;
 	@FXML private ListView<String> eventListView;
 	@FXML private Button endRoundButton;
 	@FXML private Label roundLabel;
@@ -109,18 +109,15 @@ public class ClientGameUIController implements Initializable {
 	@FXML private BarChart reportingSalesBarChart;
 	@FXML private LineChart reportingCompanyValueLineChart;
 
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-       
-    }
-
     /**
      * Hier werden alle Felder des UIs initialisiert, die initial beim Aufrufen des UIs gefuellt sein sollen.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
     	
-    	processRoundProgressBar(round);
+    	this.model = new ClientGameUIModel();
+    	
+    	processRoundProgressBar(model.getRound());
     	
     	/**
     	 * Hier werden alle Buttons mit ActionListenern versehen.
@@ -129,9 +126,9 @@ public class ClientGameUIController implements Initializable {
     	endRoundButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {           	
-            	round++;    
+            	model.setRound(model.getRound()+1);    
             	//TEST
-            	processRoundProgressBar(round);
+            	processRoundProgressBar(model.getRound());
             }
         }); 
     	
@@ -139,6 +136,7 @@ public class ClientGameUIController implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {      
             	//Felder resetten
+            	newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
             	newPurchaseRequestArticleQualitySlider.adjustValue(0.0);
             	newPurchaseRequestArticleQualityTextField.setText("0.0");
             }
@@ -147,7 +145,7 @@ public class ClientGameUIController implements Initializable {
     	newPurchaseRequestSaveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {           	
-            	          	
+
             }
         }); 
     	
@@ -212,7 +210,7 @@ public class ClientGameUIController implements Initializable {
     public void processRoundProgressBar(int round){
     	
     	Integer roundInt = new Integer(round);
-    	Integer maxRoundsInt = new Integer(maxRounds);
+    	Integer maxRoundsInt = new Integer(model.getMaxRounds());
     	double newProgress = (roundInt.doubleValue() / maxRoundsInt.doubleValue());
     	roundProgressBar.setProgress(newProgress);
     	roundLabel.setText("Runde: "+roundInt.toString());

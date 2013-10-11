@@ -84,11 +84,14 @@
 
 }
 
-#MainPane .titled-pane .title .text {
+#MainPane .titled-pane:expanded .title .text {
 
 	-fx-font-family: "Segoe UI";
+	-fx-fill: white;
 
 }
+
+
 
 #TabPane .tab:top {
 

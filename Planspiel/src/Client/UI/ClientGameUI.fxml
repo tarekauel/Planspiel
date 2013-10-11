@@ -10,19 +10,14 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="MainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="919.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Client.UI.ClientGameUIController">
+<AnchorPane id="MainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="790.999977929685" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Client.UI.ClientGameUIController">
   <children>
     <Label id="TitleLabel" layoutX="14.0" layoutY="12.0" text="Planspiel v0.1" textFill="#33ff54">
       <font>
         <Font size="25.0" />
       </font>
     </Label>
-    <TitledPane id="GeneralInformationBox" animated="false" collapsible="true" layoutX="14.0" layoutY="61.0" maxHeight="100.0" minHeight="100.0" minWidth="672.0" text="Generelle Informationen">
-      <content>
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="74.0" prefWidth="770.0" />
-      </content>
-    </TitledPane>
-    <TitledPane id="EventBox" animated="false" collapsible="true" layoutX="14.0" layoutY="174.0" minWidth="672.0" prefWidth="774.0" text="Ereignisse">
+    <TitledPane id="EventBox" animated="false" collapsible="false" expanded="true" layoutX="14.0" layoutY="63.0" minWidth="672.0" prefWidth="774.0" text="Ereignisse">
       <content>
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="140.0" prefWidth="668.0">
           <children>
@@ -31,7 +26,7 @@
         </AnchorPane>
       </content>
     </TitledPane>
-    <TabPane id="TabPane" layoutX="14.0" layoutY="353.0" minWidth="672.0" prefHeight="500.0" prefWidth="774.0" tabClosingPolicy="UNAVAILABLE" tabMinWidth="73.0">
+    <TabPane id="TabPane" layoutX="14.0" layoutY="242.0" minWidth="672.0" prefHeight="500.0" prefWidth="774.0" tabClosingPolicy="UNAVAILABLE" tabMinWidth="73.0">
       <tabs>
         <Tab text="Einkauf">
           <content>
@@ -442,7 +437,7 @@
                   <content>
                     <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="234.0" prefWidth="352.0">
                       <children>
-                        <LineChart id="LineChart" fx:id="reportingCompanyValueLineChart" alternativeColumnFillVisible="false" alternativeRowFillVisible="true" disable="false" focusTraversable="false" layoutX="-4.0" layoutY="-17.0" legendSide="BOTTOM" legendVisible="false" prefHeight="260.0" prefWidth="365.0" title="">
+                        <LineChart fx:id="reportingCompanyValueLineChart" alternativeColumnFillVisible="false" alternativeRowFillVisible="true" disable="false" focusTraversable="false" layoutX="-4.0" layoutY="-17.0" legendSide="BOTTOM" legendVisible="false" prefHeight="260.0" prefWidth="365.0" title="">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -477,8 +472,8 @@
       </tabs>
     </TabPane>
     <Button id="EndRoundButton" fx:id="endRoundButton" layoutX="650.0" layoutY="17.0" mnemonicParsing="false" text="Runde beenden" />
-    <ProgressBar fx:id="roundProgressBar" layoutX="16.0" layoutY="878.0" prefHeight="21.0" prefWidth="770.0" progress="0.26" />
-    <Label fx:id="roundLabel" layoutX="384.0" layoutY="880.0" text="Runde" />
+    <ProgressBar fx:id="roundProgressBar" layoutX="16.0" layoutY="760.0" prefHeight="21.0" prefWidth="770.0" progress="0.26" />
+    <Label fx:id="roundLabel" layoutX="384.0" layoutY="762.0" text="Runde" />
   </children>
   <stylesheets>
     <URL value="@style.css" />
