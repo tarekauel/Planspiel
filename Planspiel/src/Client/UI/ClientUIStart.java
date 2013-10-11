@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 public class ClientUIStart extends Application {
 	
 	private Stage primaryStage;
-	private Parent root;
 
     @Override
     public void start(Stage primaryStage) throws Exception {

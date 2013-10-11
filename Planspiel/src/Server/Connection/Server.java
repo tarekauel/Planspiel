@@ -21,6 +21,15 @@ public class Server {
 	private int receivedGameMessages = 0;
 	private int maxPlayer = Constant.Server.MAX_PLAYER;
 
+	/**
+	 * startet den Server
+	 * @param args
+	 */
+	
+	public static void main(String[] args) {
+		getServer();
+	}
+	
 	
 	/**
 	 * Returned den Server. Somit ist ein Sigleton sichergestellt.

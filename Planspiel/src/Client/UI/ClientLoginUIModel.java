@@ -8,5 +8,6 @@ public class ClientLoginUIModel {
 	
 	UDPClient udpClient = new UDPClient();
 	Client client = new Client();
+	
 
 }

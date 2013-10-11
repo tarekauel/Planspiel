@@ -1,7 +1,7 @@
 package AspectLogger;
 
 public aspect ALogger {
-/*
+
 	pointcut logMethodWithoutGet() : 
 	      ( execution ( * *.* (..)) && ( !execution( * *.get* (..)) || !execution(@Noget * *.get* (..) )) || initialization( *.new(..))) && !within(ALogger);
 
@@ -49,5 +49,5 @@ public aspect ALogger {
 			}
 		}
 		System.err.println(output.toString());
-	}*/
+	}
 }
