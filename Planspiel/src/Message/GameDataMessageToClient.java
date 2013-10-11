@@ -3,6 +3,8 @@ package Message;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Server.GameEngine;
+
 
 public class GameDataMessageToClient extends GameDataMessage implements Serializable
 	{
@@ -22,6 +24,7 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 		this.cash = cash;
 		this.maxCredit = maxCredit;
 		this.storage= storage;
+		this.round = GameEngine.getGameEngine().getRound();
 	}
 
 	public final PurchaseToClient purchase;
@@ -33,6 +36,7 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 	public final HumanResourcesToClient humanResources;	
 	public final long cash;
 	public final long maxCredit;
+	public final int round;
 
 	public static class PurchaseToClient implements Serializable {
 		public PurchaseToClient(ArrayList<RequestToClient> requests) {
@@ -53,19 +57,22 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 			public final ArrayList<SupplierOfferToClient> supplierOffers;
 			public final String name;
 			public final int quality;
+			
 
 			public static class SupplierOfferToClient implements Serializable {
-				public SupplierOfferToClient(String name, int quality, int orderedQuantity,int price) {
+				public SupplierOfferToClient(String name, int quality, int orderedQuantity,int price, int round) {
 					this.name = name;
 					this.quality = quality;
 					this.price = price;
 					this.orderedQuantity=orderedQuantity;
+					this.round = round;
 				}
 
 				public final String name;
 				public final int quality;
 				public final int orderedQuantity;
 				public final int price;
+				public final int round;
 			}
 		}
 

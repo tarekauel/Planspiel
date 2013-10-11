@@ -31,6 +31,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 import Client.UI.ClientGameUIModel.Request;
@@ -60,6 +61,7 @@ public class ClientGameUIController implements Initializable{
     //Purchase
 	@FXML private Button newPurchaseRequestButton;
 	@FXML private Button newPurchaseRequestSaveButton;
+	@FXML private TitledPane newPurchaseRequestBox;
 	@FXML private ChoiceBox newPurchaseRequestArticleNameChoiceBox;
 	@FXML private Slider newPurchaseRequestArticleQualitySlider;
 	@FXML private TextField newPurchaseRequestArticleQualityTextField;
@@ -136,6 +138,7 @@ public class ClientGameUIController implements Initializable{
  * @param in Message, die geparsed werden soll
  */
 	public void parseAnswerFromServer(GameDataMessageToClient in){
+		model.setRound(in.round);
 		parsePurchase(in.purchase);			
 	}
 	
@@ -199,6 +202,12 @@ public class ClientGameUIController implements Initializable{
     					purchaseOffersTableData.clear();
     					for( SupplierOffer o:newValue.getOffer()) {
     						purchaseOffersTableData.add(o);
+    						System.out.println(o.getRound() + "=="+ (model.getRound()-1));
+    						if( o.getRound() == model.getRound()-1 ) {
+    							purchaseOffersTableView.setEditable(true);
+    					    	purchaseOffersQuantityTableColumn.setEditable(true);
+    					    	// TODO an dieser stelle sollte das bearbeiten der Rechten Tablle der Spalte Menge moeglich sein!
+    						}
     					}
     				}
     			}
@@ -244,6 +253,7 @@ public class ClientGameUIController implements Initializable{
             @Override
             public void handle(ActionEvent actionEvent) {                  	
             	//Felder resetten
+            	newPurchaseRequestBox.setDisable(false);
             	newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
             	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
             	newPurchaseRequestArticleQualityTextField.setText("1.0");
@@ -257,12 +267,13 @@ public class ClientGameUIController implements Initializable{
             			new Request(
             					newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
             					String.valueOf(((int) newPurchaseRequestArticleQualitySlider.getValue())))); 
-            			model.addRequest(new RequestFromClient(newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
-            					((int) newPurchaseRequestArticleQualitySlider.getValue())));
-            			
-            			newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
-                    	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
-                    	newPurchaseRequestArticleQualityTextField.setText("1.0");
+    			model.addRequest(new RequestFromClient(newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
+    					((int) newPurchaseRequestArticleQualitySlider.getValue())));
+    			
+    			newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
+            	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
+            	newPurchaseRequestArticleQualityTextField.setText("1.0");
+            	newPurchaseRequestBox.setDisable(true);
             }
         }); 
     	
