@@ -1,5 +1,7 @@
 package Client.UI;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,19 +13,29 @@ import javafx.stage.Stage;
  * @author Lars Trey
  *
  */
-public class ClientLoginUI extends Application {
+public class ClientUIStart extends Application {
+	
+	private Stage primaryStage;
+	private Parent root;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
     	
-    	Parent root = FXMLLoader.load(getClass().getResource("ClientLoginUI.fxml"));
-		
-		Scene scene = new Scene(root);
+    	this.primaryStage = primaryStage;
+    	this.primaryStage.setTitle("Planspiel - Client - Login");
 
-		stage.setTitle("Planspiel - Client - Login");
-		stage.setScene(scene);		
-		stage.show();
-		
+    	try {
+            // Lade das Login-Layout aus der FXML-Datei
+            FXMLLoader loader = new FXMLLoader(ClientUIStart.class.getResource("ClientLoginUI.fxml"));
+            Parent root = (Parent) loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
     }
 
     /**
@@ -34,6 +46,7 @@ public class ClientLoginUI extends Application {
      *
      * @param args the command line arguments
      */
+    
     public static void main(String[] args) {
         launch(args);
     }

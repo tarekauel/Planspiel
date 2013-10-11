@@ -166,11 +166,11 @@ public class ProductionOrder {
 
 		// Es wird in doubles gerechnet:
 		double advantage = advantageInt;
-		double additionalFactor = advantage / 100;
+		double additionalFactor = advantage / 100.0;
 		// durchschnittsqualität der Produkte mit Gewichtung:
 		double midQuality = (wafer.getQuality()
 				* Constant.Production.IMPACT_WAFER + cases.getQuality()
-				* Constant.Production.IMPACT_CASE) / 100;
+				* Constant.Production.IMPACT_CASE) / 100.0;
 		// neue Qualität (nicht mehr als double)
 		int newQuality = (int) (midQuality * additionalFactor) ;
 
@@ -178,6 +178,9 @@ public class ProductionOrder {
 		newQuality = (newQuality - midQuality > Constant.Production.MAX_QUALITY_ADDITION) ? (int) (midQuality + Constant.Production.MAX_QUALITY_ADDITION)
 				: newQuality;
 
+		// Qualitaet auf 100 cappen 
+		newQuality = (newQuality > 100) ? 100 : newQuality;
+		
 		// Berechne herstellkosten (ohne Berücksichtigung vom Ausschuss):
 		int costs = wafer.getCosts() * Constant.Production.WAFERS_PER_PANEL
 				+ cases.getCosts() + m.getPieceCosts();

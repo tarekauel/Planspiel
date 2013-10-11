@@ -29,38 +29,42 @@ import javafx.stage.Stage;
  * @author Lars Trey
  */
 public class ClientLoginUIController implements Initializable {
-
+	
+	private ClientLoginUIModel model;
+	
 	@FXML private TextField loginNameField;
 	@FXML private Button loginButton;
 	@FXML private PasswordField passwordField;
 
-    /**
-     * Hier werden alle Felder des UIs initialisiert, die initial beim Aufrufen des UIs gefüllt sein sollen.
+	/**
+	 * Initialisiert den Controller.
+     * Hier werden z.B. alle Felder des UIs initialisiert, die initial beim Aufrufen des UIs gefüllt sein sollen.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	
-        loginButton.setOnAction(new EventHandler<ActionEvent>() {
+    	model = new ClientLoginUIModel();
+
+    	loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-            	
-            	changeScene(actionEvent);       	
-            	
+            	changeScene(actionEvent);
             }
-        });
+        }); 
 
     }
     
     private void changeScene(ActionEvent actionEvent){
     	
     	Node source = (Node) actionEvent.getSource();
-    	Stage stage = (Stage) source.getScene().getWindow();
-    	stage.close();
+    	Stage primaryStage = (Stage) source.getScene().getWindow();
+    	primaryStage.close();
     	try {
 			Parent root = FXMLLoader.load(getClass().getResource("ClientGameUI.fxml"));
 			Scene scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
+			primaryStage.setScene(scene);
+			primaryStage.setResizable(false);
+			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
