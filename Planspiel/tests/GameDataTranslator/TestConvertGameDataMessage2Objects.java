@@ -66,7 +66,7 @@ public class TestConvertGameDataMessage2Objects {
 	}
 
 	@Test
-	public void conertGameDataMessage2Objects() throws Exception {
+	public void convertRequest() throws Exception {
 		GameDataTranslator.getGameDataTranslator().convertGameDataMessage2Objects(gameDataMessages);
 		assertEquals(80,c.getPurchase().getListOfRequest().get(0).getRequestedResource().getQuality());
 		assertEquals(true,c.getPurchase().getListOfRequest().get(0).getRequestedResource().getName().equals("Wafer"));
