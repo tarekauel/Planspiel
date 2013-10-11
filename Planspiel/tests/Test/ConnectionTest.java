@@ -87,14 +87,14 @@ public class ConnectionTest {
 	}
 	
 	@Test
-	public void udpTest() {
+	public void udpTest() { // Kann auf SAP-Rechnern, da Broadcast, möglicher Wiese nicht funktionieren.
 		UDPServer udpServer = new UDPServer(Constant.Server.TCP_PORT, Constant.Server.UDP_PORT);
 		udpServer.start();
 		UDPClient udpClient = new UDPClient();
 		udpClient.start();
 		
 		try {
-			Thread.sleep(500);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

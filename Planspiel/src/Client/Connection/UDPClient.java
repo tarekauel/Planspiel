@@ -63,7 +63,7 @@ public class UDPClient extends Thread {
 
 		while (true) {
 
-			send(socket,"Ich suche den Spielserver!", "127.0.0.1",
+			send(socket,"Ich suche den Spielserver!", "255.255.255.255",
 					Constant.Server.UDP_PORT);
 			
 			// Nach einer Minute wird erneut eine Nachricht gesendet, da UDP
