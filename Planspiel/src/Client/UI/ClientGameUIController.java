@@ -10,7 +10,9 @@ package Client.UI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import aaaaa.GameTestConsole;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,11 +26,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
+import aaaaa.GameTestConsole;
 
 
 /**
@@ -53,6 +59,7 @@ public class ClientGameUIController implements Initializable{
 	@FXML private Slider newPurchaseRequestArticleQualitySlider;
 	@FXML private TextField newPurchaseRequestArticleQualityTextField;
 	@FXML private TableView purchaseRequestsTableView;
+	@FXML private TableColumn purchaseReqArtikelTableColumn;
 	@FXML private TableView purchaseOffersTableView;
     //Production
 	@FXML private Button newProductionOrderButton;
@@ -109,15 +116,50 @@ public class ClientGameUIController implements Initializable{
 	@FXML private BarChart reportingSalesBarChart;
 	@FXML private LineChart reportingCompanyValueLineChart;
 
-
+/**
+ * parsed alle GameDatas aus einer Message
+ * @param in Message, die geparsed werden soll
+ */
 	public void parseAnswerFromServer(GameDataMessageToClient in){
 		
 		for (RequestToClient r:in.purchase.requests){
 			machineryLevelTextField.setText(r.name);
+			parsePurchase(in.purchase);
+			
 		}
 		
+			
+	}
+	
+	
+	
+	/**
+	 * hier werden die Daten für den Verkauf geparsed
+	 * @param in das Klassen objekt für den Verkauf
+	 */
+	private void parsePurchase(PurchaseToClient in){
+		final ObservableList<Request> data = FXCollections.observableArrayList();
+		for(RequestToClient req:in.requests) {
+			Request request = new Request(req.name);
+			data.add(request);
+		}
 		
+		purchaseRequestsTableView.setItems(
+				 data
+				);
 		
+	}
+	
+	public static class Request {
+		private final SimpleStringProperty name;
+			
+		private Request( String name) {
+			this.name = new SimpleStringProperty(name);
+		}
+		
+		public String getName() {
+			return name.get();
+		}
 	}
 	
     /**
@@ -127,8 +169,12 @@ public class ClientGameUIController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {  
     	
     	this.model = new ClientGameUIModel();
-    	
     	processRoundProgressBar(model.getRound());
+    	
+    	purchaseReqArtikelTableColumn.setCellValueFactory(
+    			new PropertyValueFactory<Request, String>("name")
+    			);
+    	
     	
     	/**
     	 * Hier werden alle Buttons mit ActionListenern versehen.
