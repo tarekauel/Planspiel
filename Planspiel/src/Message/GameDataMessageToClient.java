@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class GameDataMessageToClient extends GameDataMessage {
 
 	public GameDataMessageToClient(String playerName, PurchaseToClient purchase,
-			ProductionToClient production, DistributionToClient distribution,
+			ProductionToClient production,StorageToClient storage, DistributionToClient distribution,
 			HumanResourcesToClient humanResources,
 			MarketingToClient marketing, ReportingToClient reporting,
 			 long cash, long maxCredit) {
@@ -19,10 +19,12 @@ public class GameDataMessageToClient extends GameDataMessage {
 		this.reporting = reporting;
 		this.cash = cash;
 		this.maxCredit = maxCredit;
+		this.storage= storage;
 	}
 
 	public final PurchaseToClient purchase;
 	public final ProductionToClient production;
+	public final StorageToClient storage;
 	public final DistributionToClient distribution;
 	public final MarketingToClient marketing;
 	public final ReportingToClient reporting;	
@@ -74,19 +76,48 @@ public class GameDataMessageToClient extends GameDataMessage {
 
 		public static class ProductionOrderToClient {
 			public ProductionOrderToClient(int qualityWafer, int qualityCase,
-					int quantity) {
+					int quantity, int costs) {
 
 				this.qualityWafer = qualityWafer;
 				this.qualityCase = qualityCase;
 				this.quantity = quantity;
+				this.costs = costs;
 			}
 
 			public final int qualityWafer;
 			public final int qualityCase;
 			public final int quantity;
+			public final int costs;
 		}
 
 		public final ArrayList<ProductionOrderToClient> orders; // Ewige Liste
+
+	}
+	
+	public static class StorageToClient {
+		
+
+		public StorageToClient(
+				ArrayList<StorageElenmentToClient> storageElements) {
+			
+			this.storageElements = storageElements;
+		}
+
+		public static class StorageElenmentToClient {
+			
+			public StorageElenmentToClient(String type, int quality,
+					int quantity) {
+				this.type = type;
+				this.quality = quality;
+				this.quantity = quantity;
+			}
+			public final String type;
+			public final int quality;
+			public final int quantity;
+			
+		}
+
+		public final ArrayList<StorageElenmentToClient> storageElements; // Liste StoageElements
 
 	}
 
