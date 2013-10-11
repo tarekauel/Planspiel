@@ -131,5 +131,11 @@ public class GameDataMessageFromClient   extends GameDataMessage implements Seri
 
 		public final ArrayList<BenefitBookingFromClient> benefits;
 	}
+	
+	@Override
+	public String getType() {
+		return "GameDataMessageFromClient";
+
+	}
 
 }
