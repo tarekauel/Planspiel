@@ -26,7 +26,7 @@ import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.Supplier
 import Message.GameDataMessageToClient.ReportingToClient;
 import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
 import Message.GameDataMessageToClient.StorageToClient;
-import Message.GameDataMessageToClient.StorageToClient.StorageElenmentToClient;
+import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 
 public class GameDataTranslator {
 
@@ -288,9 +288,9 @@ public class GameDataTranslator {
 
 	private StorageToClient createStorage(Company company) {
 		Storage serverStorage = company.getStorage();
-		ArrayList<StorageElenmentToClient> storageElements = new ArrayList<StorageElenmentToClient>();
+		ArrayList<StorageElementToClient> storageElements = new ArrayList<StorageElementToClient>();
 		for (StorageElement storageElenment : serverStorage.getAllStorageElements()) {
-			storageElements.add(new StorageElenmentToClient(storageElenment.getProduct().getName(), storageElenment.getProduct().getQuality(), storageElenment.getQuantity()));
+			storageElements.add(new StorageElementToClient(storageElenment.getProduct().getName(), storageElenment.getProduct().getQuality(), storageElenment.getQuantity()));
 		}
 		
 		StorageToClient storage = new StorageToClient(Constant.Product.STORAGECOST_WAFER, Constant.Product.STORAGECOST_CASE, Constant.Product.STORAGECOST_PANEL, storageElements);
