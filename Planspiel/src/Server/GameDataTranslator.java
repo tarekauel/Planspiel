@@ -289,8 +289,8 @@ public class GameDataTranslator {
 	private StorageToClient createStorage(Company company) {
 		Storage serverStorage = company.getStorage();
 		ArrayList<StorageElementToClient> storageElements = new ArrayList<StorageElementToClient>();
-		for (StorageElement storageElenment : serverStorage.getAllStorageElements()) {
-			storageElements.add(new StorageElementToClient(storageElenment.getProduct().getName(), storageElenment.getProduct().getQuality(), storageElenment.getQuantity()));
+		for (StorageElement storageElement : serverStorage.getAllStorageElements()) {
+			storageElements.add(new StorageElementToClient(storageElement.getProduct().getName(), storageElement.getProduct().getQuality(),storageElement.getProduct().getCosts(), storageElement.getQuantity()));
 		}
 		
 		StorageToClient storage = new StorageToClient(Constant.Product.STORAGECOST_WAFER, Constant.Product.STORAGECOST_CASE, Constant.Product.STORAGECOST_PANEL, storageElements);
