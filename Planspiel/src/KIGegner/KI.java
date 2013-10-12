@@ -12,23 +12,31 @@ public class KI extends Thread {
 	private int qualityTry;
 	private String playerName;
 	private ArrayList<AmountObject> bankAmounts = new ArrayList<AmountObject>();
+	private int id = 1;
 
 	public static void main(String[] args) {
 		// in welchen Sektor soll die KI?
 		// Je niedriger die Zahl, desto mehr ist es im billigen Secotr:
-		new KI(40, "KISolar1");
+		new KI(10);
+		
+		
+		
 
 	}
 
-	private KI(int sector, String playerName) {
+	private KI(int sector) {
 		System.out.println("KI wurde gestartet!");
 		this.qualityTry = sector;
-		this.playerName = playerName;
+		this.playerName = "KI-Solar" + id;
+		id++;
+		
 		if (Login()) {
 			// Login erfolgreich
 			System.out.println("Login erfolgreich.");
+			//Starte in die Prozessierung
 			this.start();
 		}
+		
 
 	}
 
