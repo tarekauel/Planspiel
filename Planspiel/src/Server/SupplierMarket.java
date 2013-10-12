@@ -156,7 +156,7 @@ public class SupplierMarket {
 			
 			// Sucht bis eine neue Zufallszahl gefunden wurde			
 			while(true) {
-				int variance = 20;
+				int variance = 14;
 				int newQuality = reqQuality + (int) Math.floor( Math.random() * variance+1) - variance/2;
 				if( newQuality > 0) {
 					boolean unique = true;
