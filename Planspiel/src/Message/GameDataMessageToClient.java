@@ -86,18 +86,24 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 		}
 
 		public static class ProductionOrderToClient implements Serializable {
-			public ProductionOrderToClient(int qualityWafer, int qualityCase,
-					int quantity) {
+			public ProductionOrderToClient(int qualityWafer, int qualityCase, int qualityPanel,
+					int quantity, int producedQuantity, int costs) {
 
 				this.qualityWafer = qualityWafer;
 				this.qualityCase = qualityCase;
+				this.qualityPanel = qualityPanel;
 				this.quantity = quantity;
+				this.producedQuantity = producedQuantity;
+				this.costs  = costs;
 			
 			}
 
 			public final int qualityWafer;
 			public final int qualityCase;
 			public final int quantity;
+			public final int qualityPanel;
+			public final int producedQuantity;
+			public final int costs;
 			
 		}
 

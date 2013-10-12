@@ -442,9 +442,10 @@ public class GameDataTranslator {
 		ArrayList<ProductionOrderToClient> orders = new ArrayList<ProductionOrderToClient>();
 		for (ProductionOrder productionOrder : company.getProduction()
 				.getListOfAllProductionOrders()) {
-			orders.add(new ProductionOrderToClient(productionOrder.getWafer()
-					.getQuality(), productionOrder.getCase().getQuality(),
-					productionOrder.getProduced()));
+			orders.add(new ProductionOrderToClient(
+					productionOrder.getWafer().getQuality(), productionOrder.getCase().getQuality(),
+					productionOrder.getPanel().getQuality(), productionOrder.getRequested(), 
+					productionOrder.getProduced(),	productionOrder.getPanel().getCosts()) );
 		}
 		ProductionToClient production = new ProductionToClient(orders);
 		return production;
