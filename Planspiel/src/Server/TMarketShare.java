@@ -23,8 +23,10 @@ public class TMarketShare {
 	 * @param marketShare
 	 *            der Marktanteil in ganze Prozent
 	 */
-	public TMarketShare(Company c, int marketShare) {
-	
+	public TMarketShare(Company c, int marketShare, long marketSize) {
+		if (!checkMarketSize(marketSize)){
+			throw new IllegalArgumentException("Marktvolumen ist inkorrekt");
+		}
 		if (!checkMarketShare(marketShare)) {
 			throw new IllegalArgumentException("Marktanteil ist ungültig: '"
 					+ marketShare + "'");
@@ -36,6 +38,10 @@ public class TMarketShare {
 		this.c = c;
 		this.marketShare = marketShare;
 		
+	}
+
+	private boolean checkMarketSize(long marketSize) {
+		return (marketSize>=0);
 	}
 
 	/**
