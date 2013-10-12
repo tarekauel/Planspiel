@@ -114,21 +114,6 @@ public class ProductionOrder {
 	}
 
 	/**
-	 * Erhöht die Produzierte Menge um 1
-	 * 
-	 * 
-	 * @return int produzierte Menge
-	 */
-	public void increaseProduced() {
-		//TODO: sinnfrei? war das ein geistesblitz von mir, oder hat hier wer unsinn verzapft?
-		//Verwendungsnachweis negativ
-		if (quantityProduced < quantityToProduce) {
-			quantityProduced++;
-
-		}
-	}
-
-	/**
 	 * Gibt die in auftraggegebene Menge an
 	 * 
 	 * @return int Anzahl aus dem Konstruktor

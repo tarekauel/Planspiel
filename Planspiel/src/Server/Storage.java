@@ -60,7 +60,7 @@ public class Storage extends DepartmentRoundSensitive {
 						.getCosts() * quantity) / (oldQuantity + quantity)));
 				prod.setCosts(newCosts);
 				storageElement.increaseQuantity(quantity);
-				// TODO Kosten müssen neu berechnet werden
+
 
 				found = true;
 				break;
