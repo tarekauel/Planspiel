@@ -205,7 +205,7 @@ public class ServerConnection extends Thread {
 			object.flush();
 			// object.close();
 		} catch (IOException e) {
-
+			e.printStackTrace();
 			System.out.println("Could not send Message! ");
 
 		}
