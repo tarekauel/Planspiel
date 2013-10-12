@@ -121,7 +121,7 @@ public class KI extends Thread {
 
 		// Setze den Lohn:
 		// Erste Runde brauchen wir ja kaum Lohn
-		m.setWage(100);
+		m.setWage(1000);
 
 		// Keine Maschinenerweiterung
 		if (readMessage.round < 12) {

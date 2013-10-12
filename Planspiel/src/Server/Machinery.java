@@ -122,7 +122,7 @@ public class Machinery {
 	 */
 	public int getMaxCapacity() {
 
-		return Constant.Machinery.CAPACITY[level];
+		return Constant.Machinery.CAPACITY[level-1];
 	}
 
 	/**
@@ -140,6 +140,9 @@ public class Machinery {
 	 * @return gibt die Kosten für den nächsten Ausbau an
 	 */
 	public int getCostsForNextLevel() {
+		if (level==10){
+			return 0;
+		}
 		return Constant.Machinery.BUILD_COSTS[level];
 	}
 
