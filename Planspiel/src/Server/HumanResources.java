@@ -16,9 +16,6 @@ public class HumanResources extends DepartmentRoundSensitive {
 	// Lohn pro Runde pro Mitarbeiter
 	private TWage wagePerRound;
 
-	// Anzahl Mitarbeiter
-	private int countEmployees;
-
 	// Gesamtkosten Loehne
 	private int wagesSum;
 
@@ -41,7 +38,6 @@ public class HumanResources extends DepartmentRoundSensitive {
 	public HumanResources(Company c) throws Exception {
 		super(c, "Personal", Constant.DepartmentFixcost.HUMAN_RESOURCES);
 
-		setCountEmployees(100); // TODO: Anpassen & in ini-File auslagern
 		setWagePerRound(new TWage(900, GameEngine.getGameEngine().getRound(), c
 				.getLocation().getWageLevel())); // TODO:
 		// Anpassen
@@ -99,17 +95,12 @@ public class HumanResources extends DepartmentRoundSensitive {
 
 	private int calcWagesSum() {
 
-		return wagePerRound.getAmount() * this.countEmployees;
+		return wagePerRound.getAmount() * this.getCountEmployees();
 	}
 
 	public void setWagePerRound(TWage wagePerRound) {
 
 		this.wagePerRound = wagePerRound;
-	}
-
-	public void setCountEmployees(int countEmployees) {
-
-		this.countEmployees = countEmployees;
 	}
 
 	public TWage getWagesPerHour() {
@@ -118,8 +109,8 @@ public class HumanResources extends DepartmentRoundSensitive {
 	}
 
 	public int getCountEmployees() {
-
-		return countEmployees;
+		// eine Arbeitswoche
+		return (int) (workingHoursPerRound / 40);
 	}
 
 	public int getWagesSum() {
@@ -222,13 +213,17 @@ public class HumanResources extends DepartmentRoundSensitive {
 		double diffBenefitToLastRound = 1.0;
 
 		if (GameEngine.getGameEngine().getRound() > 1) {
-			// Wenn weder Benfits in dieser Runde noch in der letzten existieren, bleibt die das verhaeltnis 100%
-			if( !(sumBenefitLastRound == 0 && sumBenfit == 0) ) {
-				// Wenn diese Runde Benefits hinzugekommen sind, in der letzten Runde keine existierten, dann wird die letzte Rund als 1 cent betrachtet, um Div0 zu verhindern
-				if( sumBenefitLastRound == 0) {
+			// Wenn weder Benfits in dieser Runde noch in der letzten
+			// existieren, bleibt die das verhaeltnis 100%
+			if (!(sumBenefitLastRound == 0 && sumBenfit == 0)) {
+				// Wenn diese Runde Benefits hinzugekommen sind, in der letzten
+				// Runde keine existierten, dann wird die letzte Rund als 1 cent
+				// betrachtet, um Div0 zu verhindern
+				if (sumBenefitLastRound == 0) {
 					sumBenefitLastRound = 1;
 				}
-				diffBenefitToLastRound = (sumBenfit) / (double) sumBenefitLastRound;
+				diffBenefitToLastRound = (sumBenfit)
+						/ (double) sumBenefitLastRound;
 			}
 		}
 
@@ -260,11 +255,12 @@ public class HumanResources extends DepartmentRoundSensitive {
 				* (Constant.HumanResources.IMPACT_DIFF_INTERNAL / 100.0) + influenceWageToAverage
 				* (Constant.HumanResources.IMPACT_DIFF_MARKET / 100.0))
 				* (Constant.HumanResources.HR_FACTOR_WAGE / 100.0)
-				+ (influenceBenefitToLastRound	* (Constant.HumanResources.IMPACT_DIFF_INTERNAL / 100.0) + influenceBenefitToAverage
-				* (Constant.HumanResources.IMPACT_DIFF_MARKET / 100.0))
+				+ (influenceBenefitToLastRound
+						* (Constant.HumanResources.IMPACT_DIFF_INTERNAL / 100.0) + influenceBenefitToAverage
+						* (Constant.HumanResources.IMPACT_DIFF_MARKET / 100.0))
 				* (Constant.HumanResources.HR_FACTOR_BENEFIT / 100.0);
 
-		return (int)( motivation * 10000 ); // TODO ueberpruefen
+		return (int) (motivation * 10000); // TODO ueberpruefen
 	}
 
 	/**

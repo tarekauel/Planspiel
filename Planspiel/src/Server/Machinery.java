@@ -60,6 +60,23 @@ public class Machinery {
 		listOfUsages.add(tNew);
 		return tNew;
 	}
+	
+	/**
+	 * Gibt die Auslastung der letzten Runde wieder
+	 * 
+	 * @return momentanes Element der letzten Runde
+	 * @throws Exception
+	 */
+	public TPercentOfUsage getLastUsage() throws Exception {
+		//Sicherstellen, dass die neueste Nutzung eingetrage ist:
+		getCurrentUsage();
+		//Rueckgabe des vorletzten Wertes
+		if (GameEngine.getGameEngine().getRound()>2){
+		return listOfUsages.get(listOfUsages.size()-2);
+		}else{
+			return getCurrentUsage();
+		}
+	}
 
 	/**
 	 * gibt eine Liste aller Auslastungen wieder (falls für die momentane Runde
