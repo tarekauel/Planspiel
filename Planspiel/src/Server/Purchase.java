@@ -57,7 +57,7 @@ public class Purchase extends DepartmentRoundSensitive {
 	 */
 	private Purchase(Company c, String n, int f) throws Exception {
 		super(c, n, f);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	/**
