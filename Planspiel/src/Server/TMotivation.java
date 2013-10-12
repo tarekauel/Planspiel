@@ -66,7 +66,7 @@ public class TMotivation implements Serializable {
 	}
 
 	/**
-	 * prüft ob die Motivation zwischen 0 und 9999 liegt (ehemals 0,0 und 999,9)
+	 * prüft ob die Motivation > 0
 	 * 
 	 * @param motivation
 	 *            gibt die temporäre Motivation an
