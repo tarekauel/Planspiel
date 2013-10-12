@@ -1,4 +1,5 @@
 package KIGegner;
+
 import java.util.ArrayList;
 
 import Message.GameDataMessageFromClient;
@@ -34,7 +35,7 @@ public class ClientToServerMessageCreator {
 	// Maschinenausbau erwünscht?
 	private boolean machine = false;
 	// Marktforschung erwünscht?
-	private boolean marketResearch = false;
+	private boolean marketResearch = true;
 
 	public ClientToServerMessageCreator(String player) {
 		listOfMessages.add(this);
@@ -126,11 +127,15 @@ public class ClientToServerMessageCreator {
 		offerList.add(new OfferFromClient(panelQuality, quantityToSell,
 				priceToSell));
 	}
-/**
- * Bucht ein neues Benefit
- * @param benefitName Name des Benefits
- * @param rounds Rundenanzahl, für die es gebucht wird.
- */
+
+	/**
+	 * Bucht ein neues Benefit
+	 * 
+	 * @param benefitName
+	 *            Name des Benefits
+	 * @param rounds
+	 *            Rundenanzahl, für die es gebucht wird.
+	 */
 	public void addBenefit(String benefitName, int rounds) {
 		bBook.add(new BenefitBookingFromClient(benefitName, rounds));
 	}
@@ -141,8 +146,8 @@ public class ClientToServerMessageCreator {
 	 * @return
 	 */
 	public GameDataMessageFromClient getSendMessage() {
-		
-		
+		// Mach ein paar checkroutinen:
+
 		return new GameDataMessageFromClient(player, new PurchaseFromClient(
 				requests, accepted), new ProductionFromClient(proOrder),
 				new DistributionFromClient(offerList), machine,
