@@ -70,10 +70,10 @@ public class GameEngine {
 	 */
 	public ArrayList<GameDataMessageToClient> startNextRound(ArrayList<GameDataMessageFromClient> gameDataList)
 			throws Exception {
+		//TODO:Sonderlogik Runde 1
 		prepareAllDepartmentsForNewRound();
 		parseClientData(gameDataList);
-
-		
+					
 		for (Company company : listOfCompanys) {
 			// ---------Storage---------------------
 			company.getStorage().debitStorageCost();
