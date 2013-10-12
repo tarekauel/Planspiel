@@ -14,6 +14,7 @@ public class TMarketShare {
 
 	private Company c;
 	private int marketShare;
+	private long marketSize;
 
 	/**
 	 * Konstruktor für Marketshare
@@ -22,6 +23,8 @@ public class TMarketShare {
 	 *            Die Firma für den dieser Marktanteil gilt
 	 * @param marketShare
 	 *            der Marktanteil in ganze Prozent
+	 * @param marketSize
+	 * 			 das GesamtMarktvolumen
 	 */
 	public TMarketShare(Company c, int marketShare, long marketSize) {
 		if (!checkMarketSize(marketSize)){
@@ -37,13 +40,14 @@ public class TMarketShare {
 		}
 		this.c = c;
 		this.marketShare = marketShare;
-		
+		this.marketSize = marketSize;
 	}
 
 	private boolean checkMarketSize(long marketSize) {
 		return (marketSize>=0);
 	}
 
+	
 	/**
 	 * 
 	 * @return liefert die Firma des Marktanteils zurück
@@ -51,6 +55,13 @@ public class TMarketShare {
 	public Company getCompany() {
 		
 		return c;
+	}
+	/**
+	 * 
+	 *  @return gibt das gesamtvolumen des Marktes zurueck
+	 */
+	public long getMarketSize(){
+		return this.marketSize;
 	}
 
 	/**

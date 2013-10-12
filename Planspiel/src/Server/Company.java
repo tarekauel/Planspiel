@@ -186,6 +186,26 @@ public class Company {
 
 		return this.marketResearch;
 	}
+	/**
+	 * 
+	 * @return
+	 */
+	public long getPresentValue(){
+		//Einrechnen des Barvermögens
+		long presentValue = this.getBankAccount().getBankBalance();
+		
+		//Berechnen des prozentualen Wertes der PresentValue
+		int percentLocation = 100-GameEngine.getGameEngine().getRound();
+		percentLocation = (percentLocation > 0) ? percentLocation:1;
+		//Einrechnen des Grundstücks
+		presentValue += (long) (percentLocation * this.getLocation().getPurchasePrice()/100.0);
+		
+		
+		
+		
+		
+		return presentValue;
+	}
 
 	/**
 	 * 
