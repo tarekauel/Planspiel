@@ -58,6 +58,7 @@ public class GameDataTranslator {
 			handleProductionOrders(gameDataMessage.production.orders, company);
 			handleDistributionOffers(gameDataMessage.distribution.offers,
 					company);
+			//TODO: Logik abhandeln
 			// handleBenefitBooking(gameDataMessage.humanResources.benefits,
 			// company);
 			// In Creator verschieben. Weil Runde spaeter
@@ -266,7 +267,7 @@ public class GameDataTranslator {
 	private GameDataMessageToClient createGameDataMessageToClient(
 			Company company) throws Exception {
 		String playerName = company.getName();
-		// Company company = player.getMyCompany(); TODO: AUSKOMMENTIERT
+		
 
 		// Abteilungen erstellen
 		PurchaseToClient purchase = createPurchase(company);
