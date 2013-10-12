@@ -350,7 +350,7 @@ public class CustomerMarket {
 		// Berechnung des Durchschnittspreises der gekauften Artikel im A-Markt
 		int sumPriceA = 0;
 		int sumQualityA = 0;
-		for (int[] info : boughtOffersAMarket) {
+		for (int[] info : boughtOffersAMarket) {			
 			sumQualityA += info[0];
 			sumPriceA += info[1];
 		}
@@ -367,6 +367,9 @@ public class CustomerMarket {
 		int sumPriceC = 0;
 		int sumQualityC = 0;
 		for (int[] info : boughtOffersCMarket) {
+			// Qualitaet aus dem A-Markt werden ignoriert
+			if(info[0] > 49)
+				continue;
 			sumQualityC += info[0];
 			sumPriceC += info[1];
 		}
