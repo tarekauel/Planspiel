@@ -33,7 +33,7 @@ public class ServerConnection extends Thread {
 	public void run() {
 		super.run();
 		while (true) {
-			String txt = "neuer Client connected-> Client Nr." + clientId;
+			String txt = "Daten empfangen-> Client Nr." + clientId;
 			System.out.println(txt);
 
 			IMessage message = readMessage();
