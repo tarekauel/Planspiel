@@ -30,11 +30,11 @@ public class ClientToServerMessageCreator {
 	private ArrayList<BenefitBookingFromClient> bBook = new ArrayList<BenefitBookingFromClient>();
 
 	// Lohn in dieser Message:
-	private int wage;
+	private int wage = 1;
 	// Maschinenausbau erwünscht?
-	private boolean machine;
+	private boolean machine = false;
 	// Marktforschung erwünscht?
-	private boolean marketResearch;
+	private boolean marketResearch = false;
 
 	public ClientToServerMessageCreator(String player) {
 		listOfMessages.add(this);
@@ -141,6 +141,8 @@ public class ClientToServerMessageCreator {
 	 * @return
 	 */
 	public GameDataMessageFromClient getSendMessage() {
+		
+		
 		return new GameDataMessageFromClient(player, new PurchaseFromClient(
 				requests, accepted), new ProductionFromClient(proOrder),
 				new DistributionFromClient(offerList), machine,
