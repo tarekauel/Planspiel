@@ -73,7 +73,7 @@ public class GameEngine {
 		prepareAllDepartmentsForNewRound();
 		parseClientData(gameDataList);
 
-		// ArrayList<Player> allPlayer = Server.getServer().getPlayerList();
+		
 		for (Company company : listOfCompanys) {
 			// ---------Storage---------------------
 			company.getStorage().debitStorageCost();
@@ -100,9 +100,6 @@ public class GameEngine {
 				
 		//restliche Fachlogik (MaschineryLevel, Benefits) 
 		
-		// Creator: CustomerMarket.getMarket().getMarketShares();
-		// Creator: CustomerMarket.getMarket().getAMarketPeak();
-		// Creator: CustomerMarket.getMarket().getCMarketPeak();
 		
 		round++; // Runde hochzaehlen
 		
