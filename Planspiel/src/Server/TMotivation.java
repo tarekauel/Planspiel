@@ -71,7 +71,7 @@ public class TMotivation {
 	 * @return true, falls die Motivation valide
 	 */
 	private boolean checkMotivationValid(int motivation) {
-		if (motivation > 0 && motivation < 9999) {
+		if (motivation > 0) {
 			return true;
 		}
 		return false;
