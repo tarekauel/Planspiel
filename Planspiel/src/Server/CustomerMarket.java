@@ -425,6 +425,9 @@ public class CustomerMarket {
 
 			// Peak im A-Markt um 50% in die Richtung der Angebote verschieben
 			aMarketPeak += (int) (newPeakAMarket - aMarketPeak) * 0.5;
+			
+			// Minimal 60
+			aMarketPeak = (aMarketPeak < 60) ? 60 : aMarketPeak;
 
 		}
 		// Summe der Angeboten Qualitäten im C-Markt
@@ -446,6 +449,9 @@ public class CustomerMarket {
 
 			// Peak im C-Markt um 50% in die Richtung der Angebote verschieben
 			cMarketPeak += (int) (newPeakCMarket - cMarketPeak) * 0.5;
+
+			// Maximal 40
+			cMarketPeak = (cMarketPeak < 60) ? 60 : cMarketPeak;
 		}
 	}
 
