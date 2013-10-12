@@ -147,7 +147,7 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 			this.offers = offers;
 		}
 
-		public static class OfferToClient {
+		public static class OfferToClient implements Serializable {
 
 			public OfferToClient(int quality, int quantityToSell, int quantitySold, int price) {
 				this.quality = quality;
