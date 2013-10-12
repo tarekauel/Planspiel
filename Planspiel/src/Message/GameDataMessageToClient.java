@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import Server.GameEngine;
+import Server.TMotivation;
 
 
 public class GameDataMessageToClient extends GameDataMessage implements Serializable
@@ -167,17 +168,19 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 
 	public static class HumanResourcesToClient implements Serializable {
 
-		public final ArrayList<BenefitBookingToClient> benefits;
-
 		public HumanResourcesToClient(ArrayList<BenefitBookingToClient> benefits,
-				int averageWage, int myWage, int countEmployees, int wageCosts) {
+				int averageWage, int myWage, int countEmployees, int wageCosts, ArrayList<TMotivation> historyMotivation) {
 
 			this.benefits = benefits;
 			this.averageWage = averageWage;
 			this.myWage = myWage;
 			this.countEmployees = countEmployees;
 			this.wageCosts = wageCosts;
+			this.historyMotivation = historyMotivation;
 		}
+		
+		public final ArrayList<BenefitBookingToClient> benefits;
+		public final ArrayList<TMotivation> historyMotivation;
 
 		public final int averageWage;
 		public final int myWage;

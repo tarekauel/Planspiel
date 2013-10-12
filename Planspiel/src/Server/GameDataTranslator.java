@@ -59,10 +59,10 @@ public class GameDataTranslator {
 			handleDistributionOffers(gameDataMessage.distribution.offers,
 					company);
 			//TODO: Logik abhandeln
-			// handleBenefitBooking(gameDataMessage.humanResources.benefits,
-			// company);
+			handleBenefitBooking(gameDataMessage.humanResources.benefits,
+			 company);
 			// In Creator verschieben. Weil Runde spaeter
-			// handleMachineryLevel(gameDataMessage.increaseMachineLevel,
+			//handleMachineryLevel(gameDataMessage.increaseMachineLevel,
 			// company);
 			handleWage(gameDataMessage.wage, company);
 			handleMarketResearch(gameDataMessage.buyMarketResearch, company);
@@ -408,7 +408,7 @@ public class GameDataTranslator {
 																			// UMRECHUNG
 																			// pruefen
 				serverHR.getWagesPerHour().getAmount(),
-				serverHR.getCountEmployees(), serverHR.getWagesSum());
+				serverHR.getCountEmployees(), serverHR.getWagesSum(), serverHR.getHistoryOfMotivation());
 		return hr;
 	}
 

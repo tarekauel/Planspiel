@@ -34,6 +34,9 @@ public class HumanResources extends DepartmentRoundSensitive {
 
 	// Summe der Benefitinvestitionen dieser Runde
 	private long sumBenfit = 0;
+	
+	// Historie der Motivation
+	private ArrayList<TMotivation> historyMotivation = new ArrayList<TMotivation>();
 
 	public HumanResources(Company c) throws Exception {
 		super(c, "Personal", Constant.DepartmentFixcost.HUMAN_RESOURCES);
@@ -164,6 +167,22 @@ public class HumanResources extends DepartmentRoundSensitive {
 
 		sumBenefitLastRound = this.sumBenfit;
 		this.sumBenfit = sumBenefits;
+	}
+	
+	/**
+	 * Liefert die History der Motivation zurueck
+	 * @return
+	 */
+	public ArrayList<TMotivation> getHistoryOfMotivation() {		
+		return historyMotivation;
+	}
+	
+	/**
+	 * Fuegt die Motivation der aktuellen Runde der Historie hinzu
+	 * @throws Exception
+	 */
+	public void refreshMotivationHistory() throws Exception {
+		historyMotivation.add( new TMotivation(getMotivation() , GameEngine.getGameEngine().getRound() ));
 	}
 
 	/**

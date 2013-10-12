@@ -3,6 +3,7 @@ package Server;
 import java.util.ArrayList;
 
 
+
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageToClient;
 
@@ -87,6 +88,7 @@ public class GameEngine {
 			costs += company.getPurchase().getFixCosts();
 			costs += company.getStorage().getFixCosts();
 			company.getBankAccount().decreaseBalance(costs);
+			company.getHumanResources().refreshMotivationHistory();
 
 		}
 		
@@ -98,7 +100,16 @@ public class GameEngine {
 		
 		SupplierMarket.getMarket().handleRequest();
 				
-		//restliche Fachlogik (MaschineryLevel, Benefits) 
+		// Maschinenpark nach Produktion ausbauen
+		for(GameDataMessageFromClient message : gameDataList) {
+			for (Company company : listOfCompanys) {
+				if (company.getName().equals(message.getPlayerName())) {
+					if( message.increaseMachineLevel) {
+						company.getProduction().increaseMachineryLevel();
+					}
+				}
+			}	
+		}
 		
 		
 		round++; // Runde hochzaehlen
