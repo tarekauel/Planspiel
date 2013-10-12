@@ -451,7 +451,7 @@ public class CustomerMarket {
 			cMarketPeak += (int) (newPeakCMarket - cMarketPeak) * 0.5;
 
 			// Maximal 40
-			cMarketPeak = (cMarketPeak < 60) ? 60 : cMarketPeak;
+			cMarketPeak = (cMarketPeak > 40) ? 40 : cMarketPeak;
 		}
 	}
 
