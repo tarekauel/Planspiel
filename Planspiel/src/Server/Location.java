@@ -31,7 +31,7 @@ public class Location {
 		String line = buffReader.readLine();
 		while(line !=null){
 			String [] attributes =line.split(":");
-			Location l= new Location(Integer.parseInt(attributes[1]), attributes[0], Integer.parseInt(attributes[2]), Integer.parseInt(attributes[3]));
+			new Location(Integer.parseInt(attributes[1]), attributes[0], Integer.parseInt(attributes[2]), Integer.parseInt(attributes[3]));
 			line = buffReader.readLine();
 		}
 		buffReader.close();
