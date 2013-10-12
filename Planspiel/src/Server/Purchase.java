@@ -116,7 +116,7 @@ public class Purchase extends DepartmentRoundSensitive {
 		// Bucht den Betrag vom Konto ab. Nur wenn der Betrag abgebucht werden
 		// kann, wird das Lager erhöht!
 		if (getCompany().getBankAccount().decreaseBalance(
-				quantity * supplierOffer.getResource().getCosts())) {
+			(long)	quantity * (long) supplierOffer.getResource().getCosts())) {
 			storage.store(resource, quantity);
 			supplierOffer.setOrderedQuantity(quantity);
 			listOfLatestAcceptedSupplierOffers.add(supplierOffer);
