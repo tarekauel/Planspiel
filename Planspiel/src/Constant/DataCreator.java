@@ -26,7 +26,7 @@ public class DataCreator {
 						+ location.getWageLevel());
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 		pw.close();
