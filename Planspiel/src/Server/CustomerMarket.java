@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
+import Constant.Constant;
+
 /**
  * Der CustomerMarket existiert für alle Spieler gemeinsam. Er arbeitet die
  * Angebote der Spieler ab und entscheidet für jeden Käufer welches Angebot er
@@ -118,58 +120,25 @@ public class CustomerMarket {
 	}
 
 	/**
-	 * Liefert die Instanz auf den Markt zurück. (Singleton). Setzt ggf.
-	 * Start-Variablen
-	 * 
-	 * @return
-	 */
-	public static CustomerMarket getMarket(int aMarketPeak, int aMarketQuantity, double aMarketVariance,
-			double aMarketIncreaseFactor, double aMarketDecreaseFactor, int cMarketPeak, int cMarketQuantity,
-			double cMarketVariance, double cMarketIncreaseFactor, double cMarketDecreaseFactor,
-			int aMarketAvgPriceLastRound, int aMarketAvgQualityLastRound, int cMarketAvgPriceLastRound,
-			int cMarketAvgQualityLastRound) {
-
-		// Pruefe, ob der Markt bereits erstellt worden ist
-		if (market == null) {
-			// Markt neu erstellen
-			market = new CustomerMarket(aMarketPeak, aMarketQuantity, aMarketVariance, aMarketIncreaseFactor,
-					aMarketDecreaseFactor, cMarketPeak, cMarketQuantity, cMarketVariance, cMarketIncreaseFactor,
-					cMarketDecreaseFactor, aMarketAvgPriceLastRound, aMarketAvgQualityLastRound,
-					cMarketAvgPriceLastRound, cMarketAvgQualityLastRound);
-		}
-		return market;
-	}
-
-	/**
-	 * Privater Konstruktor zum Start ohne Parameter
-	 */
-	private CustomerMarket() {
-		this(75, 100, 10, 30, 2, 25, 200, 7.5, 20, 1, 70000, 75, 50000, 25);
-	}
-
-	/**
 	 * Private Konstruktor zur Umsetzung von Singleton
 	 */
 	// TODO
-	private CustomerMarket(int aMarketPeak, int aMarketQuantity, double aMarketVariance, double aMarketIncreaseFactor,
-			double aMarketDecreaseFactor, int cMarketPeak, int cMarketQuantity, double cMarketVariance,
-			double cMarketIncreaseFactor, double cMarketDecreaseFactor, int aMarketAvgPriceLastRound,
-			int aMarketAvgQualityLastRound, int cMarketAvgPriceLastRound, int cMarketAvgQualityLastRound) {
+	private CustomerMarket() {
 		// Initialisierungsvariablen setzen
-		this.aMarketPeak = aMarketPeak;
-		this.aMarketQuantity = aMarketQuantity;
-		this.aMarketVariance = aMarketVariance;
-		this.aMarketIncreaseFactor = aMarketIncreaseFactor;
-		this.aMarketDecreaseFactor = aMarketDecreaseFactor;
-		this.cMarketPeak = cMarketPeak;
-		this.cMarketQuantity = cMarketQuantity;
-		this.cMarketVariance = cMarketVariance;
-		this.cMarketIncreaseFactor = cMarketIncreaseFactor;
-		this.cMarketDecreaseFactor = cMarketDecreaseFactor;
-		this.aMarketAvgPriceLastRound = aMarketAvgPriceLastRound;
-		this.aMarketAvgQualityLastRound = aMarketAvgQualityLastRound;
-		this.cMarketAvgPriceLastRound = cMarketAvgPriceLastRound;
-		this.cMarketAvgQualityLastRound = cMarketAvgQualityLastRound;
+		this.aMarketPeak = Constant.CustomerMarket.aMarketPeak;
+		this.aMarketQuantity = Constant.CustomerMarket.aMarketQuantity;
+		this.aMarketVariance = Constant.CustomerMarket.aMarketVariance;
+		this.aMarketIncreaseFactor = Constant.CustomerMarket.aMarketIncreaseFactor;
+		this.aMarketDecreaseFactor = Constant.CustomerMarket.aMarketDecreaseFactor;
+		this.cMarketPeak = Constant.CustomerMarket.cMarketPeak;
+		this.cMarketQuantity = Constant.CustomerMarket.cMarketQuantity;
+		this.cMarketVariance = Constant.CustomerMarket.cMarketVariance;
+		this.cMarketIncreaseFactor = Constant.CustomerMarket.cMarketIncreaseFactor;
+		this.cMarketDecreaseFactor = Constant.CustomerMarket.cMarketDecreaseFactor;
+		this.aMarketAvgPriceLastRound = Constant.CustomerMarket.aMarketAvgPriceLastRound;
+		this.aMarketAvgQualityLastRound = Constant.CustomerMarket.aMarketAvgQualityLastRound;
+		this.cMarketAvgPriceLastRound = Constant.CustomerMarket.cMarketAvgPriceLastRound;
+		this.cMarketAvgQualityLastRound = Constant.CustomerMarket.cMarketAvgQualityLastRound;
 		this.marketMiddleQualityLastRound = (aMarketAvgQualityLastRound + cMarketAvgQualityLastRound) / 2;
 		this.marketMiddlePriceLastRound = (aMarketAvgPriceLastRound + cMarketAvgPriceLastRound) / 2 + (int) 0.5
 				* (aMarketAvgPriceLastRound - cMarketAvgPriceLastRound) / 2;
@@ -343,9 +312,14 @@ public class CustomerMarket {
 		aMarketQuantity += servedCustomersAMarket / aMarketIncreaseFactor - notServedCustomersAMarket
 				/ aMarketDecreaseFactor;
 
+		aMarketQuantity = (aMarketQuantity < Constant.CustomerMarket.aMarketQuantity) ? Constant.CustomerMarket.aMarketQuantity : aMarketQuantity;
+		
+		
 		// Berechnung des Wachstums des C-Marktes für die nächste Runde
 		cMarketQuantity += servedCustomersCMarket / cMarketIncreaseFactor - notServedCustomersCMarket
 				/ cMarketDecreaseFactor;
+		
+		cMarketQuantity = (cMarketQuantity < Constant.CustomerMarket.cMarketQuantity) ? Constant.CustomerMarket.cMarketQuantity : cMarketQuantity;
 
 		// Berechnung des Durchschnittspreises der gekauften Artikel im A-Markt
 		int sumPriceA = 0;
@@ -679,7 +653,7 @@ public class CustomerMarket {
 		// Array mit allen Company-Referenzen erstellen
 		Company[] companyList = listOfSales.keySet().toArray(new Company[0]);
 
-		int sumSales = 0;
+		long sumSales = 0;
 		for (Company c : companyList) {
 			// Sales der Firma zur Summe kummulieren
 			sumSales += listOfSales.get(c);
@@ -692,7 +666,7 @@ public class CustomerMarket {
 			// Zur Liste hinzufügen
 			int salesCompany = listOfSales.get(c);
 			
-			listOfMarketShares.add(new TMarketShare(c, (int) (salesCompany * 10000.0 / sumSales)));
+			listOfMarketShares.add(new TMarketShare(c, (int) (salesCompany * 10000.0 / sumSales), sumSales ));
 		}
 
 		// Liste zurückgeben
