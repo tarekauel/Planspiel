@@ -180,6 +180,8 @@ public class ProductionOrder {
 
 		// Qualitaet auf 100 cappen 
 		newQuality = (newQuality > 100) ? 100 : newQuality;
+		//Qualitaet auf 1 flooren
+		newQuality = (newQuality < 1) ? 1 : newQuality;
 		
 		// Berechne herstellkosten (ohne Berücksichtigung vom Ausschuss):
 		int costs = wafer.getCosts() * Constant.Production.WAFERS_PER_PANEL
