@@ -66,14 +66,14 @@ public class TMotivation implements Serializable {
 	}
 
 	/**
-	 * prüft ob die Motivation > 0
+	 * prüft ob die Motivation >= 0
 	 * 
 	 * @param motivation
 	 *            gibt die temporäre Motivation an
 	 * @return true, falls die Motivation valide
 	 */
 	private boolean checkMotivationValid(int motivation) {
-		if (motivation > 0) {
+		if (motivation >= 0) {
 			return true;
 		}
 		return false;

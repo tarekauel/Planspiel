@@ -279,7 +279,9 @@ public class HumanResources extends DepartmentRoundSensitive {
 						* (Constant.HumanResources.IMPACT_DIFF_MARKET / 100.0))
 				* (Constant.HumanResources.HR_FACTOR_BENEFIT / 100.0);
 
-		return (int) (motivation * 10000); // TODO ueberpruefen
+		motivation = ( motivation <= 0.0) ? 0.0 : motivation;
+		
+		return (int) (motivation * 10000); 
 	}
 
 	/**

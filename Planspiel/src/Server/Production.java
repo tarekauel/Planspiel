@@ -104,6 +104,12 @@ public class Production extends DepartmentRoundSensitive {
 		int max = this.machine.getMaxCapacity();
 		// Zï¿½hlt mit, wieviele Werkstï¿½cke auf der Maschine lagen
 		int triedToProduce = 0;
+		
+		// Den Zuschlag auf die Qualität berechnen
+		int wageMotivation= getCompany().getHumanResources().getMotivation();
+		int locationAdvantage = getCompany().getLocation().getAdvantage();
+		int advantage= wageMotivation*Constant.Production.MOTIVATION_IMPACT/100+
+				locationAdvantage*Constant.Production.LOCATION_IMPACT/100;
 
 		// Es muss sicher gestellt werden, dass nicht mehr Werkstuecke auf der
 		// Maschine lagen, als diese kann.
@@ -164,10 +170,7 @@ public class Production extends DepartmentRoundSensitive {
 				} else {
 					// Produziere das fertige Panel
 					// Berechne Zuschlag aus Motivation und Location fuer Produktion
-					int wageMotivation= getCompany().getHumanResources().getMotivation();
-					int locationAdvantage = getCompany().getLocation().getAdvantage();
-					int advantage= wageMotivation*Constant.Production.MOTIVATION_IMPACT/100+
-							locationAdvantage*Constant.Production.LOCATION_IMPACT/100;
+
 					p.produce(advantage, this.machine);
 				}
 			}
