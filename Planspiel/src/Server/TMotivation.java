@@ -1,5 +1,7 @@
 package Server;
 
+import java.io.Serializable;
+
 
 
 /**
@@ -9,7 +11,7 @@ package Server;
  * 
  */
 
-public class TMotivation {
+public class TMotivation implements Serializable {
 	final int round;
 	final int motivation;
 
