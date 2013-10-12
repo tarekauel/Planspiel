@@ -21,8 +21,6 @@ public class Player {
 	private ServerConnection serverConnection;
 	private ArrayList<Message.IMessage> messagesFromClient = new ArrayList<Message.IMessage>();
 	private ArrayList<Message.IMessage> messagesToClient = new ArrayList<Message.IMessage>();
-	//private Company myCompany; nicht mehr noetig da die referenz nur in der Fachlogik steckt
-	//TODO: delete comments after logik check
 	
 
 	public ServerConnection getServerConnection() {
@@ -33,15 +31,7 @@ public class Player {
 		this.serverConnection = serverConnection;
 	}
 
-	
-	/**
-	 * 
-	 * @return Das Unternehmen des Spielers
-	 */
-	/*public Company getMyCompany() {
-		return myCompany;
-	}nicht mehr notwendig
-	*/
+
 	
 
 	
@@ -67,7 +57,7 @@ public class Player {
 		this.port = serverConnection.getClientSocket().getPort();
 
 		Location loc = Location.getLocationByCountry(location);
-		//myCompany = new Company(loc);
+
 		new Company(loc, name);
 
 	}

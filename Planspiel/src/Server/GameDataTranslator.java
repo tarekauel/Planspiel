@@ -332,6 +332,7 @@ public class GameDataTranslator {
 		// TODO: gefaked, cashValue und sellings sind 0
 		ReportingToClient reporting = new ReportingToClient(fixCosts,
 				machinery, null, null);
+		
 		return reporting;
 	}
 
