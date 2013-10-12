@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 public class Constant {
 	// Pfad der zu nutzenden INI.
-	public static final String PATH = "game.ini";
+	public static final String PATH = "scale.ini";
 
 	/**
 	 * Gibt ein int Array zurück
@@ -29,14 +29,10 @@ public class Constant {
 						ret[i] = Integer.parseInt(help[i]);
 					}
 					return ret;
-
 				}
 			}
-
 			r.close();
-
 		} catch (Exception e) {
-
 		}
 		return null;
 	}
@@ -172,6 +168,25 @@ public class Constant {
 				.parseInt(getConstant("HR_FACTOR_WAGE"));
 		public static final int HR_FACTOR_BENEFIT = Integer
 				.parseInt(getConstant("HR_FACTOR_BENEFIT"));
+	}
+	
+	
+	public static class CustomerMarket {
+		public static final int aMarketPeak = Integer.parseInt(getConstant("CUST_APEAK"));
+		public static final int aMarketQuantity = Integer.parseInt(getConstant("CUST_AQUANT"));
+		public static final double aMarketVariance = Integer.parseInt(getConstant("CUST_AVARI")) / 100.0;
+		public static final double aMarketIncreaseFactor = Integer.parseInt(getConstant("CUST_AINC")) / 100.0;
+		public static final double aMarketDecreaseFactor = Integer.parseInt(getConstant("CUST_ADEC")) /100.0;
+		public static final int cMarketPeak = Integer.parseInt(getConstant("CUST_CPEAK"));
+		public static final int cMarketQuantity = Integer.parseInt(getConstant("CUST_CQUANT"));
+		public static final double cMarketVariance = Integer.parseInt(getConstant("CUST_CVARI")) / 100.0;
+		public static final double cMarketIncreaseFactor = Integer.parseInt(getConstant("CUST_CINC")) / 100.0;
+		public static final double cMarketDecreaseFactor = Integer.parseInt(getConstant("CUST_CDEC")) / 100.0;
+		public static final int aMarketAvgPriceLastRound = Integer.parseInt(getConstant("CUST_AAVGP"));
+		public static final int aMarketAvgQualityLastRound = Integer.parseInt(getConstant("CUST_CAVGP"));
+		public static final int cMarketAvgPriceLastRound = Integer.parseInt(getConstant("CUST_AAVGQ"));
+		public static final int cMarketAvgQualityLastRound = Integer.parseInt(getConstant("CUST_CAVGQ"));
+		
 	}
 
 }
