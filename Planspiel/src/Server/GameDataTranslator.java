@@ -398,15 +398,14 @@ public class GameDataTranslator {
 		// Create Benefits
 		ArrayList<BenefitBookingToClient> benefits = new ArrayList<BenefitBookingToClient>();
 		for (BenefitBooking benefit : serverHR.getBenefitBooking()) {
-			benefits.add(new BenefitBookingToClient(benefit.getBenefit()
-					.getName(), benefit.getRemainingRounds()));
+			benefits.add(new BenefitBookingToClient(null,benefit.getBenefit().getName(), benefit.getRemainingRounds()));
 		}
 		// TODO: UMRECHUNG pruefen
-		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,
-				MarketData.getMarketData().getAvereageWage().getAmount()
-						* (company.getLocation().getWageLevel() / 10000), 
+		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,null, serverHR.getHistoryOfMotivation(), 
 				serverHR.getWagesPerHour().getAmount(),
-				serverHR.getCountEmployees(), serverHR.getWagesSum(), serverHR.getHistoryOfMotivation());
+				serverHR.getCountEmployees(), serverHR.getWagesSum(), MarketData.getMarketData().getAvereageWage().getAmount()
+								* (company.getLocation().getWageLevel() / 10000));
+		
 		return hr;
 	}
 
