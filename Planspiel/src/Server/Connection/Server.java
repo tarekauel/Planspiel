@@ -42,6 +42,7 @@ public class Server {
 			}
 
 		} catch (Exception e) {
+			System.exit(1);
 			System.out
 					.println("Server musste aufgrund eines Fehlers beendet werdenbeendet werden!");
 			e.printStackTrace();
