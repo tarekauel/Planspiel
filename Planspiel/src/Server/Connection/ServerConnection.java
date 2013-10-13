@@ -103,17 +103,14 @@ public class ServerConnection extends Thread {
 		// Prüfe ob Spielername existiert.
 		for (Player player : server.getPlayerList()) {
 			if (player.getName().equals(message.getName())) {
-				if (GameEngine.getGameEngine().getRound() == 1) { // 2 Spieler
-																	// haben den
-																	// gleichen
-																	// Namen
-																	// ausgewaehlt.
+				if (GameEngine.getGameEngine().getRound() == 1) {
+					 // 2 Spieler haben den gleichen Namen ausgewaehlt.
 					loginConfirmationMessage = new LoginConfirmationMessage(
 							false, "Der Name " + message.getName()
 									+ " existiert schon!");
 				} else { // Spieler loggt sich wieder ein.
-					if (player.getPassword().equals(message.getPassword())) { // Passwort
-																				// stimmt
+					if (player.getPassword().equals(message.getPassword())) { 
+						// Passwort stimmt
 						player.setIp(clientSocket.getInetAddress().toString());
 						player.setPort(clientSocket.getPort());
 						player.setServerConnection(this);
@@ -125,13 +122,15 @@ public class ServerConnection extends Thread {
 			}
 		}
 		messageBack = loginConfirmationMessage;
-		if (loginConfirmationMessage.getSuccess()) { // Login erfolgreich
+		if (loginConfirmationMessage.getSuccess()) {
+			// Login erfolgreich
 			try {
 				if (isRelogin) {
-					// messageBack = new GameDataMessage(0);
-					// TODO: setGameData
+					// Relogin of player
+					messageBack = player.getMessagesToClient().get(player.getMessagesToClient().size()-1);
+					
 
-				} else {
+				} else if(GameEngine.getGameEngine().getRound()==1){
 					Player p= new Player(message.getName(), message
 							.getPassword(), this, message.getChosenLocation());
 					player=p;
