@@ -177,17 +177,19 @@ public class GameDataMessageToClient extends GameDataMessage implements
 		public static class OfferToClient implements Serializable {
 
 			public OfferToClient(int quality, int quantityToSell,
-					int quantitySold, int price) {
+					int quantitySold, int price, int round) {
 				this.quality = quality;
 				this.quantityToSell = quantityToSell;
 				this.quantitySold = quantitySold;
 				this.price = price;
+				this.round = round;
 			}
 
 			public final int quality;
 			public final int quantityToSell;
 			public final int quantitySold;
 			public final int price;
+			public final int round;
 		}
 
 		public final ArrayList<OfferToClient> offers;

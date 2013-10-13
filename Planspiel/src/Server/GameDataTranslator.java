@@ -425,7 +425,7 @@ public class GameDataTranslator {
 		for (Offer offer : company.getDistribution().getListOfOffers()) {
 			offers.add(new OfferToClient(offer.getStorageElement().getProduct()
 					.getQuality(), offer.getQuantityToSell(), offer
-					.getQuantitySold(), offer.getPrice()));
+					.getQuantitySold(), offer.getPrice(), offer.getRound() ));
 		}
 		DistributionToClient distribution = new DistributionToClient(offers);
 		return distribution;
