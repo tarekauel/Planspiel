@@ -26,8 +26,7 @@ public class GameDataMessageToClient extends GameDataMessage implements
 		this.maxCredit = maxCredit;
 		this.storage = storage;
 		this.round = GameEngine.getGameEngine().getRound();
-		
-		
+			
 		//Baue die Loser Liste:
 		for(Company c:GameEngine.getGameEngine().getListOfLosers()){
 			listOfLosers.add(new Loser(c.getName(),this.round));
