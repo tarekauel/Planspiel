@@ -89,8 +89,7 @@ public class UITestKISchlau extends Thread {
 		// Bereite Requests und sonstiges für die Erste Runde vor!
 		doFirstRound();
 		// zweite Runde
-		data = (GameDataMessageToClient) c
-				.readMessage();
+		data = (GameDataMessageToClient) c.readMessage();
 		if (noLoser(data)) {
 			doSecondRound(data);
 			noLoser = true;
@@ -131,21 +130,34 @@ public class UITestKISchlau extends Thread {
 	private void doJob(GameDataMessageToClient readMessage) throws Exception {
 
 		data = readMessage;
-		
-		if (data.round == 6) {
-			ClientGameUIStart.main(null);
-			this.stop();
-		}
-
-		if (data.round == 50) {
-			throw new Exception("Runde!");
-
-		}		
 
 		if (readMessage == null) {
 			throw new Exception("Fehler bei der Nachricht");
 
 		}
+		if (data.round == 50) {
+			throw new Exception("Runde!");
+
+		}
+
+		// nachgucken ob Wafer und Cases in Storage:
+		boolean wFound = false;
+		boolean cFound = false;
+		for (StorageElementToClient s : data.storage.storageElements) {
+			if (s.type.equals("Wafer")) {
+				wFound = true;
+			} else if (s.type.equals("Gehäuse")) {
+				cFound = true;
+			}
+
+		}
+
+		if (wFound && cFound) {
+			ClientGameUIStart.main(null);
+			this.stop();
+		}
+
+		
 		// Protokoll zum Bankkonto
 		bankAmounts.add(new AmountObject(readMessage.cash, readMessage.round));
 
@@ -251,13 +263,13 @@ public class UITestKISchlau extends Thread {
 		int maxByMoney = (int) ((readMessage.cash * 1.0) / (casePrice + waferPrice
 				* Constant.Constant.Production.WAFERS_PER_PANEL));
 		// Entscheidung (toBuy ist hier maxByMachine)
-		//Entscheidung wieviel ich mir leisten kann
+		// Entscheidung wieviel ich mir leisten kann
 		toBuy = (toBuy < maxByMoney) ? toBuy : maxByMoney;
-		//geschätzte Vorhersage
-		int market =  lastBought * (1 + (readMessage.round / 5));
-		//Entscheidung ob nach market oder nach toBuy gearbeitet wird
+		// geschätzte Vorhersage
+		int market = lastBought * (1 + (readMessage.round / 5));
+		// Entscheidung ob nach market oder nach toBuy gearbeitet wird
 		toBuy = (toBuy < market) ? toBuy : market;
-		
+
 		// boolean marketFull = false;
 		// for (StorageElementToClient s : readMessage.storage.storageElements)
 		// {
