@@ -129,6 +129,14 @@ public class Constant {
 	public static class Company {
 
 	}
+	
+	public static class MarketResearch {
+		
+		public static final int COSTS_MARKET_RESEARCH = Integer
+				.parseInt(getConstant("COSTS_MARKET_RESEARCH"));
+		
+
+	}
 
 	public static class BankAccount {
 
