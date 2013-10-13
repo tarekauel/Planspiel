@@ -154,8 +154,9 @@ public class Machinery {
 	 *            BankAccount, von wo die Maschine bezahlt wird
 	 * @return true, falls erfolgreiche erhöhung, false, falls maxLevel oder zu
 	 *         hohe Kosten
+	 * @throws Exception 
 	 */
-	public boolean increaseLevel(BankAccount b) {
+	public boolean increaseLevel(BankAccount b) throws Exception {
 
 		// check ob die Maschine noch nicht auf Max ist
 		if (level >= 10) {

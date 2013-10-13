@@ -53,9 +53,9 @@ public class Distribution extends DepartmentRoundSensitive {
  * @param quality Qualitaet des Fertigprodukts
  * @param quantityToSell Menge die verkauft werden soll
  * @param price Preis zu dem verkauft werden soll
- * @throws IllegalArgumentException 
+ * @throws Exception 
  */
-	public void createOffer(int quality, int quantityToSell, int price) throws IllegalArgumentException{
+	public void createOffer(int quality, int quantityToSell, int price) throws Exception{
 		
 		Storage storage = this.getCompany().getStorage();
 		StorageElement storageElement = storage
@@ -75,7 +75,7 @@ public class Distribution extends DepartmentRoundSensitive {
 			listOfOffers.add(offer);
 			listOfLatestOffers.add(offer);
 	
-		//TODO: Offer kostet Geld
+		getCompany().getBankAccount().decreaseBalance(Constant.Distribution.DISTRIBUTION_OFFER_COSTS_PER_PANEL*quantityToSell);
 		
 		
 	}// createOffer

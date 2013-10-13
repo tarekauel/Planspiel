@@ -71,13 +71,13 @@ public class MachineLevel2 {
 	}
 
 	@Test
-	public void increaseMachineEnoughBank() {
+	public void increaseMachineEnoughBank() throws Exception {
 		// baue Maschine aus
 		assertEquals(true, m.increaseLevel(b));
 	}
 
 	@Test
-	public void increaseMachineNotEnoughBank() {
+	public void increaseMachineNotEnoughBank() throws Exception {
 		// Setze Bank Konto auf 0
 		b.decreaseBalance(b.getBankBalance());
 

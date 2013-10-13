@@ -77,8 +77,9 @@ public class Production extends DepartmentRoundSensitive {
 	 * @return true: Produktionsorder konnte angelegt werden
 	 *         false: Produktionsorder konnte nicht angelegt werden (nicht
 	 *         genügen Bargeld)
+	 * @throws Exception 
 	 */
-	public boolean createProductionOrder(Resource wafer, Resource cases, int quantity) {
+	public boolean createProductionOrder(Resource wafer, Resource cases, int quantity) throws Exception {
 		// Prüfen, ob genug Geld für die Order (Orderkosten) auf dem Konto ist
 		if (getCompany().getBankAccount().decreaseBalance( Constant.Production.COST_PER_ORDER )) {
 
@@ -215,8 +216,9 @@ public class Production extends DepartmentRoundSensitive {
 	/**
 	 * erhöht das Maschinen level (falls möglich)
 	 * @return true, falls erhöht, false falls nicht erhöht
+	 * @throws Exception 
 	 */
-	public boolean increaseMachineryLevel(){
+	public boolean increaseMachineryLevel() throws Exception{
 		return machine.increaseLevel(this.getCompany().getBankAccount());
 	}
 

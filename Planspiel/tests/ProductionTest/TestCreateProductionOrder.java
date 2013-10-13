@@ -33,31 +33,31 @@ public class TestCreateProductionOrder {
 	}
 
 	@Test
-	public void createProductionOrderValid() {
+	public void createProductionOrderValid() throws Exception {
 		assertEquals(true,c.getProduction().createProductionOrder(wafer, cases, 100));
 	}
 	
 	@Test (expected = IllegalArgumentException.class )
-	public void createProductionOrderInvalidWafer() {
+	public void createProductionOrderInvalidWafer() throws Exception {
 		c.getProduction().createProductionOrder(null, cases, 100);
 	}
 	
 	@Test (expected = IllegalArgumentException.class )
-	public void createProductionOrderInvalidCases() {
+	public void createProductionOrderInvalidCases() throws Exception {
 		c.getProduction().createProductionOrder(wafer, null, 100);
 	}
 	
 	@Test (expected = IllegalArgumentException.class )
-	public void createProductionOrderQuantityEQZero() {
+	public void createProductionOrderQuantityEQZero() throws Exception {
 		c.getProduction().createProductionOrder(wafer, cases, 0);
 	}
 	@Test (expected = IllegalArgumentException.class )
-	public void createProductionOrderQuantityLowerZero() {
+	public void createProductionOrderQuantityLowerZero() throws Exception {
 		c.getProduction().createProductionOrder(wafer, cases, -1);
 	}
 	
 	@Test
-	public void createProductionOrderBancAccountToLow() {
+	public void createProductionOrderBancAccountToLow() throws Exception {
 		BankAccount b = c.getBankAccount();
 		b.decreaseBalance(b.getBankBalance());
 		b.decreaseBalance(Constant.BankAccount.MAX_CREDIT-1);

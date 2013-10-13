@@ -80,10 +80,11 @@ public class BankAccount implements IRoundSensitive {
 	 *            Betrag der abgebucht werden soll ( > 0 )
 	 * @return true: Betrag wurde abgebucht false: Betrag konnte nicht abgebucht
 	 *         werden
+	 * @throws Exception 
 	 * @exception falls
 	 *                amount negativ
 	 */
-	public boolean decreaseBalance(long amount) {
+	public boolean decreaseBalance(long amount) throws Exception {
 		checkAmount(amount);
 
 		// Kann ich das noch bezahlen? bankBalance kann auch negativ sein
@@ -116,7 +117,7 @@ public class BankAccount implements IRoundSensitive {
 	}
 
 	@Override
-	public void prepareForNewRound(int round) {
+	public void prepareForNewRound(int round) throws Exception {
 		// Berechne die Zinsen falls noetig.
 		if (bankBalance < 0) {
 			bankBalance += bankBalance * Constant.BankAccount.RATES;
