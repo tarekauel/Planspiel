@@ -1,10 +1,16 @@
 package KIGegner;
 
+import java.text.NumberFormat;
+import java.util.ArrayList;
+
 import Client.Connection.Client;
 import Constant.Constant;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.DistributionToClient.OfferToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
+import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
+import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
 
@@ -16,15 +22,21 @@ public class KITarek extends Thread {
 	
 	private int quality = 60;
 	
+	private int stopRound = 0;
+	
+	public ArrayList<String> historie = new ArrayList<String>();
+	
+	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
+	
 	private GameDataMessageToClient reply; 
 	ClientToServerMessageCreator m;
 	
 	public static void main(String[] args) {
-		new KITarek();
+		new KITarek( 50 );
 	}
 	
-	public KITarek() {
-
+	public KITarek(int round) {
+		stopRound = round;
 		if( login()) {
 			System.out.println("Login-OK");
 			start();
@@ -52,7 +64,40 @@ public class KITarek extends Thread {
 		reply = (GameDataMessageToClient) c.readMessage();
 		m = new ClientToServerMessageCreator(playerName);
 		doSecondRound();
-		reply = (GameDataMessageToClient) c.readMessage();
+		while(true) {
+			historie.add( String.format("Runde: %d  Guthaben: "+formatter.format(reply.cash / 100.0), reply.round   ) );
+			double sumFixCosts = 0.0;
+			for(FixCostToClient fix : reply.reporting.fixCosts) {
+				sumFixCosts += fix.costs;
+			}
+			historie.add( "Fixkosten: " + formatter.format(sumFixCosts/100.0));
+			double sumSales = 0.0;
+			double sumCosts = 0.0;
+			int countSales=0;
+			for(OfferToClient offer : reply.distribution.offers ) {
+				if( offer.round == reply.round-1) {
+					sumSales += offer.price * offer.quantitySold;
+					sumCosts += offer.costs * offer.quantityToSell;
+					countSales += offer.quantitySold;
+				}
+			}
+			historie.add("Anzahl der Verkäufe: " + countSales);
+			historie.add("Umsatz der Verkäufe: " + formatter.format(sumSales/100.0));
+			historie.add("Kosten der Herrstellung: " + formatter.format(sumCosts/100.0));
+			historie.add("");
+			reply = (GameDataMessageToClient) c.readMessage();
+			m = new ClientToServerMessageCreator(
+					playerName);
+			play();
+			if ( reply.round == stopRound) {
+				break;
+			}
+			sendData(m);
+		}
+		for(String s:historie) {
+			System.out.println(s);
+		}
+
 	}
 	
 	private void doFirstRound() {
@@ -86,8 +131,8 @@ public class KITarek extends Thread {
 	}
 	
 	private void acceptOffer() {
-		RequestToClient reqA = reply.purchase.requests.get(0);
-		RequestToClient reqB = reply.purchase.requests.get(0);
+		RequestToClient reqA = reply.purchase.requests.get(reply.purchase.requests.size()-1);
+		RequestToClient reqB = reply.purchase.requests.get(reply.purchase.requests.size()-2);
 		
 		int toProduce = 1000;
 		double plA = 0.0;
@@ -114,6 +159,43 @@ public class KITarek extends Thread {
 		int quantityB = (toAcceptB.name.equals("Wafer")) ? toProduce * Constant.Production.WAFERS_PER_PANEL : toProduce; 
 		m.addAccepted(toAcceptB.name, toAcceptB.quality, quantityB);
 		
+	}
+	
+	private void play() {
+		acceptOffer();
+		sendSales();
+		m.addRequest("Wafer", quality);
+		m.addRequest("Gehäuse", quality);
+		int toProduce = 0;
+		int waferQuality = 0;
+		int maxWaferCount = 0;
+		int caseQuality = 0;
+		int maxCaseCount = 0;
+		for( StorageElementToClient elem : reply.storage.storageElements) {
+			if( elem.type.equals("Wafer")) {
+				if( elem.quantity > maxWaferCount) {
+					toProduce = elem.quantity / Constant.Production.WAFERS_PER_PANEL;
+					maxWaferCount = elem.quantity;
+					waferQuality = elem.quality;
+				}				
+			} else if( elem.type.equals("Gehäuse")) {
+				if ( elem.quantity > maxCaseCount ) {
+					maxCaseCount = elem.quantity;
+					caseQuality = elem.quality;
+				}
+			}
+		}
+		if( waferQuality > 0 && caseQuality > 0 && toProduce > 0)
+			m.addProductionOrder(waferQuality, caseQuality, toProduce);
+		
+	}
+	
+	private void sendSales() {
+		for( StorageElementToClient elem : reply.storage.storageElements) {
+			if(elem.type.equals("Panel")) {
+				m.addOffer(elem.quality, elem.quantity, elem.costs*2);
+			}
+		}
 	}
 	
 	private void sendData(ClientToServerMessageCreator s) {
