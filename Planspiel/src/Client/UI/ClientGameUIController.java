@@ -359,12 +359,12 @@ public class ClientGameUIController implements Initializable{
 		
 		int qWaferInStorage = Integer.parseInt(newProductionOrderWaferStorageQuantityTextField.getText());
 		int qCasesInStorage = Integer.parseInt(newProductionOrderCaseStorageQuantityTextField.getText());
-		int qCasesNeededforPanel = qWaferInStorage/54;
+		int qCasesNeededforMaxPanels = qWaferInStorage/54;
 		
-		if(qCasesNeededforPanel < qCasesInStorage){
+		if(qCasesNeededforMaxPanels > qCasesInStorage){
 			newProductionOrderOutputQuantitySlider.setMax(qCasesInStorage);
 		} else {			
-			newProductionOrderOutputQuantitySlider.setMax(qCasesNeededforPanel);
+			newProductionOrderOutputQuantitySlider.setMax(qCasesNeededforMaxPanels);
 		}
 		
 	}
@@ -438,11 +438,9 @@ public class ClientGameUIController implements Initializable{
             @Override
             public void handle(ActionEvent actionEvent) {  
             	getResourcesInStorage();
-            	newProductionOrderTitledPane.setDisable(false);
-            	
+            	newProductionOrderTitledPane.setDisable(false);            	
             	newProductionOrderWaferChoiceBox.getItems().setAll(waferInStorage);   
-            	newProductionOrderCaseChoiceBox.getItems().setAll(casesInStorage);           	
-            	newProductionOrderCostsTextField.clear();
+            	newProductionOrderCaseChoiceBox.getItems().setAll(casesInStorage);                	
             }
         }); 
     	
@@ -451,23 +449,35 @@ public class ClientGameUIController implements Initializable{
             public void handle(ActionEvent actionEvent) {             	
     			model.getProductionOrdersTableData().add(
         			new ProductionOrder(
-        				newProductionOrderWaferChoiceBox.getValue().quality+"", newProductionOrderCaseChoiceBox.getValue().quality+"", newProductionOrderOutputQuantityTextField.getText()
+        				newProductionOrderWaferChoiceBox.getValue().quality+"", 
+        				newProductionOrderCaseChoiceBox.getValue().quality+"", 
+        				newProductionOrderOutputQuantityTextField.getText()
         			)
             	); 
+    			
     			calcAndSetMachinery();
-    			newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
-            	newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
+    			//newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
+            	//newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
             	newProductionOrderWaferStorageQuantityTextField.clear();           	
             	newProductionOrderCaseStorageQuantityTextField.clear();
-            	newProductionOrderOutputQuantitySlider.adjustValue(1.0);
-            	newPurchaseRequestTitledPane.setDisable(true);            	
+            	newProductionOrderCostsTextField.clear();
+            	newProductionOrderOutputQuantitySlider.adjustValue(0.0);
+            	newProductionOrderTitledPane.setDisable(true);     
+            	
             }
         }); 
+    	
+    	 
     	
     	newProductionOrderWaferChoiceBox.valueProperty().addListener(
     		new ChangeListener<StorageElementToClient>() {
     			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
-    				newProductionOrderWaferStorageQuantityTextField.setText(newValue.quantity+"");
+    				newProductionOrderWaferStorageQuantityTextField.setText(newValue.quantity+""); 
+    				
+    				if(newProductionOrderCaseChoiceBox.getValue() != null){
+    					calcMaximumProduction();    					
+    				}
+    				
     			}
     		}
 	    );
@@ -476,6 +486,12 @@ public class ClientGameUIController implements Initializable{
     		new ChangeListener<StorageElementToClient>() {
     			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
     				newProductionOrderCaseStorageQuantityTextField.setText(newValue.quantity+"");
+    				
+    				if(newProductionOrderWaferChoiceBox.getValue() != null){
+    					calcMaximumProduction();    					
+    				}
+    					
+    				
     			}
     		}
 	    );
