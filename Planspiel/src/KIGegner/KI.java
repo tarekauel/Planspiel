@@ -122,9 +122,9 @@ public class KI extends Thread {
 		m.addRequest("Gehäuse", qualityTry);
 
 		// Setze den Lohn:
-		
 		m.setWage(1000);
-		//Default wert
+		
+		//Intelligenter Ausbau der Maschine (bis Marktsättigung)
 		m.setMachine(true);
 		for (StorageElementToClient s : readMessage.storage.storageElements){
 			//Es liegen noch Panels auf Lager, wir produzieren also zuviel.
@@ -142,8 +142,15 @@ public class KI extends Thread {
 		 * SECTION: EINKAUF
 		 */
 		// Schleife über alle Anfragen:
-		boolean waferBought = false;
-		boolean caseBought = false;
+		boolean waferFound = false;
+		
+		int waferPrice = 0;
+		int waferQuality = 0;
+		
+		boolean caseFound = false;
+		
+		int casePrice = 0;
+		int caseQuality= 0;
 		for (int i = 0; i < readMessage.purchase.requests.size(); i++) {
 			// index des bisher besten angebots zur anfrage:
 			int index = 0;
@@ -166,27 +173,29 @@ public class KI extends Thread {
 			// das beste liegt also an position "index"
 
 			if (readMessage.purchase.requests.get(i).supplierOffers.get(index).name
-					.equals("Wafer") && !waferBought) {
-				// Bestelle Wafer
-				m.addAccepted(
-						readMessage.purchase.requests.get(i).supplierOffers
-								.get(index).name, readMessage.purchase.requests
-								.get(i).supplierOffers.get(index).quality,
-						toBuy * Constant.Constant.Production.WAFERS_PER_PANEL);
-				waferBought = true;
+					.equals("Wafer") && !waferFound) {
+	
+				waferPrice = readMessage.purchase.requests.get(i).supplierOffers.get(index).price;
+				waferQuality = readMessage.purchase.requests.get(i).supplierOffers.get(index).quality;
+				waferFound = true;
 			} else if (readMessage.purchase.requests.get(i).supplierOffers
-					.get(index).name.equals("Gehäuse") && !caseBought) {
-				// Bestelle Cases
-				m.addAccepted(
-						readMessage.purchase.requests.get(i).supplierOffers
-								.get(index).name, readMessage.purchase.requests
-								.get(i).supplierOffers.get(index).quality,
-						toBuy);
-				caseBought = true;
+					.get(index).name.equals("Gehäuse") && !caseFound) {
+
+				casePrice = readMessage.purchase.requests.get(i).supplierOffers.get(index).price;
+				caseQuality = readMessage.purchase.requests.get(i).supplierOffers.get(index).quality;
+				caseFound = true;
 			}
 
 		}
-
+		//Berechnen der maximalen Stücke mit dem momentanen Geld
+		int maxByMoney = (int)((readMessage.cash *1.0)/(casePrice + waferPrice * Constant.Constant.Production.WAFERS_PER_PANEL));
+		//Entscheidung (toBuy ist hier maxByMachine
+		toBuy = (toBuy<maxByMoney)?toBuy:maxByMoney;
+		//Tatsächliche Bestellung
+		m.addAccepted("Wafer",waferQuality,toBuy * Constant.Constant.Production.WAFERS_PER_PANEL);
+		m.addAccepted("Gehäuse", caseQuality, toBuy);
+		
+		
 		/*************************************
 		 * SECTION : PRODUCE + SELLING
 		 */
