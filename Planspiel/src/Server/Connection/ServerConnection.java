@@ -52,7 +52,13 @@ public class ServerConnection extends Thread {
 				break;
 			case "GameDataMessageFromClient": 
 				// Es handelt sich um eine Message mit Spieldaten											
-				handleGameDataMessageFromClient((GameDataMessageFromClient) message);
+				try {
+					handleGameDataMessageFromClient((GameDataMessageFromClient) message);
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+					System.exit(MAX_PRIORITY);
+				}
 				break;
 			default:
 				break;
@@ -61,14 +67,10 @@ public class ServerConnection extends Thread {
 
 	}
 
-	private void handleGameDataMessageFromClient(GameDataMessageFromClient message) {
+	private void handleGameDataMessageFromClient(GameDataMessageFromClient message)throws Exception {
 		
-		try {
+		
 			server.notifyGameData();
-		} catch (Exception e) {
-			//Fehler in Message
-			e.printStackTrace();
-		}
 		
 	}
 
