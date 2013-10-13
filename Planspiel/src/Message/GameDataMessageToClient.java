@@ -113,8 +113,6 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 	
 	public static class StorageToClient implements Serializable {
 		
-
-		
 		public StorageToClient(int storageCostsWafer, int storageCostsCase,
 				int storageCostsPanel,
 				ArrayList<StorageElementToClient> storageElements) {

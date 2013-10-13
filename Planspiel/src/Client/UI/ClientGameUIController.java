@@ -10,6 +10,8 @@ package Client.UI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,12 +36,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
+import Client.UI.ClientGameUIModel.ProductionOrder;
 import Client.UI.ClientGameUIModel.Request;
 import Client.UI.ClientGameUIModel.SupplierOffer;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
+import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 import aaaaa.GameTestConsole;
 
 
@@ -59,36 +63,44 @@ public class ClientGameUIController implements Initializable{
 	@FXML private Label roundLabel;
 	@FXML private ProgressBar roundProgressBar;
     //Purchase
+	@FXML private TitledPane newPurchaseRequestTitledPane;
 	@FXML private Button newPurchaseRequestButton;
 	@FXML private Button newPurchaseRequestSaveButton;
-	@FXML private TitledPane newPurchaseRequestBox;
 	@FXML private ChoiceBox newPurchaseRequestArticleNameChoiceBox;
 	@FXML private Slider newPurchaseRequestArticleQualitySlider;
 	@FXML private TextField newPurchaseRequestArticleQualityTextField;
 	@FXML private TableView<Request> purchaseRequestsTableView;
-	@FXML private TableColumn<Request,String> purchaseRequestArtikelTableColumn;
+	@FXML private TableColumn<Request,String> purchaseRequestArticleTableColumn;
 	@FXML private TableColumn<Request,String> purchaseRequestIdTableColumn;
 	@FXML private TableColumn<Request,String> purchaseRequestQualityTableColumn;
 	@FXML private TableColumn<Request,String> purchaseRequestStatusTableColumn;
-	private final ObservableList<Request> purchaseRequestTableData = FXCollections.observableArrayList();
 	@FXML private TableView<SupplierOffer> purchaseOffersTableView;
 	@FXML private TableColumn<SupplierOffer,String> purchaseOffersIdTableColumn;
-	@FXML private TableColumn<SupplierOffer,String> purchaseOffersArtikelTableColumn;
+	@FXML private TableColumn<SupplierOffer,String> purchaseOffersArticleTableColumn;
 	@FXML private TableColumn<SupplierOffer,String> purchaseOffersQualityTableColumn;
 	@FXML private TableColumn<SupplierOffer,String> purchaseOffersQuantityTableColumn;
 	@FXML private TableColumn<SupplierOffer,String> purchaseOffersPriceTableColumn;	
-	private final ObservableList<SupplierOffer> purchaseOffersTableData = FXCollections.observableArrayList();
     //Production
+	@FXML private TitledPane newProductionOrderTitledPane;
 	@FXML private Button newProductionOrderButton;
 	@FXML private Button newProductionOrderSaveButton;
 	@FXML private ChoiceBox newProductionOrderWaferChoiceBox;
-	@FXML private Slider newProductionOrderOutputAmountSlider;
-	@FXML private TextField newProductionOrderOutputAmountTextField;
+	private ObservableList<String> waferInStorage = FXCollections.observableArrayList();
+	private ObservableList<String> casesInStorage = FXCollections.observableArrayList();
+	@FXML private Slider newProductionOrderOutputQuantitySlider;
+	@FXML private TextField newProductionOrderOutputQuantityTextField;
 	@FXML private ChoiceBox newProductionOrderCaseChoiceBox;
-	@FXML private TextField newProductionOrderWaferStorageAmountTextField;
-	@FXML private TextField newProductionOrderCaseStorageAmountTextField;
+	@FXML private TextField newProductionOrderWaferStorageQuantityTextField;
+	@FXML private TextField newProductionOrderCaseStorageQuantityTextField;
 	@FXML private TextField newProductionOrderCostsTextField;
-	@FXML private TableView productionOrdersTableView;
+	@FXML private TableView<ProductionOrder> productionOrdersTableView;
+	@FXML private TableColumn<ProductionOrder,String> productionOrderIdTableColumn;
+	@FXML private TableColumn<ProductionOrder,String> productionOrderQualityWaferTableColumn;
+	@FXML private TableColumn<ProductionOrder,String> productionOrderQualityCaseTableColumn;
+	@FXML private TableColumn<ProductionOrder,String> productionOrderTargetQuantityTableColumn;
+	@FXML private TableColumn<ProductionOrder,String> productionOrderQualityPanelTableColumn;	
+	@FXML private TableColumn<ProductionOrder,String> productionOrderActualQuantityTableColumn;	
+	@FXML private TableColumn<ProductionOrder,String> productionOrderCostsPerUnitTableColumn;	
 	@FXML private TextField machineryLevelTextField;
 	@FXML private TextField machineryMaximumCapacityTextField;
 	@FXML private ProgressBar machineryWorkloadProgressBar;
@@ -102,8 +114,8 @@ public class ClientGameUIController implements Initializable{
 	@FXML private Button newSaleOfferButton;
 	@FXML private Button newSaleOfferSaveButton;
 	@FXML private ChoiceBox newSaleOfferArticleChoiceBox;
-	@FXML private Slider newSaleOfferArticleAmountSlider;
-	@FXML private TextField newSaleOfferArticleAmountTextField;
+	@FXML private Slider newSaleOfferArticleQuantitySlider;
+	@FXML private TextField newSaleOfferArticleQuantityTextField;
 	@FXML private TextField newSaleOfferArticlePriceTextField;
 	@FXML private TextField newSaleOfferCostsTextField;
 	@FXML private TextField newSaleOfferDistributionCostsTextField;
@@ -132,178 +144,35 @@ public class ClientGameUIController implements Initializable{
 	@FXML private ProgressBar reportingMachineryLastRoundWorkloadProgressBar;
 	@FXML private BarChart reportingSalesBarChart;
 	@FXML private LineChart reportingCompanyValueLineChart;
-
-/**
- * parsed alle GameDatas aus einer Message
- * @param in Message, die geparsed werden soll
- */
-	public void parseAnswerFromServer(GameDataMessageToClient in){
-		model.setRound(in.round);
-		parsePurchase(in.purchase);			
-	}
-	
-	
-	
-	/**
-	 * hier werden die Daten für den Verkauf geparsed
-	 * @param in das Klassen objekt für den Verkauf
-	 */
-	private void parsePurchase(PurchaseToClient in){
-		
-		
-			for(int i=in.requests.size()-1; i>=0; i--) {
-				RequestToClient req = in.requests.get(i);
-			
-			Request request = new Request(req, i);
-			purchaseRequestTableData.add(request);
-		}			
-		
-	}
-	
-	
 	
     /**
      * Hier werden alle Felder des UIs initialisiert, die initial beim Aufrufen des UIs gefuellt sein sollen.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {  
+    public void initialize(URL url, ResourceBundle rb) {
     	
+    	initGeneral();
+    	initPurchase();
+    	initProduction();
+    	initSales();
+//    	initStorage();
+//    	initHumanResources();
+//    	initMarketing();
+//    	initReporting();
+    		
+    	model.parseAnswerFromServer();
+    	//END WORK
+    	
+    }
+
+	private void initGeneral() {
+		
     	this.model = new ClientGameUIModel();
     	processRoundProgressBar(model.getRound());
     	
-    	purchaseRequestArtikelTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<Request, String>("name")
-    			);
-    	
-    	purchaseRequestIdTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<Request, String>("id")
-    			);
-    	
-    	purchaseRequestStatusTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<Request, String>("status")
-    			);
-    	
-    	purchaseRequestQualityTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<Request, String>("quality")
-    			);
-    	
-    	purchaseRequestsTableView.setItems(
-				 purchaseRequestTableData
-				);
-    	
-    	// Verhindert, dass man eine neue Spalte durch schieben hinzufügen kann
-    	purchaseRequestsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);    	    	
-    	
-    	purchaseRequestIdTableColumn.setSortType(TableColumn.SortType.DESCENDING);
-    	purchaseRequestsTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);    	
-    	purchaseRequestsTableView.getSelectionModel().selectedItemProperty().addListener(
-    			new ChangeListener<Request>() {
-    				public void changed(ObservableValue<? extends Request> observable, Request oldValue, Request newValue) {
-    					purchaseOffersTableData.clear();
-    					for( SupplierOffer o:newValue.getOffer()) {
-    						purchaseOffersTableData.add(o);
-    						System.out.println(o.getRound() + "=="+ (model.getRound()-1));
-    						if( o.getRound() == model.getRound()-1 ) {
-    							purchaseOffersTableView.setEditable(true);
-    					    	purchaseOffersQuantityTableColumn.setEditable(true);
-    					    	// TODO an dieser stelle sollte das bearbeiten der Rechten Tablle der Spalte Menge moeglich sein!
-    						}
-    					}
-    				}
-    			}
-    			);
-    	    	
-    	purchaseOffersArtikelTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<SupplierOffer, String>("name")
-    			);
-    	purchaseOffersIdTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<SupplierOffer, String>("id")
-    			);
-    	purchaseOffersQualityTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<SupplierOffer, String>("quality")
-    			);
-    	purchaseOffersQuantityTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<SupplierOffer, String>("quantity")
-    			);
-    	purchaseOffersPriceTableColumn.setCellValueFactory(
-    			new PropertyValueFactory<SupplierOffer, String>("price")
-    			);
-    	purchaseOffersTableView.setItems(
-    			purchaseOffersTableData
-    			);
-    	
-    	purchaseOffersTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
-    	purchaseOffersTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);  
-    	
-    	
     	/**
-    	 * Hier werden alle Buttons mit ActionListenern versehen.
+    	 * Elementübergreifende Einstellungen
     	 */
-    	
-    	endRoundButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {           	
-            	model.setRound(model.getRound()+1);    
-            	//TEST
-            	processRoundProgressBar(model.getRound());
-            }
-        }); 
-    	
-    	newPurchaseRequestButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {                  	
-            	//Felder resetten
-            	newPurchaseRequestBox.setDisable(false);
-            	newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
-            	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
-            	newPurchaseRequestArticleQualityTextField.setText("1.0");
-            }
-        }); 
-    	
-    	newPurchaseRequestSaveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {  
-            	purchaseRequestTableData.add(
-            			new Request(
-            					newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
-            					String.valueOf(((int) newPurchaseRequestArticleQualitySlider.getValue())))); 
-    			model.addRequest(new RequestFromClient(newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
-    					((int) newPurchaseRequestArticleQualitySlider.getValue())));
-    			
-    			newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
-            	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
-            	newPurchaseRequestArticleQualityTextField.setText("1.0");
-            	newPurchaseRequestBox.setDisable(true);
-            }
-        }); 
-    	
-    	newProductionOrderButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {           	
-            	//Felder resetten  	
-            }
-        }); 
-    	
-    	newProductionOrderSaveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {           	
-            	       	
-            }
-        }); 
-    	
-    	newSaleOfferButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {           	
-            	//Felder resetten    	
-            }
-        }); 
-    	
-    	newSaleOfferSaveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {           	
-            	          	
-            }
-        }); 
     	
     	/**
     	 * Hier werden alle Slider bidirektional mit der dazugehörigen Textbox verknüpft. 
@@ -326,18 +195,266 @@ public class ClientGameUIController implements Initializable{
     	};
     	
     	newPurchaseRequestArticleQualityTextField.textProperty().bindBidirectional(newPurchaseRequestArticleQualitySlider.valueProperty(), stringConverterForSliders);
-    	newProductionOrderOutputAmountTextField.textProperty().bindBidirectional(newProductionOrderOutputAmountSlider.valueProperty(), stringConverterForSliders);
-    	newSaleOfferArticleAmountTextField.textProperty().bindBidirectional(newSaleOfferArticleAmountSlider.valueProperty(), stringConverterForSliders);
+    	newProductionOrderOutputQuantityTextField.textProperty().bindBidirectional(newProductionOrderOutputQuantitySlider.valueProperty(), stringConverterForSliders);
+    	newSaleOfferArticleQuantityTextField.textProperty().bindBidirectional(newSaleOfferArticleQuantitySlider.valueProperty(), stringConverterForSliders);
     	
-    	//TODO:
-    	parseAnswerFromServer(GameTestConsole.data);
-    	//END WORK
-    }
+    	/**
+    	 * ActionListener
+    	 */
+    	
+    	endRoundButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {           	
+            	model.setRound(model.getRound()+1);    
+            	//TEST
+            	processRoundProgressBar(model.getRound());
+            }
+        }); 
+		
+	}
+
+	private void initPurchase() {
+		
+		/**
+    	 * purchaseRequestTable: CellFactory
+    	 */
+    	
+    	purchaseRequestArticleTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<Request, String>("name")
+    	);
+    	
+    	purchaseRequestIdTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<Request, String>("id")
+    	);
+    	
+    	purchaseRequestStatusTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<Request, String>("status")
+    	);
+    	
+    	purchaseRequestQualityTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<Request, String>("quality")
+    	);
     
-    /**
+    	purchaseRequestsTableView.setItems(model.getPurchaseRequestTableData());
+    	
+    	/**
+    	 * purchaseRequestTable: Misc
+    	 */
+    	
+    	// Verhindert, dass man eine neue Spalte durch schieben hinzufügen kann
+    	purchaseRequestsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);    	    	
+    	
+    	purchaseRequestIdTableColumn.setSortType(TableColumn.SortType.DESCENDING);
+    	purchaseRequestsTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);    	
+    	purchaseRequestsTableView.getSelectionModel().selectedItemProperty().addListener(
+    		new ChangeListener<Request>() {
+    			public void changed(ObservableValue<? extends Request> observable, Request oldValue, Request newValue) {
+    				model.getPurchaseOffersTableData().clear();
+    				for( SupplierOffer o : newValue.getOffer() ) {
+    					model.getPurchaseOffersTableData().add(o);
+    					System.out.println(o.getRound() + "=="+ (model.getRound()-1));
+    					if( o.getRound() == model.getRound()-1 ) {
+    						purchaseOffersTableView.setEditable(true);
+    					   	purchaseOffersQuantityTableColumn.setEditable(true);
+    				    	// TODO an dieser stelle sollte das Bearbeiten der Rechten Tabelle der Spalte Menge moeglich sein!
+    					}
+    				}
+    			}
+    		}
+    	);
+    	
+    	/**
+    	 * purchaseOffersTable: CellFactory
+    	 */
+    	    	
+    	purchaseOffersArticleTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<SupplierOffer, String>("name")
+    	);
+    	purchaseOffersIdTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<SupplierOffer, String>("id")
+    	);
+    	purchaseOffersQualityTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<SupplierOffer, String>("quality")
+    	);
+    	purchaseOffersQuantityTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<SupplierOffer, String>("quantity")
+    	);
+    	purchaseOffersPriceTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<SupplierOffer, String>("price")
+    	);
+    	purchaseOffersTableView.setItems(model.getPurchaseOffersTableData());    	
+    	
+    	/**
+    	 * purchaseOffersTable: Misc
+    	 */
+    	
+    	purchaseOffersTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+    	purchaseOffersTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+    	
+    	/**
+    	 * ActionListener
+    	 */
+    	
+    	newPurchaseRequestButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {                  	
+            	//Felder resetten
+            	newPurchaseRequestTitledPane.setDisable(false);
+            	newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
+            	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
+            }
+        }); 
+    	
+    	newPurchaseRequestSaveButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {             	
+            	model.getPurchaseRequestTableData().add(
+        			new Request(
+    					newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
+    					newPurchaseRequestArticleQualityTextField.getText()
+        			)
+            	); 
+    			model.addRequest(
+					new RequestFromClient(
+						newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
+						Integer.parseInt(newPurchaseRequestArticleQualityTextField.getText())
+					)
+    			);
+    			
+    			newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
+            	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
+            	newPurchaseRequestTitledPane.setDisable(true);            	
+            }
+        });
+		
+	}
+	
+	//TODO: Debuggen! (storageElements.size ist 0)
+	private void getResourcesInStorage(){
+		System.out.println(model.getIn().storage.storageElements.size());
+		for (int i = 0; i < model.getIn().storage.storageElements.size(); i++) {
+			StorageElementToClient tmp = model.getIn().storage.storageElements.get(i);
+			if (tmp.equals("Wafer")) {
+				waferInStorage.add("Qualität "+tmp.quality);
+			} else if (tmp.equals("Gehäuse")) {
+				casesInStorage.add("Qualität "+tmp.quality);
+			}
+		}
+	}
+	
+	private void initProduction() {
+		
+		/**
+    	 * productionOrdersTable: CellFactory
+    	 */
+		
+		productionOrderIdTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<ProductionOrder, String>("id")
+    	);
+    	
+		productionOrderQualityWaferTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<ProductionOrder, String>("qualityWafer")
+    	);
+    	
+		productionOrderQualityCaseTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<ProductionOrder, String>("qualityCase")
+    	);
+    	
+		productionOrderTargetQuantityTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<ProductionOrder, String>("targetQuantity")
+    	);
+		
+		productionOrderQualityPanelTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<ProductionOrder, String>("qualityPanel")
+    	);
+	
+		productionOrderActualQuantityTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<ProductionOrder, String>("actualQuantity")
+    	);
+		
+		productionOrderCostsPerUnitTableColumn.setCellValueFactory(
+    		new PropertyValueFactory<ProductionOrder, String>("costsPerUnit")
+    	);
+    
+		productionOrdersTableView.setItems(model.getProductionOrdersTableData());
+
+    	/**
+    	 * ActionListener
+    	 */
+    	
+    	newProductionOrderButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {           	
+            	//Felder resetten
+            	getResourcesInStorage();
+            	newProductionOrderTitledPane.setDisable(false);
+            	newProductionOrderWaferChoiceBox.setItems(waferInStorage);
+            	//newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
+            	newProductionOrderWaferStorageQuantityTextField.clear();
+            	//newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
+            	newProductionOrderWaferChoiceBox.setItems(casesInStorage);
+            	newProductionOrderCaseStorageQuantityTextField.clear();
+            	newProductionOrderOutputQuantitySlider.adjustValue(1.0);
+            	newProductionOrderCostsTextField.clear();
+            }
+        }); 
+//    	
+//    	newProductionOrderSaveButton.setOnAction(new EventHandler<ActionEvent>() {
+////    		@Override
+////            public void handle(ActionEvent actionEvent) {             	
+////    			model.getProductionOrdersTableData().add(
+////        			new ProductionOrder(
+////    					
+////        			)
+//            	); 
+//    			model.addRequest(
+//					new RequestFromClient(
+//						newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
+//						Integer.parseInt(newPurchaseRequestArticleQualityTextField.getText())
+//					)
+//    			);
+//    			
+//    			newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
+//            	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
+//            	newPurchaseRequestTitledPane.setDisable(true);            	
+//            }
+//        }); 
+		
+	}
+	
+	private void initSales() {
+		
+		/**
+    	 * purchaseRequestTable: CellFactory
+    	 */
+		
+		
+		
+		/**
+    	 * ActionListener
+    	 */
+		
+		newSaleOfferButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {           	
+            	//Felder resetten    	
+            }
+        }); 
+    	
+    	newSaleOfferSaveButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {           	
+            	          	
+            }
+        });
+		
+	}
+
+	/**
      * Berechnet den Runden-Fortschrittsbalken neu und setzt den neuen Wert. Ausserdem wird das Runden-Label aktualisiert.
      * @param round
      */
+	
     public void processRoundProgressBar(int round){
     	
     	Integer roundInt = new Integer(round);
