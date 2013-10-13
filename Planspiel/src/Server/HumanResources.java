@@ -42,12 +42,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 		super(c, "Personal", Constant.DepartmentFixcost.HUMAN_RESOURCES);
 
 		setWagePerRound(new TWage(900, GameEngine.getGameEngine().getRound(), c
-				.getLocation().getWageLevel())); // TODO:
-		// Anpassen
-		// &
-		// in
-		// ini-File
-		// auslagern
+				.getLocation().getInitWage())); 
 		this.wagesSum = calcWagesSum();
 		// TODO: BENEFIT BOOKING!?
 		// this.benefitBooking = new BenefitBooking();
