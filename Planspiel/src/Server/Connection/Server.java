@@ -134,6 +134,7 @@ public class Server {
 		for (Player player : playerList) {
 			player.getServerConnection().writeMessage(new GameOverMessage("", ""));			
 		}
+		close();
 		System.exit(1);
 	}
 	public synchronized void addPlayer(Player player) {
