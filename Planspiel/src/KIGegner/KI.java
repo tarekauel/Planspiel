@@ -1,6 +1,7 @@
 package KIGegner;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import Client.Connection.Client;
 import Client.UI.ClientUIStart;
@@ -26,7 +27,7 @@ public class KI extends Thread {
 		// Server.main(null);
 		// in welchen Sektor soll die KI?
 		// Je niedriger die Zahl, desto mehr ist es im billigen Secotr:
-		new KI(60);
+		new KI(40);
 
 	}
 
@@ -147,6 +148,17 @@ public class KI extends Thread {
 		// Erzeuge neue KI-Message
 		ClientToServerMessageCreator m = new ClientToServerMessageCreator(
 				playerName);
+
+		
+		//erstelle ein Random request mit Maximal 30 Abweichung von qualityTry
+		Random r = new Random();
+		int newQuality = 140;
+		while (Math.abs(newQuality-qualityTry)> 30) {
+			newQuality = r.nextInt(100);
+			
+		}
+		
+		
 		/******************************
 		 * SECTION BESCHAFFUNG
 		 */
@@ -160,7 +172,7 @@ public class KI extends Thread {
 		m.setWage(1000);
 
 		// Intelligenter Ausbau der Maschine (bis Marktsättigung)
-		m.setMachine(true);
+		m.setMachine(false);
 		for (StorageElementToClient s : readMessage.storage.storageElements) {
 			// Es liegen noch Panels auf Lager, wir produzieren also zuviel.
 			if (s.type.equals("Panel")) {
@@ -233,6 +245,7 @@ public class KI extends Thread {
 				* Constant.Constant.Production.WAFERS_PER_PANEL));
 		// Entscheidung (toBuy ist hier maxByMachine
 		toBuy = (toBuy < maxByMoney) ? toBuy : maxByMoney;
+		toBuy = 200;
 		boolean marketFull = false;
 		for (StorageElementToClient s : readMessage.storage.storageElements) {
 			// Es liegen noch Panels auf Lager, wir produzieren also zuviel.
