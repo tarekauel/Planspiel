@@ -1,4 +1,4 @@
-package GameDataTranslator;
+package GameDataTranslatorFromClient;
 
 import java.util.ArrayList;
 

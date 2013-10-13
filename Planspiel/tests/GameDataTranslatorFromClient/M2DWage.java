@@ -1,6 +1,6 @@
-package GameDataTranslator;
+package GameDataTranslatorFromClient;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -23,11 +23,8 @@ import Server.Company;
 import Server.GameDataTranslator;
 import Server.GameEngine;
 import Server.Location;
-import Server.Resource;
-import Server.SupplierMarket;
-import Server.SupplierOffer;
 
-public class M2DmachineryLevel {
+public class M2DWage {
 	
 	static Company c;
 	
@@ -61,45 +58,31 @@ public class M2DmachineryLevel {
 		 production = new ProductionFromClient(orders);
 		 distribution = new DistributionFromClient(offers);
 		 hr = new HumanResourcesFromClient(benefits);
+		 
+
 		
 
 		
 	}
-
 	@Test
-	public void increaseMachineryLevel() throws Exception {
-		
-		int machineryLevelBefore = c.getProduction().getMachine().getLevel();
-		boolean machineryLevelIncrease= true;
-		
+	public void makeTests() throws Exception {
+		int wageBefore = c.getHumanResources().getWagesPerHour().getAmount();
+		int wage = 10;
 		ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
-		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, machineryLevelIncrease, hr, 7, false);
+		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, false, hr, wage,false);
 		gameDataMessages.add(gameDataMessage);
+		GameDataTranslator.getGameDataTranslator().convertGameDataMessage2Objects(gameDataMessages);
+		int wageAfter = c.getHumanResources().getWagesPerHour().getAmount();
+		System.out.println(wageBefore);
+		System.out.println(wageAfter);
+		assertEquals(true, wageBefore!=wageAfter);
 		
-		GameEngine.getGameEngine().startNextRound(gameDataMessages);
-		int machineryLevelAfter = c.getProduction().getMachine().getLevel();
-		assertEquals(machineryLevelAfter, machineryLevelBefore+1);
 	}
-	
-	@Test
-	public void sameMachineryLevel() throws Exception {
-		
-		int machineryLevelBefore = c.getProduction().getMachine().getLevel();
-		boolean machineryLevelIncrease= false;
-		
-		ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
-		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, machineryLevelIncrease, hr, 8, false);
-		gameDataMessages.add(gameDataMessage);
-		
-		GameEngine.getGameEngine().startNextRound(gameDataMessages);
-		int machineryLevelAfter = c.getProduction().getMachine().getLevel();
-		assertEquals(machineryLevelAfter, machineryLevelBefore);
-	}
-
 
 	@After
 	public void resetTests() {
 
 	}
+
 
 }

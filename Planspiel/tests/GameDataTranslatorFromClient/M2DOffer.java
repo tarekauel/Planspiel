@@ -1,4 +1,4 @@
-package GameDataTranslator;
+package GameDataTranslatorFromClient;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,4 +1,4 @@
-package GameDataTranslator;
+package GameDataTranslatorFromClient;
 
 import static org.junit.Assert.*;
 
@@ -21,8 +21,8 @@ import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOffe
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Server.*;
 
-public class M2DRequests {
-	
+public class M2DProductionOrder {
+
 	Company c;
 	ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
 
@@ -30,48 +30,52 @@ public class M2DRequests {
 	public static void setUpBeforeClass() throws Exception {
 		Location.initLocations();
 		GameEngine.getGameEngine();
-		
+
 	}
 
 	@Before
 	public void initializeTests() throws Exception {
-		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
-/*		Resource wafer = new Resource(80, "Wafer", 1000);
+		//einrichten der Company mit den erforderlichen Eigenschaften fuer diesen Test
+		c = new Company(Location.getLocationByCountry("USA"), "OTTO");
+
+		Resource wafer = new Resource(80, "Wafer", 10000);
 		Resource cases = new Resource(50, "Gehäuse", 30000);
-		c.getPurchase().createRequest(cases);
-*/		
-		//werden teilweise absichtlich leer gelassen da in anderem Test geprueft
+		c.getStorage().store(wafer, 10000);
+		c.getStorage().store(cases, 10000);
+		
+		// Erstellen der Message Objekte
+		// Listen werden teilweise absichtlich leer gelassen da sie in anderen Tests
+		// geprueft werden aber notwendig sind
 		ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
 		ArrayList<AcceptedSupplierOfferFromClient> acceptedSupplierOffers = new ArrayList<AcceptedSupplierOfferFromClient>();
 		ArrayList<ProductionOrderFromClient> orders = new ArrayList<ProductionOrderFromClient>();
 		ArrayList<OfferFromClient> offers = new ArrayList<OfferFromClient>();
 		ArrayList<BenefitBookingFromClient> benefits = new ArrayList<BenefitBookingFromClient>();
-		
-		//hier findet die erzeugung der relevanten Daten innerhalb der Message statt
-		RequestFromClient request =  new RequestFromClient("Wafer", 80);
-		requests.add(request);		
-		request =  new RequestFromClient("Gehäuse", 50);
-		requests.add(request);
-		PurchaseFromClient purchase = new PurchaseFromClient(requests, acceptedSupplierOffers); 
-		
-		//weitere Erstellung der Message
+
+		// hier findet die erzeugung der relevanten Testdaten innerhalb der Message
+		// statt
+		ProductionOrderFromClient prodOrder = new ProductionOrderFromClient(80,50, 100);
+		orders.add(prodOrder);
 		ProductionFromClient production = new ProductionFromClient(orders);
+
+		// weitere Erstellung der Message
+		PurchaseFromClient purchase = new PurchaseFromClient(requests,
+				acceptedSupplierOffers);
 		DistributionFromClient distribution = new DistributionFromClient(offers);
-		HumanResourcesFromClient  hr = new HumanResourcesFromClient(benefits);
-		
-		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, false, hr, 7, false);
+		HumanResourcesFromClient hr = new HumanResourcesFromClient(benefits);
+
+		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(
+				c.getName(), purchase, production, distribution, false, hr, 7,
+				false);
 		gameDataMessages.add(gameDataMessage);
-		
-		
+
 	}
 
 	@Test
-	public void convertRequest() throws Exception {
+	public void convertProductionOrder() throws Exception {
 		GameDataTranslator.getGameDataTranslator().convertGameDataMessage2Objects(gameDataMessages);
-		assertEquals(80,c.getPurchase().getListOfRequest().get(0).getRequestedResource().getQuality());
-		assertEquals(true,c.getPurchase().getListOfRequest().get(0).getRequestedResource().getName().equals("Wafer"));
-		assertEquals(50,c.getPurchase().getListOfRequest().get(1).getRequestedResource().getQuality());
-		assertEquals(true,c.getPurchase().getListOfRequest().get(1).getRequestedResource().getName().equals("Gehäuse"));
+		assertEquals(100,c.getProduction().getListOfAllProductionOrders().get(0)
+						.getRequested());
 	}
 
 	@After

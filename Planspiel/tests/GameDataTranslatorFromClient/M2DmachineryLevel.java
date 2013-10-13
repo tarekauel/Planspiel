@@ -1,4 +1,4 @@
-package GameDataTranslator;
+package GameDataTranslatorFromClient;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,7 +10,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Message.GameDataMessageFromClient;
-import Message.GameDataMessageToClient;
 import Message.GameDataMessageFromClient.DistributionFromClient;
 import Message.GameDataMessageFromClient.HumanResourcesFromClient;
 import Message.GameDataMessageFromClient.ProductionFromClient;
@@ -21,12 +20,16 @@ import Message.GameDataMessageFromClient.ProductionFromClient.ProductionOrderFro
 import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOfferFromClient;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Server.Company;
+import Server.GameDataTranslator;
 import Server.GameEngine;
 import Server.Location;
+import Server.Resource;
+import Server.SupplierMarket;
+import Server.SupplierOffer;
 
-public class M2DMarketResearch {
-
-static Company c;
+public class M2DmachineryLevel {
+	
+	static Company c;
 	
 	PurchaseFromClient purchase;
 	DistributionFromClient distribution;
@@ -64,31 +67,33 @@ static Company c;
 	}
 
 	@Test
-	public void marketResearchOrdered() throws Exception {
-		boolean orderMarketResearch = true;
+	public void increaseMachineryLevel() throws Exception {
+		
+		int machineryLevelBefore = c.getProduction().getMachine().getLevel();
+		boolean machineryLevelIncrease= true;
+		
 		ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
-		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, false, hr, 8, orderMarketResearch);
+		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, machineryLevelIncrease, hr, 7, false);
 		gameDataMessages.add(gameDataMessage);
 		
-		ArrayList<GameDataMessageToClient> gameDataM2Client= GameEngine.getGameEngine().startNextRound(gameDataMessages);
-		GameDataMessageToClient toClient = gameDataM2Client.get(0);
-		assertEquals(true,toClient.marketing.isBooked);
-		
-		
+		GameEngine.getGameEngine().startNextRound(gameDataMessages);
+		int machineryLevelAfter = c.getProduction().getMachine().getLevel();
+		assertEquals(machineryLevelAfter, machineryLevelBefore+1);
 	}
 	
 	@Test
-	public void marketResearchNotOrdered() throws Exception {
-		boolean orderMarketResearch = false;
+	public void sameMachineryLevel() throws Exception {
+		
+		int machineryLevelBefore = c.getProduction().getMachine().getLevel();
+		boolean machineryLevelIncrease= false;
+		
 		ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
-		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, false, hr, 8, orderMarketResearch);
+		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, machineryLevelIncrease, hr, 8, false);
 		gameDataMessages.add(gameDataMessage);
 		
-		ArrayList<GameDataMessageToClient> gameDataM2Client= GameEngine.getGameEngine().startNextRound(gameDataMessages);
-		GameDataMessageToClient toClient = gameDataM2Client.get(0);
-		assertEquals(false,toClient.marketing.isBooked);
-		
-		
+		GameEngine.getGameEngine().startNextRound(gameDataMessages);
+		int machineryLevelAfter = c.getProduction().getMachine().getLevel();
+		assertEquals(machineryLevelAfter, machineryLevelBefore);
 	}
 
 
@@ -97,6 +102,4 @@ static Company c;
 
 	}
 
-	
-	
 }
