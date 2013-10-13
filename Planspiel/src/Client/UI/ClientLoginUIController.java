@@ -7,6 +7,7 @@ package Client.UI;
  * Time: 16:38
  */
 
+import java.awt.Dialog;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
