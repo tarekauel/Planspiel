@@ -125,6 +125,7 @@ public class GameEngine {
 		SupplierMarket.getMarket().handleRequest();
 				
 		// Maschinenpark nach Produktion ausbauen
+		//Benefits nach der Produktion aktivieren
 		for(GameDataMessageFromClient message : gameDataList) {
 			for (Company company : listOfCompanys) {
 				if (company.getName().equals(message.getPlayerName())) {
