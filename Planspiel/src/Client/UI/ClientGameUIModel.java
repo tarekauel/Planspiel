@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
+import KIGegner.KITarek;
 import KIGegner.UITestKI;
 import KIGegner.UITestKISchlau;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
@@ -32,7 +33,7 @@ public class ClientGameUIModel {
 	 * General
 	 */
 
-	private GameDataMessageToClient in = UITestKISchlau.data;
+	private GameDataMessageToClient in = KITarek.reply;
 
 	private int round;
 	private int maxRounds = 20;
@@ -56,7 +57,7 @@ public class ClientGameUIModel {
 	
 	private final ObservableList<Integer> salesChartCategories = FXCollections.observableArrayList();
 	
-	private final ArrayList<ArrayList<XYChart.Data<Integer, Long>>> salesChartData = new ArrayList<ArrayList<XYChart.Data<Integer, Long>>>();
+	private final ArrayList<ArrayList<XYChart.Data<String, Long>>> salesChartData = new ArrayList<ArrayList<XYChart.Data<String, Long>>>();
 
 	public GameDataMessageToClient getIn() {
 		return in;
@@ -118,7 +119,7 @@ public class ClientGameUIModel {
 		return benfitBoxData;
 	}
 	
-	public ArrayList<ArrayList<XYChart.Data<Integer, Long>>> getSalesChartData() {
+	public ArrayList<ArrayList<XYChart.Data<String, Long>>> getSalesChartData() {
 		return salesChartData;
 	}
 	
@@ -182,10 +183,10 @@ public class ClientGameUIModel {
 		for (OfferToClient offer : in.offers) {
 			offerTableData.add(new Offer(offer));			
 		}
-		ArrayList<HashMap<Integer, Long>> listSales = new ArrayList<HashMap<Integer, Long>>();
+		ArrayList<HashMap<String, Long>> listSales = new ArrayList<HashMap<String, Long>>();
 		
 		for( int i=1; i<=5; i++) {
-			HashMap<Integer, Long> map = new HashMap<Integer, Long>();
+			HashMap<String, Long> map = new HashMap<String, Long>();
 			listSales.add( map );
 			int round = this.round - i;
 			if( round <= 0)
@@ -194,15 +195,15 @@ public class ClientGameUIModel {
 			for(OfferToClient offer : in.offers) {
 				if( offer.round == round) {
 					long oldvalue = (map.get(offer.quality) == null ) ? 0L : map.get(offer.quality);
-					map.put(offer.quality, oldvalue+(offer.price*offer.quantitySold));					
+					map.put(offer.quality+"", oldvalue+(offer.price*offer.quantitySold));					
 				}
 			}					
 		}
 		
-		for(HashMap<Integer, Long> map : listSales ) {
-			ArrayList<XYChart.Data<Integer, Long>> dataList = new ArrayList<XYChart.Data<Integer,Long>>();
-			for(Map.Entry<Integer, Long> entry : map.entrySet()) {
-				dataList.add(new XYChart.Data<Integer, Long>( entry.getKey(), entry.getValue()));
+		for(HashMap<String, Long> map : listSales ) {
+			ArrayList<XYChart.Data<String, Long>> dataList = new ArrayList<XYChart.Data<String,Long>>();
+			for(Map.Entry<String, Long> entry : map.entrySet()) {
+				dataList.add(new XYChart.Data<String, Long>( entry.getKey(), entry.getValue()));
 			}
 			salesChartData.add(dataList);
 		}

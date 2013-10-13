@@ -8,6 +8,7 @@ package Client.UI;
  */
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -20,6 +21,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -142,7 +146,7 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField reportingMachineryMaxCapacityTextField;
 	@FXML private ProgressBar reportingMachineryAvgWorkloadProgressBar;
 	@FXML private ProgressBar reportingMachineryLastRoundWorkloadProgressBar;
-	@FXML private BarChart reportingSalesBarChart;
+	@FXML private BarChart<String, Long> reportingSalesBarChart;
 	@FXML private LineChart reportingCompanyValueLineChart;
 	
     /**
@@ -162,6 +166,8 @@ public class ClientGameUIController implements Initializable{
 //    	initReporting();
     		
     	model.parseAnswerFromServer();
+    	
+    	buildSalesChart();
     	//END WORK
     	
     }
@@ -529,6 +535,22 @@ public class ClientGameUIController implements Initializable{
     	roundProgressBar.setProgress(newProgress);
     	roundLabel.setText("Runde: "+roundInt.toString());
         
+    }
+    
+    public void buildSalesChart() {
+    	int x=0;
+    	for( ArrayList<Data<String, Long>> seriesData : model.getSalesChartData()) {
+    		x++;
+    		XYChart.Series<String, Long> series = new XYChart.Series<String, Long>();
+    		series.setName("Bla");
+    		for(Data<String, Long> singleData : seriesData) {
+    			series.getData().add(singleData);
+    		}
+    		ObservableList<Series<String, Long>> data = reportingSalesBarChart.getData();
+    		data.add(series);
+    		if( x== 4)
+    		break;
+    	}
     }
 
 }

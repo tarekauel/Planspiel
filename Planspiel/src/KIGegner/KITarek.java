@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import Client.Connection.Client;
+import Client.UI.ClientGameUIStart;
 import Constant.Constant;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.DistributionToClient.OfferToClient;
@@ -29,11 +30,11 @@ public class KITarek extends Thread {
 	
 	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 	
-	private GameDataMessageToClient reply; 
-	ClientToServerMessageCreator m;
+	public static GameDataMessageToClient reply; 
+	public static ClientToServerMessageCreator m;
 	
 	public static void main(String[] args) {
-		new KITarek( 50 );
+		new KITarek( 10 );
 	}
 	
 	public KITarek(int round) {
@@ -61,7 +62,7 @@ public class KITarek extends Thread {
 	
 	@Override
 	public void run() {
-		c.readMessage();
+		//c.readMessage();
 		doFirstRound();	
 		reply = (GameDataMessageToClient) c.readMessage();
 		m = new ClientToServerMessageCreator(playerName);
@@ -92,6 +93,7 @@ public class KITarek extends Thread {
 					playerName);
 			play();
 			if ( reply.round == stopRound) {
+				ClientGameUIStart.main(null);
 				break;
 			}
 			sendData(m);
@@ -188,6 +190,7 @@ public class KITarek extends Thread {
 				}
 			}
 		}
+		toProduce--;
 		if( waferQuality > 0 && caseQuality > 0 && toProduce > 0)
 			m.addProductionOrder(waferQuality, caseQuality, toProduce);
 		
@@ -196,7 +199,9 @@ public class KITarek extends Thread {
 	private void sendSales() {
 		for( StorageElementToClient elem : reply.storage.storageElements) {
 			if(elem.type.equals("Panel")) {
-				m.addOffer(elem.quality, elem.quantity, elem.costs*2);
+				int menge =  elem.quantity-1;
+				if( menge >= 1)
+				m.addOffer(elem.quality, menge, elem.costs*2);
 			}
 		}
 	}
