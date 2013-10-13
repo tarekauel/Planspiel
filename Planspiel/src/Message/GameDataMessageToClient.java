@@ -233,12 +233,13 @@ public class GameDataMessageToClient extends GameDataMessage implements
 
 	public static class MarketingToClient implements Serializable {
 
-		public MarketingToClient(int peakAMarket, int peakCMarket,
+		public MarketingToClient(boolean isBooked,int peakAMarket, int peakCMarket,
 				ArrayList<MarketShareToClient> marketShares,
 				ArrayList<RessourcePriceToClient> waferPrice,
 				ArrayList<RessourcePriceToClient> casePrice,
 				ArrayList<MotivationRoundToClient> motivationRounds) {
-
+			
+			this.isBooked = isBooked;
 			this.peakAMarket = peakAMarket;
 			this.peakCMarket = peakCMarket;
 			this.marketShares = marketShares;
@@ -247,6 +248,7 @@ public class GameDataMessageToClient extends GameDataMessage implements
 			this.motivationRounds = motivationRounds;
 		}
 
+		public final boolean isBooked;
 		public final int peakAMarket;
 		public final int peakCMarket;
 		public final ArrayList<MarketShareToClient> marketShares;

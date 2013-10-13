@@ -343,6 +343,8 @@ public class GameDataTranslator {
 	 * @return
 	 */
 	private MarketingToClient createMarketing(Company company) {
+		//ist es ueberhaupt gebucht/gekauft
+		boolean isBooked = company.getMarketResearch().getIsBooked();
 		// getPeaks
 		int peakAMarket = CustomerMarket.getMarket().getAMarketPeak();
 		int peakCMarket = CustomerMarket.getMarket().getCMarketPeak();
@@ -380,7 +382,7 @@ public class GameDataTranslator {
 		ArrayList<MotivationRoundToClient> motivationRounds = new ArrayList<MotivationRoundToClient>();
 		// company.getHumanResources(). TODO: Get List of Motivations
 
-		MarketingToClient marketing = new MarketingToClient(peakAMarket,
+		MarketingToClient marketing = new MarketingToClient(isBooked,peakAMarket,
 				peakCMarket, marketShares, waferPrices, casePrices,
 				motivationRounds);
 		return marketing;

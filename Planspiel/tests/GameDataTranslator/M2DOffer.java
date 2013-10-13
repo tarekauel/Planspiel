@@ -76,7 +76,7 @@ public class M2DOffer {
 	}
 
 	@Test
-	public void convertProductionOrder() throws Exception {
+	public void convertOffer() throws Exception {
 		GameDataTranslator.getGameDataTranslator().convertGameDataMessage2Objects(gameDataMessages);
 		assertEquals(80000,c.getDistribution().getListOfLatestOffers().get(0).getPrice());
 	}
