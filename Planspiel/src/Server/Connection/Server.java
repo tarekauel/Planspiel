@@ -2,10 +2,8 @@ package Server.Connection;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import Constant.Constant;
-import Message.GameDataMessage;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageToClient;
 import Server.GameEngine;
@@ -31,9 +29,18 @@ public class Server {
 
 	public static void main(String[] args) {
 		try {
-			UDPServer udpServer = new UDPServer(Constant.Server.TCP_PORT, Constant.Server.UDP_PORT);
+			UDPServer udpServer = new UDPServer(Constant.Server.TCP_PORT,
+					Constant.Server.UDP_PORT);
 			udpServer.start();
 			getServer();
+			int round = 50;
+			for (int i = 0; i < Constant.Server.PLAYER_KI_TAREK; i++) {
+				new KIGegner.KITarek(round);
+			}
+			for (int i = 0; i < Constant.Server.PLAYER_KI_LARS; i++) {
+				new KIGegner.KI(round);
+			}
+
 		} catch (Exception e) {
 			System.out
 					.println("Server musste aufgrund eines Fehlers beendet werdenbeendet werden!");
@@ -78,8 +85,8 @@ public class Server {
 		// Das hier muss vorher sein, damit nicht 4 Nachrichten empfangen werden
 		// müssen, um mit 3 Leuten zu spielen!!
 		receivedGameMessages++;
-
-		if (receivedGameMessages >= maxPlayer) {
+		//KIs werden mit berücksichtigt
+		if (receivedGameMessages >= (maxPlayer + Constant.Server.PLAYER_KI_LARS + Constant.Server.PLAYER_KI_TAREK)) {
 			// All Clients are ready
 			handleRound();
 			return;
