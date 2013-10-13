@@ -23,6 +23,7 @@ public class KITarek extends Thread {
 	private int quality = 60;
 	
 	private int stopRound = 0;
+	private int toBuy = 200;
 	
 	public ArrayList<String> historie = new ArrayList<String>();
 	
@@ -134,7 +135,8 @@ public class KITarek extends Thread {
 		RequestToClient reqA = reply.purchase.requests.get(reply.purchase.requests.size()-1);
 		RequestToClient reqB = reply.purchase.requests.get(reply.purchase.requests.size()-2);
 		
-		int toProduce = 1000;
+		int toProduce = toBuy;				
+		toBuy *= 1.14;
 		double plA = 0.0;
 		SupplierOfferToClient toAcceptA = null;
 		for( SupplierOfferToClient offer : reqA.supplierOffers ) {
