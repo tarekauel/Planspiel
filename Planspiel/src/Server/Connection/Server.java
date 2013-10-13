@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import Constant.Constant;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageToClient;
+import Message.GameOverMessage;
 import Server.GameEngine;
 import Server.Location;
 
@@ -94,6 +95,7 @@ public class Server {
 		}
 
 	}
+	
 
 	private void handleRound() throws Exception {
 		// set to 0 for nextRound
@@ -127,6 +129,12 @@ public class Server {
 		}
 	}
 
+	public void sendGameOver(){
+		for (Player player : playerList) {
+			player.getServerConnection().writeMessage(new GameOverMessage("", ""));			
+		}
+		System.exit(1);
+	}
 	public synchronized void addPlayer(Player player) {
 		playerList.add(player);
 	}
