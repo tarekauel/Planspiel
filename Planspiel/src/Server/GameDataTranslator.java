@@ -72,9 +72,7 @@ public class GameDataTranslator {
 	}
 
 	private void handleMarketResearch(boolean buyMarketResearch, Company company) {
-		if (buyMarketResearch) {
-			// company.getMarketResearch()
-		}
+		company.getMarketResearch().setIsBooked(buyMarketResearch);
 
 	}
 
