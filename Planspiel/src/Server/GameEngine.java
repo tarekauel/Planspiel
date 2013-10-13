@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 
 
+
 import Constant.Constant;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageFromClient.HumanResourcesFromClient.BenefitBookingFromClient;
 import Message.GameDataMessageToClient.DistributionToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
@@ -126,6 +128,7 @@ public class GameEngine {
 		for(GameDataMessageFromClient message : gameDataList) {
 			for (Company company : listOfCompanys) {
 				if (company.getName().equals(message.getPlayerName())) {
+					handleBenefitBooking(message.humanResources.benefits, company);
 					if( message.increaseMachineLevel) {
 						company.getProduction().increaseMachineryLevel();
 					}
@@ -139,6 +142,16 @@ public class GameEngine {
 		 return createDataForClient();		
 	
 		
+	}
+	
+	private void handleBenefitBooking(
+			ArrayList<BenefitBookingFromClient> benefits, Company company)
+			throws Exception {
+		HumanResources hr = company.getHumanResources();
+
+		for (BenefitBookingFromClient benefit : benefits) {
+			hr.bookBenefit(benefit.name, benefit.duration);
+		}
 	}
 
 	private void parseClientData(ArrayList<GameDataMessageFromClient> gameDataList) throws Exception {

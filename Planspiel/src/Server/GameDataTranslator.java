@@ -59,12 +59,6 @@ public class GameDataTranslator {
 			handleProductionOrders(gameDataMessage.production.orders, company);
 			handleDistributionOffers(gameDataMessage.distribution.offers,
 					company);
-			//TODO: Logik abhandeln
-			handleBenefitBooking(gameDataMessage.humanResources.benefits,
-			 company);
-			// In Creator verschieben. Weil Runde spaeter
-			//handleMachineryLevel(gameDataMessage.increaseMachineLevel,
-			// company);
 			handleWage(gameDataMessage.wage, company);
 			handleMarketResearch(gameDataMessage.buyMarketResearch, company);
 
@@ -93,23 +87,6 @@ public class GameDataTranslator {
 
 	}
 
-	private void handleMachineryLevel(boolean increaseMachineLevel,
-			Company company) {
-		if (increaseMachineLevel) {
-			company.getProduction().increaseMachineryLevel();
-		}
-
-	}
-
-	private void handleBenefitBooking(
-			ArrayList<BenefitBookingFromClient> benefits, Company company)
-			throws Exception {
-		HumanResources hr = company.getHumanResources();
-
-		for (BenefitBookingFromClient benefit : benefits) {
-			hr.bookBenefit(benefit.name, benefit.duration);
-		}
-	}
 
 	/**
 	 * Erstellt Offers für die Distribution
