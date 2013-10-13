@@ -1,8 +1,10 @@
 package KIGegner;
+
 import java.util.ArrayList;
 
 import Client.Connection.Client;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
 
@@ -12,31 +14,35 @@ public class KI extends Thread {
 	private int qualityTry;
 	private String playerName;
 	private ArrayList<AmountObject> bankAmounts = new ArrayList<AmountObject>();
-	private int id = 1;
+	private static int counter = 1;
+	private final int id;
+	
 
 	public static void main(String[] args) {
 		// in welchen Sektor soll die KI?
 		// Je niedriger die Zahl, desto mehr ist es im billigen Secotr:
 		new KI(10);
 		
-		
-		
 
 	}
 
 	private KI(int sector) {
-		System.out.println("KI wurde gestartet!");
+		id = counter;
+		System.out.println("KI-"+id+" wurde gestartet!");
+		
 		this.qualityTry = sector;
 		this.playerName = "KI-Solar" + id;
-		id++;
 		
+		counter++;
+		
+
 		if (Login()) {
 			// Login erfolgreich
-			System.out.println("Login erfolgreich.");
-			//Starte in die Prozessierung
+			
+			System.out.println("KI-" + id + " hat sich erfolgreich angemeldet");
+			// Starte in die Prozessierung
 			this.start();
 		}
-		
 
 	}
 
@@ -52,8 +58,7 @@ public class KI extends Thread {
 		// erstelle die TCP-Verbindung
 		c.connect("127.0.0.1", Constant.Constant.Server.TCP_PORT);
 		// Sende die Daten an den Server
-		c.writeMessage(new LoginMessage(playerName, "KI-Programmed",
-				"usa"));
+		c.writeMessage(new LoginMessage(playerName, "KI-Programmed", "usa"));
 		// Empfange die Daten
 		LoginConfirmationMessage msg = (LoginConfirmationMessage) c
 				.readMessage();
@@ -77,14 +82,16 @@ public class KI extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("KI-" + id + " wurde beendet");
 		for (int i = 0; i < bankAmounts.size(); i++) {
-			System.out.println(bankAmounts.get(i).toString());
+			
+			System.out.println("KI-" + id + " meldet:" + bankAmounts.get(i).toString());
 		}
+
 	}
 
 	/**
-	 * erstellt eine Antwort für die zweite Runde
+	 * erstellt eine Antwort für die nte Runde
 	 * 
 	 * @param readMessage
 	 */
@@ -97,15 +104,10 @@ public class KI extends Thread {
 		// Protokoll zum Bankkonto
 		bankAmounts.add(new AmountObject(readMessage.cash, readMessage.round));
 
-		System.out.println("Momentane Runde:" + readMessage.round);
-		System.out.println("Momentanes Guthaben:" + readMessage.cash);
 		// Abbruchbedingung zum Testen
-		// TODO: remove
 		if (readMessage.cash < 0) {
 			throw new Exception("Negatives Konto");
 		}
-
-		
 
 		// Erzeuge neue KI-Message
 		ClientToServerMessageCreator m = new ClientToServerMessageCreator(
@@ -120,14 +122,16 @@ public class KI extends Thread {
 		m.addRequest("Gehäuse", qualityTry);
 
 		// Setze den Lohn:
-		// Erste Runde brauchen wir ja kaum Lohn
+		
 		m.setWage(1000);
-
-		// Keine Maschinenerweiterung
-		if (readMessage.round < 12) {
-			m.setMachine(true);
-		} else {
-			m.setMachine(false);
+		//Default wert
+		m.setMachine(true);
+		for (StorageElementToClient s : readMessage.storage.storageElements){
+			//Es liegen noch Panels auf Lager, wir produzieren also zuviel.
+			if (s.type.equals("Panel")){
+				m.setMachine(false);
+				break;
+			}
 		}
 		// Maximal produzierende Menge immer ausnutzen
 		int toBuy = readMessage.reporting.machinery.maxCapacity;
@@ -162,21 +166,22 @@ public class KI extends Thread {
 			// das beste liegt also an position "index"
 
 			if (readMessage.purchase.requests.get(i).supplierOffers.get(index).name
-					.equals("Wafer")&& !waferBought) {
+					.equals("Wafer") && !waferBought) {
 				// Bestelle Wafer
 				m.addAccepted(
 						readMessage.purchase.requests.get(i).supplierOffers
 								.get(index).name, readMessage.purchase.requests
 								.get(i).supplierOffers.get(index).quality,
 						toBuy * Constant.Constant.Production.WAFERS_PER_PANEL);
-				waferBought=true;
-			} else if(readMessage.purchase.requests.get(i).supplierOffers.get(index).name
-					.equals("Gehäuse")&& !caseBought) {
+				waferBought = true;
+			} else if (readMessage.purchase.requests.get(i).supplierOffers
+					.get(index).name.equals("Gehäuse") && !caseBought) {
 				// Bestelle Cases
 				m.addAccepted(
 						readMessage.purchase.requests.get(i).supplierOffers
 								.get(index).name, readMessage.purchase.requests
-								.get(i).supplierOffers.get(index).quality, toBuy);
+								.get(i).supplierOffers.get(index).quality,
+						toBuy);
 				caseBought = true;
 			}
 
@@ -192,14 +197,12 @@ public class KI extends Thread {
 		for (int i = 0; i < readMessage.storage.storageElements.size(); i++) {
 			if (readMessage.storage.storageElements.get(i).type.equals("Panel")) {
 				// Vertick die fertigen Panels
-				
+
 				m.addOffer(
 						readMessage.storage.storageElements.get(i).quality,
 						readMessage.storage.storageElements.get(i).quantity,
-						(int) (readMessage.storage.storageElements.get(i).costs * 1.10));
-			
-				
-				
+						(int) (readMessage.storage.storageElements.get(i).costs *1.05));
+
 			} else if (readMessage.storage.storageElements.get(i).type
 					.equals("Wafer")) {
 
