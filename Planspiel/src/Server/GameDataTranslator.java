@@ -381,9 +381,7 @@ public class GameDataTranslator {
 		ArrayList<MotivationRoundToClient> motivationRounds = new ArrayList<MotivationRoundToClient>();
 		// company.getHumanResources(). TODO: Get List of Motivations
 
-		MarketingToClient marketing = new MarketingToClient(isBooked,peakAMarket,
-				peakCMarket, marketShares, waferPrices, casePrices,
-				motivationRounds);
+		MarketingToClient marketing = new MarketingToClient(isBooked, peakAMarket, peakCMarket, marketShares, waferPrices, casePrices, motivationRounds);
 		return marketing;
 	}
 
@@ -403,12 +401,10 @@ public class GameDataTranslator {
 			benefits.add(new BenefitBookingToClient(benefit.getBenefit()
 					.getName(), benefit.getRemainingRounds()));
 		}
-
+		// TODO: UMRECHUNG pruefen
 		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,
 				MarketData.getMarketData().getAvereageWage().getAmount()
-						* (company.getLocation().getWageLevel() / 10000), // TODO:
-																			// UMRECHUNG
-																			// pruefen
+						* (company.getLocation().getWageLevel() / 10000), 
 				serverHR.getWagesPerHour().getAmount(),
 				serverHR.getCountEmployees(), serverHR.getWagesSum(), serverHR.getHistoryOfMotivation());
 		return hr;

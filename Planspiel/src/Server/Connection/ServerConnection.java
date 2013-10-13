@@ -121,7 +121,9 @@ public class ServerConnection extends Thread {
 				break;
 			}
 		}
-		messageBack = loginConfirmationMessage;
+		messageBack = loginConfirmationMessage; 
+		
+		
 		if (loginConfirmationMessage.getSuccess()) {
 			// Login erfolgreich
 			try {
@@ -136,6 +138,10 @@ public class ServerConnection extends Thread {
 					player=p;
 					server.addPlayer(p);
 
+				}else{
+					// Neuer Spieler möchte sich zu einer späteren Runde einloggen
+					messageBack = new LoginConfirmationMessage(
+							false, "Leider läuft das Spiel schon. Versuche es später nocheimal!");
 				}
 
 			} catch (Exception e) {
