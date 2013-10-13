@@ -83,10 +83,12 @@ public class KI extends Thread {
 	@Override
 	public void run() {
 		boolean noLoser = false;
+		GameDataMessageToClient data = (GameDataMessageToClient) c
+				.readMessage();
 		// Bereite Requests und sonstiges für die Erste Runde vor!
 		doFirstRound();
 		// zweite Runde
-		GameDataMessageToClient data = (GameDataMessageToClient) c
+		data = (GameDataMessageToClient) c
 				.readMessage();
 		if (noLoser(data)) {
 			doSecondRound(data);
