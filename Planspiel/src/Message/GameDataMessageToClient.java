@@ -233,18 +233,16 @@ public class GameDataMessageToClient extends GameDataMessage implements
 		public static class BenefitBookingToClient implements Serializable {
 
 			
-			public BenefitBookingToClient(
-					ArrayList<PossibleBenefit> possibleBenefits, String name,
-					int remainingRounds) {
-				super();
+			public BenefitBookingToClient(String name, int remainingRounds,
+					int costsPerRound) {
 				
 				this.name = name;
 				this.remainingRounds = remainingRounds;
+				this.costsPerRound = costsPerRound;
 			}
-			
-						
 			public final String name;
 			public final int remainingRounds;
+			public final int costsPerRound;
 		}
 		
 		public static class PossibleBenefit implements Serializable {

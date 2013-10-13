@@ -43,7 +43,12 @@ public class ServerConnection extends Thread {
 			switch (message.getType()) {
 			case "LoginMessage": // Es handelt sich um eine Loginanfrage des
 									// Clients
-				login((LoginMessage) message);
+				Boolean success =login((LoginMessage) message);
+				
+				if(success){
+					//Sende Initialnachricht
+					writeMessage(GameEngine.getGameEngine().getInitialGameDataMessageToClient());
+				}
 				break;
 			case "GameDataMessageFromClient": 
 				// Es handelt sich um eine Message mit Spieldaten											
@@ -95,8 +100,9 @@ public class ServerConnection extends Thread {
 	 *            Nachricht, dass er schon existiert. Dies ist auch eine
 	 *            LoginConfirmationMessage*
 	 */
-	private void login(LoginMessage message) {
+	private Boolean login(LoginMessage message) {
 		boolean isRelogin = false;
+		boolean success=true;
 		IMessage messageBack = null;
 		LoginConfirmationMessage loginConfirmationMessage = new LoginConfirmationMessage(
 				true, "Willkommen " + message.getName() + "!");
@@ -108,6 +114,7 @@ public class ServerConnection extends Thread {
 					loginConfirmationMessage = new LoginConfirmationMessage(
 							false, "Der Name " + message.getName()
 									+ " existiert schon!");
+					success=false;
 				} else { // Spieler loggt sich wieder ein.
 					if (player.getPassword().equals(message.getPassword())) { 
 						// Passwort stimmt
@@ -133,6 +140,7 @@ public class ServerConnection extends Thread {
 					
 
 				} else if(GameEngine.getGameEngine().getRound()==1){
+					//Normal Login
 					Player p= new Player(message.getName(), message
 							.getPassword(), this, message.getChosenLocation());
 					player=p;
@@ -142,6 +150,7 @@ public class ServerConnection extends Thread {
 					// Neuer Spieler möchte sich zu einer späteren Runde einloggen
 					messageBack = new LoginConfirmationMessage(
 							false, "Leider läuft das Spiel schon. Versuche es später nocheimal!");
+					success=false;
 				}
 
 			} catch (Exception e) {
@@ -151,6 +160,7 @@ public class ServerConnection extends Thread {
 		}
 
 		writeMessage(messageBack);
+		return success;
 	}
 
 	/**

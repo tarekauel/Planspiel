@@ -4,8 +4,14 @@ import java.util.ArrayList;
 
 
 
+import Constant.Constant;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.DistributionToClient;
+import Message.GameDataMessageToClient.HumanResourcesToClient;
+import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
+import Message.GameDataMessageToClient.HumanResourcesToClient.PossibleBenefit;
+import Message.GameDataMessageToClient.MarketingToClient;
 import Message.GameDataMessageToClient.ProductionToClient;
 import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.StorageToClient;
@@ -65,10 +71,18 @@ public class GameEngine {
 		return this.listOfCompanys;
 	}
 	
-	//public GameDataMessageToClient getInitialGameDataMessageToClient(){
-		//StorageToClient storage = new StorageToClient(storageCostsWafer, storageCostsCase, storageCostsPanel, storageElements);
-		//GameDataMessageToClient initialMessage = new GameDataMessageToClient("", null, null, storage, distribution, humanResources, marketing, reporting, cash, maxCredit);
-	//}
+	public GameDataMessageToClient getInitialGameDataMessageToClient(){
+	    StorageToClient storage = new StorageToClient(Constant.Product.STORAGECOST_WAFER, Constant.Product.STORAGECOST_CASE, Constant.Product.STORAGECOST_PANEL, null);
+	    
+	    ArrayList<PossibleBenefit>possibleBenefits = new ArrayList<PossibleBenefit>();
+	    for (Benefit benefit : Benefit.getBookableBenefits()) {
+			possibleBenefits.add(new PossibleBenefit(benefit.getName(),benefit.getCostsPerRound()));
+		}	    
+	    int averageWage=0;
+	    HumanResourcesToClient hr = new HumanResourcesToClient(null, possibleBenefits, null, averageWage, 0, 40, 0);
+		GameDataMessageToClient initialMessage = new GameDataMessageToClient("", null, null, storage, null, hr, null, null, Constant.BankAccount.START_CAPITAL, Constant.BankAccount.MAX_CREDIT);
+		return initialMessage;
+	}
 
 	/**
 	 * Startet die nächste Runde

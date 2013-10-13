@@ -398,7 +398,8 @@ public class GameDataTranslator {
 		// Create Benefits
 		ArrayList<BenefitBookingToClient> benefits = new ArrayList<BenefitBookingToClient>();
 		for (BenefitBooking benefit : serverHR.getBenefitBooking()) {
-			benefits.add(new BenefitBookingToClient(null,benefit.getBenefit().getName(), benefit.getRemainingRounds()));
+			
+			benefits.add(new BenefitBookingToClient(benefit.getBenefit().getName(), benefit.getRemainingRounds(),benefit.getBenefit().getCostsPerRound()));
 		}
 		// TODO: UMRECHUNG pruefen
 		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,null, serverHR.getHistoryOfMotivation(), 
