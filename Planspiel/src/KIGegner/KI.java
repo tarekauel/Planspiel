@@ -21,13 +21,14 @@ public class KI extends Thread {
 	public static GameDataMessageToClient data;
 	private int lastBought = 200;
 	private final int round;
+
 	public static void main(String[] args) {
 		// starte den Server
 		// Server.main(null);
 		// in welchen Sektor soll die KI?
 		// Je niedriger die Zahl, desto mehr ist es im billigen Secotr:
 		new KI(50);
-		
+
 	}
 
 	public KI(int round) {
@@ -83,13 +84,12 @@ public class KI extends Thread {
 	@Override
 	public void run() {
 		boolean noLoser = false;
-		GameDataMessageToClient data = (GameDataMessageToClient) c
-				.readMessage();
+		GameDataMessageToClient data;
+		// data= (GameDataMessageToClient) c.readMessage();
 		// Bereite Requests und sonstiges für die Erste Runde vor!
 		doFirstRound();
 		// zweite Runde
-		data = (GameDataMessageToClient) c
-				.readMessage();
+		data = (GameDataMessageToClient) c.readMessage();
 		if (noLoser(data)) {
 			doSecondRound(data);
 			noLoser = true;
@@ -102,7 +102,7 @@ public class KI extends Thread {
 				data = (GameDataMessageToClient) c.readMessage();
 				if (noLoser(data)) {
 					doJob(data);
-					stopByRound = (data.round>this.round);
+					stopByRound = (data.round > this.round);
 				} else {
 					noLoser = false;
 					System.out.println("KI-" + id
@@ -246,13 +246,13 @@ public class KI extends Thread {
 		int maxByMoney = (int) ((readMessage.cash * 1.0) / (casePrice + waferPrice
 				* Constant.Constant.Production.WAFERS_PER_PANEL));
 		// Entscheidung (toBuy ist hier maxByMachine)
-		//Entscheidung wieviel ich mir leisten kann
+		// Entscheidung wieviel ich mir leisten kann
 		toBuy = (toBuy < maxByMoney) ? toBuy : maxByMoney;
-		//geschätzte Vorhersage
-		int market =  lastBought * (1 + (readMessage.round / 5));
-		//Entscheidung ob nach market oder nach toBuy gearbeitet wird
+		// geschätzte Vorhersage
+		int market = lastBought * (1 + (readMessage.round / 5));
+		// Entscheidung ob nach market oder nach toBuy gearbeitet wird
 		toBuy = (toBuy < market) ? toBuy : market;
-		
+
 		// boolean marketFull = false;
 		// for (StorageElementToClient s : readMessage.storage.storageElements)
 		// {
