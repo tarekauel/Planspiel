@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import KIGegner.UITestKI;
+import KIGegner.UITestKISchlau;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.DistributionToClient;
