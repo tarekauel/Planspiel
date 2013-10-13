@@ -98,9 +98,10 @@ public class GameDataTranslator {
 	 * 
 	 * @param offers
 	 * @param company
+	 * @throws Exception 
 	 */
 	private void handleDistributionOffers(ArrayList<OfferFromClient> offers,
-			Company company) {
+			Company company) throws Exception {
 		Distribution distribution = company.getDistribution();
 		for (OfferFromClient offer : offers) {
 			distribution.createOffer(offer.quality, offer.quantityToSell,
