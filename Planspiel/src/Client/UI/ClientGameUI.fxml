@@ -198,10 +198,10 @@
                           <children>
                             <TableView fx:id="storagePositionsTableView" layoutX="9.0" layoutY="7.0" prefHeight="270.0" prefWidth="704.0000999999975">
                               <columns>
-                                <TableColumn prefWidth="28.0" text="#" />
-                                <TableColumn prefWidth="460.0" text="Ressource" />
-                                <TableColumn prefWidth="77.0" text="Qualität" />
-                                <TableColumn prefWidth="131.0" text="Stückselbstkosten" />
+                                <TableColumn prefWidth="28.0" text="#" fx:id="storagePositionIdTableColumn" />
+                                <TableColumn prefWidth="460.0" text="Ressource" fx:id="storagePositionRessourceTableColumn" />
+                                <TableColumn prefWidth="77.0" text="Qualität" fx:id="storagePositionQualityTableColumn" />
+                                <TableColumn prefWidth="131.0" text="Stückselbstkosten" fx:id="storagePositionCostsTableColumn" />
                               </columns>
                             </TableView>
                           </children>
