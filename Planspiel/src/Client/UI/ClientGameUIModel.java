@@ -6,6 +6,7 @@ import aaaaa.GameTestConsole;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import KIGegner.KI;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient.ProductionToClient;
@@ -13,6 +14,7 @@ import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.ProductionToClient.ProductionOrderToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
+import Message.GameDataMessageToClient.StorageToClient;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 
 public class ClientGameUIModel {
@@ -21,18 +23,16 @@ public class ClientGameUIModel {
 	 * General
 	 */
 	
-	private static GameDataMessageToClient in = GameTestConsole.data;
+	private static GameDataMessageToClient in = KI.data;
 	
 	private int round;
 	private int maxRounds = 20;
 	private final ObservableList<Request> purchaseRequestTableData = FXCollections.observableArrayList();
 	private final ObservableList<SupplierOffer> purchaseOffersTableData = FXCollections.observableArrayList();
 	private final ObservableList<ProductionOrder> productionOrdersTableData = FXCollections.observableArrayList();
-	
+	private final ObservableList<StoragePosition> storagePositionsTableData = FXCollections.observableArrayList();
 	
 	private ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
-	
-	
 	
 	public static GameDataMessageToClient getIn() {
 		return in;
@@ -74,6 +74,10 @@ public class ClientGameUIModel {
 		return productionOrdersTableData;
 	}
 
+	public ObservableList<StoragePosition> getStoragePositionsTableData() {
+		return storagePositionsTableData;
+	}
+
 	/**
 	 * Parsing der GameDataMessageToClient
 	 * @param in Message, die geparsed werden soll
@@ -84,6 +88,7 @@ public class ClientGameUIModel {
 		this.setRound(in.round);
 		parsePurchase(in.purchase);	
 		parseProduction(in.production);
+		parseStorage(in.storage);
 		
 	}	
 	
@@ -106,6 +111,18 @@ public class ClientGameUIModel {
 			ProductionOrderToClient pOrder = in.orders.get(i);			
 			ProductionOrder prodOrder = new ProductionOrder(pOrder, i);
 			productionOrdersTableData.add(prodOrder);
+		
+		}			
+		
+	}
+	
+	private void parseStorage(StorageToClient in){	
+
+		for(int i=in.storageElements.size()-1; i>=0; i--) {
+			
+			StorageElementToClient stoElement = in.storageElements.get(i);			
+			StoragePosition stoPos = new StoragePosition(stoElement, i);
+			storagePositionsTableData.add(stoPos);
 		
 		}			
 		
@@ -293,6 +310,49 @@ public class ClientGameUIModel {
 		}	
 		
 	}
+	
+	public class StoragePosition {
+		
+		private final SimpleStringProperty id;
+		private final SimpleStringProperty ressource;
+		private final SimpleStringProperty quality;
+		private final SimpleStringProperty costs;
+		//private static int lastId = 0;
+		
+		public StoragePosition(int id,
+				String ressource, String quality,
+				String costs) {
+			this.id = new SimpleStringProperty(id+"");
+			this.ressource = new SimpleStringProperty(ressource);
+			this.quality = new SimpleStringProperty(quality);
+			this.costs = new SimpleStringProperty(costs);
+		}
+		
+		public StoragePosition(StorageElementToClient stoElement, int id){
+			
+			this(id, stoElement.type, stoElement.quality+"", stoElement.costs+"");
+			
+		}
+
+		public String getId() {
+			return id.get();
+		}
+
+		public String getRessource() {
+			return ressource.get();
+		}
+
+		public String getQuality() {
+			return quality.get();
+		}
+
+		public String getCosts() {
+			return costs.get();
+		}
+		
+	}
+	
+	
 	
 	/**
 	 * Sales

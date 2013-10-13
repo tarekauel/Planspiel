@@ -3,6 +3,7 @@ package KIGegner;
 import java.util.ArrayList;
 
 import Client.Connection.Client;
+import Client.UI.ClientUIStart;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.Loser;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
@@ -18,6 +19,7 @@ public class KI extends Thread {
 	private ArrayList<AmountObject> bankAmounts = new ArrayList<AmountObject>();
 	private static int counter = 1;
 	private final int id;
+	public static GameDataMessageToClient data;
 
 	public static void main(String[] args) {
 		// starte den Server
@@ -121,6 +123,14 @@ public class KI extends Thread {
 	 */
 
 	private void doJob(GameDataMessageToClient readMessage) throws Exception {
+
+		data = readMessage;
+		
+		if (data.round == 6) {
+			ClientUIStart.main(null);
+			this.stop();
+		}
+	
 		if (readMessage == null) {
 			throw new Exception("Fehler bei der Nachricht");
 

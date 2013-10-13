@@ -38,6 +38,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 import Client.UI.ClientGameUIModel.ProductionOrder;
 import Client.UI.ClientGameUIModel.Request;
+import Client.UI.ClientGameUIModel.StoragePosition;
 import Client.UI.ClientGameUIModel.SupplierOffer;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
@@ -110,6 +111,10 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField storageCostsCasesTextField;
 	@FXML private TextField storageCostsPanelsTextField;
 	@FXML private TableView storagePositionsTableView;
+	@FXML private TableColumn<StoragePosition,String> storagePositionIdTableColumn;
+	@FXML private TableColumn<StoragePosition,String> storagePositionRessourceTableColumn;
+	@FXML private TableColumn<StoragePosition,String> storagePositionQualityTableColumn;
+	@FXML private TableColumn<StoragePosition,String> storagePositionCostsTableColumn;
     //Sales
 	@FXML private Button newSaleOfferButton;
 	@FXML private Button newSaleOfferSaveButton;
@@ -154,8 +159,9 @@ public class ClientGameUIController implements Initializable{
     	initGeneral();
     	initPurchase();
     	initProduction();
-    	initSales();
-//    	initStorage();
+    	
+//    	initSales();
+    	initStorage();
 //    	initHumanResources();
 //    	initMarketing();
 //    	initReporting();
@@ -164,6 +170,8 @@ public class ClientGameUIController implements Initializable{
     	//END WORK
     	
     }
+
+	
 
 	private void initGeneral() {
 		
@@ -422,12 +430,42 @@ public class ClientGameUIController implements Initializable{
 		
 	}
 	
+	private void initStorage() {
+		
+		/**
+    	 * storagePositionsTable: CellFactory
+    	 */
+		
+		storagePositionIdTableColumn.setCellValueFactory(
+		    new PropertyValueFactory<StoragePosition, String>("id")
+	    );
+		    	
+		storagePositionRessourceTableColumn.setCellValueFactory(
+		   	new PropertyValueFactory<StoragePosition, String>("ressource")
+		);
+		    	
+		storagePositionQualityTableColumn.setCellValueFactory(
+	    	new PropertyValueFactory<StoragePosition, String>("quality")
+	    );
+		    	
+		storagePositionCostsTableColumn.setCellValueFactory(
+	    	new PropertyValueFactory<StoragePosition, String>("costs")
+	    );
+		
+		storagePositionsTableView.setItems(model.getStoragePositionsTableData()); 
+		
+		/**
+    	 * ActionListener
+    	 */
+		
+	}
+	
 	private void initSales() {
 		
 		/**
     	 * purchaseRequestTable: CellFactory
     	 */
-		
+
 		
 		
 		/**
