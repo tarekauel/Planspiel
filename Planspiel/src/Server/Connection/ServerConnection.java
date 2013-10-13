@@ -47,7 +47,7 @@ public class ServerConnection extends Thread {
 				
 				if(success){
 					//Sende Initialnachricht
-					writeMessage(GameEngine.getGameEngine().getInitialGameDataMessageToClient());
+					//writeMessage(GameEngine.getGameEngine().getInitialGameDataMessageToClient());
 				}
 				break;
 			case "GameDataMessageFromClient": 

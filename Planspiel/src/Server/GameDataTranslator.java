@@ -14,6 +14,7 @@ import Message.GameDataMessageToClient.DistributionToClient;
 import Message.GameDataMessageToClient.DistributionToClient.OfferToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
+import Message.GameDataMessageToClient.HumanResourcesToClient.PossibleBenefit;
 import Message.GameDataMessageToClient.MarketingToClient;
 import Message.GameDataMessageToClient.MarketingToClient.MarketShareToClient;
 import Message.GameDataMessageToClient.MarketingToClient.MotivationRoundToClient;
@@ -402,7 +403,11 @@ public class GameDataTranslator {
 			benefits.add(new BenefitBookingToClient(benefit.getBenefit().getName(), benefit.getRemainingRounds(),benefit.getBenefit().getCostsPerRound()));
 		}
 		// TODO: UMRECHUNG pruefen
-		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,null, serverHR.getHistoryOfMotivation(), 
+		 ArrayList<PossibleBenefit>possibleBenefits = new ArrayList<PossibleBenefit>();
+		    for (Benefit benefit : Benefit.getBookableBenefits()) {
+				possibleBenefits.add(new PossibleBenefit(benefit.getName(),benefit.getCostsPerRound()));
+			}
+		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,possibleBenefits, serverHR.getHistoryOfMotivation(), 
 				serverHR.getWagesPerHour().getAmount(),
 				serverHR.getCountEmployees(), serverHR.getWagesSum(), MarketData.getMarketData().getAvereageWage().getAmount()
 								* (company.getLocation().getWageLevel() / 10000));
