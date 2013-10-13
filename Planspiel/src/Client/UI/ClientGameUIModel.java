@@ -429,7 +429,7 @@ public class ClientGameUIModel {
 			this.id = new SimpleStringProperty(id + "");
 			this.ressource = new SimpleStringProperty(ressource);
 			this.quality = new SimpleStringProperty(quality);
-			this.quantity = new SimpleStringProperty(quality);
+			this.quantity = new SimpleStringProperty(quantity);
 
 			// Währungsformatierung
 			long costsTmp = Long.parseLong(costs);
