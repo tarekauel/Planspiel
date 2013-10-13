@@ -156,7 +156,9 @@ public class GameDataMessageToClient extends GameDataMessage implements
 			public final int quality;
 			public final int quantity;
 			public final int costs;
-
+			public String toString(){
+				return "Qualität: "+quality;
+			}
 		}
 
 		public final int storageCostsWafer;
@@ -201,36 +203,59 @@ public class GameDataMessageToClient extends GameDataMessage implements
 
 	public static class HumanResourcesToClient implements Serializable {
 
-		public HumanResourcesToClient(
-				ArrayList<BenefitBookingToClient> benefits, int averageWage,
-				int myWage, int countEmployees, int wageCosts,
-				ArrayList<TMotivation> historyMotivation) {
+		
 
+		public HumanResourcesToClient(
+				ArrayList<BenefitBookingToClient> benefits,
+				ArrayList<PossibleBenefit> possibleBenefits,
+				ArrayList<TMotivation> historyMotivation, int averageWage,
+				int myWage, int countEmployees, int wageCosts) {
+			super();
 			this.benefits = benefits;
+			this.possibleBenefits = possibleBenefits;
+			this.historyMotivation = historyMotivation;
 			this.averageWage = averageWage;
 			this.myWage = myWage;
 			this.countEmployees = countEmployees;
 			this.wageCosts = wageCosts;
-			this.historyMotivation = historyMotivation;
 		}
 
 		public final ArrayList<BenefitBookingToClient> benefits;
+		public final ArrayList<PossibleBenefit> possibleBenefits;
 		public final ArrayList<TMotivation> historyMotivation;
 
 		public final int averageWage;
 		public final int myWage;
 		public final int countEmployees;
 		public final int wageCosts;
+		
 
 		public static class BenefitBookingToClient implements Serializable {
 
-			public BenefitBookingToClient(String name, int remainingRounds) {
+			
+			public BenefitBookingToClient(
+					ArrayList<PossibleBenefit> possibleBenefits, String name,
+					int remainingRounds) {
+				super();
+				
 				this.name = name;
 				this.remainingRounds = remainingRounds;
 			}
-
+			
+						
 			public final String name;
 			public final int remainingRounds;
+		}
+		
+		public static class PossibleBenefit implements Serializable {
+			
+			public PossibleBenefit(String name, int costsPerRound) {
+				super();
+				this.name = name;
+				this.costsPerRound = costsPerRound;
+			}
+			public final String name;
+			public final int costsPerRound;
 		}
 
 	}
