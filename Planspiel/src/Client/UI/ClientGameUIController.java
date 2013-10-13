@@ -370,6 +370,25 @@ public class ClientGameUIController implements Initializable{
 		
 	}
 	
+	private void calcAndSetMachineryWorkload(){
+		
+		int maxCapacity = model.getIn().reporting.machinery.maxCapacity;
+		int cumulativeWorkload = 0;
+		
+		for (ProductionOrder x : model.getProductionOrdersTableData()) {
+			int targetQuantity = Integer.parseInt(x.getTargetQuantity());
+			cumulativeWorkload += targetQuantity;
+		}
+		
+		double workload = cumulativeWorkload/maxCapacity;
+		
+		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
+		machineryMaximumCapacityTextField.setText(maxCapacity+"");
+		
+		machineryWorkloadProgressBar.setProgress(workload);
+		
+	}
+	
 	private void initProduction() {
 		
 		/**
@@ -410,6 +429,8 @@ public class ClientGameUIController implements Initializable{
 		/**
     	 * Misc
     	 */
+		
+				
 
     	/**
     	 * ActionListener
@@ -435,7 +456,7 @@ public class ClientGameUIController implements Initializable{
         				newProductionOrderWaferChoiceBox.getValue().quality+"", newProductionOrderCaseChoiceBox.getValue().quality+"", newProductionOrderOutputQuantityTextField.getText()
         			)
             	); 
-    			
+    			calcAndSetMachineryWorkload();
     			newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
             	newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
             	newProductionOrderWaferStorageQuantityTextField.clear();           	
