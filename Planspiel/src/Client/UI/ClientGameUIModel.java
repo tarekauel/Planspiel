@@ -2,10 +2,13 @@ package Client.UI;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 import KIGegner.UITestKI;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
@@ -28,7 +31,7 @@ public class ClientGameUIModel {
 	 * General
 	 */
 
-	private static GameDataMessageToClient in = UITestKI.data;
+	private GameDataMessageToClient in = UITestKISchlau.data;
 
 	private int round;
 	private int maxRounds = 20;
@@ -49,12 +52,16 @@ public class ClientGameUIModel {
 	private ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
 
 	private static NumberFormat nFormatter = NumberFormat.getCurrencyInstance();
+	
+	private final ObservableList<Integer> salesChartCategories = FXCollections.observableArrayList();
+	
+	private final ArrayList<ArrayList<XYChart.Data<Integer, Long>>> salesChartData = new ArrayList<ArrayList<XYChart.Data<Integer, Long>>>();
 
-	public static GameDataMessageToClient getIn() {
+	public GameDataMessageToClient getIn() {
 		return in;
 	}
 
-	public static NumberFormat getnFormatter() {
+	public NumberFormat getnFormatter() {
 		return nFormatter;
 	}
 
@@ -109,6 +116,12 @@ public class ClientGameUIModel {
 	public ObservableList<Benefit> getBenefitBoxData() {
 		return benfitBoxData;
 	}
+	
+	public ArrayList<ArrayList<XYChart.Data<Integer, Long>>> getSalesChartData() {
+		return salesChartData;
+	}
+	
+	
 
 	/**
 	 * Parsing der GameDataMessageToClient
@@ -166,7 +179,31 @@ public class ClientGameUIModel {
 
 	private void parseDistribution(DistributionToClient in) {
 		for (OfferToClient offer : in.offers) {
-			offerTableData.add(new Offer(offer));
+			offerTableData.add(new Offer(offer));			
+		}
+		ArrayList<HashMap<Integer, Long>> listSales = new ArrayList<HashMap<Integer, Long>>();
+		
+		for( int i=1; i<=5; i++) {
+			HashMap<Integer, Long> map = new HashMap<Integer, Long>();
+			listSales.add( map );
+			int round = this.round - i;
+			if( round <= 0)
+				break;
+			
+			for(OfferToClient offer : in.offers) {
+				if( offer.round == round) {
+					long oldvalue = (map.get(offer.quality) == null ) ? 0L : map.get(offer.quality);
+					map.put(offer.quality, oldvalue+(offer.price*offer.quantitySold));					
+				}
+			}					
+		}
+		
+		for(HashMap<Integer, Long> map : listSales ) {
+			ArrayList<XYChart.Data<Integer, Long>> dataList = new ArrayList<XYChart.Data<Integer,Long>>();
+			for(Map.Entry<Integer, Long> entry : map.entrySet()) {
+				dataList.add(new XYChart.Data<Integer, Long>( entry.getKey(), entry.getValue()));
+			}
+			salesChartData.add(dataList);
 		}
 	}
 	
@@ -534,7 +571,7 @@ public class ClientGameUIModel {
 		}
 
 		public BenefitBooking(BenefitBookingToClient benefit) {
-			this(benefit.name, benefit.remainingRounds + "", "");
+			this(benefit.name, benefit.remainingRounds + "", benefit.costsPerRound+"");
 		}
 
 		public String getId() {
