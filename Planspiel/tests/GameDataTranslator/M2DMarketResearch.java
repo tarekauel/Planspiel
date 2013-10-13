@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Message.GameDataMessageFromClient;
+import Message.GameDataMessageToClient;
 import Message.GameDataMessageFromClient.DistributionFromClient;
 import Message.GameDataMessageFromClient.HumanResourcesFromClient;
 import Message.GameDataMessageFromClient.ProductionFromClient;
@@ -69,14 +70,23 @@ static Company c;
 		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, false, hr, 8, orderMarketResearch);
 		gameDataMessages.add(gameDataMessage);
 		
-		GameEngine.getGameEngine().startNextRound(gameDataMessages);
-		System.out.println(c.getMarketResearch().getIsBooked());
+		ArrayList<GameDataMessageToClient> gameDataM2Client= GameEngine.getGameEngine().startNextRound(gameDataMessages);
+		GameDataMessageToClient toClient = gameDataM2Client.get(0);
+		assertEquals(true,toClient.marketing.isBooked);
 		
 		
 	}
 	
 	@Test
 	public void marketResearchNotOrdered() throws Exception {
+		boolean orderMarketResearch = false;
+		ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
+		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, false, hr, 8, orderMarketResearch);
+		gameDataMessages.add(gameDataMessage);
+		
+		ArrayList<GameDataMessageToClient> gameDataM2Client= GameEngine.getGameEngine().startNextRound(gameDataMessages);
+		GameDataMessageToClient toClient = gameDataM2Client.get(0);
+		assertEquals(false,toClient.marketing.isBooked);
 		
 		
 	}

@@ -342,8 +342,8 @@ public class GameDataTranslator {
 	 */
 	private MarketingToClient createMarketing(Company company) {
 		//ist es ueberhaupt gebucht/gekauft
-		//boolean isBooked = company.getMarketResearch().getIsBooked();
-		boolean isBooked = true;
+		boolean isBooked = company.getMarketResearch().getIsBooked();
+		
 		// getPeaks
 		int peakAMarket = CustomerMarket.getMarket().getAMarketPeak();
 		int peakCMarket = CustomerMarket.getMarket().getCMarketPeak();
