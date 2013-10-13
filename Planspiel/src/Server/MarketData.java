@@ -75,6 +75,12 @@ public class MarketData {
 		this.listOfHr.add(hr);
 	}
 	
+	public boolean removeHR( HumanResources hr ) {
+		if( hr == null)
+			throw new IllegalArgumentException("HR-Referenz darf nicht null sein!");
+		return this.listOfHr.remove(hr);
+	}
+	
 	/**
 	 * Liefert den Durchschnittslohn aller Abteilungen auf Niveau 100 umgerechnet zurück
 	 * @return Durchschnittslohn auf Niveau 100
