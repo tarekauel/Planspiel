@@ -1,5 +1,6 @@
 package Client.UI;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import aaaaa.GameTestConsole;
@@ -7,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import KIGegner.KI;
+import KIGegner.UITestKI;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient.ProductionToClient;
@@ -23,7 +25,7 @@ public class ClientGameUIModel {
 	 * General
 	 */
 	
-	private static GameDataMessageToClient in = KI.data;
+	private static GameDataMessageToClient in = UITestKI.data;
 	
 	private int round;
 	private int maxRounds = 20;
@@ -34,8 +36,14 @@ public class ClientGameUIModel {
 	
 	private ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
 	
+	private static NumberFormat nFormatter = NumberFormat.getCurrencyInstance();
+	
 	public static GameDataMessageToClient getIn() {
 		return in;
+	}
+	
+	public static NumberFormat getnFormatter() {
+		return nFormatter;
 	}
 	
 	public int getRound() {
@@ -77,6 +85,8 @@ public class ClientGameUIModel {
 	public ObservableList<StoragePosition> getStoragePositionsTableData() {
 		return storagePositionsTableData;
 	}
+
+	
 
 	/**
 	 * Parsing der GameDataMessageToClient
@@ -191,6 +201,7 @@ public class ClientGameUIModel {
 	}
 	
 	public static class SupplierOffer {
+		
 		private final SimpleStringProperty name;
 		private final SimpleStringProperty quality;
 		private final SimpleStringProperty quantity;
@@ -198,6 +209,7 @@ public class ClientGameUIModel {
 		private final SimpleStringProperty id;
 		private final int round;
 		private static int lastId = 0;
+		
 		
 		public SupplierOffer( SupplierOfferToClient offer, int id) {
 			this(offer.name, offer.quality+"", offer.orderedQuantity+"", offer.price+"", id, offer.round);
@@ -210,7 +222,12 @@ public class ClientGameUIModel {
 			quantity = (quantity.equals("0")) ? "" : quantity;
 			this.quantity = new SimpleStringProperty(quantity);
 			this.id = new SimpleStringProperty(id+"");
-			this.price = new SimpleStringProperty(price);	
+			
+			//Währungsformatierung
+			long priceTmp = Long.parseLong(price);
+			String priceFormatted = nFormatter.format(priceTmp / 100.0);
+			this.price = new SimpleStringProperty(priceFormatted);	
+			
 			this.round = round;
 			lastId = id;
 		}
@@ -277,7 +294,12 @@ public class ClientGameUIModel {
 			this.targetQuantity = new SimpleStringProperty(targetQuantity);
 			this.qualityPanel = new SimpleStringProperty(qualityPanel);
 			this.actualQuantity = new SimpleStringProperty(actualQuantity);
-			this.costsPerUnit = new SimpleStringProperty(costsPerUnit);
+			
+			//Währungsformatierung
+			long costsPerUnitTmp = Long.parseLong(costsPerUnit);
+			String costsPerUnitFormatted = nFormatter.format(costsPerUnitTmp / 100.0);
+			this.costsPerUnit = new SimpleStringProperty(costsPerUnitFormatted);	
+		 
 			lastId = id;
 		}
 		
@@ -326,7 +348,12 @@ public class ClientGameUIModel {
 			this.ressource = new SimpleStringProperty(ressource);
 			this.quality = new SimpleStringProperty(quality);
 			this.quantity= new SimpleStringProperty(quality);
-			this.costs = new SimpleStringProperty(costs);
+			
+			//Währungsformatierung
+			long costsTmp = Long.parseLong(costs);
+			String costsFormatted = nFormatter.format(costsTmp / 100.0);
+			this.costs = new SimpleStringProperty(costsFormatted);	
+
 		}
 		
 		public StoragePosition(StorageElementToClient stoElement, int id){
