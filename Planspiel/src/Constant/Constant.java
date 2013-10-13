@@ -105,8 +105,11 @@ public class Constant {
 		public static final int UDP_PORT = Integer
 				.parseInt(getConstant("UDP_PORT"));
 		public static final int MAX_PLAYER = Integer
-				.parseInt(getConstant("MAX_PLAYER"));
-
+				.parseInt(getConstant("MAX_USERS"));
+		public static final int PLAYER_KI_TAREK = Integer
+				.parseInt(getConstant("PLAYER_KI_TAREK"));
+		public static final int PLAYER_KI_LARS = Integer
+				.parseInt(getConstant("PLAYER_KI_LARS"));
 	}
 
 	public static class DepartmentFixcost {
