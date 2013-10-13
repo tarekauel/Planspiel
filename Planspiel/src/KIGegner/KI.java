@@ -7,6 +7,7 @@ import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
+import Server.Connection.Server;
 
 public class KI extends Thread {
 	private Client c;
@@ -16,29 +17,28 @@ public class KI extends Thread {
 	private ArrayList<AmountObject> bankAmounts = new ArrayList<AmountObject>();
 	private static int counter = 1;
 	private final int id;
-	
 
 	public static void main(String[] args) {
+		// starte den Server
+		// Server.main(null);
 		// in welchen Sektor soll die KI?
 		// Je niedriger die Zahl, desto mehr ist es im billigen Secotr:
 		new KI(10);
-		
 
 	}
 
 	private KI(int sector) {
 		id = counter;
-		System.out.println("KI-"+id+" wurde gestartet!");
-		
+		System.out.println("KI-" + id + " wurde gestartet!");
+
 		this.qualityTry = sector;
 		this.playerName = "KI-Solar" + id;
-		
+
 		counter++;
-		
 
 		if (Login()) {
 			// Login erfolgreich
-			
+
 			System.out.println("KI-" + id + " hat sich erfolgreich angemeldet");
 			// Starte in die Prozessierung
 			this.start();
@@ -84,8 +84,9 @@ public class KI extends Thread {
 		}
 		System.out.println("KI-" + id + " wurde beendet");
 		for (int i = 0; i < bankAmounts.size(); i++) {
-			
-			System.out.println("KI-" + id + " meldet:" + bankAmounts.get(i).toString());
+
+			System.out.println("KI-" + id + " meldet:"
+					+ bankAmounts.get(i).toString());
 		}
 
 	}
@@ -123,12 +124,12 @@ public class KI extends Thread {
 
 		// Setze den Lohn:
 		m.setWage(1000);
-		
-		//Intelligenter Ausbau der Maschine (bis Marktsättigung)
+
+		// Intelligenter Ausbau der Maschine (bis Marktsättigung)
 		m.setMachine(true);
-		for (StorageElementToClient s : readMessage.storage.storageElements){
-			//Es liegen noch Panels auf Lager, wir produzieren also zuviel.
-			if (s.type.equals("Panel")){
+		for (StorageElementToClient s : readMessage.storage.storageElements) {
+			// Es liegen noch Panels auf Lager, wir produzieren also zuviel.
+			if (s.type.equals("Panel")) {
 				m.setMachine(false);
 				break;
 			}
@@ -143,14 +144,14 @@ public class KI extends Thread {
 		 */
 		// Schleife über alle Anfragen:
 		boolean waferFound = false;
-		
+
 		int waferPrice = 0;
 		int waferQuality = 0;
-		
+
 		boolean caseFound = false;
-		
+
 		int casePrice = 0;
-		int caseQuality= 0;
+		int caseQuality = 0;
 		for (int i = 0; i < readMessage.purchase.requests.size(); i++) {
 			// index des bisher besten angebots zur anfrage:
 			int index = 0;
@@ -174,28 +175,33 @@ public class KI extends Thread {
 
 			if (readMessage.purchase.requests.get(i).supplierOffers.get(index).name
 					.equals("Wafer") && !waferFound) {
-	
-				waferPrice = readMessage.purchase.requests.get(i).supplierOffers.get(index).price;
-				waferQuality = readMessage.purchase.requests.get(i).supplierOffers.get(index).quality;
+
+				waferPrice = readMessage.purchase.requests.get(i).supplierOffers
+						.get(index).price;
+				waferQuality = readMessage.purchase.requests.get(i).supplierOffers
+						.get(index).quality;
 				waferFound = true;
 			} else if (readMessage.purchase.requests.get(i).supplierOffers
 					.get(index).name.equals("Gehäuse") && !caseFound) {
 
-				casePrice = readMessage.purchase.requests.get(i).supplierOffers.get(index).price;
-				caseQuality = readMessage.purchase.requests.get(i).supplierOffers.get(index).quality;
+				casePrice = readMessage.purchase.requests.get(i).supplierOffers
+						.get(index).price;
+				caseQuality = readMessage.purchase.requests.get(i).supplierOffers
+						.get(index).quality;
 				caseFound = true;
 			}
 
 		}
-		//Berechnen der maximalen Stücke mit dem momentanen Geld
-		int maxByMoney = (int)((readMessage.cash *1.0)/(casePrice + waferPrice * Constant.Constant.Production.WAFERS_PER_PANEL));
-		//Entscheidung (toBuy ist hier maxByMachine
-		toBuy = (toBuy<maxByMoney)?toBuy:maxByMoney;
-		//Tatsächliche Bestellung
-		m.addAccepted("Wafer",waferQuality,toBuy * Constant.Constant.Production.WAFERS_PER_PANEL);
+		// Berechnen der maximalen Stücke mit dem momentanen Geld
+		int maxByMoney = (int) ((readMessage.cash * 1.0) / (casePrice + waferPrice
+				* Constant.Constant.Production.WAFERS_PER_PANEL));
+		// Entscheidung (toBuy ist hier maxByMachine
+		toBuy = (toBuy < maxByMoney) ? toBuy : maxByMoney;
+		// Tatsächliche Bestellung
+		m.addAccepted("Wafer", waferQuality, toBuy
+				* Constant.Constant.Production.WAFERS_PER_PANEL);
 		m.addAccepted("Gehäuse", caseQuality, toBuy);
-		
-		
+
 		/*************************************
 		 * SECTION : PRODUCE + SELLING
 		 */
@@ -210,7 +216,7 @@ public class KI extends Thread {
 				m.addOffer(
 						readMessage.storage.storageElements.get(i).quality,
 						readMessage.storage.storageElements.get(i).quantity,
-						(int) (readMessage.storage.storageElements.get(i).costs *1.05));
+						(int) (readMessage.storage.storageElements.get(i).costs * 1.05));
 
 			} else if (readMessage.storage.storageElements.get(i).type
 					.equals("Wafer")) {
