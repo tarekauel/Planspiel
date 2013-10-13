@@ -355,11 +355,8 @@ public class GameDataTranslator {
 					.getQuality(), resourcePrice.getPrice()));
 		}
 
-		// getMotivationListOfRound
-		ArrayList<MotivationRoundToClient> motivationRounds = new ArrayList<MotivationRoundToClient>();
-		// company.getHumanResources(). TODO: Get List of Motivations
 
-		MarketingToClient marketing = new MarketingToClient(isBooked, peakAMarket, peakCMarket, marketShares, waferPrices, casePrices, motivationRounds);
+		MarketingToClient marketing = new MarketingToClient(isBooked, peakAMarket, peakCMarket, marketShares, waferPrices, casePrices);
 		return marketing;
 	}
 
