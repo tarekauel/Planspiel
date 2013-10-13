@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Client.Connection.Client;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.Loser;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
@@ -67,21 +68,43 @@ public class KI extends Thread {
 
 	}
 
+	private boolean noLoser(GameDataMessageToClient data) {
+		for (Loser l : data.listOfLosers) {
+			if (l.name.equals(playerName)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public void run() {
+		boolean noLoser = false;
 		// Bereite Requests und sonstiges für die Erste Runde vor!
 		doFirstRound();
 		// zweite Runde
+		GameDataMessageToClient data = (GameDataMessageToClient) c
+				.readMessage();
+		if (noLoser(data)) {
+			doSecondRound(data);
+			noLoser = true;
+		}
 
-		doSecondRound((GameDataMessageToClient) c.readMessage());
 		// nteRunde
 		try {
-			while (true) {
-				doJob((GameDataMessageToClient) c.readMessage());
+
+			while (noLoser) {
+				data = (GameDataMessageToClient) c.readMessage();
+				if (noLoser(data)) {
+					doJob(data);
+				} else {
+					noLoser = false;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		System.out.println("KI-" + id + " wurde beendet");
 		for (int i = 0; i < bankAmounts.size(); i++) {
 
@@ -106,9 +129,9 @@ public class KI extends Thread {
 		bankAmounts.add(new AmountObject(readMessage.cash, readMessage.round));
 
 		// Abbruchbedingung zum Testen
-		if (readMessage.cash < 0) {
-			throw new Exception("Negatives Konto");
-		}
+		// if (readMessage.cash < 0) {
+		// throw new Exception("Negatives Konto");
+		// }
 
 		// Erzeuge neue KI-Message
 		ClientToServerMessageCreator m = new ClientToServerMessageCreator(
