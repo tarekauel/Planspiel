@@ -1,5 +1,7 @@
 package Server;
 
+import java.util.ArrayList;
+
 /**
  * Created by: User: Lars Trey Date: 28.09.13 Time: 17:22
  */
@@ -17,6 +19,8 @@ public class Company {
 	private Distribution distribution;
 	private HumanResources humanResources;
 	private MarketResearch marketResearch;
+	
+	private ArrayList<TPresentValue> presentValues = new ArrayList<TPresentValue>();
 
 	/**
 	 * Legt ein neues Unternehmen an
@@ -192,6 +196,7 @@ public class Company {
 	 * @throws Exception 
 	 */
 	public TPresentValue getPresentValue() throws Exception{
+		if()
 		//Einrechnen des Barvermögens
 		long presentValue = this.getBankAccount().getBankBalance();
 		
