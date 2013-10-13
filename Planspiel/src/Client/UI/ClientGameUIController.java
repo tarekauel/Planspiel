@@ -168,11 +168,11 @@ public class ClientGameUIController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {
     	
     	initGeneral();
-    	initPurchase();
-    	initProduction();
-    	
-    	initSales();
     	initStorage();
+    	initPurchase();
+    	initProduction();    	
+    	initSales();
+    	
 //    	initHumanResources();
 //    	initMarketing();
 //    	initReporting();
@@ -604,14 +604,23 @@ public class ClientGameUIController implements Initializable{
             	
             	model.getOfferTableData().add(
         			new Offer(
-        					newSaleOfferArticleChoiceBox.getValue()+"", newSaleOfferArticleQuantityTextField.getText(), newSaleOfferArticlePriceTextField.getText() 
+        				newSaleOfferArticleChoiceBox.getValue().quality+"", newSaleOfferArticleQuantityTextField.getText(), newSaleOfferArticlePriceTextField.getText() 
         			)
-                ); 
-            	
+                );        	
             	
             	newSaleOfferTitledPane.setDisable(true);
+            	
             }
         });
+    	
+    	newSaleOfferArticleChoiceBox.valueProperty().addListener(
+        		new ChangeListener<StorageElementToClient>() {
+        			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+        				newSaleOfferArticleQuantitySlider.setMax(newSaleOfferArticleChoiceBox.getValue().quantity);
+        				//TODO: Von Felix erstellte Fixkosten aus Message-Objekt einbauen (costsPerOffer)       				
+        			}
+        		}
+    	    );
 		
 	}
 
