@@ -344,7 +344,8 @@ public class GameDataTranslator {
 	 */
 	private MarketingToClient createMarketing(Company company) {
 		//ist es ueberhaupt gebucht/gekauft
-		boolean isBooked = company.getMarketResearch().getIsBooked();
+		//boolean isBooked = company.getMarketResearch().getIsBooked();
+		boolean isBooked = true;
 		// getPeaks
 		int peakAMarket = CustomerMarket.getMarket().getAMarketPeak();
 		int peakCMarket = CustomerMarket.getMarket().getCMarketPeak();
@@ -427,7 +428,7 @@ public class GameDataTranslator {
 		for (Offer offer : company.getDistribution().getListOfOffers()) {
 			offers.add(new OfferToClient(offer.getStorageElement().getProduct()
 					.getQuality(), offer.getQuantityToSell(), offer
-					.getQuantitySold(), offer.getPrice(), offer.getRound() ));
+					.getQuantitySold(), offer.getPrice(), offer.getRound(), offer.getStorageElement().getProduct().getCosts() ));
 		}
 		DistributionToClient distribution = new DistributionToClient(offers);
 		return distribution;
