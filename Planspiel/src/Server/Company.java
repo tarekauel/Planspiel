@@ -189,8 +189,9 @@ public class Company {
 	/**
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
-	public long getPresentValue(){
+	public TPresentValue getPresentValue() throws Exception{
 		//Einrechnen des Barvermögens
 		long presentValue = this.getBankAccount().getBankBalance();
 		
@@ -199,12 +200,9 @@ public class Company {
 		percentLocation = (percentLocation > 0) ? percentLocation:1;
 		//Einrechnen des Grundstücks
 		presentValue += (long) (percentLocation * this.getLocation().getPurchasePrice()/100.0);
+		TPresentValue tpresentValue = new TPresentValue(presentValue, GameEngine.getGameEngine().getRound());
 		
-		
-		
-		
-		
-		return presentValue;
+		return tpresentValue;
 	}
 
 	/**

@@ -11,7 +11,7 @@ package Server;
 
 public class TPresentValue {
 	final int round;
-	final int presentValue;
+	final long presentValue;
 	/**
 	 * Konstruktor speichert bereits alle Daten.
 	 * Ein nachträgliches setzen ist nicht möglich
@@ -20,7 +20,7 @@ public class TPresentValue {
 	 * @param PresentValue aktueller Barwert
 	 * @throws Exception 
 	 */
-	public TPresentValue( int presentValue,int round) throws Exception {
+	public TPresentValue( long presentValue,int round) throws Exception {
 	
 		if (checkPresentValueValid(presentValue) == false){
 			//Motivaions check failed
@@ -39,7 +39,7 @@ public class TPresentValue {
 	 * 
 	 * @return gibt den Unternehmenswert an
 	 */
-	public int getPresentValue(){
+	public long getPresentValue(){
 		
 		return this.presentValue;
 	}
@@ -69,7 +69,7 @@ public class TPresentValue {
 	 * @param presentValue gibt die temporäre Motivation an
 	 * @return true, falls die presentValue valide ist
 	 */
-	private boolean checkPresentValueValid(int presentValue){
+	private boolean checkPresentValueValid(long presentValue){
 		if(presentValue > 0){
 			return true;
 		}
