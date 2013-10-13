@@ -48,28 +48,28 @@ public class TestBankAccount {
 	}
 
 	@Test
-	public void decrease() {
+	public void decrease() throws Exception {
 		assertEquals(true,
 				b.decreaseBalance(500));
 	}
 
 	@Test
-	public void decreaseCompletely() {
+	public void decreaseCompletely() throws Exception {
 		assertEquals(true, b.decreaseBalance(b.getBankBalance()));
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
-	public void decreaseNegativeAmount() {
+	public void decreaseNegativeAmount() throws Exception {
 		b.decreaseBalance(-500);
 	}
 
 	@Test
-	public void decreaseAmount0() {
+	public void decreaseAmount0() throws Exception {
 		assertEquals(true,b.decreaseBalance(0));
 	}
 
 	@Test
-	public void decreaseTooMuch() {
+	public void decreaseTooMuch() throws Exception {
 		assertEquals(
 				false,
 				b.decreaseBalance(b.getBankBalance()
