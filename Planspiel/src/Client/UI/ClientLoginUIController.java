@@ -23,6 +23,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import Client.Connection.Client;
+import Client.Connection.UDPClient;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
 
@@ -50,13 +52,49 @@ public class ClientLoginUIController implements Initializable {
     	loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                      	
+                Boolean isLoggedIn =login();
+                if(isLoggedIn){
             	changeScene(actionEvent);
+                }
             }
+
+			
         }); 
 
     }
-    
+    private Boolean login() {
+		Client client = new Client();
+		
+		UDPClient udpClient = new UDPClient();
+		
+		// Search for Server 
+		while (udpClient.getTcpPortOfServer() == 0) {
+			//TODO:show Progress
+			
+		}
+		if (udpClient.getTcpPortOfServer() == -1) {
+			//Konnte Server nicht finden!
+			//TODO: Manuell Setzen
+			return false;
+		}
+		
+		//Connect to Server
+		client.connect(udpClient.getIPOfServer(), udpClient.getTcpPortOfServer());
+		//Send Login Message
+		String name = loginNameField.getText();
+		String password = passwordField.getText();
+		//TODO: Get Location
+		String chosenLocation = "USA";
+		client.writeMessage(new LoginMessage(name, password, chosenLocation));
+		LoginConfirmationMessage message = (LoginConfirmationMessage) client.readMessage();
+		if(message.getSuccess()){
+			//Erfolgreich angemeldet
+			// TODOAusgabe: message.getInfo();
+			return true;
+		}
+		
+		return false;
+	}
     private void changeScene(ActionEvent actionEvent){
     	
     	Node source = (Node) actionEvent.getSource();
