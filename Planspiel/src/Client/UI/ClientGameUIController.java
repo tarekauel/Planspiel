@@ -171,7 +171,7 @@ public class ClientGameUIController implements Initializable{
     	initPurchase();
     	initProduction();
     	
-//    	initSales();
+    	initSales();
     	initStorage();
 //    	initHumanResources();
 //    	initMarketing();
