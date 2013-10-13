@@ -53,6 +53,11 @@ public class GameDataTranslator {
 		for (GameDataMessageFromClient gameDataMessage : gameDataMessages) {
 			Company company = findCompanyOfPlayer(gameDataMessage
 					.getPlayerName());
+			// Hat die Company verloren?
+			if (GameEngine.getGameEngine().getListOfLosers().contains(company)) {
+				// scheinbar
+				break;
+			}
 			handlePurchaseRequests(gameDataMessage.purchase.requests, company);
 			handleAcceptedSupplierOffers(
 					gameDataMessage.purchase.acceptedSupplierOffers, company);
@@ -66,7 +71,8 @@ public class GameDataTranslator {
 
 	}
 
-	private void handleMarketResearch(boolean buyMarketResearch, Company company) throws Exception {
+	private void handleMarketResearch(boolean buyMarketResearch, Company company)
+			throws Exception {
 		company.getMarketResearch().setIsBooked(buyMarketResearch);
 
 	}
@@ -86,7 +92,6 @@ public class GameDataTranslator {
 		hr.setWagePerRound(wages);
 
 	}
-
 
 	/**
 	 * Erstellt Offers für die Distribution
@@ -110,10 +115,11 @@ public class GameDataTranslator {
 	 * @param orders
 	 *            vom Client angelegte Orders
 	 * @param company
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void handleProductionOrders(
-			ArrayList<ProductionOrderFromClient> orders, Company company) throws Exception {
+			ArrayList<ProductionOrderFromClient> orders, Company company)
+			throws Exception {
 		Storage storage = company.getStorage();
 		for (ProductionOrderFromClient prodOrder : orders) {
 			Resource wafer = null;
@@ -228,11 +234,11 @@ public class GameDataTranslator {
 			throws Exception {
 		ArrayList<GameDataMessageToClient> messges = new ArrayList<GameDataMessageToClient>();
 		for (Company c : GameEngine.getGameEngine().getListOfCompanys()) {
-			//Prüfen ob die Company noch beruecksichtigt wird
-			if(GameEngine.getGameEngine().getListOfLosers().contains(c)){
-				//scheinbar nicht
+			// Prüfen ob die Company noch beruecksichtigt wird
+			if (GameEngine.getGameEngine().getListOfLosers().contains(c)) {
+				// scheinbar nicht
 				break;
-				
+
 			}
 			messges.add(createGameDataMessageToClient(c));
 
@@ -250,7 +256,6 @@ public class GameDataTranslator {
 	private GameDataMessageToClient createGameDataMessageToClient(
 			Company company) throws Exception {
 		String playerName = company.getName();
-		
 
 		// Abteilungen erstellen
 		PurchaseToClient purchase = createPurchase(company);
@@ -315,7 +320,7 @@ public class GameDataTranslator {
 		// TODO: gefaked, cashValue und sellings sind 0
 		ReportingToClient reporting = new ReportingToClient(fixCosts,
 				machinery, null, null);
-		
+
 		return reporting;
 	}
 
@@ -326,9 +331,9 @@ public class GameDataTranslator {
 	 * @return
 	 */
 	private MarketingToClient createMarketing(Company company) {
-		//ist es ueberhaupt gebucht/gekauft
+		// ist es ueberhaupt gebucht/gekauft
 		boolean isBooked = company.getMarketResearch().getIsBooked();
-		
+
 		// getPeaks
 		int peakAMarket = CustomerMarket.getMarket().getAMarketPeak();
 		int peakCMarket = CustomerMarket.getMarket().getCMarketPeak();
@@ -362,8 +367,8 @@ public class GameDataTranslator {
 					.getQuality(), resourcePrice.getPrice()));
 		}
 
-
-		MarketingToClient marketing = new MarketingToClient(isBooked, peakAMarket, peakCMarket, marketShares, waferPrices, casePrices);
+		MarketingToClient marketing = new MarketingToClient(isBooked,
+				peakAMarket, peakCMarket, marketShares, waferPrices, casePrices);
 		return marketing;
 	}
 
@@ -380,18 +385,24 @@ public class GameDataTranslator {
 		// Create Benefits
 		ArrayList<BenefitBookingToClient> benefits = new ArrayList<BenefitBookingToClient>();
 		for (BenefitBooking benefit : serverHR.getBenefitBooking()) {
-			
-			benefits.add(new BenefitBookingToClient(benefit.getBenefit().getName(), benefit.getRemainingRounds(),benefit.getBenefit().getCostsPerRound()));
+
+			benefits.add(new BenefitBookingToClient(benefit.getBenefit()
+					.getName(), benefit.getRemainingRounds(), benefit
+					.getBenefit().getCostsPerRound()));
 		}
 		// TODO: UMRECHUNG pruefen
-		 ArrayList<PossibleBenefit>possibleBenefits = new ArrayList<PossibleBenefit>();
-		    for (Benefit benefit : Benefit.getBookableBenefits()) {
-				possibleBenefits.add(new PossibleBenefit(benefit.getName(),benefit.getCostsPerRound()));
-			}
-		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,possibleBenefits, serverHR.getHistoryOfMotivation(), 
-				 MarketData.getMarketData().getAvereageWage().getAmount()* (company.getLocation().getWageLevel() / 10000),serverHR.getWagesPerHour().getAmount(),
+		ArrayList<PossibleBenefit> possibleBenefits = new ArrayList<PossibleBenefit>();
+		for (Benefit benefit : Benefit.getBookableBenefits()) {
+			possibleBenefits.add(new PossibleBenefit(benefit.getName(), benefit
+					.getCostsPerRound()));
+		}
+		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,
+				possibleBenefits, serverHR.getHistoryOfMotivation(), MarketData
+						.getMarketData().getAvereageWage().getAmount()
+						* (company.getLocation().getWageLevel() / 10000),
+				serverHR.getWagesPerHour().getAmount(),
 				serverHR.getCountEmployees(), serverHR.getWagesSum());
-		
+
 		return hr;
 	}
 
@@ -407,7 +418,8 @@ public class GameDataTranslator {
 		for (Offer offer : company.getDistribution().getListOfOffers()) {
 			offers.add(new OfferToClient(offer.getStorageElement().getProduct()
 					.getQuality(), offer.getQuantityToSell(), offer
-					.getQuantitySold(), offer.getPrice(), offer.getRound(), offer.getStorageElement().getProduct().getCosts() ));
+					.getQuantitySold(), offer.getPrice(), offer.getRound(),
+					offer.getStorageElement().getProduct().getCosts()));
 		}
 		DistributionToClient distribution = new DistributionToClient(offers);
 		return distribution;
@@ -424,10 +436,11 @@ public class GameDataTranslator {
 		ArrayList<ProductionOrderToClient> orders = new ArrayList<ProductionOrderToClient>();
 		for (ProductionOrder productionOrder : company.getProduction()
 				.getListOfAllProductionOrders()) {
-			orders.add(new ProductionOrderToClient(
-					productionOrder.getWafer().getQuality(), productionOrder.getCase().getQuality(),
-					productionOrder.getPanel().getQuality(), productionOrder.getRequested(), 
-					productionOrder.getProduced(),	productionOrder.getPanel().getCosts()) );
+			orders.add(new ProductionOrderToClient(productionOrder.getWafer()
+					.getQuality(), productionOrder.getCase().getQuality(),
+					productionOrder.getPanel().getQuality(), productionOrder
+							.getRequested(), productionOrder.getProduced(),
+					productionOrder.getPanel().getCosts()));
 		}
 		ProductionToClient production = new ProductionToClient(orders);
 		return production;
