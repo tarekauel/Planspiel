@@ -228,6 +228,12 @@ public class GameDataTranslator {
 			throws Exception {
 		ArrayList<GameDataMessageToClient> messges = new ArrayList<GameDataMessageToClient>();
 		for (Company c : GameEngine.getGameEngine().getListOfCompanys()) {
+			//Prüfen ob die Company noch beruecksichtigt wird
+			if(GameEngine.getGameEngine().getListOfLosers().contains(c)){
+				//scheinbar nicht
+				break;
+				
+			}
 			messges.add(createGameDataMessageToClient(c));
 
 		}
