@@ -3,29 +3,37 @@ package Message;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Server.Company;
 import Server.GameEngine;
 import Server.TMotivation;
 
+public class GameDataMessageToClient extends GameDataMessage implements
+		Serializable {
 
-public class GameDataMessageToClient extends GameDataMessage implements Serializable
-	{
-
-	public GameDataMessageToClient(String playerName, PurchaseToClient purchase,
-			ProductionToClient production,StorageToClient storage, DistributionToClient distribution,
-			HumanResourcesToClient humanResources,
-			MarketingToClient marketing, ReportingToClient reporting,
-			 long cash, long maxCredit) {
+	public GameDataMessageToClient(String playerName,
+			PurchaseToClient purchase, ProductionToClient production,
+			StorageToClient storage, DistributionToClient distribution,
+			HumanResourcesToClient humanResources, MarketingToClient marketing,
+			ReportingToClient reporting, long cash, long maxCredit) {
 		super(playerName);
 		this.purchase = purchase;
 		this.production = production;
 		this.distribution = distribution;
-		this.marketing=marketing;
+		this.marketing = marketing;
 		this.humanResources = humanResources;
 		this.reporting = reporting;
 		this.cash = cash;
 		this.maxCredit = maxCredit;
-		this.storage= storage;
+		this.storage = storage;
 		this.round = GameEngine.getGameEngine().getRound();
+		
+		
+		//Baue die Loser Liste:
+		for(Company c:GameEngine.getGameEngine().getListOfLosers()){
+			listOfLosers.add(new Loser(c.getName(),this.round));
+		}
+		
+		
 	}
 
 	public final PurchaseToClient purchase;
@@ -33,12 +41,23 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 	public final StorageToClient storage;
 	public final DistributionToClient distribution;
 	public final MarketingToClient marketing;
-	public final ReportingToClient reporting;	
-	public final HumanResourcesToClient humanResources;	
+	public final ReportingToClient reporting;
+	public final HumanResourcesToClient humanResources;
 	public final long cash;
 	public final long maxCredit;
 	public final int round;
+	public final ArrayList<Loser> listOfLosers =  new ArrayList<Loser>();
 
+	public static class Loser implements Serializable{
+		public final String name;
+		public final int round;
+		public Loser(String name, int round) {
+			this.name = name;
+			this.round = round;
+			
+		}
+	}
+	
 	public static class PurchaseToClient implements Serializable {
 		public PurchaseToClient(ArrayList<RequestToClient> requests) {
 			this.requests = requests;
@@ -58,14 +77,14 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 			public final ArrayList<SupplierOfferToClient> supplierOffers;
 			public final String name;
 			public final int quality;
-			
 
 			public static class SupplierOfferToClient implements Serializable {
-				public SupplierOfferToClient(String name, int quality, int orderedQuantity,int price, int round) {
+				public SupplierOfferToClient(String name, int quality,
+						int orderedQuantity, int price, int round) {
 					this.name = name;
 					this.quality = quality;
 					this.price = price;
-					this.orderedQuantity=orderedQuantity;
+					this.orderedQuantity = orderedQuantity;
 					this.round = round;
 				}
 
@@ -86,16 +105,17 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 		}
 
 		public static class ProductionOrderToClient implements Serializable {
-			public ProductionOrderToClient(int qualityWafer, int qualityCase, int qualityPanel,
-					int quantity, int producedQuantity, int costs) {
+			public ProductionOrderToClient(int qualityWafer, int qualityCase,
+					int qualityPanel, int quantity, int producedQuantity,
+					int costs) {
 
 				this.qualityWafer = qualityWafer;
 				this.qualityCase = qualityCase;
 				this.qualityPanel = qualityPanel;
 				this.quantity = quantity;
 				this.producedQuantity = producedQuantity;
-				this.costs  = costs;
-			
+				this.costs = costs;
+
 			}
 
 			public final int qualityWafer;
@@ -104,19 +124,19 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 			public final int qualityPanel;
 			public final int producedQuantity;
 			public final int costs;
-			
+
 		}
 
 		public final ArrayList<ProductionOrderToClient> orders; // Ewige Liste
 
 	}
-	
+
 	public static class StorageToClient implements Serializable {
-		
+
 		public StorageToClient(int storageCostsWafer, int storageCostsCase,
 				int storageCostsPanel,
 				ArrayList<StorageElementToClient> storageElements) {
-			
+
 			this.storageCostsWafer = storageCostsWafer;
 			this.storageCostsCase = storageCostsCase;
 			this.storageCostsPanel = storageCostsPanel;
@@ -124,7 +144,7 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 		}
 
 		public static class StorageElementToClient implements Serializable {
-			
+
 			public StorageElementToClient(String type, int quality, int costs,
 					int quantity) {
 				this.type = type;
@@ -132,21 +152,24 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 				this.quantity = quantity;
 				this.costs = costs;
 			}
+
 			public final String type;
 			public final int quality;
 			public final int quantity;
 			public final int costs;
-			
+
 		}
+
 		public final int storageCostsWafer;
 		public final int storageCostsCase;
 		public final int storageCostsPanel;
 
-		public final ArrayList<StorageElementToClient> storageElements; // Liste StoageElements
+		public final ArrayList<StorageElementToClient> storageElements; // Liste
+																		// StoageElements
 
 	}
 
-	public static  class DistributionToClient implements Serializable {
+	public static class DistributionToClient implements Serializable {
 
 		public DistributionToClient(ArrayList<OfferToClient> offers) {
 			this.offers = offers;
@@ -154,7 +177,8 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 
 		public static class OfferToClient implements Serializable {
 
-			public OfferToClient(int quality, int quantityToSell, int quantitySold, int price) {
+			public OfferToClient(int quality, int quantityToSell,
+					int quantitySold, int price) {
 				this.quality = quality;
 				this.quantityToSell = quantityToSell;
 				this.quantitySold = quantitySold;
@@ -172,8 +196,10 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 
 	public static class HumanResourcesToClient implements Serializable {
 
-		public HumanResourcesToClient(ArrayList<BenefitBookingToClient> benefits,
-				int averageWage, int myWage, int countEmployees, int wageCosts, ArrayList<TMotivation> historyMotivation) {
+		public HumanResourcesToClient(
+				ArrayList<BenefitBookingToClient> benefits, int averageWage,
+				int myWage, int countEmployees, int wageCosts,
+				ArrayList<TMotivation> historyMotivation) {
 
 			this.benefits = benefits;
 			this.averageWage = averageWage;
@@ -182,7 +208,7 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 			this.wageCosts = wageCosts;
 			this.historyMotivation = historyMotivation;
 		}
-		
+
 		public final ArrayList<BenefitBookingToClient> benefits;
 		public final ArrayList<TMotivation> historyMotivation;
 
@@ -233,7 +259,7 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 			int motivation;
 		}
 
-		public static class RessourcePriceToClient implements Serializable{
+		public static class RessourcePriceToClient implements Serializable {
 
 			public RessourcePriceToClient(int quality, int price) {
 
@@ -263,7 +289,8 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 
 	public static class ReportingToClient implements Serializable {
 
-		public ReportingToClient(ArrayList<FixCostToClient> fixCosts, MachineryToClient machinery,
+		public ReportingToClient(ArrayList<FixCostToClient> fixCosts,
+				MachineryToClient machinery,
 				ArrayList<SellsToClient> sellsOfRounds,
 				ArrayList<CashValueOfRoundToClient> cashValues) {
 
@@ -278,7 +305,7 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 		public final ArrayList<SellsToClient> sellsOfRounds;
 		public final ArrayList<CashValueOfRoundToClient> cashValues;
 
-		public static class SellsToClient  implements Serializable{
+		public static class SellsToClient implements Serializable {
 
 			public SellsToClient(int round, ArrayList<Integer> qualities) {
 
@@ -303,10 +330,10 @@ public class GameDataMessageToClient extends GameDataMessage implements Serializ
 			public final int costs;
 		}
 
-		public static class MachineryToClient implements Serializable{
+		public static class MachineryToClient implements Serializable {
 
-			public MachineryToClient(int level, int maxCapacity, int averageUsage,
-					int usageLastRound) {
+			public MachineryToClient(int level, int maxCapacity,
+					int averageUsage, int usageLastRound) {
 
 				this.level = level;
 				this.maxCapacity = maxCapacity;
