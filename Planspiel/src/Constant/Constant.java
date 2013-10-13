@@ -129,12 +129,11 @@ public class Constant {
 	public static class Company {
 
 	}
-	
+
 	public static class MarketResearch {
-		
+
 		public static final int COSTS_MARKET_RESEARCH = Integer
 				.parseInt(getConstant("COSTS_MARKET_RESEARCH"));
-		
 
 	}
 
@@ -171,30 +170,49 @@ public class Constant {
 				.parseInt(getConstant("HR_IMPACT_DIFF_MARKET"));
 		public static final int IMPACT_DIFF_INTERNAL = Integer
 				.parseInt(getConstant("HR_IMPACT_DIFF_INTERNAL"));
-		
+
 		public static final int HR_FACTOR_WAGE = Integer
 				.parseInt(getConstant("HR_FACTOR_WAGE"));
+
 		public static final int HR_FACTOR_BENEFIT = Integer
 				.parseInt(getConstant("HR_FACTOR_BENEFIT"));
+
+		public static final int HR_EMPLOYEES = Integer
+				.parseInt(getConstant("HR_EMPLOYEES"));
+		public static final int HR_WORK_WEEK = Integer
+				.parseInt(getConstant("HR_WORK_WEEK"));
 	}
-	
-	
+
 	public static class CustomerMarket {
-		public static final int aMarketPeak = Integer.parseInt(getConstant("CUST_APEAK"));
-		public static final int aMarketQuantity = Integer.parseInt(getConstant("CUST_AQUANT"));
-		public static final double aMarketVariance = Integer.parseInt(getConstant("CUST_AVARI")) / 100.0;
-		public static final double aMarketIncreaseFactor = Integer.parseInt(getConstant("CUST_AINC")) / 100.0;
-		public static final double aMarketDecreaseFactor = Integer.parseInt(getConstant("CUST_ADEC")) /100.0;
-		public static final int cMarketPeak = Integer.parseInt(getConstant("CUST_CPEAK"));
-		public static final int cMarketQuantity = Integer.parseInt(getConstant("CUST_CQUANT"));
-		public static final double cMarketVariance = Integer.parseInt(getConstant("CUST_CVARI")) / 100.0;
-		public static final double cMarketIncreaseFactor = Integer.parseInt(getConstant("CUST_CINC")) / 100.0;
-		public static final double cMarketDecreaseFactor = Integer.parseInt(getConstant("CUST_CDEC")) / 100.0;
-		public static final int aMarketAvgPriceLastRound = Integer.parseInt(getConstant("CUST_AAVGP"));
-		public static final int aMarketAvgQualityLastRound = Integer.parseInt(getConstant("CUST_CAVGP"));
-		public static final int cMarketAvgPriceLastRound = Integer.parseInt(getConstant("CUST_AAVGQ"));
-		public static final int cMarketAvgQualityLastRound = Integer.parseInt(getConstant("CUST_CAVGQ"));
-		
+		public static final int aMarketPeak = Integer
+				.parseInt(getConstant("CUST_APEAK"));
+		public static final int aMarketQuantity = Integer
+				.parseInt(getConstant("CUST_AQUANT"));
+		public static final double aMarketVariance = Integer
+				.parseInt(getConstant("CUST_AVARI")) / 100.0;
+		public static final double aMarketIncreaseFactor = Integer
+				.parseInt(getConstant("CUST_AINC")) / 100.0;
+		public static final double aMarketDecreaseFactor = Integer
+				.parseInt(getConstant("CUST_ADEC")) / 100.0;
+		public static final int cMarketPeak = Integer
+				.parseInt(getConstant("CUST_CPEAK"));
+		public static final int cMarketQuantity = Integer
+				.parseInt(getConstant("CUST_CQUANT"));
+		public static final double cMarketVariance = Integer
+				.parseInt(getConstant("CUST_CVARI")) / 100.0;
+		public static final double cMarketIncreaseFactor = Integer
+				.parseInt(getConstant("CUST_CINC")) / 100.0;
+		public static final double cMarketDecreaseFactor = Integer
+				.parseInt(getConstant("CUST_CDEC")) / 100.0;
+		public static final int aMarketAvgPriceLastRound = Integer
+				.parseInt(getConstant("CUST_AAVGP"));
+		public static final int aMarketAvgQualityLastRound = Integer
+				.parseInt(getConstant("CUST_CAVGP"));
+		public static final int cMarketAvgPriceLastRound = Integer
+				.parseInt(getConstant("CUST_AAVGQ"));
+		public static final int cMarketAvgQualityLastRound = Integer
+				.parseInt(getConstant("CUST_CAVGQ"));
+
 	}
 
 }
