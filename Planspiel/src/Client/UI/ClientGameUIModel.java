@@ -3,17 +3,17 @@ package Client.UI;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-import aaaaa.GameTestConsole;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import KIGegner.KI;
 import KIGegner.UITestKI;
-import Message.GameDataMessageToClient;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
+import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.DistributionToClient;
+import Message.GameDataMessageToClient.DistributionToClient.OfferToClient;
 import Message.GameDataMessageToClient.ProductionToClient;
-import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.ProductionToClient.ProductionOrderToClient;
+import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
 import Message.GameDataMessageToClient.StorageToClient;
@@ -33,6 +33,7 @@ public class ClientGameUIModel {
 	private final ObservableList<SupplierOffer> purchaseOffersTableData = FXCollections.observableArrayList();
 	private final ObservableList<ProductionOrder> productionOrdersTableData = FXCollections.observableArrayList();
 	private final ObservableList<StoragePosition> storagePositionsTableData = FXCollections.observableArrayList();
+	private final ObservableList<Offer> offerTableData = FXCollections.observableArrayList();
 	
 	private ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
 	
@@ -85,6 +86,10 @@ public class ClientGameUIModel {
 	public ObservableList<StoragePosition> getStoragePositionsTableData() {
 		return storagePositionsTableData;
 	}
+	
+	public ObservableList<Offer> getOfferTableData() {
+		return offerTableData;
+	}
 
 	
 
@@ -99,6 +104,7 @@ public class ClientGameUIModel {
 		parsePurchase(in.purchase);	
 		parseProduction(in.production);
 		parseStorage(in.storage);
+		parseDistribution(in.distribution);
 		
 	}	
 	
@@ -136,6 +142,12 @@ public class ClientGameUIModel {
 		
 		}			
 		
+	}
+	
+	private void parseDistribution(DistributionToClient in) {
+		for(OfferToClient offer : in.offers) {
+			offerTableData.add( new Offer( offer ));
+		}
 	}
 	
 	/**
@@ -389,5 +401,77 @@ public class ClientGameUIModel {
 	/**
 	 * Sales
 	 */
+	
+public static class Offer {
+		
+		private final SimpleStringProperty id;
+		private final SimpleStringProperty product;
+		private final SimpleStringProperty quality;
+		private final SimpleStringProperty price;
+		private final SimpleStringProperty quantity;
+		private final SimpleStringProperty soldQuantity;
+		private final SimpleStringProperty profit;
+		private final SimpleStringProperty costs;
+		
+		private static int nextId = 1;
+		
+		public Offer( String quality, String quantity, String soldQuantity, String costs, String price) {
+			this.id = new SimpleStringProperty( nextId+"" );
+			nextId++;
+			this.product =  new SimpleStringProperty( "Panel" );
+			this.price = new SimpleStringProperty( price );
+			this.quality =  new SimpleStringProperty( quality+"");
+			this.quantity = new SimpleStringProperty( quantity+"");
+			this.soldQuantity = new SimpleStringProperty( soldQuantity+"");
+					
+			//Währungsformatierung
+			long costsTmp = Long.parseLong(costs);
+			String costsFormatted = nFormatter.format(costsTmp / 100.0);
+			this.costs = new SimpleStringProperty(costsFormatted);	
+			double profit = Integer.parseInt(soldQuantity) * Integer.parseInt(price)/100.0  - costsTmp / 100.0 * Integer.parseInt(quantity);
+			this.profit = new SimpleStringProperty( nFormatter.format(profit));
+			
+			
+
+		}
+		
+		public Offer( OfferToClient offer ) {
+			this( offer.quality+"", offer.quantityToSell+"", offer.quantitySold+"", offer.costs+"", offer.price+"");
+		}
+
+		public String getId() {
+			return id.get();
+		}
+
+		public String getProduct() {
+			return product.get();
+		}
+
+		public String getQuality() {
+			return quality.get();
+		}
+		
+		public String getQuantity() {
+			return quantity.get();
+		}
+		
+		public String getSoldQuantity() {
+			return soldQuantity.get();
+		}
+
+		public String getCosts() {
+			return costs.get();
+		}
+		
+		public String getPrice() {
+			return price.get();
+		}
+		
+		public String getProfit() {
+			return profit.get();
+		}
+		
+	}
+	
 
 }

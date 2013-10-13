@@ -66,12 +66,12 @@ public class KITarek extends Thread {
 		m = new ClientToServerMessageCreator(playerName);
 		doSecondRound();
 		while(true) {
-			historie.add( String.format("Runde: %d  Guthaben: "+formatter.format(reply.cash / 100.0), reply.round   ) );
+			System.out.println( String.format("Runde: %d  Guthaben: "+formatter.format(reply.cash / 100.0), reply.round   ) );
 			double sumFixCosts = 0.0;
 			for(FixCostToClient fix : reply.reporting.fixCosts) {
 				sumFixCosts += fix.costs;
 			}
-			historie.add( "Fixkosten: " + formatter.format(sumFixCosts/100.0));
+			System.out.println( "Fixkosten: " + formatter.format(sumFixCosts/100.0));
 			double sumSales = 0.0;
 			double sumCosts = 0.0;
 			int countSales=0;
@@ -82,10 +82,10 @@ public class KITarek extends Thread {
 					countSales += offer.quantitySold;
 				}
 			}
-			historie.add("Anzahl der Verkäufe: " + countSales);
-			historie.add("Umsatz der Verkäufe: " + formatter.format(sumSales/100.0));
-			historie.add("Kosten der Herrstellung: " + formatter.format(sumCosts/100.0));
-			historie.add("");
+			System.out.println("Anzahl der Verkäufe: " + countSales);
+			System.out.println("Umsatz der Verkäufe: " + formatter.format(sumSales/100.0));
+			System.out.println("Kosten der Herrstellung: " + formatter.format(sumCosts/100.0));
+			System.out.println("");
 			reply = (GameDataMessageToClient) c.readMessage();
 			m = new ClientToServerMessageCreator(
 					playerName);
