@@ -385,9 +385,8 @@ public class GameDataTranslator {
 				possibleBenefits.add(new PossibleBenefit(benefit.getName(),benefit.getCostsPerRound()));
 			}
 		HumanResourcesToClient hr = new HumanResourcesToClient(benefits,possibleBenefits, serverHR.getHistoryOfMotivation(), 
-				serverHR.getWagesPerHour().getAmount(),
-				serverHR.getCountEmployees(), serverHR.getWagesSum(), MarketData.getMarketData().getAvereageWage().getAmount()
-								* (company.getLocation().getWageLevel() / 10000));
+				 MarketData.getMarketData().getAvereageWage().getAmount()* (company.getLocation().getWageLevel() / 10000),serverHR.getWagesPerHour().getAmount(),
+				serverHR.getCountEmployees(), serverHR.getWagesSum());
 		
 		return hr;
 	}

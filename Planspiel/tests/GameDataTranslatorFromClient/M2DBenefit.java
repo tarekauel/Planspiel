@@ -1,15 +1,15 @@
-package GameDataTranslatorToClient;
+package GameDataTranslatorFromClient;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Message.GameDataMessageFromClient;
-import Message.GameDataMessageToClient;
 import Message.GameDataMessageFromClient.DistributionFromClient;
 import Message.GameDataMessageFromClient.HumanResourcesFromClient;
 import Message.GameDataMessageFromClient.ProductionFromClient;
@@ -21,41 +21,33 @@ import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOffe
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Server.Benefit;
 import Server.Company;
-import Server.CustomerMarket;
-import Server.GameDataTranslator;
 import Server.GameEngine;
 import Server.Location;
-import Server.Resource;
 
-public class D2MHumanResources {
+public class M2DBenefit {
 	
-	Company c;
+static Company c;
+	
 	PurchaseFromClient purchase;
 	DistributionFromClient distribution;
 	ProductionFromClient production;
 	HumanResourcesFromClient  hr;
-	String name;
-	int costsPerRound;
-	ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
 	
-	
-	
-
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		Location.initLocations();
 		Benefit.initBenefits();
 		GameEngine.getGameEngine();
+		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
 		
-
 		
 	}
 
 	@Before
 	public void initializeTests() throws Exception {
-		c = new Company(Location.getLocationByCountry("USA"),"OTTO");
-		
-		//Benefits werden gebucht durch 
+
+	
+		//werden teilweise absichtlich leer gelassen da in anderem Test geprueft
 		ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
 		ArrayList<AcceptedSupplierOfferFromClient> acceptedSupplierOffers = new ArrayList<AcceptedSupplierOfferFromClient>();
 		ArrayList<ProductionOrderFromClient> orders = new ArrayList<ProductionOrderFromClient>();
@@ -71,31 +63,31 @@ public class D2MHumanResources {
 		 distribution = new DistributionFromClient(offers);
 		 hr = new HumanResourcesFromClient(benefits);
 		 
-		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, false, hr, 7, false);
-		gameDataMessages.add(gameDataMessage);
-		 
-		 
+		
+
 		
 	}
 
 	@Test
-	public void getCompleteProductionOrder() throws Exception {
+	public void increaseMachineryLevel() throws Exception {
 		
-		 ArrayList<GameDataMessageToClient> gameDataMessageToClients = GameEngine.getGameEngine().startNextRound(gameDataMessages);
-		 //get Data from Objects
-		 name = c.getHumanResources().getBenefitBooking().get(0).getBenefit().getName();
-		 costsPerRound = c.getHumanResources().getBenefitBooking().get(0).getBenefit().getCostsPerRound();
-		 assertEquals(name,gameDataMessageToClients.get(0).humanResources.benefits.get(0).name);
-		 assertEquals(5,gameDataMessageToClients.get(0).humanResources.benefits.get(0).remainingRounds);
-		 assertEquals(costsPerRound,gameDataMessageToClients.get(0).humanResources.benefits.get(0).costsPerRound);
-		 assertEquals(Benefit.getBookableBenefits().size(),gameDataMessageToClients.get(0).humanResources.possibleBenefits.size());
-		 assertEquals(c.getHumanResources().getHistoryOfMotivation().size(),gameDataMessageToClients.get(0).humanResources.historyMotivation.size());
-		 assertEquals(c.getHumanResources().getWagesPerHour().getAmount(), gameDataMessageToClients.get(0).humanResources.myWage);
+		ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
+		GameDataMessageFromClient gameDataMessage = new GameDataMessageFromClient(c.getName(), purchase, production, distribution, false, hr, 7, false);
+		gameDataMessages.add(gameDataMessage);
+		GameEngine.getGameEngine().startNextRound(gameDataMessages);
+		assertEquals("Sport",c.getHumanResources().getBenefitBooking().get(0).getBenefit().getName());
+		assertEquals(5,c.getHumanResources().getBenefitBooking().get(0).getDuration());
+		assertEquals(5,c.getHumanResources().getBenefitBooking().get(0).getRemainingRounds());
 
-		
+	}
+	
+
+
+
+	@After
+	public void resetTests() {
 
 	}
 
-	
 
 }
