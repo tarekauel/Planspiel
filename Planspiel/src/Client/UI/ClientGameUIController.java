@@ -604,7 +604,7 @@ public class ClientGameUIController implements Initializable{
             	
             	model.getOfferTableData().add(
         			new Offer(
-        				newSaleOfferArticleChoiceBox.getValue(), newSaleOfferArticleQuantityTextField.getText(), 
+        					newSaleOfferArticleChoiceBox.getValue()+"", newSaleOfferArticleQuantityTextField.getText(), newSaleOfferArticlePriceTextField.getText() 
         			)
                 ); 
             	

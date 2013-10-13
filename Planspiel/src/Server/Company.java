@@ -196,7 +196,9 @@ public class Company {
 	 * @throws Exception 
 	 */
 	public TPresentValue getPresentValue() throws Exception{
-		if()
+		if(presentValues.get(presentValues.size()-1).round==GameEngine.getGameEngine().getRound()){
+			return presentValues.get(presentValues.size()-1);
+		}
 		//Einrechnen des Barvermögens
 		long presentValue = this.getBankAccount().getBankBalance();
 		
@@ -206,7 +208,7 @@ public class Company {
 		//Einrechnen des Grundstücks
 		presentValue += (long) (percentLocation * this.getLocation().getPurchasePrice()/100.0);
 		TPresentValue tpresentValue = new TPresentValue(presentValue, GameEngine.getGameEngine().getRound());
-		
+		presentValues.add(tpresentValue);
 		return tpresentValue;
 	}
 
