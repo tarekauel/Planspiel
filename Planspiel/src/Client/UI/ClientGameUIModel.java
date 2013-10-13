@@ -35,7 +35,7 @@ public class ClientGameUIModel {
 
 	private GameDataMessageToClient in = KITarek.reply;
 
-	private int round;
+	private static int round;
 	private int maxRounds = 20;
 	private final ObservableList<Request> purchaseRequestTableData = FXCollections
 			.observableArrayList();
@@ -232,17 +232,43 @@ public class ClientGameUIModel {
 		private static int lastId = 0;
 
 		public Request(RequestToClient req, int id) {
-			// TODO: "undefined" ersetzen
-			this(req.name, req.quality + "", "undefined", id,
+			this(req.name, req.quality + "", null, id,
 					req.supplierOffers);
 		}
 
 		public Request(String name, String quality) {
 			this(name, quality, "Neu", lastId + 1, null);
 		}
+		
+		private String getStatus( ArrayList<SupplierOfferToClient> offerList ) {
+			String status = "";
+			if( offerList.size() == 0) {
+				status = "Neu";
+			} else {
+				if( offerList.get(0).round == ClientGameUIModel.round-1) {
+					status="Offen";
+				} else {
+					boolean accepted = false;
+					for( SupplierOfferToClient offer : offerList ) {
+						if( offer.orderedQuantity > 0) {
+							accepted = true;
+						}
+					}
+					if(accepted) {
+						status = "Angenommen";
+					} else {
+						status = "Abgelaufen";
+					}
+				}
+			}
+			return status;
+		}
 
 		private Request(String name, String quality, String status, int id,
 				ArrayList<SupplierOfferToClient> offers) {
+			if( status == null ) {
+				status = getStatus(offers);
+			}
 			this.name = new SimpleStringProperty(name);
 			this.quality = new SimpleStringProperty(quality);
 			this.id = new SimpleStringProperty(id + "");
