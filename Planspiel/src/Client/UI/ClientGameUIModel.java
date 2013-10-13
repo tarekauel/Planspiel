@@ -316,21 +316,22 @@ public class ClientGameUIModel {
 		private final SimpleStringProperty id;
 		private final SimpleStringProperty ressource;
 		private final SimpleStringProperty quality;
+		private final SimpleStringProperty quantity;
 		private final SimpleStringProperty costs;
-		//private static int lastId = 0;
 		
 		public StoragePosition(int id,
 				String ressource, String quality,
-				String costs) {
+				String quantity, String costs) {
 			this.id = new SimpleStringProperty(id+"");
 			this.ressource = new SimpleStringProperty(ressource);
 			this.quality = new SimpleStringProperty(quality);
+			this.quantity= new SimpleStringProperty(quality);
 			this.costs = new SimpleStringProperty(costs);
 		}
 		
 		public StoragePosition(StorageElementToClient stoElement, int id){
 			
-			this(id, stoElement.type, stoElement.quality+"", stoElement.costs+"");
+			this(id, stoElement.type, stoElement.quality+"", stoElement.quantity+"", stoElement.costs+"");
 			
 		}
 
@@ -344,6 +345,10 @@ public class ClientGameUIModel {
 
 		public String getQuality() {
 			return quality.get();
+		}
+		
+		public String getQuantity() {
+			return quantity.get();
 		}
 
 		public String getCosts() {

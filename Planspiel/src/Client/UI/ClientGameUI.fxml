@@ -199,8 +199,9 @@
                             <TableView fx:id="storagePositionsTableView" layoutX="9.0" layoutY="7.0" prefHeight="270.0" prefWidth="704.0000999999975">
                               <columns>
                                 <TableColumn prefWidth="28.0" text="#" fx:id="storagePositionIdTableColumn" />
-                                <TableColumn prefWidth="460.0" text="Ressource" fx:id="storagePositionRessourceTableColumn" />
+                                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="348.0" text="Ressource" fx:id="storagePositionRessourceTableColumn" />
                                 <TableColumn prefWidth="77.0" text="Qualität" fx:id="storagePositionQualityTableColumn" />
+                                <TableColumn prefWidth="77.0" text="Menge" fx:id="storagePositionQuantityTableColumn" />
                                 <TableColumn prefWidth="131.0" text="Stückselbstkosten" fx:id="storagePositionCostsTableColumn" />
                               </columns>
                             </TableView>

@@ -114,7 +114,8 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TableColumn<StoragePosition,String> storagePositionIdTableColumn;
 	@FXML private TableColumn<StoragePosition,String> storagePositionRessourceTableColumn;
 	@FXML private TableColumn<StoragePosition,String> storagePositionQualityTableColumn;
-	@FXML private TableColumn<StoragePosition,String> storagePositionCostsTableColumn;
+	@FXML private TableColumn<StoragePosition,String> storagePositionQuantityTableColumn;
+	@FXML private TableColumn<StoragePosition,String> storagePositionCostsTableColumn;	
     //Sales
 	@FXML private Button newSaleOfferButton;
 	@FXML private Button newSaleOfferSaveButton;
@@ -432,6 +433,8 @@ public class ClientGameUIController implements Initializable{
 	
 	private void initStorage() {
 		
+		
+		
 		/**
     	 * storagePositionsTable: CellFactory
     	 */
@@ -447,12 +450,20 @@ public class ClientGameUIController implements Initializable{
 		storagePositionQualityTableColumn.setCellValueFactory(
 	    	new PropertyValueFactory<StoragePosition, String>("quality")
 	    );
+		
+		storagePositionQuantityTableColumn.setCellValueFactory(
+		   	new PropertyValueFactory<StoragePosition, String>("quantity")
+		);
 		    	
 		storagePositionCostsTableColumn.setCellValueFactory(
 	    	new PropertyValueFactory<StoragePosition, String>("costs")
 	    );
 		
 		storagePositionsTableView.setItems(model.getStoragePositionsTableData()); 
+		
+		storageCostsWaferTextField.setText(model.getIn().storage.storageCostsWafer+"");
+		storageCostsCasesTextField.setText(model.getIn().storage.storageCostsCase+"");
+		storageCostsPanelsTextField.setText(model.getIn().storage.storageCostsPanel+"");
 		
 		/**
     	 * ActionListener
