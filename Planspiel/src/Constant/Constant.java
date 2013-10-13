@@ -95,6 +95,12 @@ public class Constant {
 				.parseInt(getConstant("PRODUCTION_MOTIVATION_IMPACT"));
 		public static final int LOCATION_IMPACT = Integer
 				.parseInt(getConstant("PRODUCTION_LOCATION_IMPACT"));
+	
+	}
+	
+	public static class Distribution{
+		public static final int DISTRIBUTION_OFFER_COSTS_PER_PANEL = Integer
+				.parseInt(getConstant("DISTRIBUTION_OFFER_COSTS_PER_PANEL"));
 	}
 
 	public static class Server {
