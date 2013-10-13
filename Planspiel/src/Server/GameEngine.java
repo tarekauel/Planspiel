@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageToClient;
+import Message.GameDataMessageToClient.ProductionToClient;
+import Message.GameDataMessageToClient.PurchaseToClient;
+import Message.GameDataMessageToClient.StorageToClient;
 
 public class GameEngine {
 
@@ -61,6 +64,11 @@ public class GameEngine {
 	public ArrayList<Company> getListOfCompanys(){
 		return this.listOfCompanys;
 	}
+	
+	//public GameDataMessageToClient getInitialGameDataMessageToClient(){
+		//StorageToClient storage = new StorageToClient(storageCostsWafer, storageCostsCase, storageCostsPanel, storageElements);
+		//GameDataMessageToClient initialMessage = new GameDataMessageToClient("", null, null, storage, distribution, humanResources, marketing, reporting, cash, maxCredit);
+	//}
 
 	/**
 	 * Startet die nächste Runde
@@ -71,7 +79,7 @@ public class GameEngine {
 	 */
 	public ArrayList<GameDataMessageToClient> startNextRound(ArrayList<GameDataMessageFromClient> gameDataList)
 			throws Exception {
-		//TODO:Sonderlogik Runde 1
+				
 		prepareAllDepartmentsForNewRound();
 		parseClientData(gameDataList);
 					
