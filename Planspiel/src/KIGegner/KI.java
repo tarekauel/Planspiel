@@ -27,7 +27,7 @@ public class KI extends Thread {
 		// in welchen Sektor soll die KI?
 		// Je niedriger die Zahl, desto mehr ist es im billigen Secotr:
 		new KI(40);
-
+		
 	}
 
 	private KI(int sector) {
