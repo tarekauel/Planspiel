@@ -294,4 +294,14 @@ public class HumanResources extends DepartmentRoundSensitive {
 		return (long) Math.floor(sumBenfit
 				/ (getCompany().getLocation().getWageLevel() / 10000.0));
 	}
+	@Override
+	public int getFixCosts(){
+		//Standardmäßig: 40 Leute Stammbelegschaft: (40 Stunden woche)
+		int minCosts = this.wagePerRound.getAmount() * 1600;
+		
+		return (this.wagePerRound.getAmount() * this.workingHoursPerRound > minCosts) ?this.wagePerRound.getAmount() * this.workingHoursPerRound:minCosts ;
+		
+			
+		 
+	}
 }
