@@ -97,7 +97,7 @@ public class SupplierMarket {
 			throw new NullPointerException("Pruchase-Referenz darf nicht null sein!");
 		}
 
-		// Pruefe ob Purchase noch nicht in der Lsite steht
+		// Pruefe ob Purchase noch nicht in der Liste steht
 		if (listOfPurchase.indexOf(p) == -1) { // TODO: indexOf geht auf
 			// equals (muss ggf. noch
 			// implementiert werden)
@@ -317,5 +317,14 @@ public class SupplierMarket {
 	 */
 	public TreeSet<TResourcePrice> getCasePricelist() {
 		return casePricelist;
+	}
+	
+	public boolean removePurchase(Purchase p){
+		if (p == null) {
+			throw new NullPointerException("Pruchase-Referenz darf nicht null sein!");
+		}
+		
+		return listOfPurchase.remove(p);
+		
 	}
 }

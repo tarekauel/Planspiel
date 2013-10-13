@@ -176,6 +176,13 @@ public class CustomerMarket {
 			return false;
 		}
 	}
+	public boolean removeDistribution(Distribution d){
+		
+		return listOfDistributions.remove(d);
+		
+		
+	}
+	
 
 	/**
 	 * Simuliert den Markt. Kunden werden in den Märkten durchsimuliert und

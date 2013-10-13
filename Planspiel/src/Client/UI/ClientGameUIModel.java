@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,7 +54,9 @@ public class ClientGameUIModel {
 
 	private ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
 
-	private static NumberFormat nFormatter = NumberFormat.getCurrencyInstance();
+	private static NumberFormat nFormatterCurrency = NumberFormat.getCurrencyInstance();
+	
+	private static NumberFormat nFormatter = NumberFormat.getInstance();
 	
 	private final ObservableList<Integer> salesChartCategories = FXCollections.observableArrayList();
 	
@@ -63,6 +66,10 @@ public class ClientGameUIModel {
 		return in;
 	}
 
+	public NumberFormat getnFormatterCurrency() {
+		return nFormatterCurrency;
+	}
+	
 	public NumberFormat getnFormatter() {
 		return nFormatter;
 	}
@@ -145,7 +152,7 @@ public class ClientGameUIModel {
 
 	private void parsePurchase(PurchaseToClient in) {
 
-		for (int i = in.requests.size() - 1; i >= 0; i--) {
+		for (int i = 0; i < in.requests.size(); i++) {
 
 			RequestToClient req = in.requests.get(i);
 			Request request = new Request(req, i);
@@ -157,7 +164,7 @@ public class ClientGameUIModel {
 
 	private void parseProduction(ProductionToClient in) {
 
-		for (int i = in.orders.size() - 1; i >= 0; i--) {
+		for (int i = 0; i < in.orders.size(); i++) {
 
 			ProductionOrderToClient pOrder = in.orders.get(i);
 			ProductionOrder prodOrder = new ProductionOrder(pOrder, i);
@@ -169,7 +176,7 @@ public class ClientGameUIModel {
 
 	private void parseStorage(StorageToClient in) {
 
-		for (int i = in.storageElements.size() - 1; i >= 0; i--) {
+		for (int i = 0; i < in.storageElements.size(); i++) {
 
 			StorageElementToClient stoElement = in.storageElements.get(i);
 			StoragePosition stoPos = new StoragePosition(stoElement, i);
@@ -227,7 +234,7 @@ public class ClientGameUIModel {
 		private final SimpleStringProperty name;
 		private final SimpleStringProperty quality;
 		private final SimpleStringProperty status;
-		private final SimpleStringProperty id;
+		private final SimpleIntegerProperty id;
 		private final ArrayList<SupplierOffer> supplierOfferList;
 		private static int lastId = 0;
 
@@ -271,7 +278,7 @@ public class ClientGameUIModel {
 			}
 			this.name = new SimpleStringProperty(name);
 			this.quality = new SimpleStringProperty(quality);
-			this.id = new SimpleStringProperty(id + "");
+			this.id = new SimpleIntegerProperty(id);
 			this.status = new SimpleStringProperty(status);
 			supplierOfferList = new ArrayList<SupplierOffer>();
 			if (offers != null) {
@@ -295,7 +302,7 @@ public class ClientGameUIModel {
 			return status.get();
 		}
 
-		public String getId() {
+		public Integer getId() {
 			return id.get();
 		}
 
@@ -314,13 +321,13 @@ public class ClientGameUIModel {
 		private final SimpleStringProperty quality;
 		private final SimpleStringProperty quantity;
 		private final SimpleStringProperty price;
-		private final SimpleStringProperty id;
+		private final SimpleIntegerProperty id;
 		private final int round;
 		private static int lastId = 0;
 
 		public SupplierOffer(SupplierOfferToClient offer, int id) {
-			this(offer.name, offer.quality + "", offer.orderedQuantity + "",
-					offer.price + "", id, offer.round);
+			this(offer.name, offer.quality + "", offer.orderedQuantity+"",
+					offer.price+"", id, offer.round);
 		}
 
 		private SupplierOffer(String name, String quality, String quantity,
@@ -328,13 +335,13 @@ public class ClientGameUIModel {
 			this.name = new SimpleStringProperty(name);
 			this.quality = new SimpleStringProperty(quality);
 			// Falls Quantity 0 ist soll nichts erscheinen!
-			quantity = (quantity.equals("0")) ? "" : quantity;
+			quantity = (quantity.equals("0")) ? "" : ClientGameUIModel.nFormatter.format(Integer.parseInt(quantity));
 			this.quantity = new SimpleStringProperty(quantity);
-			this.id = new SimpleStringProperty(id + "");
+			this.id = new SimpleIntegerProperty(id);
 
 			// Währungsformatierung
 			long priceTmp = Long.parseLong(price);
-			String priceFormatted = nFormatter.format(priceTmp / 100.0);
+			String priceFormatted = nFormatterCurrency.format(priceTmp / 100.0);
 			this.price = new SimpleStringProperty(priceFormatted);
 
 			this.round = round;
@@ -357,7 +364,7 @@ public class ClientGameUIModel {
 			return price.get();
 		}
 
-		public String getId() {
+		public Integer getId() {
 			return id.get();
 		}
 
@@ -372,7 +379,7 @@ public class ClientGameUIModel {
 
 	public static class ProductionOrder {
 
-		private final SimpleStringProperty id;
+		private final SimpleIntegerProperty id;
 		private final SimpleStringProperty qualityWafer;
 		private final SimpleStringProperty qualityCase;
 		private final SimpleStringProperty targetQuantity;
@@ -392,29 +399,34 @@ public class ClientGameUIModel {
 		public ProductionOrder(String qualityWafer, String qualityCase,
 				String targetQuantity) {
 			this(lastId + 1, qualityWafer, qualityCase, targetQuantity, "", "",
-					"");
+					"?");
 		}
 
 		private ProductionOrder(int id, String qualityWafer,
 				String qualityCase, String targetQuantity, String qualityPanel,
 				String actualQuantity, String costsPerUnit) {
-			this.id = new SimpleStringProperty(id + "");
+			this.id = new SimpleIntegerProperty(id );
 			this.qualityWafer = new SimpleStringProperty(qualityWafer);
 			this.qualityCase = new SimpleStringProperty(qualityCase);
-			this.targetQuantity = new SimpleStringProperty(targetQuantity);
+			this.targetQuantity = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(targetQuantity)));
 			this.qualityPanel = new SimpleStringProperty(qualityPanel);
-			this.actualQuantity = new SimpleStringProperty(actualQuantity);
+			this.actualQuantity = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(actualQuantity)));
 
 			// Währungsformatierung
+			
 			long costsPerUnitTmp = Long.parseLong(costsPerUnit);
-			String costsPerUnitFormatted = nFormatter
+			String costsPerUnitFormatted = nFormatterCurrency
 					.format(costsPerUnitTmp / 100.0);
-			this.costsPerUnit = new SimpleStringProperty(costsPerUnitFormatted);
+			if( costsPerUnit.equals("?")) {
+			this.costsPerUnit = new SimpleStringProperty(costsPerUnit);
+			} else {
+				this.costsPerUnit = new SimpleStringProperty(costsPerUnitFormatted);
+			}
 
 			lastId = id;
 		}
 
-		public String getId() {
+		public Integer getId() {
 			return id.get();
 		}
 
@@ -446,7 +458,7 @@ public class ClientGameUIModel {
 
 	public class StoragePosition {
 
-		private final SimpleStringProperty id;
+		private final SimpleIntegerProperty id;
 		private final SimpleStringProperty ressource;
 		private final SimpleStringProperty quality;
 		private final SimpleStringProperty quantity;
@@ -454,14 +466,14 @@ public class ClientGameUIModel {
 
 		public StoragePosition(int id, String ressource, String quality,
 				String quantity, String costs) {
-			this.id = new SimpleStringProperty(id + "");
+			this.id = new SimpleIntegerProperty(id);
 			this.ressource = new SimpleStringProperty(ressource);
 			this.quality = new SimpleStringProperty(quality);
-			this.quantity = new SimpleStringProperty(quantity);
+			this.quantity = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(quantity)));
 
 			// Währungsformatierung
 			long costsTmp = Long.parseLong(costs);
-			String costsFormatted = nFormatter.format(costsTmp / 100.0);
+			String costsFormatted = nFormatterCurrency.format(costsTmp / 100.0);
 			this.costs = new SimpleStringProperty(costsFormatted);
 
 		}
@@ -473,7 +485,7 @@ public class ClientGameUIModel {
 
 		}
 
-		public String getId() {
+		public Integer getId() {
 			return id.get();
 		}
 
@@ -501,7 +513,7 @@ public class ClientGameUIModel {
 
 	public static class Offer {
 
-		private final SimpleStringProperty id;
+		private final SimpleIntegerProperty id;
 		private final SimpleStringProperty product;
 		private final SimpleStringProperty quality;
 		private final SimpleStringProperty price;
@@ -514,23 +526,36 @@ public class ClientGameUIModel {
 
 		public Offer(String quality, String quantity, String soldQuantity,
 				String costs, String price) {
-			this.id = new SimpleStringProperty(nextId + "");
+			this.id = new SimpleIntegerProperty(nextId);
 			nextId++;
 			this.product = new SimpleStringProperty("Panel");
-			this.price = new SimpleStringProperty(price);
+			this.price = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(price) / 100.0) );
 			this.quality = new SimpleStringProperty(quality + "");
-			this.quantity = new SimpleStringProperty(quantity + "");
-			this.soldQuantity = new SimpleStringProperty(soldQuantity + "");
-
+			this.quantity = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(quantity)));
+			if( soldQuantity != null) {
+				this.soldQuantity = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(soldQuantity)));
+			} else {
+				this.soldQuantity = new SimpleStringProperty("");
+			}
 			// Währungsformatierung
-			long costsTmp = Long.parseLong(costs);
-			String costsFormatted = nFormatter.format(costsTmp / 100.0);
-			this.costs = new SimpleStringProperty(costsFormatted);
-			double profit = Integer.parseInt(soldQuantity)
-					* Integer.parseInt(price) / 100.0 - costsTmp / 100.0
-					* Integer.parseInt(quantity);
-			this.profit = new SimpleStringProperty(nFormatter.format(profit));
+			if(costs != null) {
+				long costsTmp = Long.parseLong(costs);
+				String costsFormatted = nFormatterCurrency.format(costsTmp / 100.0);
+				this.costs = new SimpleStringProperty(costsFormatted);
+				double profit = Integer.parseInt(soldQuantity)
+						* Integer.parseInt(price) / 100.0 - costsTmp / 100.0
+						* Integer.parseInt(quantity);
+				this.profit = new SimpleStringProperty(profit+"");
+			} else {
+				this.costs = new SimpleStringProperty("");
+				this.profit = new SimpleStringProperty("");
+			}
+			
 
+		}
+		
+		public Offer(String quality, String quantity, String price) {
+			this(quality, quantity, null, null , price);
 		}
 
 		public Offer(OfferToClient offer) {
@@ -538,7 +563,7 @@ public class ClientGameUIModel {
 					offer.quantitySold + "", offer.costs + "", offer.price + "");
 		}
 
-		public String getId() {
+		public Integer getId() {
 			return id.get();
 		}
 
@@ -578,7 +603,7 @@ public class ClientGameUIModel {
 
 	public static class BenefitBooking {
 
-		private final SimpleStringProperty id;
+		private final SimpleIntegerProperty id;
 		private final SimpleStringProperty benefit;
 		private final SimpleStringProperty costs;
 		private final SimpleStringProperty duration;
@@ -586,14 +611,14 @@ public class ClientGameUIModel {
 		private static int nextId = 1;
 
 		public BenefitBooking(String benefit, String costs, String duration) {
-			this.id = new SimpleStringProperty(nextId + "");
+			this.id = new SimpleIntegerProperty(nextId);
 			nextId++;
 			this.benefit = new SimpleStringProperty(benefit);
 			this.duration = new SimpleStringProperty(duration);
 
 			// Währungsformatierung
 			long costsTmp = Long.parseLong(costs);
-			String costsFormatted = nFormatter.format(costsTmp / 100.0);
+			String costsFormatted = nFormatterCurrency.format(costsTmp / 100.0);
 			this.costs = new SimpleStringProperty(costsFormatted);
 
 		}
@@ -602,7 +627,7 @@ public class ClientGameUIModel {
 			this(benefit.name, benefit.remainingRounds + "", benefit.costsPerRound+"");
 		}
 
-		public String getId() {
+		public Integer getId() {
 			return id.get();
 		}
 
@@ -631,7 +656,7 @@ public class ClientGameUIModel {
 
 			// Währungsformatierung
 			long costsTmp = Long.parseLong(costs);
-			String costsFormatted = nFormatter.format(costsTmp / 100.0);
+			String costsFormatted = nFormatterCurrency.format(costsTmp / 100.0);
 			this.costs = new SimpleStringProperty(costsFormatted);
 
 		}

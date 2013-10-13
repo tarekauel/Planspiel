@@ -202,6 +202,9 @@ public class GameEngine {
 	 */
 	public void addCompanyLost(Company c){
 		listOfLosers.add(c);
+		CustomerMarket.getMarket().removeDistribution(c.getDistribution());
+		SupplierMarket.getMarket().removePurchase(c.getPurchase());
+		MarketData.getMarketData().removeHR(c.getHumanResources());
 		
 	}
 	/**
