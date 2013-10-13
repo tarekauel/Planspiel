@@ -85,8 +85,8 @@ public class Server {
 		// Das hier muss vorher sein, damit nicht 4 Nachrichten empfangen werden
 		// müssen, um mit 3 Leuten zu spielen!!
 		receivedGameMessages++;
-		//KIs werden mit berücksichtigt
-		if (receivedGameMessages >= (maxPlayer + Constant.Server.PLAYER_KI_LARS + Constant.Server.PLAYER_KI_TAREK)) {
+		// KIs werden mit berücksichtigt
+		if (receivedGameMessages >= ((maxPlayer + Constant.Server.PLAYER_KI_LARS + Constant.Server.PLAYER_KI_TAREK) - GameEngine.getGameEngine().getListOfLosers().size())) {
 			// All Clients are ready
 			handleRound();
 			return;
