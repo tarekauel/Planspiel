@@ -422,7 +422,7 @@ public class GameDataTranslator {
 					.getQuantitySold(), offer.getPrice(), offer.getRound(),
 					offer.getStorageElement().getProduct().getCosts()));
 		}
-		DistributionToClient distribution = new DistributionToClient(offers);
+		DistributionToClient distribution = new DistributionToClient(offers, Constant.Distribution.DISTRIBUTION_OFFER_COSTS_PER_PANEL);
 		return distribution;
 	}
 

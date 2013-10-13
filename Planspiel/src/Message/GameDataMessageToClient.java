@@ -172,8 +172,9 @@ public class GameDataMessageToClient extends GameDataMessage implements
 
 	public static class DistributionToClient implements Serializable {
 
-		public DistributionToClient(ArrayList<OfferToClient> offers) {
+		public DistributionToClient(ArrayList<OfferToClient> offers, int costsPerOffer) {
 			this.offers = offers;
+			this.costsPerOffer = costsPerOffer;
 		}
 
 		public static class OfferToClient implements Serializable {
@@ -199,6 +200,7 @@ public class GameDataMessageToClient extends GameDataMessage implements
 		}
 
 		public final ArrayList<OfferToClient> offers;
+		public final int costsPerOffer;
 	}
 
 	public static class HumanResourcesToClient implements Serializable {
