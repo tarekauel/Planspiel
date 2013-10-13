@@ -186,6 +186,8 @@ public class GameDataMessageToClient extends GameDataMessage implements
 				this.costs = costs;
 			}
 
+			
+
 			public final int quality;
 			public final int quantityToSell;
 			public final int quantitySold;

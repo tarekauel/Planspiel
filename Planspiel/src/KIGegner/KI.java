@@ -26,7 +26,7 @@ public class KI extends Thread {
 		// Server.main(null);
 		// in welchen Sektor soll die KI?
 		// Je niedriger die Zahl, desto mehr ist es im billigen Secotr:
-		new KI(10);
+		new KI(60);
 
 	}
 
@@ -61,7 +61,7 @@ public class KI extends Thread {
 		// erstelle die TCP-Verbindung
 		c.connect("127.0.0.1", Constant.Constant.Server.TCP_PORT);
 		// Sende die Daten an den Server
-		c.writeMessage(new LoginMessage(playerName, "KI-Programmed", "usa"));
+		c.writeMessage(new LoginMessage(playerName, "KI-Programmed", "deutschland"));
 		// Empfange die Daten
 		LoginConfirmationMessage msg = (LoginConfirmationMessage) c
 				.readMessage();
@@ -101,6 +101,7 @@ public class KI extends Thread {
 					doJob(data);
 				} else {
 					noLoser = false;
+					System.out.println("KI-" + id+ " hat verloren! (Kein Geld mehr)");
 				}
 			}
 		} catch (Exception e) {
@@ -126,9 +127,9 @@ public class KI extends Thread {
 
 		data = readMessage;
 		
-		if (data.round == 6) {
-			ClientUIStart.main(null);
-			this.stop();
+		if (data.round == 100) {
+			throw new Exception("Runde!");
+			
 		}
 	
 		if (readMessage == null) {
@@ -185,6 +186,8 @@ public class KI extends Thread {
 
 		int casePrice = 0;
 		int caseQuality = 0;
+		
+		
 		for (int i = 0; i < readMessage.purchase.requests.size(); i++) {
 			// index des bisher besten angebots zur anfrage:
 			int index = 0;
@@ -230,10 +233,21 @@ public class KI extends Thread {
 				* Constant.Constant.Production.WAFERS_PER_PANEL));
 		// Entscheidung (toBuy ist hier maxByMachine
 		toBuy = (toBuy < maxByMoney) ? toBuy : maxByMoney;
+		boolean marketFull = false;
+		for (StorageElementToClient s : readMessage.storage.storageElements) {
+			// Es liegen noch Panels auf Lager, wir produzieren also zuviel.
+			if (s.type.equals("Panel")) {
+				m.setMachine(true);
+				break;
+			}
+		}
+		if (marketFull){
+			toBuy = toBuy / 10;
+		}
 		// Tatsächliche Bestellung
-		m.addAccepted("Wafer", waferQuality, toBuy
-				* Constant.Constant.Production.WAFERS_PER_PANEL);
-		m.addAccepted("Gehäuse", caseQuality, toBuy);
+		m.addAccepted("Wafer", waferQuality, (toBuy
+				* Constant.Constant.Production.WAFERS_PER_PANEL));
+		m.addAccepted("Gehäuse", caseQuality, (toBuy));
 
 		/*************************************
 		 * SECTION : PRODUCE + SELLING
@@ -245,11 +259,11 @@ public class KI extends Thread {
 		for (int i = 0; i < readMessage.storage.storageElements.size(); i++) {
 			if (readMessage.storage.storageElements.get(i).type.equals("Panel")) {
 				// Vertick die fertigen Panels
-
+				double newCosts = (readMessage.storage.storageElements.get(i).costs * 1.1);
 				m.addOffer(
 						readMessage.storage.storageElements.get(i).quality,
 						readMessage.storage.storageElements.get(i).quantity,
-						(int) (readMessage.storage.storageElements.get(i).costs * 1.05));
+						(int) newCosts );
 
 			} else if (readMessage.storage.storageElements.get(i).type
 					.equals("Wafer")) {
