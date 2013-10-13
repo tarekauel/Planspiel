@@ -2,21 +2,14 @@ package Server;
 
 import java.util.ArrayList;
 
-
-
-
 import Constant.Constant;
 import Message.GameDataMessageFromClient;
-import Message.GameDataMessageToClient;
 import Message.GameDataMessageFromClient.HumanResourcesFromClient.BenefitBookingFromClient;
-import Message.GameDataMessageToClient.DistributionToClient;
+import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient;
-import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient.PossibleBenefit;
-import Message.GameDataMessageToClient.MarketingToClient;
-import Message.GameDataMessageToClient.ProductionToClient;
-import Message.GameDataMessageToClient.PurchaseToClient;
 import Message.GameDataMessageToClient.StorageToClient;
+import Server.Connection.Server;
 
 public class GameEngine {
 
@@ -205,7 +198,12 @@ public class GameEngine {
 		CustomerMarket.getMarket().removeDistribution(c.getDistribution());
 		SupplierMarket.getMarket().removePurchase(c.getPurchase());
 		MarketData.getMarketData().removeHR(c.getHumanResources());
-		
+
+		// Pruefen ob jetzt ueberhaupt noch Spieler spielen dürfen
+		if(listOfCompanys.size()<1){
+			//anscheinend nicht..
+			Server.sendGameOver();
+		}
 	}
 	/**
 	 * 
