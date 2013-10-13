@@ -10,8 +10,6 @@ package Client.UI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.sun.media.jfxmedia.logging.Logger;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,11 +39,7 @@ import Client.UI.ClientGameUIModel.Request;
 import Client.UI.ClientGameUIModel.StoragePosition;
 import Client.UI.ClientGameUIModel.SupplierOffer;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
-import Message.GameDataMessageToClient;
-import Message.GameDataMessageToClient.PurchaseToClient;
-import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
-import aaaaa.GameTestConsole;
 
 
 /**
@@ -67,7 +61,7 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TitledPane newPurchaseRequestTitledPane;
 	@FXML private Button newPurchaseRequestButton;
 	@FXML private Button newPurchaseRequestSaveButton;
-	@FXML private ChoiceBox newPurchaseRequestArticleNameChoiceBox;
+	@FXML private ChoiceBox<String> newPurchaseRequestArticleNameChoiceBox;
 	@FXML private Slider newPurchaseRequestArticleQualitySlider;
 	@FXML private TextField newPurchaseRequestArticleQualityTextField;
 	@FXML private TableView<Request> purchaseRequestsTableView;
@@ -85,12 +79,12 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TitledPane newProductionOrderTitledPane;
 	@FXML private Button newProductionOrderButton;
 	@FXML private Button newProductionOrderSaveButton;
-	@FXML private ChoiceBox newProductionOrderWaferChoiceBox;
-	private ObservableList<String> waferInStorage = FXCollections.observableArrayList();
-	private ObservableList<String> casesInStorage = FXCollections.observableArrayList();
+	@FXML private ChoiceBox<StorageElementToClient> newProductionOrderWaferChoiceBox;
+	private ObservableList<StorageElementToClient> waferInStorage = FXCollections.observableArrayList();
+	private ObservableList<StorageElementToClient> casesInStorage = FXCollections.observableArrayList();
 	@FXML private Slider newProductionOrderOutputQuantitySlider;
 	@FXML private TextField newProductionOrderOutputQuantityTextField;
-	@FXML private ChoiceBox newProductionOrderCaseChoiceBox;
+	@FXML private ChoiceBox<StorageElementToClient> newProductionOrderCaseChoiceBox;
 	@FXML private TextField newProductionOrderWaferStorageQuantityTextField;
 	@FXML private TextField newProductionOrderCaseStorageQuantityTextField;
 	@FXML private TextField newProductionOrderCostsTextField;
@@ -119,7 +113,7 @@ public class ClientGameUIController implements Initializable{
     //Sales
 	@FXML private Button newSaleOfferButton;
 	@FXML private Button newSaleOfferSaveButton;
-	@FXML private ChoiceBox newSaleOfferArticleChoiceBox;
+	@FXML private ChoiceBox<String> newSaleOfferArticleChoiceBox;
 	@FXML private Slider newSaleOfferArticleQuantitySlider;
 	@FXML private TextField newSaleOfferArticleQuantityTextField;
 	@FXML private TextField newSaleOfferArticlePriceTextField;
@@ -291,6 +285,8 @@ public class ClientGameUIController implements Initializable{
     	purchaseOffersPriceTableColumn.setCellValueFactory(
     		new PropertyValueFactory<SupplierOffer, String>("price")
     	);
+    	
+    	purchaseOffersPriceTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
     	purchaseOffersTableView.setItems(model.getPurchaseOffersTableData());    	
     	
     	/**
@@ -338,15 +334,14 @@ public class ClientGameUIController implements Initializable{
 		
 	}
 	
-	//TODO: Debuggen! (storageElements.size ist 0)
 	private void getResourcesInStorage(){
 		System.out.println(model.getIn().storage.storageElements.size());
 		for (int i = 0; i < model.getIn().storage.storageElements.size(); i++) {
 			StorageElementToClient tmp = model.getIn().storage.storageElements.get(i);
-			if (tmp.equals("Wafer")) {
-				waferInStorage.add("Qualität "+tmp.quality);
-			} else if (tmp.equals("Gehäuse")) {
-				casesInStorage.add("Qualität "+tmp.quality);
+			if (tmp.type.equals("Wafer")) {
+				waferInStorage.add(tmp);
+			} else if (tmp.type.equals("Gehäuse")) {
+				casesInStorage.add(tmp);
 			}
 		}
 	}
@@ -385,7 +380,12 @@ public class ClientGameUIController implements Initializable{
     		new PropertyValueFactory<ProductionOrder, String>("costsPerUnit")
     	);
     
+		productionOrderCostsPerUnitTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
 		productionOrdersTableView.setItems(model.getProductionOrdersTableData());
+		
+		/**
+    	 * Misc
+    	 */
 
     	/**
     	 * ActionListener
@@ -393,15 +393,14 @@ public class ClientGameUIController implements Initializable{
     	
     	newProductionOrderButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {           	
-            	//Felder resetten
+            public void handle(ActionEvent actionEvent) {  
             	getResourcesInStorage();
-            	newProductionOrderTitledPane.setDisable(false);
-            	newProductionOrderWaferChoiceBox.setItems(waferInStorage);
+            	//newProductionOrderTitledPane.setDisable(false);
+            	newProductionOrderWaferChoiceBox.getItems().setAll(waferInStorage);
             	//newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
             	newProductionOrderWaferStorageQuantityTextField.clear();
             	//newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
-            	newProductionOrderWaferChoiceBox.setItems(casesInStorage);
+            	newProductionOrderWaferChoiceBox.getItems().setAll(casesInStorage);
             	newProductionOrderCaseStorageQuantityTextField.clear();
             	newProductionOrderOutputQuantitySlider.adjustValue(1.0);
             	newProductionOrderCostsTextField.clear();
@@ -428,6 +427,22 @@ public class ClientGameUIController implements Initializable{
 //            	newPurchaseRequestTitledPane.setDisable(true);            	
 //            }
 //        }); 
+    	
+    	newProductionOrderWaferChoiceBox.valueProperty().addListener(
+    		new ChangeListener<StorageElementToClient>() {
+    			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+    				newProductionOrderWaferStorageQuantityTextField.setText(newValue.quantity+"");
+    			}
+    		}
+	    );
+		
+		newProductionOrderCaseChoiceBox.valueProperty().addListener(
+    		new ChangeListener<StorageElementToClient>() {
+    			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+    				newProductionOrderCaseStorageQuantityTextField.setText(newValue.quantity+"");
+    			}
+    		}
+	    );
 		
 	}
 	
@@ -459,11 +474,13 @@ public class ClientGameUIController implements Initializable{
 	    	new PropertyValueFactory<StoragePosition, String>("costs")
 	    );
 		
+		storagePositionCostsTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
+		
 		storagePositionsTableView.setItems(model.getStoragePositionsTableData()); 
 		
-		storageCostsWaferTextField.setText(model.getIn().storage.storageCostsWafer+"");
-		storageCostsCasesTextField.setText(model.getIn().storage.storageCostsCase+"");
-		storageCostsPanelsTextField.setText(model.getIn().storage.storageCostsPanel+"");
+		storageCostsWaferTextField.setText(model.getnFormatter().format(model.getIn().storage.storageCostsWafer / 100.0));
+		storageCostsCasesTextField.setText(model.getnFormatter().format(model.getIn().storage.storageCostsCase / 100.0));
+		storageCostsPanelsTextField.setText(model.getnFormatter().format(model.getIn().storage.storageCostsPanel / 100.0));
 		
 		/**
     	 * ActionListener
