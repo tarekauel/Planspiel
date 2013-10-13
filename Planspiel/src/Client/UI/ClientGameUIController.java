@@ -345,7 +345,6 @@ public class ClientGameUIController implements Initializable{
 		waferInStorage.clear();
 		casesInStorage.clear();
 		
-		System.out.println(model.getIn().storage.storageElements.size());
 		for (int i = 0; i < model.getIn().storage.storageElements.size(); i++) {
 			StorageElementToClient tmp = model.getIn().storage.storageElements.get(i);
 			if (tmp.type.equals("Wafer")) {
@@ -370,7 +369,7 @@ public class ClientGameUIController implements Initializable{
 		
 	}
 	
-	private void calcAndSetMachineryWorkload(){
+	private void calcAndSetMachinery(){
 		
 		int maxCapacity = model.getIn().reporting.machinery.maxCapacity;
 		int cumulativeWorkload = 0;
@@ -383,8 +382,7 @@ public class ClientGameUIController implements Initializable{
 		double workload = cumulativeWorkload/maxCapacity;
 		
 		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
-		machineryMaximumCapacityTextField.setText(maxCapacity+"");
-		
+		machineryMaximumCapacityTextField.setText(maxCapacity+"");		
 		machineryWorkloadProgressBar.setProgress(workload);
 		
 	}
@@ -430,7 +428,7 @@ public class ClientGameUIController implements Initializable{
     	 * Misc
     	 */
 		
-				
+		calcAndSetMachinery();		
 
     	/**
     	 * ActionListener
@@ -443,7 +441,7 @@ public class ClientGameUIController implements Initializable{
             	newProductionOrderTitledPane.setDisable(false);
             	
             	newProductionOrderWaferChoiceBox.getItems().setAll(waferInStorage);   
-            	newProductionOrderWaferChoiceBox.getItems().setAll(casesInStorage);           	
+            	newProductionOrderCaseChoiceBox.getItems().setAll(casesInStorage);           	
             	newProductionOrderCostsTextField.clear();
             }
         }); 
@@ -456,7 +454,7 @@ public class ClientGameUIController implements Initializable{
         				newProductionOrderWaferChoiceBox.getValue().quality+"", newProductionOrderCaseChoiceBox.getValue().quality+"", newProductionOrderOutputQuantityTextField.getText()
         			)
             	); 
-    			calcAndSetMachineryWorkload();
+    			calcAndSetMachinery();
     			newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
             	newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
             	newProductionOrderWaferStorageQuantityTextField.clear();           	
