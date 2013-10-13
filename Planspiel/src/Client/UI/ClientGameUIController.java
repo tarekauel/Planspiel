@@ -341,6 +341,10 @@ public class ClientGameUIController implements Initializable{
 	}
 	
 	private void getResourcesInStorage(){
+		
+		waferInStorage.clear();
+		casesInStorage.clear();
+		
 		System.out.println(model.getIn().storage.storageElements.size());
 		for (int i = 0; i < model.getIn().storage.storageElements.size(); i++) {
 			StorageElementToClient tmp = model.getIn().storage.storageElements.get(i);
@@ -350,6 +354,20 @@ public class ClientGameUIController implements Initializable{
 				casesInStorage.add(tmp);
 			}
 		}
+	}
+	
+	private void calcMaximumProduction(){
+		
+		int qWaferInStorage = Integer.parseInt(newProductionOrderWaferStorageQuantityTextField.getText());
+		int qCasesInStorage = Integer.parseInt(newProductionOrderCaseStorageQuantityTextField.getText());
+		int qCasesNeededforPanel = qWaferInStorage/54;
+		
+		if(qCasesNeededforPanel < qCasesInStorage){
+			newProductionOrderOutputQuantitySlider.setMax(qCasesInStorage);
+		} else {			
+			newProductionOrderOutputQuantitySlider.setMax(qCasesNeededforPanel);
+		}
+		
 	}
 	
 	private void initProduction() {
@@ -401,38 +419,31 @@ public class ClientGameUIController implements Initializable{
             @Override
             public void handle(ActionEvent actionEvent) {  
             	getResourcesInStorage();
-            	//newProductionOrderTitledPane.setDisable(false);
-            	newProductionOrderWaferChoiceBox.getItems().setAll(waferInStorage);
-            	//newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
-            	newProductionOrderWaferStorageQuantityTextField.clear();
-            	//newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
-            	newProductionOrderWaferChoiceBox.getItems().setAll(casesInStorage);
-            	newProductionOrderCaseStorageQuantityTextField.clear();
-            	newProductionOrderOutputQuantitySlider.adjustValue(1.0);
+            	newProductionOrderTitledPane.setDisable(false);
+            	
+            	newProductionOrderWaferChoiceBox.getItems().setAll(waferInStorage);   
+            	newProductionOrderWaferChoiceBox.getItems().setAll(casesInStorage);           	
             	newProductionOrderCostsTextField.clear();
             }
         }); 
-//    	
-//    	newProductionOrderSaveButton.setOnAction(new EventHandler<ActionEvent>() {
-////    		@Override
-////            public void handle(ActionEvent actionEvent) {             	
-////    			model.getProductionOrdersTableData().add(
-////        			new ProductionOrder(
-////    					
-////        			)
-//            	); 
-//    			model.addRequest(
-//					new RequestFromClient(
-//						newPurchaseRequestArticleNameChoiceBox.getValue().toString(),
-//						Integer.parseInt(newPurchaseRequestArticleQualityTextField.getText())
-//					)
-//    			);
-//    			
-//    			newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
-//            	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
-//            	newPurchaseRequestTitledPane.setDisable(true);            	
-//            }
-//        }); 
+    	
+    	newProductionOrderSaveButton.setOnAction(new EventHandler<ActionEvent>() {
+    		@Override
+            public void handle(ActionEvent actionEvent) {             	
+    			model.getProductionOrdersTableData().add(
+        			new ProductionOrder(
+        				newProductionOrderWaferChoiceBox.getValue().quality+"", newProductionOrderCaseChoiceBox.getValue().quality+"", newProductionOrderOutputQuantityTextField.getText()
+        			)
+            	); 
+    			
+    			newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
+            	newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
+            	newProductionOrderWaferStorageQuantityTextField.clear();           	
+            	newProductionOrderCaseStorageQuantityTextField.clear();
+            	newProductionOrderOutputQuantitySlider.adjustValue(1.0);
+            	newPurchaseRequestTitledPane.setDisable(true);            	
+            }
+        }); 
     	
     	newProductionOrderWaferChoiceBox.valueProperty().addListener(
     		new ChangeListener<StorageElementToClient>() {
@@ -452,9 +463,7 @@ public class ClientGameUIController implements Initializable{
 		
 	}
 	
-	private void initStorage() {
-		
-		
+	private void initStorage() {		
 		
 		/**
     	 * storagePositionsTable: CellFactory
