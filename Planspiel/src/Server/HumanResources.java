@@ -131,7 +131,7 @@ public class HumanResources extends DepartmentRoundSensitive {
 	}
 
 	@Override
-	public void prepareForNewRound(int round) {
+	public void prepareForNewRound(int round) throws Exception {
 
 		workingHoursPerRound = 0;
 

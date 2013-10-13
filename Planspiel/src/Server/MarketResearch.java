@@ -24,8 +24,9 @@ public class MarketResearch extends Department {
     /**
      * prueft ob MarketResearch ueberhaupt buchbar ist und setzt dementsprechend isBooked
      * @param isBooked Uebergabeparameter gibt an ob in der naechsten Runde MarketData angezeigt wird oder nicht
+     * @throws Exception 
      */
-    public void setIsBooked(boolean isBooked){
+    public void setIsBooked(boolean isBooked) throws Exception{
     	this.isBooked = isBooked;
     	//falls gebucht sollen direkt Kosten abgebucht werden
     	if(this.isBooked){

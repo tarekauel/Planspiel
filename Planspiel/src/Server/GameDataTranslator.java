@@ -66,7 +66,7 @@ public class GameDataTranslator {
 
 	}
 
-	private void handleMarketResearch(boolean buyMarketResearch, Company company) {
+	private void handleMarketResearch(boolean buyMarketResearch, Company company) throws Exception {
 		company.getMarketResearch().setIsBooked(buyMarketResearch);
 
 	}
@@ -110,9 +110,10 @@ public class GameDataTranslator {
 	 * @param orders
 	 *            vom Client angelegte Orders
 	 * @param company
+	 * @throws Exception 
 	 */
 	private void handleProductionOrders(
-			ArrayList<ProductionOrderFromClient> orders, Company company) {
+			ArrayList<ProductionOrderFromClient> orders, Company company) throws Exception {
 		Storage storage = company.getStorage();
 		for (ProductionOrderFromClient prodOrder : orders) {
 			Resource wafer = null;
