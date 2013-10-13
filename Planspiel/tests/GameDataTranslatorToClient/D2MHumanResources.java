@@ -25,6 +25,7 @@ import Server.CustomerMarket;
 import Server.GameDataTranslator;
 import Server.GameEngine;
 import Server.Location;
+import Server.MarketData;
 import Server.Resource;
 
 public class D2MHumanResources {
@@ -90,8 +91,11 @@ public class D2MHumanResources {
 		 assertEquals(costsPerRound,gameDataMessageToClients.get(0).humanResources.benefits.get(0).costsPerRound);
 		 assertEquals(Benefit.getBookableBenefits().size(),gameDataMessageToClients.get(0).humanResources.possibleBenefits.size());
 		 assertEquals(c.getHumanResources().getHistoryOfMotivation().size(),gameDataMessageToClients.get(0).humanResources.historyMotivation.size());
+		 assertEquals( MarketData.getMarketData().getAvereageWage().getAmount()* (c.getLocation().getWageLevel() / 10000), gameDataMessageToClients.get(0).humanResources.averageWage);
 		 assertEquals(c.getHumanResources().getWagesPerHour().getAmount(), gameDataMessageToClients.get(0).humanResources.myWage);
-
+		 assertEquals(c.getHumanResources().getCountEmployees(), gameDataMessageToClients.get(0).humanResources.countEmployees);
+		 assertEquals(c.getHumanResources().getWagesSum(), gameDataMessageToClients.get(0).humanResources.wageCosts);
+		 
 		
 
 	}
