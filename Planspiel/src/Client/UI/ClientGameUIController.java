@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -38,6 +39,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
+import Client.UI.ClientGameUIModel.Offer;
 import Client.UI.ClientGameUIModel.ProductionOrder;
 import Client.UI.ClientGameUIModel.Request;
 import Client.UI.ClientGameUIModel.StoragePosition;
@@ -70,11 +72,11 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField newPurchaseRequestArticleQualityTextField;
 	@FXML private TableView<Request> purchaseRequestsTableView;
 	@FXML private TableColumn<Request,String> purchaseRequestArticleTableColumn;
-	@FXML private TableColumn<Request,String> purchaseRequestIdTableColumn;
+	@FXML private TableColumn<Request,Integer> purchaseRequestIdTableColumn;
 	@FXML private TableColumn<Request,String> purchaseRequestQualityTableColumn;
 	@FXML private TableColumn<Request,String> purchaseRequestStatusTableColumn;
 	@FXML private TableView<SupplierOffer> purchaseOffersTableView;
-	@FXML private TableColumn<SupplierOffer,String> purchaseOffersIdTableColumn;
+	@FXML private TableColumn<SupplierOffer,Integer> purchaseOffersIdTableColumn;
 	@FXML private TableColumn<SupplierOffer,String> purchaseOffersArticleTableColumn;
 	@FXML private TableColumn<SupplierOffer,String> purchaseOffersQualityTableColumn;
 	@FXML private TableColumn<SupplierOffer,String> purchaseOffersQuantityTableColumn;
@@ -84,8 +86,6 @@ public class ClientGameUIController implements Initializable{
 	@FXML private Button newProductionOrderButton;
 	@FXML private Button newProductionOrderSaveButton;
 	@FXML private ChoiceBox<StorageElementToClient> newProductionOrderWaferChoiceBox;
-	private ObservableList<StorageElementToClient> waferInStorage = FXCollections.observableArrayList();
-	private ObservableList<StorageElementToClient> casesInStorage = FXCollections.observableArrayList();
 	@FXML private Slider newProductionOrderOutputQuantitySlider;
 	@FXML private TextField newProductionOrderOutputQuantityTextField;
 	@FXML private ChoiceBox<StorageElementToClient> newProductionOrderCaseChoiceBox;
@@ -93,7 +93,7 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField newProductionOrderCaseStorageQuantityTextField;
 	@FXML private TextField newProductionOrderCostsTextField;
 	@FXML private TableView<ProductionOrder> productionOrdersTableView;
-	@FXML private TableColumn<ProductionOrder,String> productionOrderIdTableColumn;
+	@FXML private TableColumn<ProductionOrder,Integer> productionOrderIdTableColumn;
 	@FXML private TableColumn<ProductionOrder,String> productionOrderQualityWaferTableColumn;
 	@FXML private TableColumn<ProductionOrder,String> productionOrderQualityCaseTableColumn;
 	@FXML private TableColumn<ProductionOrder,String> productionOrderTargetQuantityTableColumn;
@@ -105,11 +105,14 @@ public class ClientGameUIController implements Initializable{
 	@FXML private ProgressBar machineryWorkloadProgressBar;
 	@FXML private CheckBox machineryIncreaseLevelCheckBox;
     //Storage
+	private ObservableList<StorageElementToClient> resourcesInStorage = FXCollections.observableArrayList();
+	private ObservableList<StorageElementToClient> waferInStorage = FXCollections.observableArrayList();
+	private ObservableList<StorageElementToClient> casesInStorage = FXCollections.observableArrayList();
 	@FXML private TextField storageCostsWaferTextField;
 	@FXML private TextField storageCostsCasesTextField;
 	@FXML private TextField storageCostsPanelsTextField;
 	@FXML private TableView storagePositionsTableView;
-	@FXML private TableColumn<StoragePosition,String> storagePositionIdTableColumn;
+	@FXML private TableColumn<StoragePosition,Integer> storagePositionIdTableColumn;
 	@FXML private TableColumn<StoragePosition,String> storagePositionRessourceTableColumn;
 	@FXML private TableColumn<StoragePosition,String> storagePositionQualityTableColumn;
 	@FXML private TableColumn<StoragePosition,String> storagePositionQuantityTableColumn;
@@ -117,14 +120,23 @@ public class ClientGameUIController implements Initializable{
     //Sales
 	@FXML private Button newSaleOfferButton;
 	@FXML private Button newSaleOfferSaveButton;
-	@FXML private ChoiceBox<String> newSaleOfferArticleChoiceBox;
+	@FXML private ChoiceBox<StorageElementToClient> newSaleOfferArticleChoiceBox;
 	@FXML private Slider newSaleOfferArticleQuantitySlider;
 	@FXML private TextField newSaleOfferArticleQuantityTextField;
 	@FXML private TextField newSaleOfferArticlePriceTextField;
 	@FXML private TextField newSaleOfferCostsTextField;
 	@FXML private TextField newSaleOfferDistributionCostsTextField;
 	@FXML private TextField newSaleOfferMaximumProfitTextField;
+	@FXML private TitledPane newSaleOfferTitledPane;
 	@FXML private TableView salesTableView;
+	@FXML private TableColumn<Offer,Integer> salesIdTableColumn;
+	@FXML private TableColumn<Offer,String> salesProductTableColumn;
+	@FXML private TableColumn<Offer,String> salesQualityTableColumn;
+	@FXML private TableColumn<Offer,String> salesPriceTableColumn;
+	@FXML private TableColumn<Offer,String> salesQuantityTableColumn;
+	@FXML private TableColumn<Offer,String> salesSoldQuantityTableColumn;
+	@FXML private TableColumn<Offer,String> salesProfitTableColumn;
+	@FXML private TableColumn<Offer,String> salesCostsTableColumn;
     //HumanResources
 	@FXML private TextField hrWagesPerHourTextField;
 	@FXML private TextField hrAverageWagesTextField;
@@ -233,7 +245,7 @@ public class ClientGameUIController implements Initializable{
     	);
     	
     	purchaseRequestIdTableColumn.setCellValueFactory(
-    		new PropertyValueFactory<Request, String>("id")
+    		new PropertyValueFactory<Request, Integer>("id")
     	);
     	
     	purchaseRequestStatusTableColumn.setCellValueFactory(
@@ -261,7 +273,6 @@ public class ClientGameUIController implements Initializable{
     				model.getPurchaseOffersTableData().clear();
     				for( SupplierOffer o : newValue.getOffer() ) {
     					model.getPurchaseOffersTableData().add(o);
-    					System.out.println(o.getRound() + "=="+ (model.getRound()-1));
     					if( o.getRound() == model.getRound()-1 ) {
     						purchaseOffersTableView.setEditable(true);
     					   	purchaseOffersQuantityTableColumn.setEditable(true);
@@ -280,7 +291,7 @@ public class ClientGameUIController implements Initializable{
     		new PropertyValueFactory<SupplierOffer, String>("name")
     	);
     	purchaseOffersIdTableColumn.setCellValueFactory(
-    		new PropertyValueFactory<SupplierOffer, String>("id")
+    		new PropertyValueFactory<SupplierOffer, Integer>("id")
     	);
     	purchaseOffersQualityTableColumn.setCellValueFactory(
     		new PropertyValueFactory<SupplierOffer, String>("quality")
@@ -342,16 +353,21 @@ public class ClientGameUIController implements Initializable{
 	
 	private void getResourcesInStorage(){
 		
+		resourcesInStorage.clear();
 		waferInStorage.clear();
 		casesInStorage.clear();
 		
 		for (int i = 0; i < model.getIn().storage.storageElements.size(); i++) {
 			StorageElementToClient tmp = model.getIn().storage.storageElements.get(i);
+			
 			if (tmp.type.equals("Wafer")) {
 				waferInStorage.add(tmp);
 			} else if (tmp.type.equals("Gehäuse")) {
 				casesInStorage.add(tmp);
+			} else {
+				resourcesInStorage.add(tmp);
 			}
+			
 		}
 	}
 	
@@ -394,7 +410,7 @@ public class ClientGameUIController implements Initializable{
     	 */
 		
 		productionOrderIdTableColumn.setCellValueFactory(
-    		new PropertyValueFactory<ProductionOrder, String>("id")
+    		new PropertyValueFactory<ProductionOrder, Integer>("id")
     	);
     	
 		productionOrderQualityWaferTableColumn.setCellValueFactory(
@@ -466,9 +482,7 @@ public class ClientGameUIController implements Initializable{
             	
             }
         }); 
-    	
-    	 
-    	
+    	    	
     	newProductionOrderWaferChoiceBox.valueProperty().addListener(
     		new ChangeListener<StorageElementToClient>() {
     			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
@@ -505,7 +519,7 @@ public class ClientGameUIController implements Initializable{
     	 */
 		
 		storagePositionIdTableColumn.setCellValueFactory(
-		    new PropertyValueFactory<StoragePosition, String>("id")
+		    new PropertyValueFactory<StoragePosition, Integer>("id")
 	    );
 		    	
 		storagePositionRessourceTableColumn.setCellValueFactory(
@@ -541,10 +555,35 @@ public class ClientGameUIController implements Initializable{
 	private void initSales() {
 		
 		/**
-    	 * purchaseRequestTable: CellFactory
+    	 * salesTableView: CellFactory
     	 */
 
+		salesIdTableColumn.setCellValueFactory(
+			new PropertyValueFactory<Offer, Integer>("id")
+		);
+		salesProductTableColumn.setCellValueFactory(
+			new PropertyValueFactory<Offer, String>("product")
+		);
+		salesQualityTableColumn.setCellValueFactory(
+			new PropertyValueFactory<Offer, String>("quality")
+		);
+		salesPriceTableColumn.setCellValueFactory(
+			new PropertyValueFactory<Offer, String>("price")
+		);
+		salesQuantityTableColumn.setCellValueFactory(
+			new PropertyValueFactory<Offer, String>("quantity")
+		);
+		salesSoldQuantityTableColumn.setCellValueFactory(
+			new PropertyValueFactory<Offer, String>("soldQuantity")
+		);
+		salesProfitTableColumn.setCellValueFactory(
+		    new PropertyValueFactory<Offer, String>("profit")
+		);
+		salesCostsTableColumn.setCellValueFactory(
+			new PropertyValueFactory<Offer, String>("costs")
+	    );
 		
+		salesTableView.setItems(model.getOfferTableData());
 		
 		/**
     	 * ActionListener
@@ -552,15 +591,25 @@ public class ClientGameUIController implements Initializable{
 		
 		newSaleOfferButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {           	
-            	//Felder resetten    	
+            public void handle(ActionEvent actionEvent) { 
+            	getResourcesInStorage();
+            	newSaleOfferArticleChoiceBox.getItems().setAll(resourcesInStorage);
+            	newSaleOfferTitledPane.setDisable(false);
             }
         }); 
     	
     	newSaleOfferSaveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {           	
-            	          	
+            public void handle(ActionEvent actionEvent) {    
+            	
+            	model.getOfferTableData().add(
+        			new Offer(
+        				newSaleOfferArticleChoiceBox.getValue(), newSaleOfferArticleQuantityTextField.getText(), 
+        			)
+                ); 
+            	
+            	
+            	newSaleOfferTitledPane.setDisable(true);
             }
         });
 		
