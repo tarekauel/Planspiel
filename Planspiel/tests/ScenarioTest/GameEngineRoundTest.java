@@ -39,7 +39,7 @@ public class GameEngineRoundTest {
 
 		// Client 1 connect
 		Client c1 = new Client();
-		String ip="192.168.1.6";
+		String ip="localhost";
 		c1.connect(ip, Constant.Server.TCP_PORT);
 		
 
@@ -131,6 +131,13 @@ public class GameEngineRoundTest {
 	
 		GameDataMessageToClient gameMessageToClient3 = (GameDataMessageToClient) c3.readMessage();
 	
+		//Neuer Client versucht sich einzuloggen, was nicht funktionieren darf
+		Client c4 = new Client();
+		c4.connect(ip, Constant.Server.TCP_PORT);
+		c4.writeMessage(new LoginMessage("Neue Firma", "passwort", "China"));
+		LoginConfirmationMessage messageBack4 = (LoginConfirmationMessage) c4.readMessage();
+		assertEquals(false, messageBack4.getSuccess());
+		
 		
 
 	}
