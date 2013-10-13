@@ -138,7 +138,7 @@ public class ClientGameUIModel {
 		parseProduction(in.production);
 		parseStorage(in.storage);
 		parseDistribution(in.distribution);
-		parseHumanResources(in.humanResources);
+		//parseHumanResources(in.humanResources);
 
 	}
 

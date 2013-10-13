@@ -61,6 +61,7 @@ public class KITarek extends Thread {
 	
 	@Override
 	public void run() {
+		c.readMessage();
 		doFirstRound();	
 		reply = (GameDataMessageToClient) c.readMessage();
 		m = new ClientToServerMessageCreator(playerName);
