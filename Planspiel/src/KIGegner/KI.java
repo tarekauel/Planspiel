@@ -157,6 +157,7 @@ public class KI extends Thread {
 			newQuality = r.nextInt(100);
 			
 		}
+		newQuality = qualityTry;
 		
 		
 		/******************************

@@ -96,7 +96,7 @@ public class CustomerMarket {
 	private ArrayList<Offer>			listOfAllOffers			= null;
 
 	// ------------------------------------------ Market Shares
-	private HashMap<Company, Integer>	listOfSales				= new HashMap<Company, Integer>();	// TODO
+	private HashMap<Company, Long>	listOfSales				= new HashMap<Company, Long>();	// TODO
 
 	// --------------------------------------- Logging zur Überprüfung
 	// --------------------------------------------------------------
@@ -664,7 +664,7 @@ public class CustomerMarket {
 		for (Company c : companyList) {
 			// Marktanteil der Firma berechnen
 			// Zur Liste hinzufügen
-			int salesCompany = listOfSales.get(c);
+			long salesCompany = listOfSales.get(c);
 			
 			listOfMarketShares.add(new TMarketShare(c, (int) (salesCompany * 10000.0 / sumSales), sumSales ));
 		}
