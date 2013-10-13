@@ -96,7 +96,7 @@ public class Controller {
 	 * @param yAxisBar Die YAchse des Diagramms
 	 * @param barChart Das Diagramm in dem die Daten erscheinen sollen
 	 */
-	public static <T> void parseData(ArrayList<HashMap<String, T>> data, String[] categories, CategoryAxis xAxisBar, NumberAxis yAxisBar, StackedBarChart<String, T> barChart) {			
+	public static <T> void parseData(ArrayList<HashMap<String, T>> data, String[] categories, CategoryAxis xAxisBar, NumberAxis yAxisBar, XYChart<String, T> barChart) {			
 		
 		HashMap<String, XYChart.Series<String, T>> seriesMaps = new HashMap<String, XYChart.Series<String, T>>();
 		

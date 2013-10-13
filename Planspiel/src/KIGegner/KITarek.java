@@ -193,15 +193,16 @@ public class KITarek extends Thread {
 		toProduce--;
 		if( waferQuality > 0 && caseQuality > 0 && toProduce > 0)
 			m.addProductionOrder(waferQuality, caseQuality, toProduce);
-		
+		m.setWage((int) Math.floor( Math.random() * 6) + 7); // Lohn zwischen 7 und 13
 	}
 	
 	private void sendSales() {
 		for( StorageElementToClient elem : reply.storage.storageElements) {
 			if(elem.type.equals("Panel")) {
-				int menge =  elem.quantity-1;
+				int menge =  (elem.quantity-1);
+				menge = (menge > 1) ? menge / 2 : menge;
 				if( menge >= 1)
-				m.addOffer(elem.quality, menge, elem.costs*2);
+					m.addOffer(elem.quality, menge, elem.costs*2);
 			}
 		}
 	}

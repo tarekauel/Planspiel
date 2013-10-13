@@ -282,10 +282,10 @@
                           <children>
                             <LineChart fx:id="hrMotivationLineChart" alternativeColumnFillVisible="true" layoutX="-10.0" layoutY="-2.0" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
                               <xAxis>
-                                <CategoryAxis side="BOTTOM" />
+                                <CategoryAxis side="BOTTOM" fx:id="hrMotivationLineChartXAxis" />
                               </xAxis>
                               <yAxis>
-                                <NumberAxis side="LEFT" />
+                                <NumberAxis side="LEFT" fx:id="hrMotivationLineChartYAxis" />
                               </yAxis>
                             </LineChart>
                           </children>
@@ -350,7 +350,7 @@
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="304.0">
                           <children>
-                            <PieChart id="PieChart" animated="true" clockwise="true" disable="false" focusTraversable="false" labelsVisible="true" layoutX="8.0" layoutY="-23.0" legendSide="BOTTOM" legendVisible="true" prefHeight="277.0" prefWidth="286.0" title="" titleSide="TOP" visible="true" />
+                            <PieChart id="PieChart" fx:id="marketingMarketSharePieChart" animated="true" clockwise="true" disable="false" focusTraversable="false" labelsVisible="true" layoutX="8.0" layoutY="-23.0" legendSide="BOTTOM" legendVisible="true" prefHeight="277.0" prefWidth="286.0" title="" titleSide="TOP" visible="true" />
                           </children>
                         </AnchorPane>
                       </content>
@@ -367,11 +367,27 @@
                     <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="335.0" layoutY="99.0" maxHeight="173.0" minHeight="62.9998779296875" minWidth="216.0" prefHeight="173.0" prefWidth="423.0" text="Erwartete Waferpreise nächste Runde">
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="43.0" prefWidth="419.0" />
+                        <LineChart fx:id="marketingWaferPriceChart" alternativeColumnFillVisible="true" layoutX="-10.0" layoutY="-2.0" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
+                              <xAxis>
+                                <CategoryAxis side="BOTTOM" fx:id="marketingWaferPriceChartXAxis" />
+                              </xAxis>
+                              <yAxis>
+                                <NumberAxis side="LEFT" fx:id="marketingWaferPriceChartYAxis" />
+                              </yAxis>
+                            </LineChart>
                       </content>
                     </TitledPane>
                     <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="335.0" layoutY="282.0" maxHeight="173.0" minHeight="62.9998779296875" minWidth="216.0" prefHeight="173.0" prefWidth="423.0" text="Erwartete Gehäusepreise nächste Runde">
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="43.0" prefWidth="419.0" />
+                        <LineChart fx:id="marketingCasePriceChart" alternativeColumnFillVisible="true" layoutX="-10.0" layoutY="-2.0" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
+                              <xAxis>
+                                <CategoryAxis side="BOTTOM" fx:id="marketingCasePriceChartXAxis" />
+                              </xAxis>
+                              <yAxis>
+                                <NumberAxis side="LEFT" fx:id="marketingCasePriceChartYAxis" />
+                              </yAxis>
+                            </LineChart>
                       </content>
                     </TitledPane>
                   </children>
@@ -408,14 +424,14 @@
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="244.0" prefWidth="361.0">
                           <children>
-                            <BarChart fx:id="reportingSalesBarChart" barGap="3.0" cache="false" categoryGap="10.0" layoutX="-2.0" layoutY="-17.0" legendSide="TOP" legendVisible="false" prefHeight="260.0" prefWidth="365.0" title="">
+                            <StackedBarChart fx:id="reportingSalesBarChart" cache="false"  layoutX="-2.0" layoutY="-17.0" legendSide="TOP" legendVisible="true" prefHeight="260.0" prefWidth="365.0" title="">
                               <xAxis>
-                                <CategoryAxis side="BOTTOM" />
+                                <CategoryAxis fx:id="reportingSalesBarChatXAxis" side="BOTTOM" />
                               </xAxis>
                               <yAxis>
-                                <NumberAxis side="LEFT" />
+                                <NumberAxis side="LEFT" fx:id="reportingSalesBarChatYAxis" />
                               </yAxis>
-                            </BarChart>
+                            </StackedBarChart>
                           </children>
                         </AnchorPane>
                       </content>

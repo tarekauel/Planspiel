@@ -3,16 +3,12 @@ package Client.UI;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.XYChart;
 import KIGegner.KITarek;
-import KIGegner.UITestKI;
-import KIGegner.UITestKISchlau;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.DistributionToClient;
@@ -20,6 +16,9 @@ import Message.GameDataMessageToClient.DistributionToClient.OfferToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient.PossibleBenefit;
+import Message.GameDataMessageToClient.MarketingToClient;
+import Message.GameDataMessageToClient.MarketingToClient.MarketShareToClient;
+import Message.GameDataMessageToClient.MarketingToClient.RessourcePriceToClient;
 import Message.GameDataMessageToClient.ProductionToClient;
 import Message.GameDataMessageToClient.ProductionToClient.ProductionOrderToClient;
 import Message.GameDataMessageToClient.PurchaseToClient;
@@ -27,6 +26,7 @@ import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient;
 import Message.GameDataMessageToClient.PurchaseToClient.RequestToClient.SupplierOfferToClient;
 import Message.GameDataMessageToClient.StorageToClient;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
+import Server.TMotivation;
 
 public class ClientGameUIModel {
 
@@ -58,9 +58,15 @@ public class ClientGameUIModel {
 	
 	private static NumberFormat nFormatter = NumberFormat.getInstance();
 	
-	private final ObservableList<Integer> salesChartCategories = FXCollections.observableArrayList();
+	private final ArrayList<HashMap<String, Long>> salesChartData = new ArrayList<HashMap<String, Long>>();
 	
-	private final ArrayList<ArrayList<XYChart.Data<String, Long>>> salesChartData = new ArrayList<ArrayList<XYChart.Data<String, Long>>>();
+	private final ArrayList<HashMap<String, Double>> motivationChartData = new ArrayList<HashMap<String, Double>>();
+	
+	private final ArrayList<HashMap<String, Double>> waferPriceListChartData = new ArrayList<HashMap<String, Double>>();
+	
+	private final ArrayList<HashMap<String, Double>> casePriceListChartData = new ArrayList<HashMap<String, Double>>();
+	
+	private final HashMap<String, Double> marketShareChartData = new HashMap<String, Double>();
 
 	public GameDataMessageToClient getIn() {
 		return in;
@@ -126,11 +132,25 @@ public class ClientGameUIModel {
 		return benfitBoxData;
 	}
 	
-	public ArrayList<ArrayList<XYChart.Data<String, Long>>> getSalesChartData() {
+	public ArrayList<HashMap<String, Long>> getSalesChartData() {
 		return salesChartData;
 	}
 	
+	public ArrayList<HashMap<String, Double>> getMotivationChartData() {
+		return motivationChartData;
+	}
 	
+	public ArrayList<HashMap<String, Double>> getWaferPriceListChartData() {
+		return waferPriceListChartData;
+	}
+	
+	public ArrayList<HashMap<String, Double>> getCasePriceListChartData() {
+		return casePriceListChartData;
+	}
+	
+	public HashMap<String, Double> getMarketShareChartData() {
+		return marketShareChartData;
+	}
 
 	/**
 	 * Parsing der GameDataMessageToClient
@@ -146,8 +166,8 @@ public class ClientGameUIModel {
 		parseProduction(in.production);
 		parseStorage(in.storage);
 		parseDistribution(in.distribution);
-		//parseHumanResources(in.humanResources);
-
+		parseHumanResources(in.humanResources);
+		parseMarketing(in.marketing);
 	}
 
 	private void parsePurchase(PurchaseToClient in) {
@@ -190,14 +210,13 @@ public class ClientGameUIModel {
 		for (OfferToClient offer : in.offers) {
 			offerTableData.add(new Offer(offer));			
 		}
-		ArrayList<HashMap<String, Long>> listSales = new ArrayList<HashMap<String, Long>>();
-		
-		for( int i=1; i<=5; i++) {
+				
+		for( int i=0; i<5; i++) {
 			HashMap<String, Long> map = new HashMap<String, Long>();
-			listSales.add( map );
-			int round = this.round - i;
+			salesChartData.add( map );
+			int round = this.round - (5-i);
 			if( round <= 0)
-				break;
+				continue;
 			
 			for(OfferToClient offer : in.offers) {
 				if( offer.round == round) {
@@ -205,14 +224,6 @@ public class ClientGameUIModel {
 					map.put(offer.quality+"", oldvalue+(offer.price*offer.quantitySold));					
 				}
 			}					
-		}
-		
-		for(HashMap<String, Long> map : listSales ) {
-			ArrayList<XYChart.Data<String, Long>> dataList = new ArrayList<XYChart.Data<String,Long>>();
-			for(Map.Entry<String, Long> entry : map.entrySet()) {
-				dataList.add(new XYChart.Data<String, Long>( entry.getKey(), entry.getValue()));
-			}
-			salesChartData.add(dataList);
 		}
 	}
 	
@@ -222,6 +233,30 @@ public class ClientGameUIModel {
 		}
 		for(PossibleBenefit b: in.possibleBenefits) {
 			benfitBoxData.add( new Benefit(b));
+		}
+		
+		for(TMotivation m : in.historyMotivation) {		
+			HashMap<String, Double> map = new HashMap<String, Double>();		
+			motivationChartData.add(map);
+			map.put("", m.getMotivation() / 10000.0);	
+		}
+	}
+	
+	private void parseMarketing(MarketingToClient in) {
+		for( RessourcePriceToClient p : in.waferPrice ) {
+			HashMap<String, Double> map = new HashMap<String, Double>();		
+			waferPriceListChartData.add(map);
+			map.put("", p.price / 100.0);	
+		}
+		
+		for( RessourcePriceToClient p : in.casePrice ) {
+			HashMap<String, Double> map = new HashMap<String, Double>();		
+			casePriceListChartData.add(map);
+			map.put("", p.price / 100.0);	
+		}
+		
+		for( MarketShareToClient m :  in.marketShares ) {
+			marketShareChartData.put( m.name, m.share / 10000.0);
 		}
 	}
 

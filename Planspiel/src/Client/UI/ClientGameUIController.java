@@ -9,9 +9,10 @@ package Client.UI;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,11 +21,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
-import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -143,8 +145,17 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField hrCountEmployeesTextField;
 	@FXML private TextField hrWageCostsTextField;
     // -- Benefits ausgelassen; TODO: Benefits umbauen und anpassen
-	@FXML private LineChart hrMotivationLineChart;
+	@FXML private LineChart<String, Double> hrMotivationLineChart;
+	@FXML private CategoryAxis hrMotivationLineChartXAxis;
+	@FXML private NumberAxis hrMotivationLineChartYAxis; 
     //Marketing
+	@FXML private LineChart<String, Double> marketingWaferPriceChart;
+	@FXML private CategoryAxis marketingWaferPriceChartXAxis;
+	@FXML private NumberAxis marketingWaferPriceChartYAxis; 
+	@FXML private LineChart<String, Double> marketingCasePriceChart;
+	@FXML private CategoryAxis marketingCasePriceChartXAxis;
+	@FXML private NumberAxis marketingCasePriceChartYAxis;
+	@FXML private PieChart marketingMarketSharePieChart;
     // -- ausgelassen; TODO: MarketingUI besprechen, umbauen und anpassen
     //Reporting
 	@FXML private TextField reportingSalesFixCostsTextField;
@@ -158,7 +169,9 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField reportingMachineryMaxCapacityTextField;
 	@FXML private ProgressBar reportingMachineryAvgWorkloadProgressBar;
 	@FXML private ProgressBar reportingMachineryLastRoundWorkloadProgressBar;
-	@FXML private BarChart<String, Long> reportingSalesBarChart;
+	@FXML private StackedBarChart<String, Long> reportingSalesBarChart;
+	@FXML private CategoryAxis reportingSalesBarChatXAxis;
+	@FXML private NumberAxis reportingSalesBarChatYAxis; 
 	@FXML private LineChart reportingCompanyValueLineChart;
 	
     /**
@@ -179,7 +192,47 @@ public class ClientGameUIController implements Initializable{
     		
     	model.parseAnswerFromServer();
     	
-    	buildSalesChart();
+    	
+    	//  START BUILDING SALES CHART
+    	String[] cat = new String[5];
+    	int index=0;
+    	for(int i=this.model.getRound()-5; i < this.model.getRound(); i++) {
+    		cat[index++] = "Runde " + i;
+    	}
+    	
+    	buildXYChart(this.model.getSalesChartData(), cat, reportingSalesBarChatXAxis, reportingSalesBarChatYAxis, reportingSalesBarChart);
+    	
+    	// START BULDING MOTIVATION CHART
+    	
+    	String[] catMot = new String[this.model.getRound()];
+    	for( int i=0; i<catMot.length; i++) {
+    		catMot[i] = (i+1)+"";
+    	}
+    	
+    	buildXYChart(this.model.getMotivationChartData(), catMot, hrMotivationLineChartXAxis, hrMotivationLineChartYAxis, hrMotivationLineChart);
+    	
+    	// START BUILDING WAFER PRICE CHART
+    	String[] catWafer = new String[100];
+    	for( int i=0; i<catWafer.length; i++) {
+    		catWafer[i] = (i+1) + "";
+    	}
+    	
+    	buildXYChart(this.model.getWaferPriceListChartData(), catWafer, marketingWaferPriceChartXAxis, marketingWaferPriceChartYAxis,marketingWaferPriceChart );
+    	marketingWaferPriceChart.setCreateSymbols(false);
+    	
+    	// START BUILDING Case PRICE CHART
+    	String[] catCase = new String[100];
+    	for( int i=0; i<catCase.length; i++) {
+    		catCase[i] = (i+1) + "";
+    	}
+    	
+    	buildXYChart(this.model.getCasePriceListChartData(), catCase, marketingCasePriceChartXAxis, marketingCasePriceChartYAxis,marketingCasePriceChart );
+    	marketingCasePriceChart.setCreateSymbols(false);
+    	
+    	// START BUILDING Market Shares
+    	
+    	buildPieChart(this.model.getMarketShareChartData(), marketingMarketSharePieChart);
+    	
     	//END WORK
     	
     }
@@ -639,20 +692,41 @@ public class ClientGameUIController implements Initializable{
         
     }
     
-    public void buildSalesChart() {
-    	int x=0;
-    	for( ArrayList<Data<String, Long>> seriesData : model.getSalesChartData()) {
-    		x++;
-    		XYChart.Series<String, Long> series = new XYChart.Series<String, Long>();
-    		series.setName("Bla");
-    		for(Data<String, Long> singleData : seriesData) {
-    			series.getData().add(singleData);
-    		}
-    		ObservableList<Series<String, Long>> data = reportingSalesBarChart.getData();
-    		data.add(series);
-    		if( x== 4)
-    		break;
-    	}
-    }
+    /**
+	 * Diese Methode befuellt Kategorie-Orientierte Daten in ein BarChart
+	 * @param data Eine Liste der Daten, die zu jeder Kategorie gehoeren.  
+	 * @param categories Bezeichner der Kategorie (gleich lang wie data!)
+	 * @param xAxisBar Die XAchse des Diagramms
+	 * @param yAxisBar Die YAchse des Diagramms
+	 * @param barChart Das Diagramm in dem die Daten erscheinen sollen
+	 */
+	public static <T> void buildXYChart(ArrayList<HashMap<String, T>> data, String[] categories, CategoryAxis xAxisBar, NumberAxis yAxisBar, XYChart<String, T> barChart) {			
+		
+		HashMap<String, XYChart.Series<String, T>> seriesMaps = new HashMap<String, XYChart.Series<String, T>>();
+		
+		for( int i=0; i<data.size(); i++) {
+			HashMap<String, T> roundMap = data.get(i);
+			for(Map.Entry<String, T> entry : roundMap.entrySet()) {
+				XYChart.Series<String, T> roundSeries = seriesMaps.get(entry.getKey());
+				if( roundSeries == null) {
+					XYChart.Series<String, T> newSerie = new XYChart.Series<>();
+					newSerie.setName(entry.getKey());
+					newSerie.getData().add(new XYChart.Data<String, T>(categories[i], entry.getValue()));
+					seriesMaps.put(entry.getKey(), newSerie);
+					barChart.getData().add(newSerie);
+				} else {
+					roundSeries.getData().add( new XYChart.Data<String, T>(categories[i], entry.getValue()));
+				}
+			}
+		}
+		
+		xAxisBar.setCategories(FXCollections.observableArrayList(categories));
+	}
+	
+	public static void buildPieChart(HashMap<String, Double> data, PieChart chart) {
+		for(Map.Entry<String, Double> entry : data.entrySet()) {
+			chart.getData().add( new PieChart.Data(entry.getKey(), entry.getValue()));
+		}
+	}
 
 }

@@ -242,6 +242,8 @@ public class SupplierMarket {
 		}
 
 		spreadsWafer[roundCounter] = newSpreadsWafer;
+		
+		waferPricelist = new TreeSet<TResourcePrice>();
 
 		for (int i = 0; i < waferPricelistBase.length; i++) {
 			double spread = 1 + spreadsWafer[roundCounter][i] / 100;
