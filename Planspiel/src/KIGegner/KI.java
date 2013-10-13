@@ -30,7 +30,7 @@ public class KI extends Thread {
 		
 	}
 
-	private KI(int sector) {
+	public KI(int sector) {
 		id = counter;
 		System.out.println("KI-" + id + " wurde gestartet!");
 
