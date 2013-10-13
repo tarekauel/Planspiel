@@ -58,7 +58,7 @@ public class ClientGameUIModel {
 	
 	private static NumberFormat nFormatter = NumberFormat.getInstance();
 	
-	private final ArrayList<HashMap<String, Long>> salesChartData = new ArrayList<HashMap<String, Long>>();
+	private final ArrayList<HashMap<String, Double>> salesChartData = new ArrayList<HashMap<String, Double>>();
 	
 	private final ArrayList<HashMap<String, Double>> motivationChartData = new ArrayList<HashMap<String, Double>>();
 	
@@ -132,7 +132,7 @@ public class ClientGameUIModel {
 		return benfitBoxData;
 	}
 	
-	public ArrayList<HashMap<String, Long>> getSalesChartData() {
+	public ArrayList<HashMap<String, Double>> getSalesChartData() {
 		return salesChartData;
 	}
 	
@@ -212,7 +212,7 @@ public class ClientGameUIModel {
 		}
 				
 		for( int i=0; i<5; i++) {
-			HashMap<String, Long> map = new HashMap<String, Long>();
+			HashMap<String, Double> map = new HashMap<String, Double>();
 			salesChartData.add( map );
 			int round = this.round - (5-i);
 			if( round <= 0)
@@ -220,8 +220,8 @@ public class ClientGameUIModel {
 			
 			for(OfferToClient offer : in.offers) {
 				if( offer.round == round) {
-					long oldvalue = (map.get(offer.quality) == null ) ? 0L : map.get(offer.quality);
-					map.put(offer.quality+"", oldvalue+(offer.price*offer.quantitySold));					
+					Double oldvalue = (map.get(offer.quality) == null ) ? 0L : map.get(offer.quality);
+					map.put(offer.quality+"", oldvalue+(offer.price*offer.quantitySold/100.0));					
 				}
 			}					
 		}

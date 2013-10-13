@@ -169,7 +169,7 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField reportingMachineryMaxCapacityTextField;
 	@FXML private ProgressBar reportingMachineryAvgWorkloadProgressBar;
 	@FXML private ProgressBar reportingMachineryLastRoundWorkloadProgressBar;
-	@FXML private StackedBarChart<String, Long> reportingSalesBarChart;
+	@FXML private StackedBarChart<String, Double> reportingSalesBarChart;
 	@FXML private CategoryAxis reportingSalesBarChatXAxis;
 	@FXML private NumberAxis reportingSalesBarChatYAxis; 
 	@FXML private LineChart reportingCompanyValueLineChart;
