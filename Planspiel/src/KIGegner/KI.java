@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Client.Connection.Client;
-import Client.UI.ClientUIStart;
 import Message.GameDataMessageToClient;
 import Message.GameDataMessageToClient.Loser;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 import Message.LoginConfirmationMessage;
 import Message.LoginMessage;
-import Server.Connection.Server;
 
 public class KI extends Thread {
 	private Client c;
@@ -21,6 +19,7 @@ public class KI extends Thread {
 	private static int counter = 1;
 	private final int id;
 	public static GameDataMessageToClient data;
+	private int lastBought = 200;
 
 	public static void main(String[] args) {
 		// starte den Server
@@ -62,7 +61,8 @@ public class KI extends Thread {
 		// erstelle die TCP-Verbindung
 		c.connect("127.0.0.1", Constant.Constant.Server.TCP_PORT);
 		// Sende die Daten an den Server
-		c.writeMessage(new LoginMessage(playerName, "KI-Programmed", "deutschland"));
+		c.writeMessage(new LoginMessage(playerName, "KI-Programmed",
+				"deutschland"));
 		// Empfange die Daten
 		LoginConfirmationMessage msg = (LoginConfirmationMessage) c
 				.readMessage();
@@ -102,13 +102,14 @@ public class KI extends Thread {
 					doJob(data);
 				} else {
 					noLoser = false;
-					System.out.println("KI-" + id+ " hat verloren! (Kein Geld mehr)");
+					System.out.println("KI-" + id
+							+ " hat verloren! (Kein Geld mehr)");
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("KI-" + id + " wurde beendet");
 		for (int i = 0; i < bankAmounts.size(); i++) {
 
@@ -127,12 +128,12 @@ public class KI extends Thread {
 	private void doJob(GameDataMessageToClient readMessage) throws Exception {
 
 		data = readMessage;
-		
-		if (data.round == 100) {
+
+		if (data.round == 50) {
 			throw new Exception("Runde!");
-			
+
 		}
-	
+
 		if (readMessage == null) {
 			throw new Exception("Fehler bei der Nachricht");
 
@@ -149,17 +150,15 @@ public class KI extends Thread {
 		ClientToServerMessageCreator m = new ClientToServerMessageCreator(
 				playerName);
 
-		
-		//erstelle ein Random request mit Maximal 30 Abweichung von qualityTry
+		// erstelle ein Random request mit Maximal 30 Abweichung von qualityTry
 		Random r = new Random();
 		int newQuality = 140;
-		while (Math.abs(newQuality-qualityTry)> 30) {
+		while (Math.abs(newQuality - qualityTry) > 30) {
 			newQuality = r.nextInt(100);
-			
+
 		}
 		newQuality = qualityTry;
-		
-		
+
 		/******************************
 		 * SECTION BESCHAFFUNG
 		 */
@@ -199,8 +198,7 @@ public class KI extends Thread {
 
 		int casePrice = 0;
 		int caseQuality = 0;
-		
-		
+
 		for (int i = 0; i < readMessage.purchase.requests.size(); i++) {
 			// index des bisher besten angebots zur anfrage:
 			int index = 0;
@@ -244,23 +242,30 @@ public class KI extends Thread {
 		// Berechnen der maximalen Stücke mit dem momentanen Geld
 		int maxByMoney = (int) ((readMessage.cash * 1.0) / (casePrice + waferPrice
 				* Constant.Constant.Production.WAFERS_PER_PANEL));
-		// Entscheidung (toBuy ist hier maxByMachine
+		// Entscheidung (toBuy ist hier maxByMachine)
+		//Entscheidung wieviel ich mir leisten kann
 		toBuy = (toBuy < maxByMoney) ? toBuy : maxByMoney;
-		toBuy = 200;
-		boolean marketFull = false;
-		for (StorageElementToClient s : readMessage.storage.storageElements) {
-			// Es liegen noch Panels auf Lager, wir produzieren also zuviel.
-			if (s.type.equals("Panel")) {
-				m.setMachine(true);
-				break;
-			}
-		}
-		if (marketFull){
-			toBuy = toBuy / 10;
-		}
+		//geschätzte Vorhersage
+		int market =  lastBought * (1 + (readMessage.round / 5));
+		//Entscheidung ob nach market oder nach toBuy gearbeitet wird
+		toBuy = (toBuy < market) ? toBuy : market;
+		
+		// boolean marketFull = false;
+		// for (StorageElementToClient s : readMessage.storage.storageElements)
+		// {
+		// // Es liegen noch Panels auf Lager, wir produzieren also zuviel.
+		// if (s.type.equals("Panel")) {
+		// m.setMachine(true);
+		// break;
+		// }
+		// }
+		// if (marketFull){
+		// toBuy = toBuy / 10;
+		// }
+
 		// Tatsächliche Bestellung
-		m.addAccepted("Wafer", waferQuality, (toBuy
-				* Constant.Constant.Production.WAFERS_PER_PANEL));
+		m.addAccepted("Wafer", waferQuality,
+				(toBuy * Constant.Constant.Production.WAFERS_PER_PANEL));
 		m.addAccepted("Gehäuse", caseQuality, (toBuy));
 
 		/*************************************
@@ -273,11 +278,10 @@ public class KI extends Thread {
 		for (int i = 0; i < readMessage.storage.storageElements.size(); i++) {
 			if (readMessage.storage.storageElements.get(i).type.equals("Panel")) {
 				// Vertick die fertigen Panels
-				double newCosts = (readMessage.storage.storageElements.get(i).costs * 1.1);
-				m.addOffer(
-						readMessage.storage.storageElements.get(i).quality,
+				double newCosts = (readMessage.storage.storageElements.get(i).costs * 2.05);
+				m.addOffer(readMessage.storage.storageElements.get(i).quality,
 						readMessage.storage.storageElements.get(i).quantity,
-						(int) newCosts );
+						(int) newCosts);
 
 			} else if (readMessage.storage.storageElements.get(i).type
 					.equals("Wafer")) {
@@ -308,6 +312,9 @@ public class KI extends Thread {
 					readMessage.storage.storageElements.get(indexCase).quality,
 					maxProduction);
 		}
+
+		// merken der Produktion
+		lastBought = toBuy;
 
 		// Sende daten zurück an Server:
 		sendData(m);
