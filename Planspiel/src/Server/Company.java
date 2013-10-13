@@ -208,7 +208,7 @@ public class Company {
 		//Einrechnen des Grundstücks
 		presentValue += (long) (percentLocation * this.getLocation().getPurchasePrice()/100.0);
 		TPresentValue tpresentValue = new TPresentValue(presentValue, GameEngine.getGameEngine().getRound());
-		
+		presentValues.add(tpresentValue);
 		return tpresentValue;
 	}
 
