@@ -70,7 +70,7 @@ public class Location {
 	}
 
 	public int getInitWage() {
-		return this.wageInit;
+		return wageInit;
 	}
 
 	/**
