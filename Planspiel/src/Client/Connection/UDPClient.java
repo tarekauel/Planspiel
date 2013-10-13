@@ -63,9 +63,9 @@ public class UDPClient extends Thread {
 
 		while (true) {
 
-			send(socket,"Ich suche den Spielserver!", "255.255.255.255",
+			send(socket, "Ich suche den Spielserver!", "255.255.255.255",
 					Constant.Server.UDP_PORT);
-			
+
 			// Nach einer Minute wird erneut eine Nachricht gesendet, da UDP
 			// "unzuverlässig" ist.
 			timerWaitForAnswer.schedule(timerTask(), 60000);
@@ -76,7 +76,7 @@ public class UDPClient extends Thread {
 			if (message.trim().startsWith("Ich bin der Spielserver!")) {
 
 				tcpServerPort = Integer.parseInt(message.split(":")[1].trim());
-				serverIP = packet.getAddress().toString();
+				serverIP = packet.getAddress().toString().replace("/","");
 				socket.close();
 				timerWaitForAnswer.cancel();
 				break;

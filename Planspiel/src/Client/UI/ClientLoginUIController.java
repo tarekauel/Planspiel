@@ -66,7 +66,7 @@ public class ClientLoginUIController implements Initializable {
 		Client client = new Client();
 		
 		UDPClient udpClient = new UDPClient();
-		
+		udpClient.start();
 		// Search for Server 
 		while (udpClient.getTcpPortOfServer() == 0) {
 			//TODO:show Progress
