@@ -1,6 +1,8 @@
 package GameDataTranslator;
 
-	import java.util.ArrayList;
+	import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.After;
@@ -23,14 +25,17 @@ import Server.Company;
 import Server.GameDataTranslator;
 import Server.GameEngine;
 import Server.Location;
+import Server.Request;
+import Server.Resource;
 import Server.SupplierMarket;
 import Server.SupplierOffer;
 
-	public class M2DAcceptSupplierOfferENDLOS {
+	public class M2DAcceptSupplierOffer {
 		
 		Company c;
 		ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();
-
+		int supplierOfferQuality;
+		
 		@BeforeClass
 		public static void setUpBeforeClass() throws Exception {
 			Location.initLocations();
@@ -42,6 +47,13 @@ import Server.SupplierOffer;
 		@Before
 		public void initializeTests() throws Exception {
 			c = new Company(Location.getLocationByCountry("USA"),"OTTO");
+			Resource wafer = new Resource(80, "Wafer",1000);
+			c.getPurchase().createRequest(wafer);
+			SupplierMarket.getMarket().handleRequest();
+			SupplierOffer[] supplierOffers = c.getPurchase().getListOfRequest().get(0).getSupplierOffers();
+			supplierOfferQuality = supplierOffers[0].getResource().getQuality();
+			//wird ausgefuehrt da sich der translator auf die Requests of last round bezieht
+			c.getPurchase().prepareForNewRound(2);
 	
 			//werden teilweise absichtlich leer gelassen da in anderem Test geprueft
 			ArrayList<RequestFromClient> requests = new ArrayList<RequestFromClient>();
@@ -51,14 +63,10 @@ import Server.SupplierOffer;
 			ArrayList<BenefitBookingFromClient> benefits = new ArrayList<BenefitBookingFromClient>();
 			
 			//hier findet die erzeugung der relevanten Daten innerhalb der Message statt
-			RequestFromClient request =  new RequestFromClient("Wafer", 80);
-			requests.add(request);		
-			request =  new RequestFromClient("Gehäuse", 50);
-			requests.add(request);
+			//
+			AcceptedSupplierOfferFromClient acceptedSupOf = new AcceptedSupplierOfferFromClient("Wafer", supplierOfferQuality, 100);
+			acceptedSupplierOffers.add(acceptedSupOf);
 			PurchaseFromClient purchase = new PurchaseFromClient(requests, acceptedSupplierOffers);
-			
-			
-
 			
 			
 			//weitere Erstellung der Message
@@ -73,16 +81,13 @@ import Server.SupplierOffer;
 		}
 
 		@Test
-		@FakeRandom( mathRandomNewRandom = { 50.0 }, mathRandomMethodName = { "Server.SupplierMarket.getOfferQualities"} )
-		public void convertRequest() throws Exception {
+		public void convertAcceptedSupplierOffer() throws Exception {
 			GameDataTranslator.getGameDataTranslator().convertGameDataMessage2Objects(gameDataMessages);
-			SupplierMarket.getMarket().handleRequest();
-			for(SupplierOffer r : c.getPurchase().getListOfLatestRequest().get(0).getSupplierOffers()){
-				System.out.println(
-						r.getResource().getName() +"\n"+
-						r.getResource().getCosts() +"\n"+
-						r.getResource().getQuality()
-						);
+			
+			for(SupplierOffer r : c.getPurchase().getListOfLastRoundRequests().get(0).getSupplierOffers()){
+				if(r.getResource().getQuality() == supplierOfferQuality){
+					assertEquals(100,r.getOrderedQuantity());
+				}
 			}
 
 			

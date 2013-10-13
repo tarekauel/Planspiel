@@ -21,7 +21,7 @@ import Message.GameDataMessageFromClient.PurchaseFromClient.AcceptedSupplierOffe
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Server.*;
 
-public class TestConvertGameDataMessage2Objects {
+public class M2DRequests {
 	
 	Company c;
 	ArrayList<GameDataMessageFromClient> gameDataMessages = new ArrayList<GameDataMessageFromClient>();

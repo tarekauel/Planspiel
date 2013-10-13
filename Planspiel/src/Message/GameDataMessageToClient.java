@@ -177,12 +177,13 @@ public class GameDataMessageToClient extends GameDataMessage implements
 		public static class OfferToClient implements Serializable {
 
 			public OfferToClient(int quality, int quantityToSell,
-					int quantitySold, int price, int round) {
+					int quantitySold, int price, int round, int costs) {
 				this.quality = quality;
 				this.quantityToSell = quantityToSell;
 				this.quantitySold = quantitySold;
 				this.price = price;
 				this.round = round;
+				this.costs = costs;
 			}
 
 			public final int quality;
@@ -190,6 +191,7 @@ public class GameDataMessageToClient extends GameDataMessage implements
 			public final int quantitySold;
 			public final int price;
 			public final int round;
+			public final int costs;
 		}
 
 		public final ArrayList<OfferToClient> offers;
@@ -233,12 +235,13 @@ public class GameDataMessageToClient extends GameDataMessage implements
 
 	public static class MarketingToClient implements Serializable {
 
-		public MarketingToClient(int peakAMarket, int peakCMarket,
+		public MarketingToClient(boolean isBooked,int peakAMarket, int peakCMarket,
 				ArrayList<MarketShareToClient> marketShares,
 				ArrayList<RessourcePriceToClient> waferPrice,
 				ArrayList<RessourcePriceToClient> casePrice,
 				ArrayList<MotivationRoundToClient> motivationRounds) {
-
+			
+			this.isBooked = isBooked;
 			this.peakAMarket = peakAMarket;
 			this.peakCMarket = peakCMarket;
 			this.marketShares = marketShares;
@@ -247,6 +250,7 @@ public class GameDataMessageToClient extends GameDataMessage implements
 			this.motivationRounds = motivationRounds;
 		}
 
+		public final boolean isBooked;
 		public final int peakAMarket;
 		public final int peakCMarket;
 		public final ArrayList<MarketShareToClient> marketShares;
