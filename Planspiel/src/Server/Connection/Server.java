@@ -132,7 +132,7 @@ public class Server {
 
 	public void sendGameOver(){
 		for (Player player : playerList) {
-			player.getServerConnection().writeMessage(new GameOverMessage("", ""));			
+			player.getServerConnection().writeMessage(new GameOverMessage(player.getName(), "Jetzt haben alle spieler verloren!"));			
 		}
 		close();
 		System.exit(1);
