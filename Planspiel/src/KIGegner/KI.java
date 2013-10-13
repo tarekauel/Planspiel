@@ -20,21 +20,21 @@ public class KI extends Thread {
 	private final int id;
 	public static GameDataMessageToClient data;
 	private int lastBought = 200;
-
+	private final int round;
 	public static void main(String[] args) {
 		// starte den Server
 		// Server.main(null);
 		// in welchen Sektor soll die KI?
 		// Je niedriger die Zahl, desto mehr ist es im billigen Secotr:
-		new KI(40);
+		new KI(50);
 		
 	}
 
-	public KI(int sector) {
+	public KI(int round) {
 		id = counter;
 		System.out.println("KI-" + id + " wurde gestartet!");
-
-		this.qualityTry = sector;
+		this.round = round;
+		this.qualityTry = 40;
 		this.playerName = "KI-Solar" + id;
 
 		counter++;
@@ -97,11 +97,12 @@ public class KI extends Thread {
 
 		// nteRunde
 		try {
-
-			while (noLoser) {
+			boolean stopByRound = false;
+			while (noLoser && !stopByRound) {
 				data = (GameDataMessageToClient) c.readMessage();
 				if (noLoser(data)) {
 					doJob(data);
+					stopByRound = (data.round>this.round);
 				} else {
 					noLoser = false;
 					System.out.println("KI-" + id
