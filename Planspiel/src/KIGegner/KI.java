@@ -157,8 +157,8 @@ public class KI extends Thread {
 		Random r = new Random();
 		int newQuality = 140;
 		while (Math.abs(newQuality - qualityTry) > 30) {
-			newQuality = r.nextInt(100);
-
+			newQuality = r.nextInt(99);
+			newQuality ++;
 		}
 		newQuality = qualityTry;
 
