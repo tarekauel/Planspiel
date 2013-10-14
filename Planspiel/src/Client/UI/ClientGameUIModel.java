@@ -162,9 +162,9 @@ public class ClientGameUIModel {
 	public void parseAnswerFromServer() {
 
 		this.setRound(in.round);
-		parsePurchase(in.purchase);
-		parseProduction(in.production);
 		parseStorage(in.storage);
+		parsePurchase(in.purchase);
+		parseProduction(in.production);		
 		parseDistribution(in.distribution);
 		parseHumanResources(in.humanResources);
 		parseMarketing(in.marketing);
@@ -581,7 +581,8 @@ public class ClientGameUIModel {
 				double profit = Integer.parseInt(soldQuantity)
 						* Integer.parseInt(price) / 100.0 - costsTmp / 100.0
 						* Integer.parseInt(quantity);
-				this.profit = new SimpleStringProperty(profit+"");
+				String profitFormatted = nFormatterCurrency.format(profit);
+				this.profit = new SimpleStringProperty(profitFormatted);
 			} else {
 				this.costs = new SimpleStringProperty("");
 				this.profit = new SimpleStringProperty("");
