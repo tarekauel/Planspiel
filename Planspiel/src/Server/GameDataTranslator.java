@@ -344,8 +344,9 @@ public class GameDataTranslator {
 
 		for (TMarketShare marketShare : CustomerMarket.getMarket()
 				.getMarketShares()) {
+			
 			marketShares.add(new MarketShareToClient(marketShare
-					.getMarketShare(), company.getName()));
+					.getMarketShare(), marketShare.getCompany().getName()));
 		}
 
 		// getWaferPrices
