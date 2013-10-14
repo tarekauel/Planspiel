@@ -31,14 +31,14 @@
         </Tab>
         <Tab text="Bar">
           <content>
-                <StackedBarChart fx:id="barChart" alternativeColumnFillVisible="true" layoutX="2.0" layoutY="0.0">
-                  <xAxis>
-                    <CategoryAxis fx:id="xAxisBar" side="BOTTOM" />
-                  </xAxis>
-                  <yAxis>
-                    <NumberAxis fx:id="yAxisBar" side="LEFT" />
-                  </yAxis>
-                </StackedBarChart>
+            <StackedBarChart fx:id="barChart" alternativeColumnFillVisible="true" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" onMouseMoved="#mouseMoved">
+              <xAxis>
+                <CategoryAxis fx:id="xAxisBar" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="yAxisBar" side="LEFT" />
+              </yAxis>
+            </StackedBarChart>
           </content>
         </Tab>
       </tabs>

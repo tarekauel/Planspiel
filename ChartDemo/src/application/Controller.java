@@ -1,20 +1,26 @@
 package application;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Controller {
 
@@ -37,6 +43,9 @@ public class Controller {
 	private CategoryAxis				xAxisBar;
 	@FXML
 	private NumberAxis					yAxisBar;
+	
+	private Stage dialogStage;
+	private Stage primaryStage;
 
 	public void initSBC() {
 		final Integer r1 = 1;
@@ -86,6 +95,10 @@ public class Controller {
 		}
 		
 		parseData( data,new String[] { "Runde 1","Runde 2", "Runde 3", "Runde 4", "Runde 5" }, xAxisBar, yAxisBar, barChart);
+	}
+	
+	public void setStage( Stage primaryStage) {
+		this.primaryStage = primaryStage;
 	}
 	
 	/**
@@ -154,5 +167,43 @@ public class Controller {
 		initPie();
 		initLine();
 		initSBC();
+	}
+	
+	@FXML
+	public void mouseEntered(MouseEvent event) {
+		try {
+		    // Load the fxml file and create a new stage for the popup
+		    FXMLLoader loader = new FXMLLoader(Main.class.getResource("Popup.fxml"));
+		    AnchorPane page = (AnchorPane) loader.load();
+		    Stage dialogStage = new Stage(StageStyle.TRANSPARENT);
+		    dialogStage.setTitle("Edit Person");
+		    dialogStage.initModality(Modality.NONE);
+		    Scene scene = new Scene(page);
+		    dialogStage.setScene(scene);
+		    dialogStage.setX((event.getX() + primaryStage.getX()) + 75);
+			dialogStage.setY((event.getY() + primaryStage.getY()) + 30);
+		    // Set the person into the controller
+		    PopController controller = loader.getController();
+		    controller.setDialogStage(dialogStage);
+
+		    // Show the dialog and wait until the user closes it
+		    dialogStage.show();
+		    this.dialogStage = dialogStage;
+
+		  } catch (IOException e) {
+		    // Exception gets thrown if the fxml file could not be loaded
+		    e.printStackTrace();
+		  }
+	}
+	
+	@FXML
+	public void mouseMoved(MouseEvent event) {
+		dialogStage.setX((event.getX() + primaryStage.getX()) + 75);
+		dialogStage.setY((event.getY() + primaryStage.getY()) + 30);
+	}
+	
+	@FXML
+	public void mouseExited(MouseEvent event) {
+		dialogStage.close();
 	}
 }
