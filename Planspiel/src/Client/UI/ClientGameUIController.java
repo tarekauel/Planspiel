@@ -53,6 +53,7 @@ import Client.UI.ClientGameUIModel.Request;
 import Client.UI.ClientGameUIModel.StoragePosition;
 import Client.UI.ClientGameUIModel.SupplierOffer;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
+import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 import Server.StorageElement;
 
@@ -196,7 +197,7 @@ public class ClientGameUIController implements Initializable{
     	
 //    	initHumanResources();
 //    	initMarketing();
-//    	initReporting();
+    	initReporting();
     		
     	model.parseAnswerFromServer();
     	
@@ -245,12 +246,10 @@ public class ClientGameUIController implements Initializable{
     	
     }
 
-	
-
 	private void initGeneral() {
 		
     	this.model = new ClientGameUIModel();
-    	processRoundProgressBar(model.getRound());
+    	processRoundProgressBar(model.getIn().round);
     	
     	/**
     	 * Elementübergreifende Einstellungen
@@ -647,13 +646,10 @@ public class ClientGameUIController implements Initializable{
 
 			if(elem.type.equals("Wafer")){				
 				costsWafer += elem.quantity * storageCostsWafer;
-				System.out.println(costsWafer);
 			} else if(elem.type.equals("Gehäuse")){				
 				costsCases += elem.quantity * storageCostsCases;
-				System.out.println(costsCases);
 			} else if(elem.type.equals("Panel")){				
 				costsPanels += elem.quantity * storageCostsPanels;
-				System.out.println(costsPanels);
 			}
 			
 		}
@@ -754,23 +750,67 @@ public class ClientGameUIController implements Initializable{
             	
             	model.getOfferTableData().add(
         			new Offer(
-        				newSaleOfferArticleChoiceBox.getValue().quality+"", newSaleOfferArticleQuantityTextField.getText(), newSaleOfferArticlePriceTextField.getText() 
+        				newSaleOfferArticleChoiceBox.getValue().quality+"", newSaleOfferArticleQuantityTextField.getText(), Integer.parseInt(newSaleOfferArticlePriceTextField.getText())*100+"" 
         			)
                 );        	
             	
-            	newSaleOfferTitledPane.setDisable(true);
+            	newSaleOfferArticleChoiceBox.getSelectionModel().clearSelection();
+            	newSaleOfferArticlePriceTextField.clear();   
+            	newSaleOfferArticleQuantitySlider.adjustValue(0.0);
+            	newSaleOfferArticleQuantityTextField.clear();
+            	newSaleOfferCostsTextField.clear();
+            	newSaleOfferDistributionCostsTextField.clear();
+            	newSaleOfferCostsTextField.clear();
+            	newSaleOfferMaximumProfitTextField.clear();            	
+            	newProductionOrderTitledPane.setDisable(true); 
             	
             }
         });
     	
     	newSaleOfferArticleChoiceBox.valueProperty().addListener(
-        		new ChangeListener<StorageElementToClient>() {
-        			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
-        				newSaleOfferArticleQuantitySlider.setMax(newSaleOfferArticleChoiceBox.getValue().quantity);
-        				//TODO: Von Felix erstellte Fixkosten aus Message-Objekt einbauen (costsPerOffer)       				
-        			}
-        		}
-    	    );
+    		new ChangeListener<StorageElementToClient>() {
+    			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+    				newSaleOfferArticleQuantitySlider.setMax(newSaleOfferArticleChoiceBox.getValue().quantity);
+    				newSaleOfferArticleQuantitySlider.setValue(newSaleOfferArticleChoiceBox.getValue().quantity);
+    				//TODO: Von Felix erstellte Fixkosten aus Message-Objekt einbauen (costsPerOffer)       				
+    			}
+    		}
+	    );
+    	
+    	newSaleOfferArticlePriceTextField.textProperty().addListener(
+    		new ChangeListener<String>() {
+    			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue){
+    				newSaleOfferDistributionCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().distribution.costsPerOffer));
+    				newSaleOfferCostsTextField.setText(model.getnFormatterCurrency().format(newSaleOfferArticleChoiceBox.getValue().costs));
+    				int cumulCosts = (newSaleOfferArticleChoiceBox.getValue().costs * Integer.parseInt(newSaleOfferArticleQuantityTextField.getText())) + newSaleOfferArticleChoiceBox.getValue().costs;
+    				int maxProfit = Integer.parseInt(newSaleOfferArticlePriceTextField.getText()) * Integer.parseInt(newSaleOfferArticleQuantityTextField.getText());
+    				newSaleOfferMaximumProfitTextField.setText(model.getnFormatterCurrency().format(maxProfit));   			
+    			}
+    			
+    		}
+    		
+	    );
+		
+	}
+
+	private void initReporting() {
+		
+		reportingSalesFixCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().reporting.fixCosts.get(0).costs/100));
+		reportingHRFixCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().reporting.fixCosts.get(1).costs/100));
+		reportingMarketingFixCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().reporting.fixCosts.get(2).costs/100));
+		reportingProductionFixCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().reporting.fixCosts.get(3).costs/100));
+		reportingPurchaseFixCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().reporting.fixCosts.get(4).costs/100));
+		reportingStorageFixCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().reporting.fixCosts.get(5).costs/100));	
+		//reportingReportingFixCostsTextField.setText(model.getIn().reporting.fixCosts.get(6)+""); //TODO: Gibt es nicht im MessageObjekt
+		
+		for (FixCostToClient x : model.getIn().reporting.fixCosts) {
+			System.out.println(x.nameOfDepartment+" "+x.costs);
+		}
+		
+		reportingMachineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
+		reportingMachineryMaxCapacityTextField.setText(model.getIn().reporting.machinery.maxCapacity+"");
+		reportingMachineryAvgWorkloadProgressBar.setProgress(model.getIn().reporting.machinery.averageUsage);
+		reportingMachineryLastRoundWorkloadProgressBar.setProgress(model.getIn().reporting.machinery.usageLastRound);
 		
 	}
 
