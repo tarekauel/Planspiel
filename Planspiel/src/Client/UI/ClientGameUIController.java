@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.NotificationPane;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -39,7 +42,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import Client.UI.ClientGameUIModel.Offer;
 import Client.UI.ClientGameUIModel.ProductionOrder;
@@ -104,8 +110,9 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TableColumn<ProductionOrder,String> productionOrderCostsPerUnitTableColumn;	
 	@FXML private TextField machineryLevelTextField;
 	@FXML private TextField machineryMaximumCapacityTextField;
+	@FXML private TextField machineryPlannedCapacityTextField;
 	@FXML private ProgressBar machineryWorkloadProgressBar;
-	@FXML private CheckBox machineryIncreaseLevelCheckBox;
+	@FXML private CheckBox machineryIncreaseLevelCheckBox;	
     //Storage
 	private ObservableList<StorageElementToClient> resourcesInStorage = FXCollections.observableArrayList();
 	private ObservableList<StorageElementToClient> waferInStorage = FXCollections.observableArrayList();
@@ -424,48 +431,66 @@ public class ClientGameUIController implements Initializable{
 		}
 	}
 	
-	private void calcMaximumProduction(){
+	private boolean calcMaximumProduction(){
 		
 		int qWaferInStorage = Integer.parseInt(newProductionOrderWaferStorageQuantityTextField.getText());
 		int qCasesInStorage = Integer.parseInt(newProductionOrderCaseStorageQuantityTextField.getText());
 		int qCasesNeededforMaxPanels = qWaferInStorage/54;
 		
-		if(qCasesNeededforMaxPanels > qCasesInStorage){
+		//System.out.println(qCasesNeededforMaxPanels);
+		
+		if(qCasesNeededforMaxPanels > qCasesInStorage && qCasesInStorage <= model.getIn().reporting.machinery.maxCapacity){
 			newProductionOrderOutputQuantitySlider.setMax(qCasesInStorage);
-			newProductionOrderOutputQuantitySlider.setValue(qCasesInStorage);
-		} else {			
+			newProductionOrderOutputQuantitySlider.setValue(qCasesInStorage);			
+		} else if(qCasesNeededforMaxPanels <= qCasesInStorage && qCasesNeededforMaxPanels <= model.getIn().reporting.machinery.maxCapacity) {			
 			newProductionOrderOutputQuantitySlider.setMax(qCasesNeededforMaxPanels);
 			newProductionOrderOutputQuantitySlider.setValue(qCasesNeededforMaxPanels);
+		} else if(qCasesInStorage > model.getIn().reporting.machinery.maxCapacity || qCasesNeededforMaxPanels > model.getIn().reporting.machinery.maxCapacity){
+			return false;
 		}
+		
+		return true;
 		
 	}
 	
-	private boolean calcAndSetMachinery(){
+	private boolean calcAndSetMachinery(int productionOrder){
 		
 		int maxCapacity = model.getIn().reporting.machinery.maxCapacity;
-		int cumulativeWorkload = 0;
+		int cumulativeWorkloadBefore = 0;
+		int cumulativeWorkloadAfter = 0;
+		double percentWorkloadAfter;
 		
-		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
-		machineryMaximumCapacityTextField.setText(maxCapacity+"");
+		final Tooltip tooltip = new Tooltip();
 		
 		for (ProductionOrder x : model.getProductionOrdersTableData()) {
 			int targetQuantity = Integer.parseInt(x.getTargetQuantity());
 			
 			if(x.getQualityPanel().equals("")){
-				
-				if(cumulativeWorkload + targetQuantity <= maxCapacity){
-					cumulativeWorkload += targetQuantity;
-				} else if(cumulativeWorkload + targetQuantity > maxCapacity){
-								
-					return false;
-					
-				}
-				
-			}			
+				cumulativeWorkloadBefore += targetQuantity;
+			} 			
 		}
 		
-		double workload = cumulativeWorkload/maxCapacity;					
-		machineryWorkloadProgressBar.setProgress(workload);
+		cumulativeWorkloadAfter = cumulativeWorkloadBefore + productionOrder;
+		percentWorkloadAfter = (double)cumulativeWorkloadAfter / (double)maxCapacity;
+		
+		tooltip.setText((percentWorkloadAfter*100)+" %"+" - "+cumulativeWorkloadAfter+" Panels");		
+			
+		if(cumulativeWorkloadAfter > maxCapacity){
+			//machineryWorkloadProgressBar.setProgress(percentWorkloadAfter);
+			machineryWorkloadProgressBar.getStyleClass().add("red-bar");
+			machineryWorkloadProgressBar.setTooltip(tooltip);
+			return false;
+		} else if (cumulativeWorkloadAfter <= maxCapacity && percentWorkloadAfter >= 70.0){
+			machineryWorkloadProgressBar.setProgress(percentWorkloadAfter);
+			machineryWorkloadProgressBar.getStyleClass().add("yellow-bar");
+			machineryWorkloadProgressBar.setTooltip(tooltip);
+			machineryPlannedCapacityTextField.setText(cumulativeWorkloadAfter+"");
+		} else if (cumulativeWorkloadAfter <= maxCapacity && percentWorkloadAfter < 70.0){
+			machineryWorkloadProgressBar.setProgress(percentWorkloadAfter);
+			machineryWorkloadProgressBar.getStyleClass().add("yellow-bar");		
+			machineryWorkloadProgressBar.setTooltip(tooltip);
+			machineryPlannedCapacityTextField.setText(cumulativeWorkloadAfter+"");
+		}
 		
 		return true;
 		
@@ -512,7 +537,12 @@ public class ClientGameUIController implements Initializable{
     	 * Misc
     	 */
 		
-		calcAndSetMachinery();		
+		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
+		machineryMaximumCapacityTextField.setText(model.getIn().reporting.machinery.maxCapacity+"");
+		machineryPlannedCapacityTextField.setText("0");
+		//boolean isPossibleMachinery;
+		//boolean isPossibleProduction;
+		
 
     	/**
     	 * ActionListener
@@ -531,15 +561,24 @@ public class ClientGameUIController implements Initializable{
     	newProductionOrderSaveButton.setOnAction(new EventHandler<ActionEvent>() {
     		@Override
             public void handle(ActionEvent actionEvent) {             	
-    			model.getProductionOrdersTableData().add(
-        			new ProductionOrder(
-        				newProductionOrderWaferChoiceBox.getValue().quality+"", 
-        				newProductionOrderCaseChoiceBox.getValue().quality+"", 
-        				newProductionOrderOutputQuantityTextField.getText()
-        			)
-            	); 
+
+    			if(newProductionOrderCaseChoiceBox.getValue() != null && newProductionOrderWaferChoiceBox.getValue() != null){
+					boolean isPossibleMachinery = calcAndSetMachinery(Integer.parseInt(newProductionOrderOutputQuantityTextField.getText()));
+					
+					if(isPossibleMachinery == true){
+						model.getProductionOrdersTableData().add(
+		        			new ProductionOrder(
+		        				newProductionOrderWaferChoiceBox.getValue().quality+"", 
+		        				newProductionOrderCaseChoiceBox.getValue().quality+"", 
+		        				newProductionOrderOutputQuantityTextField.getText()
+		        			)
+			            ); 						
+					} else {
+						
+					}
+					
+				}
     			
-    			calcAndSetMachinery();
     			//newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
             	//newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
             	newProductionOrderWaferStorageQuantityTextField.clear();           	
@@ -567,16 +606,26 @@ public class ClientGameUIController implements Initializable{
 		newProductionOrderCaseChoiceBox.valueProperty().addListener(
     		new ChangeListener<StorageElementToClient>() {
     			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+    				
     				newProductionOrderCaseStorageQuantityTextField.setText(newValue.quantity+"");
     				
     				if(newProductionOrderWaferChoiceBox.getValue() != null){
     					calcMaximumProduction();    					
-    				}
-    					
+    				}				
     				
     			}
     		}
 	    );
+		
+		newProductionOrderOutputQuantitySlider.valueProperty().addListener(
+			new ChangeListener<Number>() {					
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {   				
+    				
+    					
+    				
+				}
+			}				
+		);
 		
 	}
 	
