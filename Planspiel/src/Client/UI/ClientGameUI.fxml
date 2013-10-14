@@ -77,12 +77,12 @@
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="81.0" prefWidth="365.0">
                           <children>
-                            <TableView fx:id="purchaseOffersTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
+                            <TableView fx:id="purchaseOffersTableView" editable="true" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
                               <columns>
-                                <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortType="DESCENDING" text="#" fx:id="purchaseOffersIdTableColumn" />
-                                <TableColumn prefWidth="81.0" text="Artikel" fx:id="purchaseOffersArticleTableColumn" />
-                                <TableColumn prefWidth="61.0" text="Qualität" fx:id="purchaseOffersQualityTableColumn" />
-                                <TableColumn prefWidth="75.0" text="Preis/ME" fx:id="purchaseOffersPriceTableColumn" />
+                                <TableColumn editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortType="DESCENDING" text="#" fx:id="purchaseOffersIdTableColumn" />
+                                <TableColumn editable="false" prefWidth="81.0" text="Artikel" fx:id="purchaseOffersArticleTableColumn" />
+                                <TableColumn editable="false" prefWidth="61.0" text="Qualität" fx:id="purchaseOffersQualityTableColumn" />
+                                <TableColumn editable="false" prefWidth="75.0" text="Preis/ME" fx:id="purchaseOffersPriceTableColumn" />
                                 <TableColumn prefWidth="75.0" text="Menge" fx:id="purchaseOffersQuantityTableColumn" />
                               </columns>
                             </TableView>

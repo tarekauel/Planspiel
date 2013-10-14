@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.controlsfx.control.NotificationPane;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,7 +21,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -33,19 +30,22 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import Client.UI.ClientGameUIModel.BenefitBooking;
 import Client.UI.ClientGameUIModel.Offer;
@@ -55,9 +55,7 @@ import Client.UI.ClientGameUIModel.StoragePosition;
 import Client.UI.ClientGameUIModel.SupplierOffer;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
-import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
-import Server.StorageElement;
 
 
 /**
@@ -302,6 +300,76 @@ public class ClientGameUIController implements Initializable{
         }); 
 		
 	}
+	
+	class EditingCell extends TableCell<Request, String> {
+		
+		private TextField textField;
+	     
+	      public EditingCell() {}
+	     
+	      @Override
+	      public void startEdit() {
+	          super.startEdit();
+	         
+	          if (textField == null) {
+	              createTextField();
+	          }
+	         
+	          setGraphic(textField);
+	          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+	          textField.selectAll();
+	      }
+	     
+	      @Override
+	      public void cancelEdit() {
+	          super.cancelEdit();
+	         
+	          setText(String.valueOf(getItem()));
+	          setContentDisplay(ContentDisplay.TEXT_ONLY);
+	      }
+	 
+	      @Override
+	      public void updateItem(String item, boolean empty) {
+	          super.updateItem(item, empty);
+	         
+	          if (empty) {
+	              setText(null);
+	              setGraphic(null);
+	          } else {
+	              if (isEditing()) {
+	                  if (textField != null) {
+	                      textField.setText(getString());
+	                  }
+	                  setGraphic(textField);
+	                  setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+	              } else {
+	                  setText(getString());
+	                  setContentDisplay(ContentDisplay.TEXT_ONLY);
+	              }
+	          }
+	      }
+	 
+	      private void createTextField() {
+	          textField = new TextField(getString());
+	          textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
+	          textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+	             
+	              @Override
+	              public void handle(KeyEvent t) {
+	                  if (t.getCode() == KeyCode.ENTER) {
+	                      commitEdit(textField.getText());
+	                  } else if (t.getCode() == KeyCode.ESCAPE) {
+	                      cancelEdit();
+	                  }
+	              }
+	          });
+	      }
+	     
+	      private String getString() {
+	          return getItem() == null ? "" : getItem().toString();
+	      }
+		
+	}
 
 	private void initPurchase() {
 		
@@ -354,7 +422,14 @@ public class ClientGameUIController implements Initializable{
     	/**
     	 * purchaseOffersTable: CellFactory
     	 */
-    	    	
+    	
+    	Callback<TableColumn<SupplierOffer, String>, TableCell<SupplierOffer, String>> cellFactory =
+	        new Callback<TableColumn<SupplierOffer, String>, TableCell<SupplierOffer, String>>() {
+	            public TableCell call(TableColumn p) {
+	                return new EditingCell();
+	            }
+	        };
+
     	purchaseOffersArticleTableColumn.setCellValueFactory(
     		new PropertyValueFactory<SupplierOffer, String>("name")
     	);
@@ -367,11 +442,19 @@ public class ClientGameUIController implements Initializable{
     	purchaseOffersQuantityTableColumn.setCellValueFactory(
     		new PropertyValueFactory<SupplierOffer, String>("quantity")
     	);
-    	purchaseOffersPriceTableColumn.setCellValueFactory(
+    	purchaseOffersQuantityTableColumn.setCellFactory(cellFactory);
+        purchaseOffersQuantityTableColumn.setOnEditCommit(
+            new EventHandler<TableColumn.CellEditEvent<SupplierOffer, String>>() {
+                @Override public void handle(TableColumn.CellEditEvent<SupplierOffer, String> t) {
+                    ((SupplierOffer)t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())).setQuantity(t.getNewValue());
+                }
+            }
+        );
+        purchaseOffersPriceTableColumn.setCellValueFactory(
     		new PropertyValueFactory<SupplierOffer, String>("price")
     	);
     	
-    	//purchaseOffersPriceTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
     	purchaseOffersTableView.setItems(model.getPurchaseOffersTableData());    	
     	
     	/**

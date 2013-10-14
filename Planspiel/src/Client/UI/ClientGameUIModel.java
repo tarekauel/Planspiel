@@ -354,7 +354,7 @@ public class ClientGameUIModel {
 
 		private final SimpleStringProperty name;
 		private final SimpleStringProperty quality;
-		private final SimpleStringProperty quantity;
+		private SimpleStringProperty quantity;
 		private final SimpleStringProperty price;
 		private final SimpleIntegerProperty id;
 		private final int round;
@@ -406,6 +406,11 @@ public class ClientGameUIModel {
 		public int getRound() {
 			return round;
 		}
+		
+		public void setQuantity(String quantity) {
+			this.quantity.set(quantity);
+	    }
+	
 	}
 
 	/**
