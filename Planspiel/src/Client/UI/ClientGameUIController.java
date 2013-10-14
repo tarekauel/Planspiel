@@ -303,21 +303,27 @@ public class ClientGameUIController implements Initializable{
 	
 	class EditingCell extends TableCell<Request, String> {
 		
-		private TextField textField;
+		  private TextField textField;
 	     
 	      public EditingCell() {}
 	     
 	      @Override
 	      public void startEdit() {
-	          super.startEdit();
-	         
-	          if (textField == null) {
-	              createTextField();
-	          }
-	         
-	          setGraphic(textField);
-	          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-	          textField.selectAll();
+	    	  
+	    	  if(purchaseRequestsTableView.getSelectionModel().getSelectedItem().getStatus().equals("Offen")){
+	    		  super.startEdit();
+	 	         
+		          if (textField == null) {
+		              createTextField();
+		          }
+		         
+		          setGraphic(textField);
+		          setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		          textField.selectAll();
+	    	  } else {
+	    		  cancelEdit();
+	    	  }    	  
+	          
 	      }
 	     
 	      @Override
@@ -367,7 +373,7 @@ public class ClientGameUIController implements Initializable{
 	     
 	      private String getString() {
 	          return getItem() == null ? "" : getItem().toString();
-	      }
+	  }
 		
 	}
 
@@ -412,8 +418,7 @@ public class ClientGameUIController implements Initializable{
     					if( o.getRound() == model.getRound()-1 ) {
     						purchaseOffersTableView.setEditable(true);
     					   	purchaseOffersQuantityTableColumn.setEditable(true);
-    				    	// TODO an dieser stelle sollte das Bearbeiten der Rechten Tabelle der Spalte Menge moeglich sein!
-    					}
+    				    }
     				}
     			}
     		}
