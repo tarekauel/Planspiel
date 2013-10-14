@@ -47,7 +47,7 @@ public class ConnectionListener extends Thread {
 
 		} catch (IOException e) {
 			System.out.println("Server kann nicht gestartet werden!");
-			System.exit(0);
+			System.exit(-1);
 
 		}
 
