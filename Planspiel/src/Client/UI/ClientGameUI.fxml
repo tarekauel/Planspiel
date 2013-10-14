@@ -35,7 +35,7 @@
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
                     <Button fx:id="newPurchaseRequestButton" layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Neue Anfrage" />
-                    <Button fx:id="newPurchaseRequestSaveButton" layoutX="137.0" layoutY="15.0" mnemonicParsing="false" text="Anfrage speichern" />
+                    <Button fx:id="newPurchaseRequestSaveButton" disable="true" layoutX="137.0" layoutY="15.0" mnemonicParsing="false" text="Anfrage speichern" />
                     <TitledPane id="GeneralInformationBox" fx:id="newPurchaseRequestTitledPane" animated="false" collapsible="false" disable="true" layoutX="24.0" layoutY="49.0" maxHeight="122.0" minHeight="100.0" minWidth="672.0" prefHeight="107.0" prefWidth="727.0" text="Anfrage">
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="84.0" prefWidth="723.0">
@@ -98,7 +98,7 @@
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="468.0" prefWidth="774.0">
                   <children>
                     <Button fx:id="newProductionOrderButton" layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Auftrag erstellen" />
-                    <Button fx:id="newProductionOrderSaveButton" layoutX="151.0" layoutY="15.0" mnemonicParsing="false" text="Auftrag abschicken" />
+                    <Button fx:id="newProductionOrderSaveButton" disable="true" layoutX="151.0" layoutY="15.0" mnemonicParsing="false" text="Auftrag abschicken" />
                     <TitledPane fx:id="newProductionOrderTitledPane" animated="false" collapsible="false" disable="true" layoutX="24.0" layoutY="49.0" maxHeight="122.0" minHeight="100.0" minWidth="672.0" prefHeight="107.0" prefWidth="727.0" text="Produktionsauftrag erstellen">
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="84.0" prefWidth="723.0">
@@ -204,8 +204,8 @@
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
                     <Button fx:id="newSaleOfferButton" layoutX="24.0" layoutY="15.0" mnemonicParsing="false" text="Neues Angebot erstellen" />
-                    <Button fx:id="newSaleOfferSaveButton" layoutX="197.0" layoutY="15.0" mnemonicParsing="false" text="Angebot speichern" />
-                    <TitledPane id="GeneralInformationBox" fx:id="newSaleOfferTitledPane" animated="false" collapsible="false" disable="false" layoutX="24.0" layoutY="51.0" maxHeight="140.0" minHeight="100.0" minWidth="672.0" prefHeight="140.0" prefWidth="727.0" text="Verkaufsangebot">
+                    <Button fx:id="newSaleOfferSaveButton" disable="true" layoutX="197.0" layoutY="15.0" mnemonicParsing="false" text="Angebot speichern" />
+                    <TitledPane id="GeneralInformationBox" fx:id="newSaleOfferTitledPane" animated="false" collapsible="false" disable="true" layoutX="24.0" layoutY="51.0" maxHeight="140.0" minHeight="100.0" minWidth="672.0" prefHeight="140.0" prefWidth="727.0" text="Verkaufsangebot">
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="115.0" prefWidth="723.0">
                           <children>
@@ -313,7 +313,7 @@
                                 </FXCollections>
                               </items>
                             </ChoiceBox>
-                            <Button fx:id="bookBenefitButton" layoutX="143.0" layoutY="10.0" mnemonicParsing="false" text="Buchen" />
+                            <Button fx:id="bookBenefitButton" disable="true" layoutX="143.0" layoutY="10.0" mnemonicParsing="false" text="Buchen" />
                             <TableView fx:id="bookedBeneftisTableView" layoutX="214.0" layoutY="10.0" prefHeight="113.0" prefWidth="267.0">
                               <columns>
                                 <TableColumn prefWidth="28.0" text="#" />

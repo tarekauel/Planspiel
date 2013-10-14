@@ -382,6 +382,7 @@ public class ClientGameUIController implements Initializable{
             public void handle(ActionEvent actionEvent) {                  	
             	//Felder resetten
             	newPurchaseRequestTitledPane.setDisable(false);
+            	newPurchaseRequestSaveButton.setDisable(false);
             	newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
             	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
             }
@@ -405,7 +406,8 @@ public class ClientGameUIController implements Initializable{
     			
     			newPurchaseRequestArticleNameChoiceBox.getSelectionModel().clearSelection();
             	newPurchaseRequestArticleQualitySlider.adjustValue(1.0);
-            	newPurchaseRequestTitledPane.setDisable(true);            	
+            	newPurchaseRequestTitledPane.setDisable(true);    
+            	newPurchaseRequestSaveButton.setDisable(true);
             }
         });
 		
@@ -547,14 +549,50 @@ public class ClientGameUIController implements Initializable{
     	/**
     	 * ActionListener
     	 */
+		
+		final ChangeListener<StorageElementToClient> newProductionOrderWaferChoiceBoxListener = new ChangeListener<StorageElementToClient>() {
+			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+				newProductionOrderWaferStorageQuantityTextField.setText(newValue.quantity+""); 
+				
+				if(newProductionOrderCaseChoiceBox.getValue() != null){
+					calcMaximumProduction();    					
+				}
+				
+			}
+		};  
+		
+		final ChangeListener<StorageElementToClient> newProductionOrderCaseChoiceBoxListener = new ChangeListener<StorageElementToClient>() {
+			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+				
+				newProductionOrderCaseStorageQuantityTextField.setText(newValue.quantity+"");
+				
+				if(newProductionOrderWaferChoiceBox.getValue() != null){
+					calcMaximumProduction();    					
+				}				
+				
+			}
+		};    	
     	
     	newProductionOrderButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {  
             	getResourcesInStorage();
-            	newProductionOrderTitledPane.setDisable(false);            	
+            	newProductionOrderTitledPane.setDisable(false);  
+            	//newProductionOrderSaveButton.setDisable(false);
+            	newProductionOrderWaferChoiceBox.valueProperty().removeListener(newProductionOrderWaferChoiceBoxListener);		
+        		newProductionOrderCaseChoiceBox.valueProperty().removeListener(newProductionOrderCaseChoiceBoxListener);    			
+    			newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
+    			newProductionOrderWaferChoiceBox.getItems().clear();
+            	newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
+            	newProductionOrderCaseChoiceBox.getItems().clear();
+            	newProductionOrderWaferStorageQuantityTextField.clear();           	
+            	newProductionOrderCaseStorageQuantityTextField.clear();
+            	newProductionOrderCostsTextField.clear();
+            	newProductionOrderOutputQuantitySlider.adjustValue(0.0);
             	newProductionOrderWaferChoiceBox.getItems().setAll(waferInStorage);   
-            	newProductionOrderCaseChoiceBox.getItems().setAll(casesInStorage);                	
+            	newProductionOrderCaseChoiceBox.getItems().setAll(casesInStorage);             	
+            	newProductionOrderWaferChoiceBox.valueProperty().addListener(newProductionOrderWaferChoiceBoxListener);		
+        		newProductionOrderCaseChoiceBox.valueProperty().addListener(newProductionOrderCaseChoiceBoxListener);
             }
         }); 
     	
@@ -579,10 +617,11 @@ public class ClientGameUIController implements Initializable{
 					
 				}
     			
-    			//ewProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
-    			//newProductionOrderWaferChoiceBox.valueProperty().removeListener();
+    			newProductionOrderWaferChoiceBox.valueProperty().removeListener(newProductionOrderWaferChoiceBoxListener);		
+        		newProductionOrderCaseChoiceBox.valueProperty().removeListener(newProductionOrderCaseChoiceBoxListener);    			
+    			newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
     			newProductionOrderWaferChoiceBox.getItems().clear();
-            	//newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
+            	newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
             	newProductionOrderCaseChoiceBox.getItems().clear();
             	newProductionOrderWaferStorageQuantityTextField.clear();           	
             	newProductionOrderCaseStorageQuantityTextField.clear();
@@ -592,33 +631,8 @@ public class ClientGameUIController implements Initializable{
             	
             }
         }); 
-    		
-    	newProductionOrderWaferChoiceBox.valueProperty().addListener(
-    		new ChangeListener<StorageElementToClient>() {
-    			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
-    				newProductionOrderWaferStorageQuantityTextField.setText(newValue.quantity+""); 
-    				
-    				if(newProductionOrderCaseChoiceBox.getValue() != null){
-    					calcMaximumProduction();    					
-    				}
-    				
-    			}
-    		}
-	    );
-		
-		newProductionOrderCaseChoiceBox.valueProperty().addListener(
-    		new ChangeListener<StorageElementToClient>() {
-    			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
-    				
-    				newProductionOrderCaseStorageQuantityTextField.setText(newValue.quantity+"");
-    				
-    				if(newProductionOrderWaferChoiceBox.getValue() != null){
-    					calcMaximumProduction();    					
-    				}				
-    				
-    			}
-    		}
-	    );
+    	
+    	
 		
 		newProductionOrderOutputQuantitySlider.valueProperty().addListener(
 			new ChangeListener<Number>() {					
@@ -735,12 +749,42 @@ public class ClientGameUIController implements Initializable{
     	 * ActionListener
     	 */
 		
+		final ChangeListener<StorageElementToClient> newSaleOfferArticleChoiceBoxListener = new ChangeListener<StorageElementToClient>() {
+			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+				newSaleOfferArticleQuantitySlider.setMax(newSaleOfferArticleChoiceBox.getValue().quantity);
+				newSaleOfferArticleQuantitySlider.setValue(newSaleOfferArticleChoiceBox.getValue().quantity);     				
+			}
+		};
+		
+		final ChangeListener<String> newSaleOfferArticlePriceTextFieldListener = new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue){
+				newSaleOfferDistributionCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().distribution.costsPerOffer/100));
+				newSaleOfferCostsTextField.setText(model.getnFormatterCurrency().format(newSaleOfferArticleChoiceBox.getValue().costs/100));
+				int cumulCosts = (newSaleOfferArticleChoiceBox.getValue().costs/100 * Integer.parseInt(newSaleOfferArticleQuantityTextField.getText())) + (model.getIn().distribution.costsPerOffer/100);
+				int maxProfit = (Integer.parseInt(newSaleOfferArticlePriceTextField.getText()) * Integer.parseInt(newSaleOfferArticleQuantityTextField.getText())) - cumulCosts;
+				newSaleOfferMaximumProfitTextField.setText(model.getnFormatterCurrency().format(maxProfit));   			
+			}			
+		};
+
 		newSaleOfferButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) { 
             	getResourcesInStorage();
+            	newSaleOfferArticlePriceTextField.textProperty().removeListener(newSaleOfferArticlePriceTextFieldListener);
+            	newSaleOfferArticleChoiceBox.valueProperty().removeListener(newSaleOfferArticleChoiceBoxListener);	
+            	newSaleOfferArticleChoiceBox.getSelectionModel().clearSelection();
+            	newSaleOfferArticlePriceTextField.clear();   
+            	newSaleOfferArticleQuantitySlider.adjustValue(0.0);
+            	newSaleOfferArticleQuantityTextField.clear();
+            	newSaleOfferCostsTextField.clear();
+            	newSaleOfferDistributionCostsTextField.clear();
+            	newSaleOfferCostsTextField.clear();
+            	newSaleOfferMaximumProfitTextField.clear(); 
             	newSaleOfferArticleChoiceBox.getItems().setAll(resourcesInStorage);
+            	newSaleOfferArticleChoiceBox.valueProperty().addListener(newSaleOfferArticleChoiceBoxListener);	
+            	newSaleOfferArticlePriceTextField.textProperty().addListener(newSaleOfferArticlePriceTextFieldListener);
             	newSaleOfferTitledPane.setDisable(false);
+            	newSaleOfferSaveButton.setDisable(false);
             }
         }); 
     	
@@ -754,6 +798,8 @@ public class ClientGameUIController implements Initializable{
         			)
                 );        	
             	
+            	newSaleOfferArticlePriceTextField.textProperty().removeListener(newSaleOfferArticlePriceTextFieldListener);
+            	newSaleOfferArticleChoiceBox.valueProperty().removeListener(newSaleOfferArticleChoiceBoxListener);	
             	newSaleOfferArticleChoiceBox.getSelectionModel().clearSelection();
             	newSaleOfferArticlePriceTextField.clear();   
             	newSaleOfferArticleQuantitySlider.adjustValue(0.0);
@@ -767,30 +813,6 @@ public class ClientGameUIController implements Initializable{
             }
         });
     	
-    	newSaleOfferArticleChoiceBox.valueProperty().addListener(
-    		new ChangeListener<StorageElementToClient>() {
-    			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
-    				newSaleOfferArticleQuantitySlider.setMax(newSaleOfferArticleChoiceBox.getValue().quantity);
-    				newSaleOfferArticleQuantitySlider.setValue(newSaleOfferArticleChoiceBox.getValue().quantity);
-    				//TODO: Von Felix erstellte Fixkosten aus Message-Objekt einbauen (costsPerOffer)       				
-    			}
-    		}
-	    );
-    	
-    	newSaleOfferArticlePriceTextField.textProperty().addListener(
-    		new ChangeListener<String>() {
-    			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue){
-    				newSaleOfferDistributionCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().distribution.costsPerOffer));
-    				newSaleOfferCostsTextField.setText(model.getnFormatterCurrency().format(newSaleOfferArticleChoiceBox.getValue().costs));
-    				int cumulCosts = (newSaleOfferArticleChoiceBox.getValue().costs * Integer.parseInt(newSaleOfferArticleQuantityTextField.getText())) + newSaleOfferArticleChoiceBox.getValue().costs;
-    				int maxProfit = Integer.parseInt(newSaleOfferArticlePriceTextField.getText()) * Integer.parseInt(newSaleOfferArticleQuantityTextField.getText());
-    				newSaleOfferMaximumProfitTextField.setText(model.getnFormatterCurrency().format(maxProfit));   			
-    			}
-    			
-    		}
-    		
-	    );
-		
 	}
 
 	private void initReporting() {
@@ -802,10 +824,6 @@ public class ClientGameUIController implements Initializable{
 		reportingPurchaseFixCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().reporting.fixCosts.get(4).costs/100));
 		reportingStorageFixCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().reporting.fixCosts.get(5).costs/100));	
 		//reportingReportingFixCostsTextField.setText(model.getIn().reporting.fixCosts.get(6)+""); //TODO: Gibt es nicht im MessageObjekt
-		
-		for (FixCostToClient x : model.getIn().reporting.fixCosts) {
-			System.out.println(x.nameOfDepartment+" "+x.costs);
-		}
 		
 		reportingMachineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
 		reportingMachineryMaxCapacityTextField.setText(model.getIn().reporting.machinery.maxCapacity+"");
