@@ -432,27 +432,42 @@ public class ClientGameUIController implements Initializable{
 		
 		if(qCasesNeededforMaxPanels > qCasesInStorage){
 			newProductionOrderOutputQuantitySlider.setMax(qCasesInStorage);
+			newProductionOrderOutputQuantitySlider.setValue(qCasesInStorage);
 		} else {			
 			newProductionOrderOutputQuantitySlider.setMax(qCasesNeededforMaxPanels);
+			newProductionOrderOutputQuantitySlider.setValue(qCasesNeededforMaxPanels);
 		}
 		
 	}
 	
-	private void calcAndSetMachinery(){
+	private boolean calcAndSetMachinery(){
 		
 		int maxCapacity = model.getIn().reporting.machinery.maxCapacity;
 		int cumulativeWorkload = 0;
 		
+		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
+		machineryMaximumCapacityTextField.setText(maxCapacity+"");
+		
 		for (ProductionOrder x : model.getProductionOrdersTableData()) {
 			int targetQuantity = Integer.parseInt(x.getTargetQuantity());
-			cumulativeWorkload += targetQuantity;
+			
+			if(x.getQualityPanel().equals("")){
+				
+				if(cumulativeWorkload + targetQuantity <= maxCapacity){
+					cumulativeWorkload += targetQuantity;
+				} else if(cumulativeWorkload + targetQuantity > maxCapacity){
+								
+					return false;
+					
+				}
+				
+			}			
 		}
 		
-		double workload = cumulativeWorkload/maxCapacity;
-		
-		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
-		machineryMaximumCapacityTextField.setText(maxCapacity+"");		
+		double workload = cumulativeWorkload/maxCapacity;					
 		machineryWorkloadProgressBar.setProgress(workload);
+		
+		return true;
 		
 	}
 	
