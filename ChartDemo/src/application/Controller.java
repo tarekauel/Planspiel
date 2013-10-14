@@ -1,11 +1,14 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -28,7 +31,7 @@ public class Controller {
 	private NumberAxis					yAxisLine;
 
 	@FXML
-	private StackedBarChart				barChart;
+	private StackedBarChart<String, Double>				barChart;
 
 	@FXML
 	private CategoryAxis				xAxisBar;
@@ -36,39 +39,38 @@ public class Controller {
 	private NumberAxis					yAxisBar;
 
 	public void initSBC() {
-		final String r1 = "Runde 1";
-		final String r2 = "Runde 2";
-		final String r3 = "Runde 3";
-		final String r4 = "Runde 4";
-		final String r5 = "Runde 5";
-		final XYChart.Series<String, Number> series1 = new XYChart.Series<String, Number>();
-		final XYChart.Series<String, Number> series2 = new XYChart.Series<String, Number>();
-		final XYChart.Series<String, Number> series3 = new XYChart.Series<String, Number>();
-		barChart.setTitle("Gewinn nach Qualität");
+		final Integer r1 = 1;
+		final Integer r2 = 2;
+		final Integer r3 = 2;
+		final Integer r4 = 4;
+		final Integer r5 = 5;
+		final XYChart.Series<Integer, Number> series1 = new XYChart.Series<Integer, Number>();
+		final XYChart.Series<Integer, Number> series2 = new XYChart.Series<Integer, Number>();
+		final XYChart.Series<Integer, Number> series3 = new XYChart.Series<Integer, Number>();
+		/*barChart.setTitle("Gewinn nach Qualität");
 		xAxisBar.setLabel("");
-		xAxisBar.setCategories(FXCollections.<String> observableArrayList(Arrays.asList(r1, r2, r3, r4,
-				r5)));
+		xAxisBar.setCategories(FXCollections.observableArrayList(Arrays.asList(r1+"", r2+"", r3+"", r4+"",
+				r5+"")));
 		yAxisBar.setLabel("Value");
 		series1.setName("Q1");
-		series1.getData().add(new XYChart.Data<String, Number>(r1, 25601.34));
-		series1.getData().add(new XYChart.Data<String, Number>(r2, 20148.82));
-		series1.getData().add(new XYChart.Data<String, Number>(r3, 10000));
-		series1.getData().add(new XYChart.Data<String, Number>(r4, 35407.15));
-		series1.getData().add(new XYChart.Data<String, Number>(r5, 12000));
+		series1.getData().add(new XYChart.Data<Integer, Number>(r1, 25601.34));
+		series1.getData().add(new XYChart.Data<Integer, Number>(r2, 20148.82));
+		series1.getData().add(new XYChart.Data<Integer, Number>(r3, 10000));
+		series1.getData().add(new XYChart.Data<Integer, Number>(r4, 35407.15));
+		series1.getData().add(new XYChart.Data<Integer, Number>(r5, 12000));
 		series2.setName("Q4");
-		series2.getData().add(new XYChart.Data<String, Number>(r1, 57401.85));
-		series2.getData().add(new XYChart.Data<String, Number>(r2, 41941.19));
-		series2.getData().add(new XYChart.Data<String, Number>(r3, 45263.37));
-		series2.getData().add(new XYChart.Data<String, Number>(r4, 117320.16));
-		series2.getData().add(new XYChart.Data<String, Number>(r5, 14845.27));
+		series2.getData().add(new XYChart.Data<Integer, Number>(r1, 57401.85));
+		series2.getData().add(new XYChart.Data<Integer, Number>(r2, 41941.19));
+		series2.getData().add(new XYChart.Data<Integer, Number>(r3, 45263.37));
+		series2.getData().add(new XYChart.Data<Integer, Number>(r4, 117320.16));
+		series2.getData().add(new XYChart.Data<Integer, Number>(r5, 14845.27));
 		series3.setName("Q8");
-		series3.getData().add(new XYChart.Data<String, Number>(r1, 45000.65));
-		series3.getData().add(new XYChart.Data<String, Number>(r2, 44835.76));
-		series3.getData().add(new XYChart.Data<String, Number>(r3, 18722.18));
-		series3.getData().add(new XYChart.Data<String, Number>(r4, 17557.31));
-		series3.getData().add(new XYChart.Data<String, Number>(r5, 92633.68));
+		series3.getData().add(new XYChart.Data<Integer, Number>(r1, 45000.65));
+		series3.getData().add(new XYChart.Data<Integer, Number>(r2, 44835.76));
+		series3.getData().add(new XYChart.Data<Integer, Number>(r3, 18722.18));
+		series3.getData().add(new XYChart.Data<Integer, Number>(r4, 17557.31));
+		series3.getData().add(new XYChart.Data<Integer, Number>(r5, 92633.68));
 		barChart.getData().addAll(series1, series2, series3);
-<<<<<<< HEAD
 		*/
 		ArrayList<HashMap<String, Double>> data = new ArrayList<HashMap<String, Double>>();
 		
@@ -115,8 +117,6 @@ public class Controller {
 		}
 		
 		xAxisBar.setCategories(FXCollections.observableArrayList(categories));
-=======
->>>>>>> parent of ed8289e... ChartDemo
 	}
 
 	public void initPie() {
