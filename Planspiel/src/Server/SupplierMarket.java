@@ -225,7 +225,7 @@ public class SupplierMarket {
 			// Spread fuer die Qualitaeten, um den Anteil erhoehen
 			// Die fuenf davor bzw. danach werden linear erhoeht (20-40-60-80
 			// 100(gekaufte Qualität) 80-60-40-20
-			for (int j = i - 4; j <= i + 4; j++) {
+			for (int j = i - 9; j <= i + 9; j++) {
 				// Falls j nicht im Array-Bereich liegt verwerfen
 				if (j < 0 || j >= newSpreadsWafer.length) {
 					continue;
@@ -233,9 +233,9 @@ public class SupplierMarket {
 
 				// Spread berechnen und addieren fuer j < i
 				if (j < i) {
-					newSpreadsWafer[j] += share - share * (i - j) * 0.2;
+					newSpreadsWafer[j] += share - share * (i - j) * 0.1;
 				} else {
-					newSpreadsWafer[j] += share - share * (j - i) * 0.2;
+					newSpreadsWafer[j] += share - share * (j - i) * 0.1;
 				}
 			}
 
@@ -267,7 +267,7 @@ public class SupplierMarket {
 			// Spread fuer die Qualitaeten, um den Anteil erhoehen
 			// Die fuenf davor bzw. danach werden linear erhoeht (20-40-60-80
 			// 100(gekaufte Qualität) 80-60-40-20
-			for (int j = i - 4; j <= i + 4; j++) {
+			for (int j = i - 9; j <= i + 9; j++) {
 				// Falls j nicht im Array-Bereich liegt verwerfen
 				if (j < 0 || j >= newSpreadsCase.length) {
 					continue;
@@ -276,9 +276,9 @@ public class SupplierMarket {
 				// Spread berechnen und addieren fuer j < i
 				// TODO eventuell Einfluss auf Nachbarn anders berechnen
 				if (j < i) {
-					newSpreadsCase[j] += share - share * (i - j) * 0.2;
+					newSpreadsCase[j] += share - share * (i - j) * 0.1;
 				} else {
-					newSpreadsCase[j] += share - share * (j - i) * 0.2;
+					newSpreadsCase[j] += share - share * (j - i) * 0.1;
 				}
 			}
 
