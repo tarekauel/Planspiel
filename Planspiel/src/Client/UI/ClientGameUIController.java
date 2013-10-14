@@ -47,12 +47,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
+import Client.UI.ClientGameUIModel.BenefitBooking;
 import Client.UI.ClientGameUIModel.Offer;
 import Client.UI.ClientGameUIModel.ProductionOrder;
 import Client.UI.ClientGameUIModel.Request;
 import Client.UI.ClientGameUIModel.StoragePosition;
 import Client.UI.ClientGameUIModel.SupplierOffer;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
+import Message.GameDataMessageToClient.HumanResourcesToClient.BenefitBookingToClient;
 import Message.GameDataMessageToClient.ReportingToClient.FixCostToClient;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
 import Server.StorageElement;
@@ -153,19 +155,27 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField hrAverageWagesTextField;
 	@FXML private TextField hrCountEmployeesTextField;
 	@FXML private TextField hrWageCostsTextField;
-    // -- Benefits ausgelassen; TODO: Benefits umbauen und anpassen
+	@FXML private ChoiceBox<BenefitBookingToClient> benefitsChoiceBox;
+	private ObservableList<BenefitBookingToClient> bookableBenefits = FXCollections.observableArrayList();
+	@FXML private Button bookBenefitButton;
+	@FXML private TextField bookBenefitDurationTextField;
+	@FXML private TextField bookBenefitCostsPerRoundTextField;
+	@FXML private TextField benefitsTotalCostsTextField;
+	@FXML private TableView<BenefitBooking> bookedBeneftisTableView;
 	@FXML private LineChart<String, Double> hrMotivationLineChart;
 	@FXML private CategoryAxis hrMotivationLineChartXAxis;
 	@FXML private NumberAxis hrMotivationLineChartYAxis; 
     //Marketing
+	@FXML private TextField marketResearchAverageWagesLastRoundTextField;
+	@FXML private TextField marketResearchPeakAMarketTextField;
+	@FXML private TextField marketResearchPeakCMarketTextField;
 	@FXML private LineChart<String, Double> marketingWaferPriceChart;
 	@FXML private CategoryAxis marketingWaferPriceChartXAxis;
 	@FXML private NumberAxis marketingWaferPriceChartYAxis; 
 	@FXML private LineChart<String, Double> marketingCasePriceChart;
 	@FXML private CategoryAxis marketingCasePriceChartXAxis;
 	@FXML private NumberAxis marketingCasePriceChartYAxis;
-	@FXML private PieChart marketingMarketSharePieChart;
-    // -- ausgelassen; TODO: MarketingUI besprechen, umbauen und anpassen
+	@FXML private PieChart marketingMarketSharePieChart;	
     //Reporting
 	@FXML private TextField reportingSalesFixCostsTextField;
 	@FXML private TextField reportingProductionFixCostsTextField;
@@ -193,10 +203,9 @@ public class ClientGameUIController implements Initializable{
     	initStorage();
     	initPurchase();
     	initProduction();    	
-    	initSales();
-    	
-//    	initHumanResources();
-//    	initMarketing();
+    	initSales();    	
+    	initHumanResources();
+    	initMarketing();
     	initReporting();
     		
     	model.parseAnswerFromServer();
@@ -323,9 +332,8 @@ public class ClientGameUIController implements Initializable{
     	 */
     	
     	// Verhindert, dass man eine neue Spalte durch schieben hinzufügen kann
-    	purchaseRequestsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);    	    	
-    	
-    	purchaseRequestIdTableColumn.setSortType(TableColumn.SortType.DESCENDING);
+    	purchaseRequestsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);   	
+    	//purchaseRequestIdTableColumn.setSortType(TableColumn.SortType.DESCENDING);
     	purchaseRequestsTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);    	
     	purchaseRequestsTableView.getSelectionModel().selectedItemProperty().addListener(
     		new ChangeListener<Request>() {
@@ -535,9 +543,14 @@ public class ClientGameUIController implements Initializable{
 		//productionOrderCostsPerUnitTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
 		productionOrdersTableView.setItems(model.getProductionOrdersTableData());
 		
+		productionOrdersTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);   	
+		//productionOrderIdTableColumn.setSortType(TableColumn.SortType.DESCENDING);
+    	productionOrdersTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
+		
 		/**
     	 * Misc
     	 */
+		
 		
 		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
 		machineryMaximumCapacityTextField.setText(model.getIn().reporting.machinery.maxCapacity+"");
@@ -703,6 +716,9 @@ public class ClientGameUIController implements Initializable{
 		//storagePositionCostsTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
 		storagePositionsTableView.setItems(model.getStoragePositionsTableData()); 
 		
+		storagePositionsTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);   	
+		//storagePositionIdTableColumn.setSortType(TableColumn.SortType.DESCENDING);
+		storagePositionsTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
 
 		/**
     	 * Misc
@@ -744,6 +760,10 @@ public class ClientGameUIController implements Initializable{
 	    );
 		
 		salesTableView.setItems(model.getOfferTableData());
+		
+		salesTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);   	
+		//salesIdTableColumn.setSortType(TableColumn.SortType.DESCENDING);
+		salesTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
 		
 		/**
     	 * ActionListener
@@ -831,6 +851,63 @@ public class ClientGameUIController implements Initializable{
 		reportingMachineryLastRoundWorkloadProgressBar.setProgress(model.getIn().reporting.machinery.usageLastRound);
 		
 	}
+	
+	private void getBookableBenefits(){
+		
+		bookableBenefits.clear();
+		
+		for (BenefitBookingToClient benefit : model.getIn().humanResources.benefits) {
+			
+			System.out.println(benefit.name);
+			bookableBenefits.add(benefit);
+			
+		}
+		
+	}
+	
+	private void initMarketing() {
+		
+		/**
+		 * Misc
+		 */
+		
+		//System.out.println(model.getIn().humanResources.averageWage);
+		
+		if (model.getIn().marketing.isBooked == true) {
+			marketResearchAverageWagesLastRoundTextField.setText(model.getIn().humanResources.averageWage+""); //TODO: Ist 0 bei Test
+			marketResearchPeakAMarketTextField.setText(model.getIn().marketing.peakAMarket+"");
+			marketResearchPeakCMarketTextField.setText(model.getIn().marketing.peakCMarket+"");
+		} else {
+			marketResearchAverageWagesLastRoundTextField.setText("n.A.");
+			marketResearchPeakAMarketTextField.setText("n.A.");
+			marketResearchPeakCMarketTextField.setText("n.A.");
+		}
+
+	}
+	
+	private void initHumanResources() {
+		
+		getBookableBenefits();
+		
+		/**
+		 * Misc
+		 */
+		
+//		System.out.println(model.getIn().humanResources.myWage);
+//		System.out.println(model.getIn().humanResources.averageWage);
+//		System.out.println(model.getIn().humanResources.wageCosts);
+		
+		hrWagesPerHourTextField.setText(model.getnFormatterCurrency().format(model.getIn().humanResources.myWage));
+		hrAverageWagesTextField.setText(model.getnFormatterCurrency().format(model.getIn().humanResources.averageWage));
+		hrCountEmployeesTextField.setText(model.getnFormatter().format(model.getIn().humanResources.countEmployees));
+		hrWageCostsTextField.setText(model.getnFormatterCurrency().format(model.getIn().humanResources.wageCosts));
+		
+		benefitsChoiceBox.setItems(bookableBenefits);
+		
+	}
+	
+	
+
 
 	/**
      * Berechnet den Runden-Fortschrittsbalken neu und setzt den neuen Wert. Ausserdem wird das Runden-Label aktualisiert.

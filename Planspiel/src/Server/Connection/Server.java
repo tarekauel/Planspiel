@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Constant.Constant;
+import Constant.Constant.HumanResources;
 import Message.GameDataMessageFromClient;
 import Message.GameDataMessageToClient;
 import Message.GameOverMessage;
+import Server.Benefit;
+import Server.BenefitBooking;
 import Server.GameEngine;
 import Server.Location;
 
@@ -56,11 +59,12 @@ public class Server {
 	 * Returned den Server. Somit ist ein Sigleton sichergestellt.
 	 * 
 	 * @return
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public static Server getServer() throws IOException {
+	public static Server getServer() throws Exception {
 		if (server == null) {
 			Location.initLocations();
+			Benefit.initBenefits();
 			server = new Server(Constant.Server.TCP_PORT);
 		}
 

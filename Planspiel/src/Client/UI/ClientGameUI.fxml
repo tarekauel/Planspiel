@@ -4,6 +4,7 @@
 <?import java.net.*?>
 <?import java.net.URL?>
 <?import javafx.collections.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -62,7 +63,7 @@
                           <children>
                             <TableView fx:id="purchaseRequestsTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
                               <columns>
-                                <TableColumn prefWidth="28.0" text="#" fx:id="purchaseRequestIdTableColumn" />
+                                <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortType="DESCENDING" text="#" fx:id="purchaseRequestIdTableColumn" />
                                 <TableColumn prefWidth="81.0" text="Artikel" fx:id="purchaseRequestArticleTableColumn" />
                                 <TableColumn prefWidth="61.0" text="Qualität" fx:id="purchaseRequestQualityTableColumn" />
                                 <TableColumn prefWidth="150.0" text="Status" fx:id="purchaseRequestStatusTableColumn" />
@@ -78,7 +79,7 @@
                           <children>
                             <TableView fx:id="purchaseOffersTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="324.0">
                               <columns>
-                                <TableColumn prefWidth="28.0" text="#" fx:id="purchaseOffersIdTableColumn" />
+                                <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortType="DESCENDING" text="#" fx:id="purchaseOffersIdTableColumn" />
                                 <TableColumn prefWidth="81.0" text="Artikel" fx:id="purchaseOffersArticleTableColumn" />
                                 <TableColumn prefWidth="61.0" text="Qualität" fx:id="purchaseOffersQualityTableColumn" />
                                 <TableColumn prefWidth="75.0" text="Preis/ME" fx:id="purchaseOffersPriceTableColumn" />
@@ -126,7 +127,7 @@
                           <children>
                             <TableView fx:id="productionOrdersTableView" layoutX="13.0" layoutY="7.0" prefHeight="236.0" prefWidth="486.0">
                               <columns>
-                                <TableColumn prefWidth="28.0" text="#" fx:id="productionOrderIdTableColumn" />
+                                <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortType="DESCENDING" text="#" fx:id="productionOrderIdTableColumn" />
                                 <TableColumn prefWidth="69.0" text="Q Wafer" fx:id="productionOrderQualityWaferTableColumn" />
                                 <TableColumn prefWidth="77.0" text="Q Gehäuse" fx:id="productionOrderQualityCaseTableColumn" />
                                 <TableColumn prefWidth="82.0" text="Soll-Menge" fx:id="productionOrderTargetQuantityTableColumn" />
@@ -184,7 +185,7 @@
                           <children>
                             <TableView fx:id="storagePositionsTableView" layoutX="9.0" layoutY="7.0" prefHeight="306.0" prefWidth="705.0">
                               <columns>
-                                <TableColumn prefWidth="28.0" text="#" fx:id="storagePositionIdTableColumn" />
+                                <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortType="ASCENDING" text="#" fx:id="storagePositionIdTableColumn" />
                                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="348.0" text="Ressource" fx:id="storagePositionRessourceTableColumn" />
                                 <TableColumn prefWidth="77.0" text="Qualität" fx:id="storagePositionQualityTableColumn" />
                                 <TableColumn prefWidth="77.0" text="Menge" fx:id="storagePositionQuantityTableColumn" />
@@ -240,14 +241,14 @@
                           <children>
                             <TableView id="saleOrder" fx:id="salesTableView" layoutX="13.0" layoutY="7.0" prefHeight="208.0" prefWidth="698.0">
                               <columns>
-                                <TableColumn prefWidth="28.0" text="#" fx:id="salesIdTableColumn" />
-                                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="70.0" text="Artikel" fx:id="salesProductTableColumn" />
-                                <TableColumn prefWidth="61.0" text="Qualität" fx:id="salesQualityTableColumn" />
-                                <TableColumn prefWidth="137.0" text="Verkaufspreis/Menge" fx:id="salesPriceTableColumn" />
-                                <TableColumn prefWidth="71.0" text="Menge" fx:id="salesQuantityTableColumn" />
-                                <TableColumn prefWidth="122.0" text="Abgesetzte Menge" fx:id="salesSoldQuantityTableColumn" />
-                                <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="100.0" text="Gewinn" fx:id="salesProfitTableColumn" />
-                                <TableColumn prefWidth="108.0" text="Kosten" fx:id="salesCostsTableColumn" />
+                                <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortType="DESCENDING" text="#" fx:id="salesIdTableColumn" />
+                                <TableColumn maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Artikel" fx:id="salesProductTableColumn" />
+                                <TableColumn maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Qualität" fx:id="salesQualityTableColumn" />
+                                <TableColumn maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Verkaufspreis/ME" fx:id="salesPriceTableColumn" />
+                                <TableColumn maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Menge" fx:id="salesQuantityTableColumn" />
+                                <TableColumn maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Abgesetzte Menge" fx:id="salesSoldQuantityTableColumn" />
+                                <TableColumn maxWidth="115.0" minWidth="115.0" prefWidth="115.0" text="Gewinn" fx:id="salesProfitTableColumn" />
+                                <TableColumn maxWidth="115.0" minWidth="115.0" prefWidth="115.0" text="Kosten" fx:id="salesCostsTableColumn" />
                               </columns>
                             </TableView>
                           </children>
@@ -267,13 +268,13 @@
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="212.0">
                           <children>
                             <Label layoutX="14.0" layoutY="13.0" text="Stundenlohn:" />
-                            <TextField fx:id="hrWagesPerHourTextField" disable="false" layoutX="136.0" layoutY="9.0" opacity="1.0" prefHeight="25.0" prefWidth="60.0" />
+                            <TextField fx:id="hrWagesPerHourTextField" alignment="CENTER_RIGHT" disable="false" layoutX="136.0" layoutY="9.0" opacity="1.0" prefHeight="25.0" prefWidth="60.0" />
                             <Label layoutX="14.0" layoutY="43.0" text="Durchschnittslohn:" />
-                            <TextField fx:id="hrAverageWagesTextField" disable="true" editable="false" layoutX="136.0" layoutY="38.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
+                            <TextField fx:id="hrAverageWagesTextField" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="136.0" layoutY="38.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
                             <Label layoutX="14.0" layoutY="72.0" text="Mitarbeiter:" />
-                            <TextField fx:id="hrCountEmployeesTextField" disable="true" editable="false" layoutX="136.0" layoutY="68.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
+                            <TextField fx:id="hrCountEmployeesTextField" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="136.0" layoutY="68.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
                             <Label layoutX="14.0" layoutY="102.0" text="Lohnkosten:" />
-                            <TextField fx:id="hrWageCostsTextField" disable="true" editable="false" layoutX="136.0" layoutY="98.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
+                            <TextField fx:id="hrWageCostsTextField" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="136.0" layoutY="98.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
                           </children>
                         </AnchorPane>
                       </content>
@@ -316,7 +317,7 @@
                             <Button fx:id="bookBenefitButton" disable="true" layoutX="143.0" layoutY="10.0" mnemonicParsing="false" text="Buchen" />
                             <TableView fx:id="bookedBeneftisTableView" layoutX="214.0" layoutY="10.0" prefHeight="113.0" prefWidth="267.0">
                               <columns>
-                                <TableColumn prefWidth="28.0" text="#" />
+                                <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" text="#" />
                                 <TableColumn prefWidth="83.0" text="Benefit" />
                                 <TableColumn prefWidth="75.0" text="mtl. Kosten" />
                                 <TableColumn prefWidth="75.0" text="Restlaufzeit" />
@@ -340,10 +341,10 @@
                           <children>
                             <Label layoutX="14.0" layoutY="13.0" text="Durchschnittslohn letzte Runde:" />
                             <TextField fx:id="marketResearchAverageWagesLastRoundTextField" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="230.0" layoutY="9.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
-                            <Label layoutX="14.0" layoutY="43.0" text="Ws. meistgefragte Qualität A-Markt:" />
+                            <Label id="marketResearchPeakAMarketTextField" layoutX="14.0" layoutY="43.0" text="Ws. meistgefragte Qualität A-Markt:" />
                             <Label layoutX="14.0" layoutY="72.0" text="Ws. meistgefragte Qualität C-Markt:" />
-                            <TextField disable="true" editable="false" layoutX="230.0" layoutY="39.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
-                            <TextField disable="true" editable="false" layoutX="230.0" layoutY="68.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
+                            <TextField fx:id="marketResearchPeakAMarketTextField" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="230.0" layoutY="39.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
+                            <TextField fx:id="marketResearchPeakCMarketTextField" alignment="CENTER_RIGHT" disable="true" editable="false" layoutX="230.0" layoutY="68.0" opacity="0.75" prefHeight="25.0" prefWidth="60.0" />
                           </children>
                         </AnchorPane>
                       </content>
@@ -352,7 +353,7 @@
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="304.0">
                           <children>
-                            <PieChart id="PieChart" fx:id="marketingMarketSharePieChart" animated="true" clockwise="true" disable="false" focusTraversable="false" labelsVisible="true" layoutX="8.0" layoutY="-23.0" legendSide="BOTTOM" legendVisible="true" prefHeight="277.0" prefWidth="286.0" title="" titleSide="TOP" visible="true" />
+                            <PieChart id="PieChart" fx:id="marketingMarketSharePieChart" animated="true" clockwise="true" disable="false" focusTraversable="false" labelsVisible="true" layoutX="8.0" layoutY="-23.0" legendSide="BOTTOM" legendVisible="true" prefHeight="292.0" prefWidth="286.0" title="" titleSide="TOP" visible="true" />
                           </children>
                         </AnchorPane>
                       </content>
@@ -375,12 +376,15 @@
                           <yAxis>
                             <NumberAxis fx:id="marketingWaferPriceChartYAxis" side="LEFT" />
                           </yAxis>
+                          <padding>
+                            <Insets top="2.0" fx:id="x1" />
+                          </padding>
                         </LineChart>
                       </content>
                     </TitledPane>
                     <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="335.0" layoutY="282.0" maxHeight="173.0" minHeight="62.9998779296875" minWidth="216.0" prefHeight="173.0" prefWidth="423.0" text="Erwartete Gehäusepreise nächste Runde">
                       <content>
-                        <LineChart fx:id="marketingCasePriceChart" alternativeColumnFillVisible="true" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
+                        <LineChart fx:id="marketingCasePriceChart" alternativeColumnFillVisible="true" legendVisible="false" padding="$x1" prefHeight="280.0" prefWidth="419.0">
                           <xAxis>
                             <CategoryAxis fx:id="marketingCasePriceChartXAxis" side="BOTTOM" />
                           </xAxis>
