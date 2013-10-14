@@ -344,9 +344,8 @@ public class GameDataTranslator {
 
 		for (TMarketShare marketShare : CustomerMarket.getMarket()
 				.getMarketShares()) {
-			
 			marketShares.add(new MarketShareToClient(marketShare
-					.getMarketShare(), marketShare.getCompany().getName()));
+					.getMarketShare(), company.getName()));
 		}
 
 		// getWaferPrices
@@ -423,7 +422,7 @@ public class GameDataTranslator {
 					.getQuantitySold(), offer.getPrice(), offer.getRound(),
 					offer.getStorageElement().getProduct().getCosts()));
 		}
-		DistributionToClient distribution = new DistributionToClient(offers);
+		DistributionToClient distribution = new DistributionToClient(offers, Constant.Distribution.DISTRIBUTION_OFFER_COSTS_PER_PANEL);
 		return distribution;
 	}
 
