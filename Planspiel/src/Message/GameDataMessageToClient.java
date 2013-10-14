@@ -157,7 +157,7 @@ public class GameDataMessageToClient extends GameDataMessage implements
 			public final int quantity;
 			public final int costs;
 			public String toString(){
-				return "Qualität: "+quality;
+				return "Qualität: "+quality+" - Menge: "+quantity;
 			}
 		}
 

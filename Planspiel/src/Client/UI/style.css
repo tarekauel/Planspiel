@@ -134,7 +134,24 @@
 
 #MainPane .progress-bar:determinate .bar {
 
-	-fx-background-color: #5DB3EC;
+	-fx-background-color: #1574B3;
 
 }
 
+.red-bar {
+
+	-fx-accent: #DA3C19;
+
+}
+
+.yellow-bar {
+
+	-fx-accent: #DAC519;
+
+}
+
+.green-bar {
+
+	-fx-accent: #58BE16;
+
+}

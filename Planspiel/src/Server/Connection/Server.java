@@ -34,7 +34,7 @@ public class Server {
 					Constant.Server.UDP_PORT);
 			udpServer.start();
 			getServer();
-			int round = 50;
+			int round = 100;
 			for (int i = 0; i < Constant.Server.PLAYER_KI_TAREK; i++) {
 				new KIGegner.KITarek(round);
 			}
@@ -47,6 +47,7 @@ public class Server {
 			System.out
 					.println("Server musste aufgrund eines Fehlers beendet werdenbeendet werden!");
 			e.printStackTrace();
+			System.exit(-1);
 			
 		}
 	}
@@ -132,10 +133,11 @@ public class Server {
 
 	public void sendGameOver(){
 		for (Player player : playerList) {
-			player.getServerConnection().writeMessage(new GameOverMessage("", ""));			
+			player.getServerConnection().writeMessage(new GameOverMessage(player.getName(), "Jetzt haben alle spieler verloren!"));			
 		}
 		close();
-		System.exit(1);
+		System.out.println("Spiel vorbei nach " + GameEngine.getGameEngine().getRound());
+		System.exit(-1);
 	}
 	public synchronized void addPlayer(Player player) {
 		playerList.add(player);

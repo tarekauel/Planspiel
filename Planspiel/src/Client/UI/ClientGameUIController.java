@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.NotificationPane;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -39,7 +42,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import Client.UI.ClientGameUIModel.Offer;
 import Client.UI.ClientGameUIModel.ProductionOrder;
@@ -48,6 +54,7 @@ import Client.UI.ClientGameUIModel.StoragePosition;
 import Client.UI.ClientGameUIModel.SupplierOffer;
 import Message.GameDataMessageFromClient.PurchaseFromClient.RequestFromClient;
 import Message.GameDataMessageToClient.StorageToClient.StorageElementToClient;
+import Server.StorageElement;
 
 
 /**
@@ -104,8 +111,9 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TableColumn<ProductionOrder,String> productionOrderCostsPerUnitTableColumn;	
 	@FXML private TextField machineryLevelTextField;
 	@FXML private TextField machineryMaximumCapacityTextField;
+	@FXML private TextField machineryPlannedCapacityTextField;
 	@FXML private ProgressBar machineryWorkloadProgressBar;
-	@FXML private CheckBox machineryIncreaseLevelCheckBox;
+	@FXML private CheckBox machineryIncreaseLevelCheckBox;	
     //Storage
 	private ObservableList<StorageElementToClient> resourcesInStorage = FXCollections.observableArrayList();
 	private ObservableList<StorageElementToClient> waferInStorage = FXCollections.observableArrayList();
@@ -113,7 +121,7 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField storageCostsWaferTextField;
 	@FXML private TextField storageCostsCasesTextField;
 	@FXML private TextField storageCostsPanelsTextField;
-	@FXML private TableView storagePositionsTableView;
+	@FXML private TableView<StoragePosition> storagePositionsTableView;
 	@FXML private TableColumn<StoragePosition,Integer> storagePositionIdTableColumn;
 	@FXML private TableColumn<StoragePosition,String> storagePositionRessourceTableColumn;
 	@FXML private TableColumn<StoragePosition,String> storagePositionQualityTableColumn;
@@ -130,7 +138,7 @@ public class ClientGameUIController implements Initializable{
 	@FXML private TextField newSaleOfferDistributionCostsTextField;
 	@FXML private TextField newSaleOfferMaximumProfitTextField;
 	@FXML private TitledPane newSaleOfferTitledPane;
-	@FXML private TableView salesTableView;
+	@FXML private TableView<Offer> salesTableView;
 	@FXML private TableColumn<Offer,Integer> salesIdTableColumn;
 	@FXML private TableColumn<Offer,String> salesProductTableColumn;
 	@FXML private TableColumn<Offer,String> salesQualityTableColumn;
@@ -356,7 +364,7 @@ public class ClientGameUIController implements Initializable{
     		new PropertyValueFactory<SupplierOffer, String>("price")
     	);
     	
-    	purchaseOffersPriceTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
+    	//purchaseOffersPriceTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
     	purchaseOffersTableView.setItems(model.getPurchaseOffersTableData());    	
     	
     	/**
@@ -424,35 +432,68 @@ public class ClientGameUIController implements Initializable{
 		}
 	}
 	
-	private void calcMaximumProduction(){
+	private boolean calcMaximumProduction(){
 		
 		int qWaferInStorage = Integer.parseInt(newProductionOrderWaferStorageQuantityTextField.getText());
 		int qCasesInStorage = Integer.parseInt(newProductionOrderCaseStorageQuantityTextField.getText());
 		int qCasesNeededforMaxPanels = qWaferInStorage/54;
 		
-		if(qCasesNeededforMaxPanels > qCasesInStorage){
+		//System.out.println(qCasesNeededforMaxPanels);
+		
+		if(qCasesNeededforMaxPanels > qCasesInStorage && qCasesInStorage <= model.getIn().reporting.machinery.maxCapacity){
 			newProductionOrderOutputQuantitySlider.setMax(qCasesInStorage);
-		} else {			
+			newProductionOrderOutputQuantitySlider.setValue(qCasesInStorage);			
+		} else if(qCasesNeededforMaxPanels <= qCasesInStorage && qCasesNeededforMaxPanels <= model.getIn().reporting.machinery.maxCapacity) {			
 			newProductionOrderOutputQuantitySlider.setMax(qCasesNeededforMaxPanels);
+			newProductionOrderOutputQuantitySlider.setValue(qCasesNeededforMaxPanels);
+		} else if(qCasesInStorage > model.getIn().reporting.machinery.maxCapacity || qCasesNeededforMaxPanels > model.getIn().reporting.machinery.maxCapacity){
+			return false;
 		}
+		
+		return true;
 		
 	}
 	
-	private void calcAndSetMachinery(){
+	private boolean calcAndSetMachinery(int productionOrder){
 		
 		int maxCapacity = model.getIn().reporting.machinery.maxCapacity;
-		int cumulativeWorkload = 0;
+		int cumulativeWorkloadBefore = 0;
+		int cumulativeWorkloadAfter = 0;
+		double percentWorkloadAfter;
+		
+		final Tooltip tooltip = new Tooltip();
 		
 		for (ProductionOrder x : model.getProductionOrdersTableData()) {
 			int targetQuantity = Integer.parseInt(x.getTargetQuantity());
-			cumulativeWorkload += targetQuantity;
+			
+			if(x.getQualityPanel().equals("")){
+				cumulativeWorkloadBefore += targetQuantity;
+			} 			
 		}
 		
-		double workload = cumulativeWorkload/maxCapacity;
+		cumulativeWorkloadAfter = cumulativeWorkloadBefore + productionOrder;
+		percentWorkloadAfter = (double)cumulativeWorkloadAfter / (double)maxCapacity;
 		
-		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
-		machineryMaximumCapacityTextField.setText(maxCapacity+"");		
-		machineryWorkloadProgressBar.setProgress(workload);
+		tooltip.setText((percentWorkloadAfter*100)+" %"+" - "+cumulativeWorkloadAfter+" Panels");		
+			
+		if(cumulativeWorkloadAfter > maxCapacity){
+			//machineryWorkloadProgressBar.setProgress(percentWorkloadAfter);
+			machineryWorkloadProgressBar.getStyleClass().add("red-bar");
+			machineryWorkloadProgressBar.setTooltip(tooltip);
+			return false;
+		} else if (cumulativeWorkloadAfter <= maxCapacity && percentWorkloadAfter >= 70.0){
+			machineryWorkloadProgressBar.setProgress(percentWorkloadAfter);
+			machineryWorkloadProgressBar.getStyleClass().add("yellow-bar");
+			machineryWorkloadProgressBar.setTooltip(tooltip);
+			machineryPlannedCapacityTextField.setText(cumulativeWorkloadAfter+"");
+		} else if (cumulativeWorkloadAfter <= maxCapacity && percentWorkloadAfter < 70.0){
+			machineryWorkloadProgressBar.setProgress(percentWorkloadAfter);
+			machineryWorkloadProgressBar.getStyleClass().add("yellow-bar");		
+			machineryWorkloadProgressBar.setTooltip(tooltip);
+			machineryPlannedCapacityTextField.setText(cumulativeWorkloadAfter+"");
+		}
+		
+		return true;
 		
 	}
 	
@@ -490,14 +531,19 @@ public class ClientGameUIController implements Initializable{
     		new PropertyValueFactory<ProductionOrder, String>("costsPerUnit")
     	);
     
-		productionOrderCostsPerUnitTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
+		//productionOrderCostsPerUnitTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
 		productionOrdersTableView.setItems(model.getProductionOrdersTableData());
 		
 		/**
     	 * Misc
     	 */
 		
-		calcAndSetMachinery();		
+		machineryLevelTextField.setText(model.getIn().reporting.machinery.level+"");
+		machineryMaximumCapacityTextField.setText(model.getIn().reporting.machinery.maxCapacity+"");
+		machineryPlannedCapacityTextField.setText("0");
+		//boolean isPossibleMachinery;
+		//boolean isPossibleProduction;
+		
 
     	/**
     	 * ActionListener
@@ -516,17 +562,29 @@ public class ClientGameUIController implements Initializable{
     	newProductionOrderSaveButton.setOnAction(new EventHandler<ActionEvent>() {
     		@Override
             public void handle(ActionEvent actionEvent) {             	
-    			model.getProductionOrdersTableData().add(
-        			new ProductionOrder(
-        				newProductionOrderWaferChoiceBox.getValue().quality+"", 
-        				newProductionOrderCaseChoiceBox.getValue().quality+"", 
-        				newProductionOrderOutputQuantityTextField.getText()
-        			)
-            	); 
+
+    			if(newProductionOrderCaseChoiceBox.getValue() != null && newProductionOrderWaferChoiceBox.getValue() != null){
+					boolean isPossibleMachinery = calcAndSetMachinery(Integer.parseInt(newProductionOrderOutputQuantityTextField.getText()));
+					
+					if(isPossibleMachinery == true){
+						model.getProductionOrdersTableData().add(
+		        			new ProductionOrder(
+		        				newProductionOrderWaferChoiceBox.getValue().quality+"", 
+		        				newProductionOrderCaseChoiceBox.getValue().quality+"", 
+		        				newProductionOrderOutputQuantityTextField.getText()
+		        			)
+			            ); 						
+					} else {
+						
+					}
+					
+				}
     			
-    			calcAndSetMachinery();
-    			//newProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
+    			//ewProductionOrderWaferChoiceBox.getSelectionModel().clearSelection();
+    			//newProductionOrderWaferChoiceBox.valueProperty().removeListener();
+    			newProductionOrderWaferChoiceBox.getItems().clear();
             	//newProductionOrderCaseChoiceBox.getSelectionModel().clearSelection();
+            	newProductionOrderCaseChoiceBox.getItems().clear();
             	newProductionOrderWaferStorageQuantityTextField.clear();           	
             	newProductionOrderCaseStorageQuantityTextField.clear();
             	newProductionOrderCostsTextField.clear();
@@ -535,7 +593,7 @@ public class ClientGameUIController implements Initializable{
             	
             }
         }); 
-    	    	
+    		
     	newProductionOrderWaferChoiceBox.valueProperty().addListener(
     		new ChangeListener<StorageElementToClient>() {
     			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
@@ -552,16 +610,57 @@ public class ClientGameUIController implements Initializable{
 		newProductionOrderCaseChoiceBox.valueProperty().addListener(
     		new ChangeListener<StorageElementToClient>() {
     			public void changed(ObservableValue<? extends StorageElementToClient> observable, StorageElementToClient oldValue, StorageElementToClient newValue) {
+    				
     				newProductionOrderCaseStorageQuantityTextField.setText(newValue.quantity+"");
     				
     				if(newProductionOrderWaferChoiceBox.getValue() != null){
     					calcMaximumProduction();    					
-    				}
-    					
+    				}				
     				
     			}
     		}
 	    );
+		
+		newProductionOrderOutputQuantitySlider.valueProperty().addListener(
+			new ChangeListener<Number>() {					
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {   				
+    				
+    					
+    				
+				}
+			}				
+		);
+		
+	}
+	
+	private void calcStorageCosts(){
+		
+		int costsWafer = 0;
+		int costsCases = 0;
+		int costsPanels = 0;
+		
+		int storageCostsWafer = model.getIn().storage.storageCostsWafer;
+		int storageCostsCases = model.getIn().storage.storageCostsCase;
+		int storageCostsPanels = model.getIn().storage.storageCostsPanel;
+		
+		for (StorageElementToClient elem : model.getIn().storage.storageElements) {
+
+			if(elem.type.equals("Wafer")){				
+				costsWafer += elem.quantity * storageCostsWafer;
+				System.out.println(costsWafer);
+			} else if(elem.type.equals("Gehäuse")){				
+				costsCases += elem.quantity * storageCostsCases;
+				System.out.println(costsCases);
+			} else if(elem.type.equals("Panel")){				
+				costsPanels += elem.quantity * storageCostsPanels;
+				System.out.println(costsPanels);
+			}
+			
+		}
+		
+		storageCostsWaferTextField.setText(model.getnFormatterCurrency().format(costsWafer / 100.0));
+		storageCostsCasesTextField.setText(model.getnFormatterCurrency().format(costsCases / 100.0));
+		storageCostsPanelsTextField.setText(model.getnFormatterCurrency().format(costsPanels / 100.0));
 		
 	}
 	
@@ -591,17 +690,15 @@ public class ClientGameUIController implements Initializable{
 	    	new PropertyValueFactory<StoragePosition, String>("costs")
 	    );
 		
-		storagePositionCostsTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
-		
+		//storagePositionCostsTableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
 		storagePositionsTableView.setItems(model.getStoragePositionsTableData()); 
 		
-		storageCostsWaferTextField.setText(model.getnFormatter().format(model.getIn().storage.storageCostsWafer / 100.0));
-		storageCostsCasesTextField.setText(model.getnFormatter().format(model.getIn().storage.storageCostsCase / 100.0));
-		storageCostsPanelsTextField.setText(model.getnFormatter().format(model.getIn().storage.storageCostsPanel / 100.0));
-		
+
 		/**
-    	 * ActionListener
+    	 * Misc
     	 */
+		
+		calcStorageCosts();
 		
 	}
 	

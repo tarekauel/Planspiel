@@ -57,7 +57,7 @@ public class ServerConnection extends Thread {
 				} catch (Exception e) {
 					
 					e.printStackTrace();
-					System.exit(MAX_PRIORITY);
+					System.exit(-1);
 				}
 				break;
 			default:

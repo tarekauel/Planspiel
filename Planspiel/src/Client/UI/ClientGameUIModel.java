@@ -162,9 +162,9 @@ public class ClientGameUIModel {
 	public void parseAnswerFromServer() {
 
 		this.setRound(in.round);
-		parsePurchase(in.purchase);
-		parseProduction(in.production);
 		parseStorage(in.storage);
+		parsePurchase(in.purchase);
+		parseProduction(in.production);		
 		parseDistribution(in.distribution);
 		parseHumanResources(in.humanResources);
 		parseMarketing(in.marketing);
@@ -445,18 +445,19 @@ public class ClientGameUIModel {
 			this.qualityCase = new SimpleStringProperty(qualityCase);
 			this.targetQuantity = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(targetQuantity)));
 			this.qualityPanel = new SimpleStringProperty(qualityPanel);
-			this.actualQuantity = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(actualQuantity)));
+			//this.actualQuantity = new SimpleStringProperty(ClientGameUIModel.nFormatter.format(Integer.parseInt(actualQuantity)));
+			this.actualQuantity = new SimpleStringProperty(actualQuantity);
 
 			// Währungsformatierung
 			
-			long costsPerUnitTmp = Long.parseLong(costsPerUnit);
-			String costsPerUnitFormatted = nFormatterCurrency
-					.format(costsPerUnitTmp / 100.0);
-			if( costsPerUnit.equals("?")) {
+//			long costsPerUnitTmp = Long.parseLong(costsPerUnit);
+//			String costsPerUnitFormatted = nFormatterCurrency
+//					.format(costsPerUnitTmp / 100.0);
+//			if( costsPerUnit.equals("?")) {
 			this.costsPerUnit = new SimpleStringProperty(costsPerUnit);
-			} else {
-				this.costsPerUnit = new SimpleStringProperty(costsPerUnitFormatted);
-			}
+//			} else {
+//				this.costsPerUnit = new SimpleStringProperty(costsPerUnitFormatted);
+//			}
 
 			lastId = id;
 		}
@@ -580,7 +581,8 @@ public class ClientGameUIModel {
 				double profit = Integer.parseInt(soldQuantity)
 						* Integer.parseInt(price) / 100.0 - costsTmp / 100.0
 						* Integer.parseInt(quantity);
-				this.profit = new SimpleStringProperty(profit+"");
+				String profitFormatted = nFormatterCurrency.format(profit);
+				this.profit = new SimpleStringProperty(profitFormatted);
 			} else {
 				this.costs = new SimpleStringProperty("");
 				this.profit = new SimpleStringProperty("");

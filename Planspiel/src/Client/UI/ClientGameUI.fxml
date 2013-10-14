@@ -107,13 +107,13 @@
                             <Label layoutX="14.0" layoutY="48.0" text="Gehäuse:" />
                             <ChoiceBox fx:id="newProductionOrderWaferChoiceBox" layoutX="76.0" layoutY="12.0" prefWidth="148.0" />
                             <Slider fx:id="newProductionOrderOutputQuantitySlider" layoutX="484.0" layoutY="16.0" prefWidth="160.0" />
-                            <TextField id="newProductionOrderOutputQuantityTextBox" fx:id="newProductionOrderOutputQuantityTextField" layoutX="658.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" />
                             <ChoiceBox fx:id="newProductionOrderCaseChoiceBox" layoutX="76.0" layoutY="46.0" prefWidth="148.0" />
                             <Label layoutX="242.0" layoutY="15.0" text="Stück auf Lager:" />
                             <Label layoutX="242.0" layoutY="48.0" text="Stück auf Lager:" />
-                            <TextField fx:id="newProductionOrderWaferStorageQuantityTextField" layoutX="342.0" layoutY="11.0" prefHeight="25.0" prefWidth="51.0" />
-                            <TextField fx:id="newProductionOrderCaseStorageQuantityTextField" layoutX="342.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
+                            <TextField fx:id="newProductionOrderWaferStorageQuantityTextField" disable="true" layoutX="342.0" layoutY="11.0" prefHeight="25.0" prefWidth="51.0" />
+                            <TextField fx:id="newProductionOrderCaseStorageQuantityTextField" disable="true" layoutX="342.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
                             <TextField fx:id="newProductionOrderCostsTextField" disable="true" editable="false" layoutX="528.0" layoutY="44.0" prefHeight="25.0" prefWidth="51.0" />
+                            <TextField id="newProductionOrderOutputQuantityTextBox" fx:id="newProductionOrderOutputQuantityTextField" layoutX="658.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" />
                             <Label layoutX="431.0" layoutY="48.0" text="Materialkosten:" />
                             <Label layoutX="431.0" layoutY="15.0" text="Menge:" />
                           </children>
@@ -147,9 +147,11 @@
                             <Label layoutX="14.0" layoutY="51.0" text="Max. Kapazität:" />
                             <TextField id="machineryLevelTextBox" fx:id="machineryLevelTextField" disable="true" editable="false" layoutX="114.0" layoutY="14.0" prefHeight="25.0" prefWidth="65.0" />
                             <TextField fx:id="machineryMaximumCapacityTextField" disable="true" editable="false" layoutX="114.0" layoutY="47.0" prefHeight="25.0" prefWidth="65.0" />
-                            <Label layoutX="14.0" layoutY="87.0" text="gepl. Auslastung:" />
-                            <ProgressBar id="machinery" fx:id="machineryWorkloadProgressBar" layoutX="113.0" layoutY="88.0" prefHeight="16.0" prefWidth="65.00009999999747" progress="0.65" />
-                            <CheckBox id="machinery" fx:id="machineryIncreaseLevelCheckBox" layoutX="14.0" layoutY="121.0" mnemonicParsing="false" text="Maschine ausbauen" />
+                            <Label layoutX="14.0" layoutY="113.0" text="gepl. Auslastung:" />
+                            <ProgressBar id="machinery" fx:id="machineryWorkloadProgressBar" layoutX="116.0" layoutY="114.0" prefHeight="16.0" prefWidth="61.0" progress="0.0" />
+                            <CheckBox id="machinery" fx:id="machineryIncreaseLevelCheckBox" alignment="CENTER_LEFT" allowIndeterminate="false" indeterminate="false" layoutX="35.0" layoutY="186.0" mnemonicParsing="false" selected="false" text="Maschine ausbauen" textAlignment="LEFT" />
+                            <Label layoutX="14.0" layoutY="83.0" text="Verpl. Kapazität:" />
+                            <TextField id="machineryMaximumCapacityTextField" fx:id="machineryPlannedCapacityTextField" disable="true" editable="false" layoutX="114.0" layoutY="79.0" prefHeight="25.0" prefWidth="65.0" />
                           </children>
                         </AnchorPane>
                       </content>
@@ -282,10 +284,10 @@
                           <children>
                             <LineChart fx:id="hrMotivationLineChart" alternativeColumnFillVisible="true" layoutX="-10.0" layoutY="-2.0" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
                               <xAxis>
-                                <CategoryAxis side="BOTTOM" fx:id="hrMotivationLineChartXAxis" />
+                                <CategoryAxis fx:id="hrMotivationLineChartXAxis" side="BOTTOM" />
                               </xAxis>
                               <yAxis>
-                                <NumberAxis side="LEFT" fx:id="hrMotivationLineChartYAxis" />
+                                <NumberAxis fx:id="hrMotivationLineChartYAxis" side="LEFT" />
                               </yAxis>
                             </LineChart>
                           </children>
@@ -366,28 +368,26 @@
                     </TitledPane>
                     <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="335.0" layoutY="99.0" maxHeight="173.0" minHeight="62.9998779296875" minWidth="216.0" prefHeight="173.0" prefWidth="423.0" text="Erwartete Waferpreise nächste Runde">
                       <content>
-                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="43.0" prefWidth="419.0" />
-                        <LineChart fx:id="marketingWaferPriceChart" alternativeColumnFillVisible="true" layoutX="-10.0" layoutY="-2.0" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
-                              <xAxis>
-                                <CategoryAxis side="BOTTOM" fx:id="marketingWaferPriceChartXAxis" />
-                              </xAxis>
-                              <yAxis>
-                                <NumberAxis side="LEFT" fx:id="marketingWaferPriceChartYAxis" />
-                              </yAxis>
-                            </LineChart>
+                        <LineChart fx:id="marketingWaferPriceChart" alternativeColumnFillVisible="true" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
+                          <xAxis>
+                            <CategoryAxis fx:id="marketingWaferPriceChartXAxis" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis fx:id="marketingWaferPriceChartYAxis" side="LEFT" />
+                          </yAxis>
+                        </LineChart>
                       </content>
                     </TitledPane>
                     <TitledPane id="GeneralInformationBox" animated="false" collapsible="false" layoutX="335.0" layoutY="282.0" maxHeight="173.0" minHeight="62.9998779296875" minWidth="216.0" prefHeight="173.0" prefWidth="423.0" text="Erwartete Gehäusepreise nächste Runde">
                       <content>
-                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="43.0" prefWidth="419.0" />
-                        <LineChart fx:id="marketingCasePriceChart" alternativeColumnFillVisible="true" layoutX="-10.0" layoutY="-2.0" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
-                              <xAxis>
-                                <CategoryAxis side="BOTTOM" fx:id="marketingCasePriceChartXAxis" />
-                              </xAxis>
-                              <yAxis>
-                                <NumberAxis side="LEFT" fx:id="marketingCasePriceChartYAxis" />
-                              </yAxis>
-                            </LineChart>
+                        <LineChart fx:id="marketingCasePriceChart" alternativeColumnFillVisible="true" legendVisible="false" prefHeight="251.0" prefWidth="735.0">
+                          <xAxis>
+                            <CategoryAxis fx:id="marketingCasePriceChartXAxis" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis fx:id="marketingCasePriceChartYAxis" side="LEFT" />
+                          </yAxis>
+                        </LineChart>
                       </content>
                     </TitledPane>
                   </children>
@@ -424,12 +424,12 @@
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="244.0" prefWidth="361.0">
                           <children>
-                            <StackedBarChart fx:id="reportingSalesBarChart" cache="false"  layoutX="-2.0" layoutY="-17.0" legendSide="TOP" legendVisible="true" prefHeight="260.0" prefWidth="365.0" title="">
+                            <StackedBarChart fx:id="reportingSalesBarChart" cache="false" layoutX="-2.0" layoutY="-17.0" legendSide="TOP" legendVisible="true" prefHeight="260.0" prefWidth="365.0" title="">
                               <xAxis>
                                 <CategoryAxis fx:id="reportingSalesBarChatXAxis" side="BOTTOM" />
                               </xAxis>
                               <yAxis>
-                                <NumberAxis side="LEFT" fx:id="reportingSalesBarChatYAxis" />
+                                <NumberAxis fx:id="reportingSalesBarChatYAxis" side="LEFT" />
                               </yAxis>
                             </StackedBarChart>
                           </children>
@@ -461,9 +461,9 @@
                             <Label layoutX="14.0" layoutY="43.0" text="Maximale Kapazität:" />
                             <TextField fx:id="reportingMachineryMaxCapacityTextField" disable="true" layoutX="174.0" layoutY="39.0" prefHeight="25.0" prefWidth="60.0" />
                             <Label layoutX="14.0" layoutY="71.0" text="Auslastung (Durchschnitt):" />
-                            <ProgressBar id="reportingMachineryAvg" fx:id="reportingMachineryAvgWorkloadProgressBar" layoutX="174.0" layoutY="72.0" prefHeight="16.0" prefWidth="177.0" progress="0.65" />
+                            <ProgressBar id="reportingMachineryAvg" fx:id="reportingMachineryAvgWorkloadProgressBar" layoutX="174.0" layoutY="72.0" prefHeight="16.0" prefWidth="177.0" />
                             <Label layoutX="14.0" layoutY="97.0" text="Auslastung (letzte Runde):" />
-                            <ProgressBar fx:id="reportingMachineryLastRoundWorkloadProgressBar" layoutX="174.0" layoutY="98.0" prefHeight="16.0" prefWidth="177.0" progress="0.56" />
+                            <ProgressBar fx:id="reportingMachineryLastRoundWorkloadProgressBar" layoutX="174.0" layoutY="98.0" prefHeight="16.0" prefWidth="177.0" />
                           </children>
                         </AnchorPane>
                       </content>
@@ -474,7 +474,7 @@
             </Tab>
           </tabs>
         </TabPane>
-        <ProgressBar fx:id="roundProgressBar" prefHeight="21.0" prefWidth="772.0" progress="0.26" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <ProgressBar fx:id="roundProgressBar" prefHeight="21.0" prefWidth="772.0" progress="0.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
         <Label fx:id="roundLabel" text="Runde" textAlignment="LEFT" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
       </children>
       <columnConstraints>

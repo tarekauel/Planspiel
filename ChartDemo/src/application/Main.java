@@ -17,10 +17,11 @@ public class Main extends Application {
 
 
 	@Override
-	public void start(Stage primaryStage) throws IOException {
-		// FXML-Datei laden
-		Parent root = FXMLLoader.load(getClass().getResource("UI.fxml"));
-		
+	public void start(Stage primaryStage) throws IOException {	
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("UI.fxml"));
+		Parent root = (Parent) loader.load();
+		Controller controller = (Controller)loader.getController();
+		controller.setStage(primaryStage);
 		Scene scene = new Scene(root);
 
 		primaryStage.setTitle("Chart-Demo");
